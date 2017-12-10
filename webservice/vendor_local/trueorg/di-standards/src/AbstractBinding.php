@@ -1,6 +1,6 @@
 <?php
 
-namespace True\Standards\DI\Bindings;
+namespace TrueStandards\DI;
 
 abstract class AbstractBinding implements BindingInterface
 {

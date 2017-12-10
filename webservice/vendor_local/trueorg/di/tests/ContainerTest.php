@@ -6,7 +6,7 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->calculator = new \True\Support\DI\Container();
+        $this->calculator = new \True\DI\Container();
     }
 
     protected function tearDown()

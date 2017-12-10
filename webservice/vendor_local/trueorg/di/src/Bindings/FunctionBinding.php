@@ -1,18 +1,25 @@
 <?php
 
-namespace True\Support\DI\Bindings;
+namespace True\DI\Bindings;
 
 use ReflectionFunction;
 use SplFixedArray;
-use True\Standards\DI\Bindings\ReflectedBinding;
+use TrueStandards\DI\ReflectedBinding;
 
-class CallableBinding extends ReflectedBinding
+class FunctionBinding extends ReflectedBinding
 {
     /**
      * @var ReflectionFunction
      */
     protected $reflector;
 
+    /**
+     * @param array[] ...$args
+     *
+     * @return mixed
+     * @throws \TrueStandards\DI\ContainerExceptionInterface
+     * @throws \TrueStandards\DI\NotFoundExceptionInterface
+     */
     public function make(array &...$args)
     {
         $this->reflect();

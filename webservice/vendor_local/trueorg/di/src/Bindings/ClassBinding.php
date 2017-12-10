@@ -1,10 +1,10 @@
 <?php
 
-namespace True\Support\DI\Bindings;
+namespace True\DI\Bindings;
 
 use ReflectionClass;
 use SplFixedArray;
-use True\Standards\DI\Bindings\ReflectedBinding;
+use TrueStandards\DI\ReflectedBinding;
 
 class ClassBinding extends ReflectedBinding
 {
@@ -13,15 +13,19 @@ class ClassBinding extends ReflectedBinding
      */
     protected $reflector;
 
+    /**
+     * @param array[] ...$args
+     *
+     * @return object
+     * @throws \TrueStandards\DI\ContainerExceptionInterface
+     * @throws \TrueStandards\DI\NotFoundExceptionInterface
+     */
     public function make(array &...$args)
     {
         $this->reflect();
-        $instance = $this->params
+        return $this->params
             ? $this->reflector->newInstanceArgs($this->build($args[0]))
             : new $this->concrete;
-//        $this->doInjection($instance);
-
-        return $instance;
     }
 
     protected function reflect()

@@ -1,6 +1,6 @@
 <?php
 
-namespace True\Standards\DI;
+namespace TrueStandards\DI;
 
 use ArrayAccess;
 
@@ -50,6 +50,8 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      * @param mixed $abstract The offset to retrieve
      *
      * @return mixed Can return all value types
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function offsetGet($abstract)
     {
@@ -62,7 +64,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      * @param mixed $abstract The offset to assign the value to
      * @param mixed $concrete The value to set
      *
-     * @throws \Exception
+     * @throws ContainerExceptionInterface
      */
     public function offsetSet($abstract, $concrete)
     {

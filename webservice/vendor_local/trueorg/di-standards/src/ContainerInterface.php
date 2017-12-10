@@ -1,6 +1,6 @@
 <?php
 
-namespace True\Standards\DI;
+namespace TrueStandards\DI;
 
 /**
  * Representation of a container.
@@ -13,7 +13,8 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      * @param string $abstract // TODO: bind from array
      * @param mixed  $concrete
      *
-     * @throws \Exception
+     * @return BindingInterface
+     * @throws ContainerExceptionInterface
      */
     public function bind(string $abstract, $concrete);
 
@@ -36,6 +37,8 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      * @param array[] $args
      *
      * @return mixed
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
      */
     public function make(string $abstract, array ...$args);
 

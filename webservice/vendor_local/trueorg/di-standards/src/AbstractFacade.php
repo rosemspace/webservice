@@ -1,6 +1,6 @@
 <?php
 
-namespace True\Standards\DI;
+namespace TrueStandards\DI;
 
 use RuntimeException;
 

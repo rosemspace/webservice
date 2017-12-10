@@ -1,8 +1,8 @@
 <?php
 
-namespace True\Support\DI\Bindings;
+namespace True\DI\Bindings;
 
-use True\Standards\DI\Bindings\AbstractBinding;
+use TrueStandards\DI\AbstractBinding;
 
 class SharedBinding extends AbstractBinding
 {

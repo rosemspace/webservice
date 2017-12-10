@@ -1,13 +1,16 @@
 <?php
 
-namespace True\Standards\DI\Bindings;
+namespace TrueStandards\DI;
 
 use ReflectionClass;
 use SplFixedArray;
 
 abstract class ReflectedBinding extends AbstractBinding
 {
-    use BindingBuilder;
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     /**
      * @var \Reflector
@@ -24,11 +27,11 @@ abstract class ReflectedBinding extends AbstractBinding
      */
     protected $stack;
 
-    public function __construct(array &$bindings, $concrete)
+    public function __construct(ContainerInterface $container, $concrete)
     {
         parent::__construct($concrete);
 
-        $this->bindings = &$bindings;
+        $this->container = $container;
     }
 
     protected abstract function reflect();
@@ -63,6 +66,8 @@ abstract class ReflectedBinding extends AbstractBinding
      * @param array $args
      *
      * @return array $building
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function build(array &$args)
     {
@@ -74,36 +79,18 @@ abstract class ReflectedBinding extends AbstractBinding
             $item = $stack[--$stackLength];
 
             if ($item instanceof ReflectionClass) {
-                if (isset($this->bindings[$item->name]) && $this->bindings[$item->name]->isShared())
+                if ($this->container->has($item->name) && $this->container->isShared($item->name))
                 {
-                    $building[] = $this->bindings[$item->name]->make($args);
+                    $building[] = $this->container->make($item->name, $args);
                 } else {
-                    $building[] = $this->setAndMake($item->name, array_shift($args) ?: []);
-//                    $building[] = $this->container->set($item->name, $this->container->createBinding($item->name));
+                    $this->container->bind($item->name, $item->name);
+                    $building[] = $this->container->make($item->name, array_shift($args) ?: []);
                 }
             } else if ($args) {
                 $building[] = array_shift($args);
             }
-//            $item instanceof ReflectionClass
-//                ? $building[] = (isset($this->bindings[$item->name]) && $this->bindings[$item->name]->isShared())
-//                ? $this->bindings[$item->name]->make($args)
-//                : $this->setAndMake($item->name, array_shift($args) ?: [])
-//                : ! $args ?: $building[] = array_shift($args) ?: [];
         }
 
         return $building;
-    }
-
-    /**
-     * Important to use this method because parameters passed through reference.
-     *
-     * @param string $abstract
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    protected function setAndMake(string $abstract, array $args)
-    {
-        return ($this->bindings[$abstract] = $this->getBinding($abstract))->make($args);
     }
 }

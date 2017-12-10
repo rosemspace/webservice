@@ -1,10 +1,10 @@
 <?php
 
-namespace True\Support\DI\Bindings;
+namespace True\DI\Bindings;
 
 use ReflectionMethod;
 use SplFixedArray;
-use True\Standards\DI\Bindings\ReflectedBinding;
+use TrueStandards\DI\ReflectedBinding;
 
 class MethodBinding extends ReflectedBinding
 {
@@ -18,6 +18,13 @@ class MethodBinding extends ReflectedBinding
      */
     protected $context;
 
+    /**
+     * @param array[] ...$args
+     *
+     * @return mixed
+     * @throws \TrueStandards\DI\ContainerExceptionInterface
+     * @throws \TrueStandards\DI\NotFoundExceptionInterface
+     */
     public function make(array &...$args)
     {
         $this->reflect();
@@ -35,15 +42,10 @@ class MethodBinding extends ReflectedBinding
     {
         if (! $this->reflector) {
             $this->context = is_string($this->concrete[0])
-                ? new ClassBinding($this->bindings, $this->concrete[0])
+                ? new ClassBinding($this->container, $this->concrete[0])
                 : new SharedBinding($this->concrete[0]);
             $this->reflector = new ReflectionMethod($this->concrete[0], $this->concrete[1]);
             $this->params = SplFixedArray::fromArray($this->reflector->getParameters());
         }
-    }
-
-    public function isDependent() : bool
-    {
-        return true;
     }
 }

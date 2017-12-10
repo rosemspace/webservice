@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "True\\Support\\DI\\Container": "src/Support"
+            "True\\DI\\": "src"
         }
     }
 }
