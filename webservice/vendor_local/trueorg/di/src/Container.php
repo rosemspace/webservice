@@ -54,10 +54,7 @@ class Container extends AbstractContainer
             // if concrete class represent an existed class
             if (class_exists($concrete)) {
                 return $this->bindings[$abstract] = method_exists($concrete, '__invoke')
-                    ? new MethodBinding(
-                        $this,
-                        SplFixedArray::fromArray([$concrete, '__invoke'])
-                    )
+                    ? new MethodBinding($this, SplFixedArray::fromArray([$concrete, '__invoke']))
                     : new ClassBinding($this, $concrete);
             }
         }
@@ -74,6 +71,10 @@ class Container extends AbstractContainer
         // if $concrete is callable
         if (is_callable($concrete)) {
             return $this->bindings[$abstract] = new FunctionBinding($this, $concrete);
+        }
+
+        if (is_object($concrete)) {
+            return $this->bindings[$abstract] = new Bindings\SharedBinding($concrete);
         }
 
         // if $concrete is an instance

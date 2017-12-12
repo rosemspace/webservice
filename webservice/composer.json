@@ -25,6 +25,8 @@
         "php": ">=7.1.0",
         "psr/container": "^1.0",
         "symfony/yaml": "^3.1",
+        "trueorg/di": "*",
+        "trueorg/di-standards": "*",
         "vlucas/phpdotenv": "^2.4",
         "zendframework/zend-diactoros": "^1.4"
     },
@@ -38,14 +40,22 @@
     },
     "autoload-dev": {
         "classmap": [
-            
+
         ]
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "True\\DI\\": "vendor_local/trueorg/di/src",
-            "TrueStandards\\DI\\": "vendor_local/trueorg/di-standards/src"
+            "App\\": "app/"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "vendor_local/trueorg/di"
+        },
+        {
+            "type": "path",
+            "url": "vendor_local/trueorg/di-standards"
+        }
+    ]
 }
