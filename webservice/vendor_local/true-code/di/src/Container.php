@@ -10,19 +10,13 @@ use True\DI\Bindings\{
 use True\DI\Exceptions\{
     ContainerException, NotFoundException
 };
+use TrueStandards\DI\AbstractFacade;
 
 class Container extends AbstractContainer
 {
-    /**
-     * Container all bindings.
-     *
-     * @var \TrueStandards\DI\BindingInterface[]
-     */
-    protected $bindings;
-
     public function __construct()
     {
-        $this->bindings = [];
+        AbstractFacade::registerContainer($this);
     }
 
     public function set($abstract, $concrete = null)
@@ -60,6 +54,10 @@ class Container extends AbstractContainer
         }
 
         if (is_array($concrete)) {
+//            if (count($concrete) == 1) { //TODO:
+//                $concreteClass = array_keys($concrete)[0];
+//            }
+
             return $this->bindings[$abstract] = new MethodBinding(
                 $this,
                 SplFixedArray::fromArray(
@@ -73,14 +71,14 @@ class Container extends AbstractContainer
             return $this->bindings[$abstract] = new FunctionBinding($this, $concrete);
         }
 
-        if (is_object($concrete)) {
+//        if (is_object($concrete)) {
             return $this->bindings[$abstract] = new Bindings\SharedBinding($concrete);
-        }
+//        }
 
         // if $concrete is an instance
         //return $this->getInstanceClosure($placeholder, $concrete);
         //return null;
-        throw new ContainerException('Cannot bind');
+//        throw new ContainerException('Cannot bind');
     }
 
     /**

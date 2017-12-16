@@ -12,7 +12,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
     /**
      * The container's bindings.
      *
-     * @var array
+     * @var BindingInterface[]
      */
     protected $bindings = [];
 

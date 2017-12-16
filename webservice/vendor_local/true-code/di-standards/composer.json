@@ -1,6 +1,6 @@
 {
-    "name": "trueorg/di",
-    "description": "Dependency injection system",
+    "name": "true-code/di-standards",
+    "description": "Dependency injection standards",
     "license": "MIT",
     "type": "library",
     "minimum-stability": "dev",
@@ -14,12 +14,11 @@
         }
     ],
     "require": {
-        "trueorg/di-standards": "*",
         "php": ">=7.1.0"
     },
     "autoload": {
         "psr-4": {
-            "True\\DI\\": "src"
+            "TrueStandards\\DI\\": "src"
         }
     }
 }

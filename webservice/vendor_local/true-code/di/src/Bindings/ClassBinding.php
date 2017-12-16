@@ -24,7 +24,7 @@ class ClassBinding extends ReflectedBinding
     {
         $this->reflect();
         return $this->params
-            ? $this->reflector->newInstanceArgs($this->build($args[0]))
+            ? $this->reflector->newInstanceArgs($this->build(...$args ?: $this->args))
             : new $this->concrete;
     }
 

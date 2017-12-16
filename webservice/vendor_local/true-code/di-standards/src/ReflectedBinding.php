@@ -27,11 +27,17 @@ abstract class ReflectedBinding extends AbstractBinding
      */
     protected $stack;
 
-    public function __construct(ContainerInterface $container, $concrete)
+    /**
+     * @var array
+     */
+    protected $args;
+
+    public function __construct(ContainerInterface $container, $concrete, array $args = [])
     {
         parent::__construct($concrete);
 
         $this->container = $container;
+        $this->args = $args;
     }
 
     protected abstract function reflect();

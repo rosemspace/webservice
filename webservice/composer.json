@@ -25,8 +25,8 @@
         "php": ">=7.1.0",
         "psr/container": "^1.0",
         "symfony/yaml": "^3.1",
-        "trueorg/di": "*",
-        "trueorg/installer": "*",
+        "true-code/di": "*",
+        "true-code/installer": "*",
         "vlucas/phpdotenv": "^2.4",
         "zendframework/zend-diactoros": "^1.4"
     },
@@ -45,21 +45,21 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "Rosem\\": "app/Rosem"
         }
     },
     "repositories": [
         {
             "type": "path",
-            "url": "vendor_local/trueorg/di"
+            "url": "vendor_local/true-code/di"
         },
         {
             "type": "path",
-            "url": "vendor_local/trueorg/di-standards"
+            "url": "vendor_local/true-code/di-standards"
         },
         {
             "type": "path",
-            "url": "vendor_local/trueorg/installer"
+            "url": "vendor_local/true-code/installer"
         }
     ]
 }

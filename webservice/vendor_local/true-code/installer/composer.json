@@ -1,5 +1,5 @@
 {
-  "name": "trueorg/installer",
+  "name": "true-code/installer",
   "type": "composer-plugin",
   "license": "MIT",
   "autoload": {
