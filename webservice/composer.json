@@ -26,7 +26,7 @@
         "psr/container": "^1.0",
         "symfony/yaml": "^3.1",
         "trueorg/di": "*",
-        "trueorg/di-standards": "*",
+        "trueorg/installer": "*",
         "vlucas/phpdotenv": "^2.4",
         "zendframework/zend-diactoros": "^1.4"
     },
@@ -56,6 +56,10 @@
         {
             "type": "path",
             "url": "vendor_local/trueorg/di-standards"
+        },
+        {
+            "type": "path",
+            "url": "vendor_local/trueorg/installer"
         }
     ]
 }
