@@ -7,13 +7,13 @@ use TrueStandards\DI\AbstractContainer;
 use True\DI\Bindings\{
     ClassBinding, FunctionBinding, MethodBinding
 };
-use True\DI\Exceptions\{
-    ContainerException, NotFoundException
-};
+use True\DI\Exceptions\NotFoundException;
 use TrueStandards\DI\AbstractFacade;
 
 class Container extends AbstractContainer
 {
+    const CLASS_METHOD_SEPARATOR = '::';
+
     public function __construct()
     {
         AbstractFacade::registerContainer($this);
@@ -21,7 +21,7 @@ class Container extends AbstractContainer
 
     public function set($abstract, $concrete = null)
     {
-        $this->bindings[$abstract] =
+        return $this->bindings[$abstract] =
             new Proxies\BindingProxy($this, $abstract, $concrete ?: $abstract);
     }
 
@@ -36,16 +36,16 @@ class Container extends AbstractContainer
      */
     public function bind(string $abstract, $concrete)
     {
-        // if $concrete is a string
-        if (is_string($concrete)) { // TODO: move colon mark into constant
-            if (count($explodedConcrete = explode('::', $concrete, 2)) > 1) {
+        if (is_string($concrete)) {
+            if (count($explodedConcrete = explode(static::CLASS_METHOD_SEPARATOR, $concrete, 2)) > 1 &&
+                method_exists($explodedConcrete[0], $explodedConcrete[1])
+            ) {
                 return $this->bindings[$abstract] = new MethodBinding(
                     $this,
                     SplFixedArray::fromArray($explodedConcrete)
                 );
             }
 
-            // if concrete class represent an existed class
             if (class_exists($concrete)) {
                 return $this->bindings[$abstract] = method_exists($concrete, '__invoke')
                     ? new MethodBinding($this, SplFixedArray::fromArray([$concrete, '__invoke']))
@@ -54,31 +54,26 @@ class Container extends AbstractContainer
         }
 
         if (is_array($concrete)) {
-//            if (count($concrete) == 1) { //TODO:
-//                $concreteClass = array_keys($concrete)[0];
-//            }
-
-            return $this->bindings[$abstract] = new MethodBinding(
-                $this,
-                SplFixedArray::fromArray(
-                    count($concrete) > 1 ? $concrete : [array_keys($concrete)[0], array_values($concrete)[0]]
-                )
-            );
+            if (count($concrete) == 2 && method_exists($concrete[0], $concrete[1])) {
+                return $this->bindings[$abstract] =
+                    new MethodBinding($this, SplFixedArray::fromArray($concrete));
+            } else {
+                if (count($concrete) == 1 && method_exists(
+                        $class = array_keys($concrete)[0],
+                        $method = array_values($concrete)[0]
+                    )
+                ) {
+                    return $this->bindings[$abstract] =
+                        new MethodBinding($this, SplFixedArray::fromArray([$class, $method]));
+                }
+            }
         }
 
-        // if $concrete is callable
         if (is_callable($concrete)) {
             return $this->bindings[$abstract] = new FunctionBinding($this, $concrete);
         }
 
-//        if (is_object($concrete)) {
-            return $this->bindings[$abstract] = new Bindings\SharedBinding($concrete);
-//        }
-
-        // if $concrete is an instance
-        //return $this->getInstanceClosure($placeholder, $concrete);
-        //return null;
-//        throw new ContainerException('Cannot bind');
+        return $this->bindings[$abstract] = new Bindings\SharedBinding($concrete);
     }
 
     /**

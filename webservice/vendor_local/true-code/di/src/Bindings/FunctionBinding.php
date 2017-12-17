@@ -25,7 +25,7 @@ class FunctionBinding extends ReflectedBinding
         $this->reflect();
 
         return $this->params
-            ? $this->reflector->invokeArgs($this->build($args[0]))
+            ? $this->reflector->invokeArgs($this->build(...$args ?: $this->args))
             : call_user_func($this->concrete);
     }
 

@@ -23,6 +23,7 @@ class ClassBinding extends ReflectedBinding
     public function make(array &...$args)
     {
         $this->reflect();
+
         return $this->params
             ? $this->reflector->newInstanceArgs($this->build(...$args ?: $this->args))
             : new $this->concrete;

@@ -29,8 +29,12 @@ class MethodBinding extends ReflectedBinding
     {
         $this->reflect();
 
-        if (empty($args[1])) {
-            $args = [[], &$args[0]];
+        if (! $args) {
+            $args = $this->args;
+        } else {
+            if (empty($args[1])) {
+                $args = [[], &$args[0]];
+            }
         }
 
         return $this->params

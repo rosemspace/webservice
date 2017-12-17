@@ -1,5 +1,5 @@
 {
-    "name": "trueorg/rosem",
+    "name": "true-code/rosem",
     "description": "Yet another Web Framework",
     "keywords": ["framework"],
     "license": "MIT",
@@ -15,20 +15,20 @@
         }
     ],
     "require": {
-        "analogue/orm": "^5.5",
+        "analogue/orm": "~5.5",
         "filp/whoops": "^2.1",
         "kint-php/kint": "^2.0",
         "league/flysystem": "^1.0",
         "league/plates": "^3.3",
+        "lulco/phoenix": "^0.12",
+        "nette/finder": "^2.4",
         "nikic/fast-route": "^1.2",
-        "robmorgan/phinx": "^0.9.1",
         "php": ">=7.1.0",
         "psr/container": "^1.0",
-        "symfony/yaml": "^3.1",
         "true-code/di": "*",
         "true-code/installer": "*",
         "vlucas/phpdotenv": "^2.4",
-        "zendframework/zend-diactoros": "^1.4"
+        "zendframework/zend-diactoros": "^1.6"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
