@@ -16,7 +16,18 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      * @return BindingInterface
      * @throws ContainerExceptionInterface
      */
-    public function bind(string $abstract, $concrete);
+    public function bind(string $abstract, $concrete = null);
+
+    /**
+     * Register a non lazy binding with the container.
+     *
+     * @param string $abstract // TODO: bind from array
+     * @param mixed  $concrete
+     *
+     * @return BindingInterface
+     * @throws ContainerExceptionInterface
+     */
+    public function bindForce(string $abstract, $concrete = null);
 
     /**
      * Returns true if the container can return an entry for the given identifier.
@@ -31,7 +42,7 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
     public function has($id) : bool;
 
     /**
-     * Wrap function under makeInstance.
+     * Make data from binding by abstract key.
      *
      * @param string  $abstract
      * @param array[] $args
@@ -41,6 +52,18 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      * @throws ContainerExceptionInterface
      */
     public function make(string $abstract, array ...$args);
+
+    /**
+     * Bind data if not exist and make data from binding by abstract key.
+     *
+     * @param string  $abstract
+     * @param array[] $args
+     *
+     * @return mixed
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     */
+    public function makeForce(string $abstract, array ...$args);
 
     /**
      * Determine if a given type is shared.
@@ -72,16 +95,16 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      *
      * @param string|array $abstract
      * @param mixed        $concrete
-     * @param array        $args
+     * @param array[]      $args
      */
-    public function singleton(string $abstract, $concrete = null, array $args = []);
+    public function singleton(string $abstract, $concrete = null, array ...$args);
 
     /**
      * Register a singleton which can be reinitialized in the container.
      *
      * @param string|array $abstract
      * @param mixed        $concrete
-     * @param array        $args
+     * @param array[]      $args
      */
-    public function mutableSingleton(string $abstract, $concrete = null, array $args = []);
+    public function mutableSingleton(string $abstract, $concrete = null, array ...$args);
 }

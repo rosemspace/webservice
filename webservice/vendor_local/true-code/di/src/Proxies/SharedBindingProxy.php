@@ -27,7 +27,7 @@ class SharedBindingProxy extends BindingProxy
      */
     public function make(array &...$args)
     {
-        $this->container->bind($this->abstract, $this->concrete);
+        $this->container->bindForce($this->abstract, $this->concrete);
         $instance = $this->container->make($this->abstract, ...$this->args ?: $args);
         $this->container->instance($this->abstract, $instance);
 

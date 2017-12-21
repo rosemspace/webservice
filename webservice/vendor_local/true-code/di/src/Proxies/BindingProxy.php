@@ -35,7 +35,7 @@ class BindingProxy extends AbstractBinding
      */
     public function make(array &...$args)
     {
-        $this->container->bind($this->abstract, $this->concrete);
+        $this->container->bindForce($this->abstract, $this->concrete);
 
         return $this->container->make($this->abstract, ...$args);
     }

@@ -18,6 +18,17 @@ class MethodBinding extends ReflectedBinding
      */
     protected $context;
 
+    protected function reflect() : void
+    {
+        if (! $this->reflector) {
+            $this->context = is_string($this->concrete[0])
+                ? new ClassBinding($this->container, $this->concrete[0])
+                : new SharedBinding($this->concrete[0]);
+            $this->reflector = new ReflectionMethod($this->concrete[0], $this->concrete[1]);
+            $this->params = SplFixedArray::fromArray($this->reflector->getParameters());
+        }
+    }
+
     /**
      * @param array[] ...$args
      *
@@ -40,16 +51,5 @@ class MethodBinding extends ReflectedBinding
         return $this->params
             ? $this->reflector->invokeArgs($this->context->make($args[0]), $this->build($args[1]))
             : call_user_func($this->concrete);
-    }
-
-    protected function reflect()
-    {
-        if (! $this->reflector) {
-            $this->context = is_string($this->concrete[0])
-                ? new ClassBinding($this->container, $this->concrete[0])
-                : new SharedBinding($this->concrete[0]);
-            $this->reflector = new ReflectionMethod($this->concrete[0], $this->concrete[1]);
-            $this->params = SplFixedArray::fromArray($this->reflector->getParameters());
-        }
     }
 }

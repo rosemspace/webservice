@@ -10,6 +10,11 @@ use ArrayAccess;
 abstract class AbstractContainer implements ContainerInterface, ArrayAccess
 {
     /**
+     * Symbols for separate class name and method name.
+     */
+    protected const CLASS_METHOD_SEPARATOR = '::';
+
+    /**
      * The container's bindings.
      *
      * @var BindingInterface[]

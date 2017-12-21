@@ -40,7 +40,7 @@ abstract class ReflectedBinding extends AbstractBinding
         $this->args = $args;
     }
 
-    protected abstract function reflect();
+    protected abstract function reflect() : void;
 
     /**
      * Get stack of classes and parameters for automatic building
@@ -75,28 +75,29 @@ abstract class ReflectedBinding extends AbstractBinding
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function build(array &$args)
+    protected function build(?array &$args = null) : array
     {
-        $stack = $this->getStack();
-        $stackLength = count($stack);
-        $building = [];
+        if ($args) {
+            $stack = $this->getStack();
+            $stackLength = count($stack);
+            $building = [];
 
-        while ($stackLength) {
-            $item = $stack[--$stackLength];
+            while ($stackLength) {
+                $item = $stack[--$stackLength];
 
-            if ($item instanceof ReflectionClass) {
-                if ($this->container->has($item->name) && $this->container->isShared($item->name))
-                {
-                    $building[] = $this->container->make($item->name, $args);
-                } else {
-                    $this->container->bind($item->name, $item->name);
-                    $building[] = $this->container->make($item->name, array_shift($args) ?: []);
+                if ($item instanceof ReflectionClass) {
+                    $building[] = $this->container->makeForce(
+                        $item->name,
+                        $this->container->isShared($item->name) ? $args : array_shift($args) ?: []
+                    );
+                } else if ($args) {
+                    $building[] = array_shift($args);
                 }
-            } else if ($args) {
-                $building[] = array_shift($args);
             }
+
+            return $building;
         }
 
-        return $building;
+        return [];
     }
 }
