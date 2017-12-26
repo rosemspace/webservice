@@ -40,14 +40,14 @@ abstract class ReflectedBinding extends AbstractBinding
         $this->args = $args;
     }
 
-    protected abstract function reflect() : void;
+    protected abstract function reflect(): void;
 
     /**
      * Get stack of classes and parameters for automatic building
      *
      * @return SplFixedArray $stack
      */
-    protected function getStack() : SplFixedArray
+    protected function getStack(): SplFixedArray
     {
 
         if (! $this->stack) {
@@ -75,29 +75,29 @@ abstract class ReflectedBinding extends AbstractBinding
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    protected function build(?array &$args = null) : array
+    protected function build(?array &$args = null): array
     {
-        if ($args) {
-            $stack = $this->getStack();
-            $stackLength = count($stack);
-            $building = [];
-
-            while ($stackLength) {
-                $item = $stack[--$stackLength];
-
-                if ($item instanceof ReflectionClass) {
-                    $building[] = $this->container->makeForce(
-                        $item->name,
-                        $this->container->isShared($item->name) ? $args : array_shift($args) ?: []
-                    );
-                } else if ($args) {
-                    $building[] = array_shift($args);
-                }
-            }
-
-            return $building;
+        if (! $args) { // TODO: improve
+            $args = [];
         }
 
-        return [];
+        $stack = $this->getStack();
+        $stackLength = count($stack);
+        $building = [];
+
+        while ($stackLength) {
+            $item = $stack[--$stackLength];
+
+            if ($item instanceof ReflectionClass) {
+                $building[] = $this->container->makeForce(
+                    $item->name,
+                    $this->container->isShared($item->name) ? $args : array_shift($args) ?: []
+                );
+            } else if ($args) {
+                $building[] = array_shift($args);
+            }
+        }
+
+        return $building;
     }
 }

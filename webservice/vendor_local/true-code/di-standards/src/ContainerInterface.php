@@ -39,7 +39,7 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      *
      * @return bool
      */
-    public function has($id) : bool;
+    public function has($id): bool;
 
     /**
      * Make data from binding by abstract key.
@@ -72,7 +72,7 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      *
      * @return bool
      */
-    public function isShared(string $abstract) : bool;
+    public function isShared(string $abstract): bool;
 
     /**
      * Register an alias for existing interface.
@@ -80,7 +80,7 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      * @param string $alias
      * @param string $abstract
      */
-    public function alias(string $abstract, string $alias);
+    public function alias(string $abstract, string $alias): void;
 
     /**
      * Register an existing instance as shared in the container.

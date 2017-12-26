@@ -16,7 +16,7 @@
     ],
     "require": {
         "analogue/orm": "~5.5",
-        "tijsverkoyen/css-to-inline-styles": "^2.2",
+        "danielstjules/stringy": "~3.1",
         "filp/whoops": "^2.1",
         "kint-php/kint": "^2.0",
         "league/flysystem": "^1.0",
@@ -30,7 +30,9 @@
         "psr/log": "^1.0",
         "robmorgan/phinx": "^0.9",
         "symfony/finder": "^4.0",
+        "tijsverkoyen/css-to-inline-styles": "^2.2",
         "true-code/di": "*",
+        "true-code/graphql": "*",
         "true-code/installer": "*",
         "vlucas/phpdotenv": "^2.4",
         "zendframework/zend-diactoros": "^1.6"
@@ -61,6 +63,14 @@
         {
             "type": "path",
             "url": "vendor_local/true-code/di-standards"
+        },
+        {
+            "type": "path",
+            "url": "vendor_local/true-code/graphql"
+        },
+        {
+            "type": "path",
+            "url": "vendor_local/true-code/graphql-standards"
         },
         {
             "type": "path",

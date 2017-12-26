@@ -71,6 +71,11 @@ class Container extends AbstractContainer
             }
         }
 
+        if (method_exists($concrete, '__invoke')) {
+            return $this->bindings[$abstract] =
+                new MethodBinding($this, SplFixedArray::fromArray([$concrete, '__invoke']));
+        }
+
         if (is_callable($concrete)) {
             return $this->bindings[$abstract] = new FunctionBinding($this, $concrete);
         }
@@ -84,19 +89,19 @@ class Container extends AbstractContainer
      * @param string $alias
      * @param string $abstract
      */
-    public function alias(string $abstract, string $alias)
+    public function alias(string $abstract, string $alias): void
     {
         $this->bindings[$alias] = &$this->bindings[$abstract];
     }
 
     public function instance(string $abstract, $instance)
     {
-        $this->bindings[$abstract] = new Bindings\SharedBinding($instance);
+        return $this->bindings[$abstract] = $this->singleton($abstract, $instance);
     }
 
     public function singleton(string $abstract, $concrete = null, array ...$args)
     {
-        $this->bindings[$abstract] =
+        return $this->bindings[$abstract] =
             new Proxies\SharedBindingProxy($this, $abstract, $concrete ?: $abstract, $args);
     }
 
