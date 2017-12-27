@@ -36,7 +36,9 @@ abstract class AbstractQuery implements QueryInterface
         return [];
     }
 
-    public function resolve($source, $args, $context, ResolveInfo $info) {}
+    public function resolve($source, $args, $context, ResolveInfo $info) {
+        return $args ? $this->mapper->where($args)->get() : $this->mapper->all();
+    }
 
     public function getName() : string
     {

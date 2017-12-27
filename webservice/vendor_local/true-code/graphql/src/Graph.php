@@ -24,13 +24,14 @@ class Graph implements GraphInterface
         }
     }
 
-    public function addType(string $name, Type $instance) { //TODO: lazy loading
+    public function addType(string $name, Type $instance): void //TODO: lazy loading
+    {
         if (! isset($this->types[$name])) {
             $this->types[$name] = $instance;
         }
     }
 
-    public function addQuery(QueryInterface $query, string $schema = 'default')
+    public function addQuery(QueryInterface $query, string $schema = 'default'): void
     {
         $this->initSchemaField($schema, 'queries');
 

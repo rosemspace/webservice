@@ -22,6 +22,15 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
     protected $bindings = [];
 
     /**
+     * AbstractContainer constructor.
+     */
+    public function __construct()
+    {
+        $this->instance(ContainerInterface::class, $this);
+        AbstractFacade::registerContainer($this);
+    }
+
+    /**
      * Returns true if the container can return an entry for the given identifier.
      * Returns false otherwise.
      * `has($id)` returning true does not mean that `get($id)` will not throw an exception.

@@ -14,8 +14,8 @@
         }
     ],
     "require": {
-        "true-code/di-standards": "*",
-        "php": ">=7.1.0"
+        "php": ">=7.1.0",
+        "true-code/di-standards": "*"
     },
     "autoload": {
         "psr-4": {

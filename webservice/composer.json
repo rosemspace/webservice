@@ -52,7 +52,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Rosem\\": "app/Rosem"
+            "Rosem\\": "app/Rosem",
+            "RosemStandards\\": "app/RosemStandards"
         }
     },
     "repositories": [

@@ -4,8 +4,8 @@
 
 return [
     'paths' => [
-        'migrations' => __DIR__ . '/app/*/*/db/migrations',
-        'seeds' => __DIR__ . '/app/*/*/db/seeds',
+        'migrations' => __DIR__ . '/app/*/*/etc/db/migrations',
+        'seeds' => __DIR__ . '/app/*/*/etc/db/seeds',
     ],
     'environments' => [
         'default_migration_table' => 'schema_migrations_log',

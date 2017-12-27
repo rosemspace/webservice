@@ -12,11 +12,6 @@ use TrueStandards\DI\AbstractFacade;
 
 class Container extends AbstractContainer
 {
-    public function __construct()
-    {
-        AbstractFacade::registerContainer($this);
-    }
-
     public function bind(string $abstract, $concrete = null)
     {
         return $this->bindings[$abstract] =

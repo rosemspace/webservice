@@ -3,7 +3,7 @@
 namespace TrueStandards\GraphQL;
 
 use Closure;
-use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\{Type, ObjectType};
 use GraphQL\Type\Definition\ResolveInfo;
 
 abstract class AbstractObjectType extends ObjectType implements ObjectTypeInterface
@@ -12,8 +12,6 @@ abstract class AbstractObjectType extends ObjectType implements ObjectTypeInterf
      * @var GraphInterface
      */
     protected $graph;
-
-    protected $temp;
 
     public function __construct(GraphInterface $graph)
     {
@@ -30,5 +28,21 @@ abstract class AbstractObjectType extends ObjectType implements ObjectTypeInterf
     public function resolveField($value, $args, $context, ResolveInfo $info)
     {
         return $value->{$info->fieldName};
+    }
+
+    public function type(string $typeName)
+    {
+        return $this->graph->getType($typeName);
+    }
+
+    final public static function field(Type $type, ?string $description = null) : array
+    {
+        $field = ['type' => $type];
+
+        if ($description) {
+            $filed['description'] = $description;
+        }
+
+        return $field;
     }
 }
