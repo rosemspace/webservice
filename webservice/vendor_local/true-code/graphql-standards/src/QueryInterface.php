@@ -2,7 +2,6 @@
 
 namespace TrueStandards\GraphQL;
 
-use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ResolveInfo;
 
 interface QueryInterface

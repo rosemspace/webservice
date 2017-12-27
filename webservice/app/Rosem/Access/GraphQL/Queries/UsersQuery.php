@@ -1,12 +1,10 @@
 <?php
 
-namespace Rosem\Access\Http\GraphQL\Queries;
+namespace Rosem\Access\GraphQL\Queries;
 
 use GraphQL\Type\Definition\Type;
 use Rosem\Access\Database\Models\User;
 use TrueStandards\GraphQL\AbstractQuery;
-use TrueStandards\GraphQL\GraphInterface;
-use GraphQL\Type\Definition\ResolveInfo;
 
 class UsersQuery extends AbstractQuery
 {
