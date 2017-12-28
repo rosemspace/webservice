@@ -87,6 +87,8 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      *
      * @param string $abstract
      * @param mixed  $instance
+     *
+     * @return BindingInterface
      */
     public function instance(string $abstract, $instance);
 
@@ -96,6 +98,8 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      * @param string|array $abstract
      * @param mixed        $concrete
      * @param array[]      $args
+     *
+     * @return BindingInterface
      */
     public function singleton(string $abstract, $concrete = null, array ...$args);
 
@@ -105,6 +109,8 @@ interface ContainerInterface extends \Psr\Container\ContainerInterface
      * @param string|array $abstract
      * @param mixed        $concrete
      * @param array[]      $args
+     *
+     * @return BindingInterface
      */
     public function mutableSingleton(string $abstract, $concrete = null, array ...$args);
 }

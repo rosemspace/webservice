@@ -24,7 +24,7 @@ class MethodBinding extends ReflectedBinding
             $this->context = is_string($this->concrete[0])
                 ? new ClassBinding($this->container, $this->concrete[0])
                 : new SharedBinding($this->concrete[0]);
-            $this->reflector = new ReflectionMethod($this->concrete[0], $this->concrete[1]);
+            $this->reflector = new ReflectionMethod(...$this->concrete);
             $this->params = SplFixedArray::fromArray($this->reflector->getParameters());
         }
     }

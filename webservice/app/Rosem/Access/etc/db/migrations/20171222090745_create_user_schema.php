@@ -40,7 +40,7 @@ class CreateUserSchema extends AbstractMigration
             ->addColumn('first_name', 'string')
             ->addColumn('last_name', 'string')
             ->addColumn('email', 'string')->addIndex('email', ['unique' => true])
-            ->addColumn('password', 'string', ['limit' => 60])
+            ->addColumn('password', 'string')
             // rememberToken
             ->addColumn('remember_token', 'string', ['limit' => 100, 'null' => true])
             ->addColumn('role_id', 'integer')->addForeignKey('role_id', 'roles')

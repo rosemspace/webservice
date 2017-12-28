@@ -8,7 +8,6 @@ use True\DI\Bindings\{
     ClassBinding, FunctionBinding, MethodBinding
 };
 use True\DI\Exceptions\NotFoundException;
-use TrueStandards\DI\AbstractFacade;
 
 class Container extends AbstractContainer
 {
@@ -25,7 +24,6 @@ class Container extends AbstractContainer
      * @param mixed  $concrete
      *
      * @return \TrueStandards\DI\BindingInterface
-     * @throws \TrueStandards\DI\ContainerExceptionInterface
      */
     public function bindForce(string $abstract, $concrete = null)
     {
@@ -48,30 +46,24 @@ class Container extends AbstractContainer
                     ? new MethodBinding($this, SplFixedArray::fromArray([$concrete, '__invoke']))
                     : new ClassBinding($this, $concrete);
             }
-        }
-
-        if (is_array($concrete)) {
+        } elseif (is_array($concrete)) {
             if (count($concrete) == 2 && method_exists($concrete[0], $concrete[1])) {
                 return $this->bindings[$abstract] =
                     new MethodBinding($this, SplFixedArray::fromArray($concrete));
-            } else {
-                if (count($concrete) == 1 && method_exists(
-                        $class = array_keys($concrete)[0],
-                        $method = array_values($concrete)[0]
-                    )
-                ) {
-                    return $this->bindings[$abstract] =
-                        new MethodBinding($this, SplFixedArray::fromArray([$class, $method]));
-                }
+            } elseif (
+                count($concrete) == 1 &&
+                method_exists(
+                    $class = array_keys($concrete)[0],
+                    $method = array_values($concrete)[0]
+                )
+            ) {
+                return $this->bindings[$abstract] =
+                    new MethodBinding($this, SplFixedArray::fromArray([$class, $method]));
             }
-        }
-
-        if (method_exists($concrete, '__invoke')) {
+        } elseif (method_exists($concrete, '__invoke')) {
             return $this->bindings[$abstract] =
                 new MethodBinding($this, SplFixedArray::fromArray([$concrete, '__invoke']));
-        }
-
-        if (is_callable($concrete)) {
+        } elseif (is_callable($concrete)) {
             return $this->bindings[$abstract] = new FunctionBinding($this, $concrete);
         }
 
@@ -84,7 +76,7 @@ class Container extends AbstractContainer
      * @param string $alias
      * @param string $abstract
      */
-    public function alias(string $abstract, string $alias): void
+    public function alias(string $abstract, string $alias) : void
     {
         $this->bindings[$alias] = &$this->bindings[$abstract];
     }
