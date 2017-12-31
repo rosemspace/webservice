@@ -1,12 +1,12 @@
 <?php
 
-namespace True\DI\Bindings;
+namespace True\DI\Binding;
 
 use ReflectionMethod;
 use SplFixedArray;
-use TrueStandards\DI\ReflectedBinding;
+use True\DI\AbstractReflectedBinding;
 
-class MethodBinding extends ReflectedBinding
+class MethodBinding extends AbstractReflectedBinding
 {
     /**
      * @var ReflectionMethod
@@ -33,8 +33,8 @@ class MethodBinding extends ReflectedBinding
      * @param array[] ...$args
      *
      * @return mixed
-     * @throws \TrueStandards\DI\ContainerExceptionInterface
-     * @throws \TrueStandards\DI\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function make(array &...$args)
     {

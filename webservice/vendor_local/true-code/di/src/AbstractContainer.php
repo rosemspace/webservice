@@ -1,8 +1,9 @@
 <?php
 
-namespace TrueStandards\DI;
+namespace True\DI;
 
 use ArrayAccess;
+use Psr\Container\ContainerInterface;
 
 /**
  * Abstract container with array functionality.
@@ -21,14 +22,13 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      */
     protected $bindings = [];
 
-    /**
-     * AbstractContainer constructor.
-     */
-    public function __construct()
-    {
-        $this->instance(ContainerInterface::class, $this);
-        AbstractFacade::registerContainer($this);
-    }
+    abstract public function bind(string $abstract, $concrete = null) : BindingInterface;
+
+    abstract public function bindForce(string $abstract, $concrete = null) : BindingInterface;
+
+    abstract public function make(string $abstract, array ...$args);
+
+    abstract public function isShared(string $abstract) : bool;
 
     /**
      * Returns true if the container can return an entry for the given identifier.
@@ -42,7 +42,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      */
     public function has($id) : bool
     {
-        return $this->offsetExists($id);
+        return isset($this->bindings[$id]);
     }
 
     /**
@@ -55,7 +55,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return isset($this->bindings[$offset]);
+        return $this->has($offset);
     }
 
     /**
@@ -64,12 +64,12 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      * @param mixed $abstract The offset to retrieve
      *
      * @return mixed Can return all value types
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function offsetGet($abstract)
     {
-        return $this->make($abstract);
+        return $this->get($abstract);
     }
 
     /**
@@ -78,7 +78,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      * @param mixed $abstract The offset to assign the value to
      * @param mixed $concrete The value to set
      *
-     * @throws ContainerExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function offsetSet($abstract, $concrete)
     {

@@ -10,8 +10,8 @@ use Rosem\Access\Database\Models\{
 };
 use RosemStandards\Kernel\AppInterface;
 use True\DI\Container;
-use TrueStandards\DI\ContainerInterface;
-use TrueStandards\GraphQL\GraphInterface;
+use Psr\Container\ContainerInterface;
+use True\DI\ReflectionContainer;
 use Zend\Diactoros\Server;
 
 class App extends Container implements AppInterface
@@ -29,10 +29,12 @@ class App extends Container implements AppInterface
 
                 if (is_array($modules)) {
                     $app = new static;
+                    $app->delegate(new ReflectionContainer);
 
                     foreach ($modules as $module => $state) {
                         if ($state && $module !== static::class) {
-                            $app->makeForce($module);
+                            $app->bind($module); // TODO: we shouldn't do an automatic binding
+                            $app->get($module);
                         }
                     }
 
@@ -54,6 +56,7 @@ class App extends Container implements AppInterface
     {
         parent::__construct();
 
+        $this->instance(ContainerInterface::class, $this);
         $this->alias(ContainerInterface::class, AppInterface::class);
         // SERVER
         $this->bind(\Zend\Diactoros\Server::class);
@@ -69,12 +72,12 @@ class App extends Container implements AppInterface
             )
         );
         // RESPONSE
-        $this->singleton(
+        $this->share(
             \Psr\Http\Message\ResponseInterface::class,
             \Zend\Diactoros\Response::class
         );
         // DATABASE
-        $this->singleton(
+        $this->share(
             \Analogue\ORM\Analogue::class,
             \Analogue\ORM\Analogue::class,
             [[
@@ -89,7 +92,7 @@ class App extends Container implements AppInterface
             ]]
         );
         // GRAPHQL
-        $this->singleton(
+        $this->share(
             \TrueStandards\GraphQL\GraphInterface::class,
             \True\GraphQL\Graph::class
         );
@@ -120,7 +123,7 @@ class App extends Container implements AppInterface
 
     public function testGraph()
     {
-        $graph = $this->get(GraphInterface::class);
+        $graph = $this->get(\TrueStandards\GraphQL\GraphInterface::class);
         /** @var \Psr\Http\Message\ServerRequestInterface $request */
         $request = $this->get(\Psr\Http\Message\ServerRequestInterface::class);
 
@@ -132,15 +135,13 @@ class App extends Container implements AppInterface
                 $input = json_decode($request->getBody()->getContents(), true);
             }
 
-            $query = isset($input['query']) ? $input['query'] : null;
-            $variableValues = isset($input['variables']) ? $input['variables'] : null;
-            $rootValue = ['prefix' => 'TEST'];
             $result = GraphQL::executeQuery(
                 $graph->getSchema(),
-                $query,
-                $rootValue,
+                $input['query'] ?? null,
+                null,
                 $this,
-                $variableValues
+                $input['variables'] ?? null,
+                $input['operationName'] ?? null
             );
             $output = $result->toArray();
         } catch (\Exception $e) {

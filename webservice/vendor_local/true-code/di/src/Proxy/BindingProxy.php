@@ -1,15 +1,15 @@
 <?php
 
-namespace True\DI\Proxies;
+namespace True\DI\Proxy;
 
-use TrueStandards\DI\{
-    AbstractBinding, ContainerInterface
+use True\DI\{
+    AbstractBinding, Container
 };
 
 class BindingProxy extends AbstractBinding
 {
     /**
-     * @var ContainerInterface
+     * @var Container
      */
     protected $container;
 
@@ -18,7 +18,7 @@ class BindingProxy extends AbstractBinding
      */
     protected $abstract;
 
-    public function __construct(ContainerInterface $container, $abstract, $concrete)
+    public function __construct(Container $container, $abstract, $concrete)
     {
         parent::__construct($concrete);
 
@@ -30,8 +30,8 @@ class BindingProxy extends AbstractBinding
      * @param array[] ...$args
      *
      * @return mixed
-     * @throws \TrueStandards\DI\ContainerExceptionInterface
-     * @throws \TrueStandards\DI\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function make(array &...$args)
     {

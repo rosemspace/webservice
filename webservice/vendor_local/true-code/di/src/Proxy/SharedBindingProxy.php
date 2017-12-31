@@ -1,17 +1,22 @@
 <?php
 
-namespace True\DI\Proxies;
+namespace True\DI\Proxy;
 
-use TrueStandards\DI\ContainerInterface;
+use True\DI\Container;
 
 class SharedBindingProxy extends BindingProxy
 {
+    /**
+     * @var Container
+     */
+    protected $container;
+
     /**
      * @var array
      */
     protected $args;
 
-    public function __construct(ContainerInterface $container, $abstract, $concrete, $args)
+    public function __construct(Container $container, $abstract, $concrete, $args)
     {
         parent::__construct($container, $abstract, $concrete);
 
@@ -22,8 +27,8 @@ class SharedBindingProxy extends BindingProxy
      * @param array[] ...$args
      *
      * @return mixed
-     * @throws \TrueStandards\DI\ContainerExceptionInterface
-     * @throws \TrueStandards\DI\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function make(array &...$args)
     {

@@ -3,35 +3,58 @@
 namespace True\DI;
 
 use SplFixedArray;
-use TrueStandards\DI\AbstractContainer;
-use True\DI\Bindings\{
-    ClassBinding, FunctionBinding, MethodBinding
+use True\DI\Binding\{
+    ClassBinding, FunctionBinding, MethodBinding, SharedBinding
 };
-use True\DI\Exceptions\NotFoundException;
+use True\DI\Exception\NotFoundException;
 
 class Container extends AbstractContainer
 {
-    public function bind(string $abstract, $concrete = null)
+    /**
+     * @var self
+     */
+    protected $delegate;
+
+    /**
+     * Container constructor.
+     */
+    public function __construct()
+    {
+        AbstractFacade::registerContainer($this);
+    }
+
+    public function delegate(self $container)
+    {
+        $this->delegate = $container;
+    }
+
+    public function bind(string $abstract, $concrete = null) : BindingInterface
     {
         return $this->bindings[$abstract] =
-            new Proxies\BindingProxy($this, $abstract, $concrete ?: $abstract);
+            new Proxy\BindingProxy($this, $abstract, $concrete ?: $abstract);
     }
 
     /**
      * Register a binding with the container.
      *
-     * @param string $abstract // TODO: bind from array
+     * @param string $abstract
      * @param mixed  $concrete
      *
-     * @return \TrueStandards\DI\BindingInterface
+     * @return BindingInterface
      */
-    public function bindForce(string $abstract, $concrete = null)
+    public function bindForce(string $abstract, $concrete = null) : BindingInterface
     {
         if (! $concrete) {
             $concrete = $abstract;
         }
 
         if (is_string($concrete)) {
+            if (class_exists($concrete)) {
+                return $this->bindings[$abstract] = method_exists($concrete, '__invoke')
+                    ? new MethodBinding($this, SplFixedArray::fromArray([$concrete, '__invoke']))
+                    : new ClassBinding($this, $concrete);
+            }
+
             if (count($explodedConcrete = explode(static::CLASS_METHOD_SEPARATOR, $concrete, 2)) > 1 &&
                 method_exists($explodedConcrete[0], $explodedConcrete[1])
             ) {
@@ -39,12 +62,6 @@ class Container extends AbstractContainer
                     $this,
                     SplFixedArray::fromArray($explodedConcrete)
                 );
-            }
-
-            if (class_exists($concrete)) {
-                return $this->bindings[$abstract] = method_exists($concrete, '__invoke')
-                    ? new MethodBinding($this, SplFixedArray::fromArray([$concrete, '__invoke']))
-                    : new ClassBinding($this, $concrete);
             }
         } elseif (is_array($concrete)) {
             if (count($concrete) == 2 && method_exists($concrete[0], $concrete[1])) {
@@ -67,7 +84,43 @@ class Container extends AbstractContainer
             return $this->bindings[$abstract] = new FunctionBinding($this, $concrete);
         }
 
-        return $this->bindings[$abstract] = new Bindings\SharedBinding($concrete);
+        return $this->bindings[$abstract] = new Binding\SharedBinding($concrete);
+    }
+
+    /**
+     * Wrap function under makeInstance.
+     *
+     * @param string  $abstract
+     * @param array[] ...$args
+     *
+     * @return mixed
+     * @throws NotFoundException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function make(string $abstract, array ...$args)
+    {
+        if ($this->has($abstract)) {
+            return $this->bindings[$abstract]->make(...$args);
+        }
+
+        if ($this->delegate) {
+            return $this->delegate->make($abstract, ...$args);
+        }
+
+        throw new NotFoundException("$abstract binding not found.");
+    }
+
+    /**
+     * @param string $abstract
+     *
+     * @return mixed
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function get($abstract)
+    {
+        return $this->make($abstract);
     }
 
     /**
@@ -81,76 +134,31 @@ class Container extends AbstractContainer
         $this->bindings[$alias] = &$this->bindings[$abstract];
     }
 
-    public function instance(string $abstract, $instance)
+    public function instance(string $abstract, $instance) : BindingInterface
     {
-        return $this->bindings[$abstract] = $this->singleton($abstract, $instance);
+        return $this->bindings[$abstract] = new SharedBinding($instance);
     }
 
-    public function singleton(string $abstract, $concrete = null, array ...$args)
+    public function share(string $abstract, $concrete = null, array ...$args) : BindingInterface
     {
         return $this->bindings[$abstract] =
-            new Proxies\SharedBindingProxy($this, $abstract, $concrete ?: $abstract, $args);
+            new Proxy\SharedBindingProxy($this, $abstract, $concrete ?: $abstract, $args);
     }
 
     /**
-     * Register a singleton which can be reinitialized in the container.
+     * Register a shared concrete which can be reinitialized in the container.
      *
      * @param string|array $abstract
      * @param mixed        $concrete
      * @param array[]      $args
+     *
+     * @return BindingInterface
      */
-    public function mutableSingleton(string $abstract, $concrete = null, array ...$args)
+    public function mutable(string $abstract, $concrete = null, array ...$args) : BindingInterface
     {
         // TODO: Implement mutableSingleton() method.
-    }
 
-    /**
-     * @param string $abstract
-     *
-     * @return mixed
-     * @throws \TrueStandards\DI\ContainerExceptionInterface
-     * @throws \TrueStandards\DI\NotFoundExceptionInterface
-     */
-    public function get($abstract)
-    {
-        return $this->make($abstract);
-    }
-
-    /**
-     * Wrap function under makeInstance.
-     *
-     * @param string  $abstract
-     * @param array[] $args
-     *
-     * @return mixed
-     * @throws \TrueStandards\DI\ContainerExceptionInterface
-     * @throws \TrueStandards\DI\NotFoundExceptionInterface
-     */
-    public function make(string $abstract, array ...$args)
-    {
-        if ($this->has($abstract)) {
-            return $this->bindings[$abstract]->make(...$args);
-        }
-
-        throw new NotFoundException("$abstract binding not found.");
-    }
-
-    /**
-     * Make with binding.
-     *
-     * @param string  $abstract
-     * @param array[] $args
-     *
-     * @return mixed
-     * @throws \TrueStandards\DI\ContainerExceptionInterface
-     */
-    public function makeForce(string $abstract, array ...$args)
-    {
-        if (! $this->has($abstract)) {
-            $this->bindForce($abstract);
-        }
-
-        return $this->bindings[$abstract]->make(...$args);
+        return $this->instance($abstract, $concrete);
     }
 
     /**
@@ -162,6 +170,8 @@ class Container extends AbstractContainer
      */
     public function isShared(string $abstract) : bool
     {
-        return $this->bindings[$abstract]->isShared();
+        return ($this->delegate && ! $this->has($abstract))
+            ? $this->delegate->isShared($abstract)
+            : $this->bindings[$abstract]->isShared();
     }
 }

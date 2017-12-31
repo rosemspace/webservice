@@ -2,7 +2,7 @@
 
 namespace RosemStandards\Kernel;
 
-use TrueStandards\DI\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 interface AppInterface extends ContainerInterface
 {

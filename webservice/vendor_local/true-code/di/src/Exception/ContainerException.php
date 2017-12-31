@@ -1,9 +1,9 @@
 <?php
 
-namespace True\DI\Exceptions;
+namespace True\DI\Exception;
 
 use Exception;
-use TrueStandards\DI\ContainerExceptionInterface;
+use Psr\Container\ContainerExceptionInterface;
 
 class ContainerException extends Exception implements ContainerExceptionInterface
 {

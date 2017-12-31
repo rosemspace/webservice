@@ -1,6 +1,6 @@
 <?php
 
-namespace TrueStandards\DI;
+namespace True\DI;
 
 interface BindingInterface
 {
@@ -8,10 +8,12 @@ interface BindingInterface
      * @param array[] ...$args
      *
      * @return mixed
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function make(array &...$args);
+
+//    public function withMethodCall(string $method, array $args = []);
 
     /**
      * @return bool

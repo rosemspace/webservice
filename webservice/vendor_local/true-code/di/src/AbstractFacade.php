@@ -1,7 +1,8 @@
 <?php
 
-namespace TrueStandards\DI;
+namespace True\DI;
 
+use Psr\Container\ContainerInterface;
 use RuntimeException;
 
 /**
@@ -26,7 +27,7 @@ abstract class AbstractFacade
     /**
      * Set the container instance.
      *
-     * @param  ContainerInterface &$container
+     * @param  ContainerInterface $container
      * @return void
      */
     final public static function registerContainer(ContainerInterface $container)
@@ -46,6 +47,8 @@ abstract class AbstractFacade
      * Get the root object behind the facade.
      *
      * @return mixed
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public static function getFacadeRoot()
     {
@@ -57,13 +60,15 @@ abstract class AbstractFacade
      *
      * @param  string|object $name
      * @return mixed
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     protected static function resolveFacadeInstance($name)
     {
         return is_object($name)
             ? $name
             : static::$resolvedInstances[$name]
-            ?? (static::$resolvedInstances[$name] = static::$container[$name]);
+            ?? (static::$resolvedInstances[$name] = static::$container->get($name));
     }
 
     /**
@@ -93,6 +98,8 @@ abstract class AbstractFacade
      * @param  array  $args
      * @return mixed
      * @throws RuntimeException
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     final public static function __callStatic(string $method, array $args)
     {

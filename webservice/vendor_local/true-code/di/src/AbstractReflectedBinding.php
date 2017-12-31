@@ -1,14 +1,14 @@
 <?php
 
-namespace TrueStandards\DI;
+namespace True\DI;
 
 use ReflectionClass;
 use SplFixedArray;
 
-abstract class ReflectedBinding extends AbstractBinding
+abstract class AbstractReflectedBinding extends AbstractBinding
 {
     /**
-     * @var ContainerInterface
+     * @var AbstractContainer
      */
     protected $container;
 
@@ -32,7 +32,7 @@ abstract class ReflectedBinding extends AbstractBinding
      */
     protected $args;
 
-    public function __construct(ContainerInterface $container, $concrete, array $args = [])
+    public function __construct(AbstractContainer $container, $concrete, array $args = [])
     {
         parent::__construct($concrete);
 
@@ -72,12 +72,11 @@ abstract class ReflectedBinding extends AbstractBinding
      * @param array $args
      *
      * @return array $building
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
-    protected function build(?array &$args = null): array
+    protected function build(?array &$args = null) : array
     {
-        if (! $args) { // TODO: improve
+        if (! $args) { // TODO: improve | improve array_shift below
             $args = [];
         }
 
@@ -89,12 +88,15 @@ abstract class ReflectedBinding extends AbstractBinding
             $item = $stack[--$stackLength];
 
             if ($item instanceof ReflectionClass) {
-                $building[] = $this->container->makeForce(
-                    $item->name,
-                    $this->container->isShared($item->name) ? $args : array_shift($args) ?: []
-                );
+                if ($this->container->has($item->name) && $this->container->isShared($item->name)) {
+                    $building[] = $this->container->make($item->name, $args);
+                } else {
+                    $building[] = $this->container->make($item->name, reset($args) ?: []);
+                    unset($args[0]);
+                }
             } else if ($args) {
-                $building[] = array_shift($args);
+                $building[] = reset($args);
+                unset($args[0]);
             }
         }
 

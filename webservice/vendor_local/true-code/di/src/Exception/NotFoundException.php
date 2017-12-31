@@ -1,9 +1,9 @@
 <?php
 
-namespace True\DI\Exceptions;
+namespace True\DI\Exception;
 
 use Exception;
-use TrueStandards\DI\NotFoundExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class NotFoundException extends Exception implements NotFoundExceptionInterface
 {
