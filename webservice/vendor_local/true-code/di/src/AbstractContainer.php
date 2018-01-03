@@ -22,9 +22,14 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      */
     protected $bindings = [];
 
-    abstract public function bind(string $abstract, $concrete = null) : BindingInterface;
+    public function set(string $abstract, BindingInterface $binding) : BindingInterface
+    {
+        return $this->bindings[$abstract] = $binding;
+    }
 
-    abstract public function bindForce(string $abstract, $concrete = null) : BindingInterface;
+    abstract public function bind(string $abstract, $concrete = null, array ...$args) : BindingInterface;
+
+    abstract public function bindForce(string $abstract, $concrete = null, array ...$args) : BindingInterface;
 
     abstract public function make(string $abstract, array ...$args);
 

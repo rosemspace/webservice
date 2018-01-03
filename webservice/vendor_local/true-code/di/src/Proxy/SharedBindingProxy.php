@@ -3,6 +3,7 @@
 namespace True\DI\Proxy;
 
 use True\DI\Container;
+use True\DI\Binding\MethodAggregateBinding;
 
 class SharedBindingProxy extends BindingProxy
 {
@@ -32,15 +33,16 @@ class SharedBindingProxy extends BindingProxy
      */
     public function make(array &...$args)
     {
-        $this->container->bindForce($this->abstract, $this->concrete);
-        $instance = $this->container->make($this->abstract, ...$this->args ?: $args);
+        $resolvedArgs = $args ?: $this->args;
+        $binding = $context = $this->container->bindForce($this->abstract, $this->concrete);
+
+        if ($this->aggregate) {
+            $binding = new MethodAggregateBinding($this->container, $context, $this->aggregate);
+        }
+
+        $instance = $binding->make($resolvedArgs);
         $this->container->instance($this->abstract, $instance);
 
         return $instance;
-    }
-
-    public function isShared() : bool
-    {
-        return true;
     }
 }

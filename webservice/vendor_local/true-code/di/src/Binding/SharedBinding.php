@@ -10,9 +10,4 @@ class SharedBinding extends AbstractBinding
     {
         return $this->concrete;
     }
-
-    public function isShared() : bool
-    {
-        return true;
-    }
 }

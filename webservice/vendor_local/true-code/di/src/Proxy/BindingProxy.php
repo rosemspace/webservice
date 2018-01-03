@@ -3,27 +3,21 @@
 namespace True\DI\Proxy;
 
 use True\DI\{
-    AbstractBinding, Container
+    AbstractBinding, Binding\MethodAggregateBinding, BindingInterface
 };
 
 class BindingProxy extends AbstractBinding
 {
     /**
-     * @var Container
+     * @var array
      */
-    protected $container;
+    protected $aggregate = [];
 
-    /**
-     * @var string
-     */
-    protected $abstract;
-
-    public function __construct(Container $container, $abstract, $concrete)
+    public function withMethodCall(string $method, array $args = []) : BindingInterface
     {
-        parent::__construct($concrete);
+        $this->aggregate[$method] = $args;
 
-        $this->container = $container;
-        $this->abstract = $abstract;
+        return $this;
     }
 
     /**
@@ -35,8 +29,19 @@ class BindingProxy extends AbstractBinding
      */
     public function make(array &...$args)
     {
-        $this->container->bindForce($this->abstract, $this->concrete);
+        $binding = $context = $this->container->bindForce(
+            $this->abstract,
+            $this->concrete,
+            ...$this->args ?: $args
+        );
 
-        return $this->container->make($this->abstract, ...$args);
+        if ($this->aggregate) {
+            $this->container->set(
+                $this->abstract,
+                $binding = new MethodAggregateBinding($this->container, $context, $this->aggregate)
+            );
+        }
+
+        return $binding->make();
     }
 }

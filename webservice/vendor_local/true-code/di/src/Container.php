@@ -4,9 +4,10 @@ namespace True\DI;
 
 use SplFixedArray;
 use True\DI\Binding\{
-    ClassBinding, FunctionBinding, MethodBinding, SharedBinding
+    ClassBinding, FunctionBinding, SharedBinding
 };
 use True\DI\Exception\NotFoundException;
+use True\DI\Proxy\SharedBindingProxy;
 
 class Container extends AbstractContainer
 {
@@ -28,63 +29,41 @@ class Container extends AbstractContainer
         $this->delegate = $container;
     }
 
-    public function bind(string $abstract, $concrete = null) : BindingInterface
+    public function bind(string $abstract, $concrete = null, array ...$args) : BindingInterface
     {
         return $this->bindings[$abstract] =
-            new Proxy\BindingProxy($this, $abstract, $concrete ?: $abstract);
+            new Proxy\BindingProxy($this, $abstract, $concrete ?: $abstract, $args);
     }
 
-    /**
-     * Register a binding with the container.
-     *
-     * @param string $abstract
-     * @param mixed  $concrete
-     *
-     * @return BindingInterface
-     */
-    public function bindForce(string $abstract, $concrete = null) : BindingInterface
+    public function bindForce(string $abstract, $concrete = null, array ...$args) : BindingInterface
     {
         if (! $concrete) {
             $concrete = $abstract;
         }
 
-        if (is_string($concrete)) {
-            if (class_exists($concrete)) {
-                return $this->bindings[$abstract] = method_exists($concrete, '__invoke')
-                    ? new MethodBinding($this, SplFixedArray::fromArray([$concrete, '__invoke']))
-                    : new ClassBinding($this, $concrete);
+        if (class_exists($concrete)) {
+            $constructArgs = reset($args) ?: [];
+
+            if (count($args) > 1) {
+                unset($args[key($args)]);
+                $methodArgs = $args;
+            } else {
+                $methodArgs = $constructArgs;
+                $constructArgs = [];
             }
 
-            if (count($explodedConcrete = explode(static::CLASS_METHOD_SEPARATOR, $concrete, 2)) > 1 &&
-                method_exists($explodedConcrete[0], $explodedConcrete[1])
-            ) {
-                return $this->bindings[$abstract] = new MethodBinding(
-                    $this,
-                    SplFixedArray::fromArray($explodedConcrete)
-                );
-            }
-        } elseif (is_array($concrete)) {
-            if (count($concrete) == 2 && method_exists($concrete[0], $concrete[1])) {
-                return $this->bindings[$abstract] =
-                    new MethodBinding($this, SplFixedArray::fromArray($concrete));
-            } elseif (
-                count($concrete) == 1 &&
-                method_exists(
-                    $class = array_keys($concrete)[0],
-                    $method = array_values($concrete)[0]
-                )
-            ) {
-                return $this->bindings[$abstract] =
-                    new MethodBinding($this, SplFixedArray::fromArray([$class, $method]));
-            }
-        } elseif (method_exists($concrete, '__invoke')) {
-            return $this->bindings[$abstract] =
-                new MethodBinding($this, SplFixedArray::fromArray([$concrete, '__invoke']));
-        } elseif (is_callable($concrete)) {
-            return $this->bindings[$abstract] = new FunctionBinding($this, $concrete);
+            $binding = new ClassBinding($this, $abstract, $concrete, $constructArgs);
+
+            return method_exists($concrete, '__invoke')
+                ? $binding->withMethodCall('__invoke', $methodArgs)
+                : $binding;
         }
 
-        return $this->bindings[$abstract] = new Binding\SharedBinding($concrete);
+        if (is_callable($concrete)) {
+            return new FunctionBinding($this, $abstract, $concrete, reset($args) ?: []);
+        }
+
+        return new SharedBinding($this, $abstract, $concrete, reset($args) ?: []);
     }
 
     /**
@@ -136,29 +115,13 @@ class Container extends AbstractContainer
 
     public function instance(string $abstract, $instance) : BindingInterface
     {
-        return $this->bindings[$abstract] = new SharedBinding($instance);
+        return $this->bindings[$abstract] = new SharedBinding($this, $abstract, $instance);
     }
 
     public function share(string $abstract, $concrete = null, array ...$args) : BindingInterface
     {
         return $this->bindings[$abstract] =
             new Proxy\SharedBindingProxy($this, $abstract, $concrete ?: $abstract, $args);
-    }
-
-    /**
-     * Register a shared concrete which can be reinitialized in the container.
-     *
-     * @param string|array $abstract
-     * @param mixed        $concrete
-     * @param array[]      $args
-     *
-     * @return BindingInterface
-     */
-    public function mutable(string $abstract, $concrete = null, array ...$args) : BindingInterface
-    {
-        // TODO: Implement mutableSingleton() method.
-
-        return $this->instance($abstract, $concrete);
     }
 
     /**
@@ -172,6 +135,9 @@ class Container extends AbstractContainer
     {
         return ($this->delegate && ! $this->has($abstract))
             ? $this->delegate->isShared($abstract)
-            : $this->bindings[$abstract]->isShared();
+            : (
+                $this->bindings[$abstract] instanceof SharedBinding ||
+                $this->bindings[$abstract] instanceof SharedBindingProxy
+            );
     }
 }

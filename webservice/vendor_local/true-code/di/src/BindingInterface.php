@@ -13,10 +13,7 @@ interface BindingInterface
      */
     public function make(array &...$args);
 
-//    public function withMethodCall(string $method, array $args = []);
+    public function withMethodCall(string $method, array $args = []) : self;
 
-    /**
-     * @return bool
-     */
-    public function isShared() : bool;
+    public function getConcrete() : string;
 }

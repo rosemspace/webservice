@@ -4,26 +4,27 @@ namespace True\DI\Binding;
 
 use ReflectionClass;
 use SplFixedArray;
-use True\DI\AbstractReflectedBinding;
+use True\DI\AbstractBinding;
+use True\DI\ReflectedBuildTrait;
 
-class ClassBinding extends AbstractReflectedBinding
+class ClassBinding extends AbstractBinding
 {
+    use ReflectedBuildTrait;
+
     /**
      * @var ReflectionClass
      */
     protected $reflector;
 
-    protected function reflect() : void
-    {
-        if (! $this->reflector) {
-            $this->reflector = new ReflectionClass($this->concrete);
-            $constructor = $this->reflector->getConstructor();
+    /**
+     * @var \ReflectionParameter[]
+     */
+    protected $params = [];
 
-            if ($constructor) {
-                $this->params = SplFixedArray::fromArray($constructor->getParameters());
-            }
-        }
-    }
+    /**
+     * @var SplFixedArray
+     */
+    protected $stack = [];
 
     /**
      * @param array[] ...$args
@@ -34,10 +35,34 @@ class ClassBinding extends AbstractReflectedBinding
      */
     public function make(array &...$args)
     {
-        $this->reflect();
+        if (! $this->reflector) {
+            $this->reflector = new ReflectionClass($this->concrete);
+
+            // TODO: inflection
+//            $this->reflector->getInterfaceNames();
+
+            if (
+                ($constructor = $this->reflector->getConstructor()) &&
+                ($this->params = SplFixedArray::fromArray($constructor->getParameters()))
+            ) {
+                return $this->reflector->newInstanceArgs(
+                    $this->build(
+                        $this->stack = $this->getStack($this->params),
+                        ! $this->args ? $this->args = reset($args) ?: [] : reset($args) ?: $this->args
+                    )
+                );
+            }
+
+            return new $this->concrete;
+        }
 
         return $this->params
-            ? $this->reflector->newInstanceArgs($this->build(...$args ?: $this->args))
+            ? $this->reflector->newInstanceArgs(
+                $this->build(
+                    $this->stack,
+                    reset($args) ?: $this->args
+                )
+            )
             : new $this->concrete;
     }
 }
