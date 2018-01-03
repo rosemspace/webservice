@@ -31,6 +31,10 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
 
     abstract public function bindForce(string $abstract, $concrete = null, array ...$args) : BindingInterface;
 
+    abstract public function share(string $abstract, $concrete = null, array ...$args) : BindingInterface;
+
+    abstract public function instance(string $abstract, $instance) : BindingInterface;
+
     abstract public function make(string $abstract, array ...$args);
 
     abstract public function isShared(string $abstract) : bool;

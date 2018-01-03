@@ -29,7 +29,7 @@ class BindingProxy extends AbstractBinding
      */
     public function make(array &...$args)
     {
-        $binding = $context = $this->container->bindForce(
+        $binding = $this->container->bindForce(
             $this->abstract,
             $this->concrete,
             ...$this->args ?: $args
@@ -38,7 +38,7 @@ class BindingProxy extends AbstractBinding
         if ($this->aggregate) {
             $this->container->set(
                 $this->abstract,
-                $binding = new MethodAggregateBinding($this->container, $context, $this->aggregate)
+                $binding = new MethodAggregateBinding($this->container, $binding, $this->aggregate)
             );
         }
 

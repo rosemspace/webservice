@@ -15,5 +15,5 @@ interface BindingInterface
 
     public function withMethodCall(string $method, array $args = []) : self;
 
-    public function getConcrete() : string;
+    public function getConcrete();
 }

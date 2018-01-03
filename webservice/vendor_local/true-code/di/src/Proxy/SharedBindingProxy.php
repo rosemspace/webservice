@@ -8,11 +8,6 @@ use True\DI\Binding\MethodAggregateBinding;
 class SharedBindingProxy extends BindingProxy
 {
     /**
-     * @var Container
-     */
-    protected $container;
-
-    /**
      * @var array
      */
     protected $args;
@@ -34,10 +29,10 @@ class SharedBindingProxy extends BindingProxy
     public function make(array &...$args)
     {
         $resolvedArgs = $args ?: $this->args;
-        $binding = $context = $this->container->bindForce($this->abstract, $this->concrete);
+        $binding = $this->container->bindForce($this->abstract, $this->concrete);
 
         if ($this->aggregate) {
-            $binding = new MethodAggregateBinding($this->container, $context, $this->aggregate);
+            $binding = new MethodAggregateBinding($this->container, $binding, $this->aggregate);
         }
 
         $instance = $binding->make($resolvedArgs);

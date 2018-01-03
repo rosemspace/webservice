@@ -15,7 +15,7 @@ abstract class AbstractAggregateBinding implements BindingInterface
     protected $context;
 
     /**
-     * @var array
+     * @var DependentBindingInterface[]
      */
     protected $aggregate;
 

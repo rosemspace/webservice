@@ -17,7 +17,7 @@ abstract class AbstractBinding implements BindingInterface
     protected $abstract;
 
     /**
-     * @var string
+     * @var mixed
      */
     protected $concrete;
 
@@ -43,7 +43,7 @@ abstract class AbstractBinding implements BindingInterface
         );
     }
 
-    public function getConcrete() : string
+    public function getConcrete()
     {
         return $this->concrete;
     }

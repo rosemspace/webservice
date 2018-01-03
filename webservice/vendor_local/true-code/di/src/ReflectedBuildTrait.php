@@ -19,7 +19,7 @@ trait ReflectedBuildTrait
      *
      * @return SplFixedArray $stack
      */
-    protected function getStack(iterable &$params) : SplFixedArray
+    protected function getStack(iterable $params) : SplFixedArray
     {
         $index = -1;
         $length = count($params);
@@ -35,17 +35,13 @@ trait ReflectedBuildTrait
     /**
      * Build and inject all dependencies with parameters
      *
-     * @param SplFixedArray $stack
-     * @param array         $args
+     * @param iterable $stack
+     * @param array    $args
      *
      * @return array $building
      */
-    protected function build(SplFixedArray $stack, ?array &$args = null) : array
+    protected function build(iterable $stack, array $args = []) : array
     {
-        if (! $args) { // TODO: improve | improve array_shift below
-            $args = [];
-        }
-
         $stackLength = count($stack);
         $building = [];
 
