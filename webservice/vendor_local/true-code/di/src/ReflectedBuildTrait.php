@@ -7,6 +7,8 @@ use SplFixedArray;
 
 trait ReflectedBuildTrait
 {
+    use ExtractorTrait;
+
     /**
      * @var AbstractContainer
      */
@@ -61,16 +63,5 @@ trait ReflectedBuildTrait
         }
 
         return $building;
-    }
-
-    protected function &extractFirst(array &$args)
-    {
-        if ($value = reset($args)) {
-            unset($args[key($args)]);
-        } else {
-            $value = [];
-        }
-
-        return $value;
     }
 }

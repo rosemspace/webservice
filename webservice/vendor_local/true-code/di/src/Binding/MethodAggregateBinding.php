@@ -5,11 +5,11 @@ namespace True\DI\Binding;
 use True\DI\AbstractAggregateBinding;
 use True\DI\AbstractContainer;
 use True\DI\BindingInterface;
-use True\DI\ReflectedBuildTrait;
+use True\DI\ExtractorTrait;
 
 class MethodAggregateBinding extends AbstractAggregateBinding
 {
-    use ReflectedBuildTrait;
+    use ExtractorTrait;
 
     public function __construct(AbstractContainer $container, BindingInterface $context, array $aggregate = [])
     {

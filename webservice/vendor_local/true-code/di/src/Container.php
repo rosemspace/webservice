@@ -2,7 +2,6 @@
 
 namespace True\DI;
 
-use SplFixedArray;
 use True\DI\Binding\{
     ClassBinding, FunctionBinding, SharedBinding
 };
@@ -11,6 +10,8 @@ use True\DI\Proxy\SharedBindingProxy;
 
 class Container extends AbstractContainer
 {
+    use ExtractorTrait;
+
     /**
      * @var self
      */
@@ -42,13 +43,7 @@ class Container extends AbstractContainer
         }
 
         if (class_exists($concrete)) {
-            $constructArgs = reset($args) ?: [];
-
-            if (count($args) > 1) {
-                unset($args[key($args)]);
-            }
-
-            $binding = new ClassBinding($this, $abstract, $concrete, $constructArgs);
+            $binding = new ClassBinding($this, $abstract, $concrete, $this->extractFirst($args));
 
             return method_exists($concrete, '__invoke')
                 ? $binding->withMethodCall('__invoke', $args ?: [])
