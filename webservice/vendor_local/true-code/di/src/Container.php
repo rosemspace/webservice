@@ -46,16 +46,12 @@ class Container extends AbstractContainer
 
             if (count($args) > 1) {
                 unset($args[key($args)]);
-                $methodArgs = $args;
-            } else {
-                $methodArgs = $constructArgs;
-                $constructArgs = [];
             }
 
             $binding = new ClassBinding($this, $abstract, $concrete, $constructArgs);
 
             return method_exists($concrete, '__invoke')
-                ? $binding->withMethodCall('__invoke', $methodArgs)
+                ? $binding->withMethodCall('__invoke', $args ?: [])
                 : $binding;
         }
 

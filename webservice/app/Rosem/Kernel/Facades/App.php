@@ -3,7 +3,7 @@
 namespace Rosem\Kernel\Facades;
 
 use RosemStandards\Kernel\AppInterface;
-use TrueStandards\DI\AbstractFacade;
+use True\DI\AbstractFacade;
 
 class App extends AbstractFacade
 {

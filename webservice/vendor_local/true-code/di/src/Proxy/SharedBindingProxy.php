@@ -28,14 +28,16 @@ class SharedBindingProxy extends BindingProxy
      */
     public function make(array &...$args)
     {
-        $resolvedArgs = $args ?: $this->args;
+        $resolvedArgs = array_map(function ($args, $defaultArgs) {
+            return $args ?: $defaultArgs ?: [];
+        }, $args, $this->args);
         $binding = $this->container->bindForce($this->abstract, $this->concrete);
 
         if ($this->aggregate) {
             $binding = new MethodAggregateBinding($this->container, $binding, $this->aggregate);
         }
 
-        $instance = $binding->make($resolvedArgs);
+        $instance = $binding->make(...$resolvedArgs);
         $this->container->instance($this->abstract, $instance);
 
         return $instance;
