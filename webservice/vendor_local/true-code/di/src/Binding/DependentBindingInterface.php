@@ -1,6 +1,6 @@
 <?php
 
-namespace True\DI;
+namespace True\DI\Binding;
 
 interface DependentBindingInterface
 {

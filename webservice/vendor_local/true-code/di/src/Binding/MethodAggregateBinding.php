@@ -2,23 +2,11 @@
 
 namespace True\DI\Binding;
 
-use True\DI\AbstractAggregateBinding;
-use True\DI\AbstractContainer;
-use True\DI\BindingInterface;
 use True\DI\ExtractorTrait;
 
 class MethodAggregateBinding extends AbstractAggregateBinding
 {
     use ExtractorTrait;
-
-    public function __construct(AbstractContainer $container, BindingInterface $context, array $aggregate = [])
-    {
-        parent::__construct($container, $context);
-
-        foreach ($aggregate as $method => $args) {
-            $this->withMethodCall($method, $args);
-        }
-    }
 
     /**
      * @param array[] ...$args
@@ -42,7 +30,7 @@ class MethodAggregateBinding extends AbstractAggregateBinding
 
     public function withMethodCall(string $method, array $args = []) : BindingInterface
     {
-        $this->aggregate[$method] = new MethodBinding($this->container, $this->context->getConcrete(), $method, $args);
+        $this->aggregate[$method] = new MethodBinding($this->container, $this->getConcrete(), $method, $args);
 
         return $this;
     }

@@ -2,8 +2,8 @@
 
 namespace True\DI\Proxy;
 
+use True\DI\Binding\BindingInterface;
 use True\DI\Container;
-use True\DI\Binding\MethodAggregateBinding;
 
 class SharedBindingProxy extends BindingProxy
 {
@@ -20,6 +20,18 @@ class SharedBindingProxy extends BindingProxy
     }
 
     /**
+     * @param array $args
+     *
+     * @return \True\DI\Binding\BindingInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function getContext(array &$args) : BindingInterface
+    {
+        return $this->container->instance($this->abstract, parent::getContext($args)->make());
+    }
+
+    /**
      * @param array[] ...$args
      *
      * @return mixed
@@ -28,17 +40,8 @@ class SharedBindingProxy extends BindingProxy
      */
     public function make(array &...$args)
     {
-        $resolvedArgs = array_map(function ($args, $defaultArgs) {
-            return $args ?: $defaultArgs ?: [];
-        }, $args, $this->args);
-        $binding = $this->container->bindForce($this->abstract, $this->concrete);
-
-        if ($this->aggregate) {
-            $binding = new MethodAggregateBinding($this->container, $binding, $this->aggregate);
-        }
-
-        $instance = $binding->make(...$resolvedArgs);
-        $this->container->instance($this->abstract, $instance);
+        $instance = $this->getContextWithCalls($args)->make();
+        $this->container->instance($this->abstract, $instance)->commit();
 
         return $instance;
     }

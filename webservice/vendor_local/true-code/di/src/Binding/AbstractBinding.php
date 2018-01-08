@@ -1,11 +1,13 @@
 <?php
 
-namespace True\DI;
+namespace True\DI\Binding;
 
-use True\DI\Binding\MethodAggregateBinding;
+use True\DI\AbstractContainer;
 
 abstract class AbstractBinding implements BindingInterface
 {
+    use CallAggregateTrait;
+
     /**
      * @var AbstractContainer
      */
@@ -32,15 +34,16 @@ abstract class AbstractBinding implements BindingInterface
         $this->abstract = $abstract;
         $this->concrete = $concrete;
         $this->args = $args;
-        $container->set($abstract, $this);
     }
 
-    public function withMethodCall(string $method, array $args = []) : BindingInterface
+    public function commit() : BindingInterface
     {
-        return $this->container->set(
-            $this->abstract,
-            (new MethodAggregateBinding($this->container, $this))->withMethodCall($method, $args)
-        );
+        return $this->container->set($this->getAbstract(), $this);
+    }
+
+    public function getAbstract() : string
+    {
+        return $this->abstract;
     }
 
     public function getConcrete()

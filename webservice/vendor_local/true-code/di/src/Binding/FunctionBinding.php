@@ -4,25 +4,13 @@ namespace True\DI\Binding;
 
 use ReflectionFunction;
 use SplFixedArray;
-use True\DI\AbstractBinding;
 use True\DI\AbstractContainer;
-use True\DI\ReflectedBuildTrait;
 
 class FunctionBinding extends AbstractBinding
 {
     use ReflectedBuildTrait;
 
-    /**
-     * @var ReflectionFunction
-     */
-    protected $reflector;
-
-    /**
-     * @var SplFixedArray
-     */
-    protected $stack = [];
-
-    public function __construct(AbstractContainer $container, string $abstract, $concrete, array $args = [])
+    public function __construct(AbstractContainer $container, string $abstract, callable $concrete, array $args = [])
     {
         parent::__construct($container, $abstract, $concrete, $args);
 

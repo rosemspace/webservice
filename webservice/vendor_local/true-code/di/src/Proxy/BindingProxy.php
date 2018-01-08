@@ -2,22 +2,60 @@
 
 namespace True\DI\Proxy;
 
-use True\DI\{
-    AbstractBinding, Binding\MethodAggregateBinding, BindingInterface
-};
+use True\DI\Binding\{BindingInterface, AbstractBinding};
 
 class BindingProxy extends AbstractBinding
 {
     /**
      * @var array
      */
-    protected $aggregate = [];
+    protected $methodAggregate = [];
+
+    /**
+     * @var array
+     */
+    protected $functionAggregate = [];
 
     public function withMethodCall(string $method, array $args = []) : BindingInterface
     {
-        $this->aggregate[$method] = $args;
+        $this->methodAggregate[$method] = $args;
 
         return $this;
+    }
+
+    public function withFunctionCall(callable $function, array $args = []) : BindingInterface
+    {
+        $this->functionAggregate[] = [$function, $args];
+
+        return $this;
+    }
+
+    public function getContext(array &$args) : BindingInterface
+    {
+        $resolvedArgs = array_map(function ($args, $defaultArgs) {
+            return $args ?: $defaultArgs ?: [];
+        }, $args, $this->args);
+
+        return $this->container->bindForce($this->abstract, $this->concrete, ...$resolvedArgs);
+    }
+
+    public function getContextWithCalls(array &$args) : BindingInterface
+    {
+        $binding = $this->getContext($args);
+
+        if ($this->methodAggregate) {
+            foreach ($this->methodAggregate as $method => $args) {
+                $binding = $binding->withMethodCall($method, $args);
+            }
+        }
+
+        if ($this->functionAggregate) {
+            foreach ($this->functionAggregate as [$function, $args]) {
+                $binding = $binding->withFunctionCall($function, $args);
+            }
+        }
+
+        return $binding;
     }
 
     /**
@@ -29,19 +67,6 @@ class BindingProxy extends AbstractBinding
      */
     public function make(array &...$args)
     {
-        $binding = $this->container->bindForce(
-            $this->abstract,
-            $this->concrete,
-            ...$this->args ?: $args
-        );
-
-        if ($this->aggregate) {
-            $this->container->set(
-                $this->abstract,
-                $binding = new MethodAggregateBinding($this->container, $binding, $this->aggregate)
-            );
-        }
-
-        return $binding->make();
+        return $this->getContextWithCalls($args)->commit()->make();
     }
 }

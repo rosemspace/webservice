@@ -4,23 +4,11 @@ namespace True\DI\Binding;
 
 use ReflectionClass;
 use SplFixedArray;
-use True\DI\AbstractBinding;
 use True\DI\AbstractContainer;
-use True\DI\ReflectedBuildTrait;
 
 class ClassBinding extends AbstractBinding
 {
     use ReflectedBuildTrait;
-
-    /**
-     * @var ReflectionClass
-     */
-    protected $reflector;
-
-    /**
-     * @var SplFixedArray
-     */
-    protected $stack = [];
 
     public function __construct(AbstractContainer $container, string $abstract, $concrete, array $args = [])
     {

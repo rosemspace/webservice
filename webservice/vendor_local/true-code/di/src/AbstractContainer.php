@@ -4,6 +4,7 @@ namespace True\DI;
 
 use ArrayAccess;
 use Psr\Container\ContainerInterface;
+use True\DI\Binding\BindingInterface;
 
 /**
  * Abstract container with array functionality.
@@ -22,9 +23,38 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      */
     protected $bindings = [];
 
+    /**
+     * @var self
+     */
+    protected $delegate;
+
     public function set(string $abstract, BindingInterface $binding) : BindingInterface
     {
         return $this->bindings[$abstract] = $binding;
+    }
+
+    /**
+     * @param string $abstract
+     *
+     * @return BindingInterface
+     * @throws Exception\NotFoundException
+     */
+    public function find(string $abstract) : BindingInterface
+    {
+        if ($this->has($abstract)) {
+            return $this->bindings[$abstract];
+        }
+
+        if ($this->delegate) {
+            return $this->delegate->find($abstract);
+        }
+
+        throw new Exception\NotFoundException("$abstract binding not found.");
+    }
+
+    public function delegate(self $container)
+    {
+        $this->delegate = $container;
     }
 
     abstract public function bind(string $abstract, $concrete = null, array ...$args) : BindingInterface;

@@ -5,8 +5,6 @@ namespace True\DI\Binding;
 use ReflectionMethod;
 use SplFixedArray;
 use True\DI\AbstractContainer;
-use True\DI\DependentBindingInterface;
-use True\DI\ReflectedBuildTrait;
 
 class MethodBinding implements DependentBindingInterface
 {
@@ -21,16 +19,6 @@ class MethodBinding implements DependentBindingInterface
      * @var array
      */
     protected $args;
-
-    /**
-     * @var ReflectionMethod
-     */
-    protected $reflector;
-
-    /**
-     * @var SplFixedArray
-     */
-    protected $stack;
 
     public function __construct(AbstractContainer $container, $context, $concrete, array $args = [])
     {

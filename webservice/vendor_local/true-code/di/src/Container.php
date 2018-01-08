@@ -3,7 +3,7 @@
 namespace True\DI;
 
 use True\DI\Binding\{
-    ClassBinding, FunctionBinding, SharedBinding
+    BindingInterface, ClassBinding, FunctionBinding, SharedBinding
 };
 use True\DI\Exception\NotFoundException;
 use True\DI\Proxy\SharedBindingProxy;
@@ -13,11 +13,6 @@ class Container extends AbstractContainer
     use ExtractorTrait;
 
     /**
-     * @var self
-     */
-    protected $delegate;
-
-    /**
      * Container constructor.
      */
     public function __construct()
@@ -25,15 +20,9 @@ class Container extends AbstractContainer
         AbstractFacade::registerContainer($this);
     }
 
-    public function delegate(self $container)
-    {
-        $this->delegate = $container;
-    }
-
     public function bind(string $abstract, $concrete = null, array ...$args) : BindingInterface
     {
-        return $this->bindings[$abstract] =
-            new Proxy\BindingProxy($this, $abstract, $concrete ?: $abstract, $args);
+        return new Proxy\BindingProxy($this, $abstract, $concrete ?: $abstract, $args);
     }
 
     public function bindForce(string $abstract, $concrete = null, array ...$args) : BindingInterface
@@ -42,7 +31,7 @@ class Container extends AbstractContainer
             $concrete = $abstract;
         }
 
-        if (class_exists($concrete)) {
+        if (is_string($concrete) && class_exists($concrete)) {
             $binding = new ClassBinding($this, $abstract, $concrete, $this->extractFirst($args));
 
             return method_exists($concrete, '__invoke')
@@ -70,15 +59,7 @@ class Container extends AbstractContainer
      */
     public function make(string $abstract, array ...$args)
     {
-        if ($this->has($abstract)) {
-            return $this->bindings[$abstract]->make(...$args);
-        }
-
-        if ($this->delegate) {
-            return $this->delegate->make($abstract, ...$args);
-        }
-
-        throw new NotFoundException("$abstract binding not found.");
+        return $this->find($abstract)->make(...$args);
     }
 
     /**
@@ -106,13 +87,12 @@ class Container extends AbstractContainer
 
     public function instance(string $abstract, $instance) : BindingInterface
     {
-        return $this->bindings[$abstract] = new SharedBinding($this, $abstract, $instance);
+        return new SharedBinding($this, $abstract, $instance);
     }
 
     public function share(string $abstract, $concrete = null, array ...$args) : BindingInterface
     {
-        return $this->bindings[$abstract] =
-            new Proxy\SharedBindingProxy($this, $abstract, $concrete ?: $abstract, $args);
+        return new Proxy\SharedBindingProxy($this, $abstract, $concrete ?: $abstract, $args);
     }
 
     /**

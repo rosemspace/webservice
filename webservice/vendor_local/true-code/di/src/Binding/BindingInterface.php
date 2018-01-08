@@ -1,6 +1,6 @@
 <?php
 
-namespace True\DI;
+namespace True\DI\Binding;
 
 interface BindingInterface
 {
@@ -13,7 +13,13 @@ interface BindingInterface
      */
     public function make(array &...$args);
 
+    public function commit() : self;
+
     public function withMethodCall(string $method, array $args = []) : self;
+
+    public function withFunctionCall(callable $function, array $args = []) : self;
+
+    public function getAbstract() : string;
 
     public function getConcrete();
 }

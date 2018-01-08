@@ -1,18 +1,29 @@
 <?php
 
-namespace True\DI;
+namespace True\DI\Binding;
 
 use ReflectionClass;
 use SplFixedArray;
+use True\DI\ExtractorTrait;
 
 trait ReflectedBuildTrait
 {
     use ExtractorTrait;
 
     /**
-     * @var AbstractContainer
+     * @var \True\DI\AbstractContainer
      */
     protected $container;
+
+    /**
+     * @var \Reflector
+     */
+    protected $reflector;
+
+    /**
+     * @var SplFixedArray
+     */
+    protected $stack = [];
 
     /**
      * Get stack of classes and parameters for automatic building
@@ -57,7 +68,7 @@ trait ReflectedBuildTrait
                         ? $args
                         : $this->extractFirst($args)
                 );
-            } else if ($args) {
+            } elseif ($args) {
                 $building[] = $this->extractFirst($args);
             }
         }
