@@ -2,7 +2,7 @@
 
 namespace RosemStandards\Kernel;
 
-abstract class AbstractWebserviceDirectories implements WebserviceDirectoriesInterface
+abstract class AbstractAppDirectories implements AppDirectoriesInterface
 {
     /**
      * @var string

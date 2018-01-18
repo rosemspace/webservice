@@ -3,14 +3,10 @@
 namespace Rosem\Access\GraphQL\Types;
 
 use GraphQL\Type\Definition\Type;
-use TrueStandards\GraphQL\AbstractObjectType;
+use True\GraphQL\AbstractObjectType;
 
 class UserRoleType extends AbstractObjectType
 {
-    public $name = 'UserRole';
-
-    public $description = 'Role type of the user';
-
     public function fields() : array
     {
         return [

@@ -2,95 +2,132 @@
 
 namespace True\GraphQL;
 
-use Closure;
 use GraphQL\Type\{
-    Definition\ObjectType, Definition\Type, Schema, SchemaConfig
+    Definition\ObjectType, Schema, SchemaConfig
 };
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use TrueStandards\GraphQL\{
-    GraphInterface, QueryInterface, MutationInterface
+    GraphInterface, QueryInterface
 };
 
 class Graph implements GraphInterface
 {
-    protected $types = [];
+    protected $container;
+
+    /**
+     * @var \True\DI\Binding\BindingInterface[]
+     */
+    protected $types   = [];
+
     protected $schemas = [];
 
-    protected function initSchemaField(string $schema, string $field)
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    protected function addEntity(string $type, string $name, QueryInterface $query, string $schema = 'default')
     {
         if (! isset($this->schemas[$schema])) {
-            $this->schemas[$schema] = [$field => []];
-        } else if (! isset($this->schemas[$schema][$field])) {
-            $this->schemas[$schema][$field] = [];
+            $this->schemas[$schema] = [$type => [$name => $query->toArray()]];
+        } elseif (! isset($this->schemas[$schema][$type])) {
+            $this->schemas[$schema][$type] = [$name => $query->toArray()];
+        } elseif (! isset($this->schemas[$schema][$type][$query->getName()])) {
+            $this->schemas[$schema][$type][$name] = $query->toArray();
         }
     }
 
-    public function addType(string $name, Type $instance): void //TODO: lazy loading
+    /**
+     * @param string $class
+     * @param string $name
+     * @param string $description
+     *
+     * @throws \Exception
+     */
+    public function addType(string $class, string $name, string $description) : void
     {
-        if (! isset($this->types[$name])) {
-            $this->types[$name] = $instance;
+        try {
+            // TODO: improve
+            $this->container->share($class, $class, [$name, $description])->commit();
+            $this->types[$name] = $class;
+        } catch (ContainerExceptionInterface $e) {
+            throw new \Exception("Cannot add type $name to graph");
         }
     }
 
-    public function addQuery(QueryInterface $query, string $schema = 'default'): void
+    /**
+     * @param string $class
+     * @param string $name
+     * @param string $description
+     * @param string $schema
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function addQuery(string $class, string $name, string $description, string $schema = 'default') : void
     {
-        $this->initSchemaField($schema, 'queries');
-
-        if (! isset($this->schemas[$schema]['queries'][$query->getName()])) {
-            $this->schemas[$schema]['queries'][$query->getName()] = $query->toArray($this);
-        }
+        $this->addEntity(
+            'Query',
+            $name,
+            $this->container->share($class, $class, [$name, $description])->make(),
+            $schema
+        );
     }
 
-    public function addMutation(MutationInterface $mutation, string $schema = 'default')
+    public function addMutation(string $class, string $name, string $description, string $schema = 'default') : void
     {
-        $this->initSchemaField($schema, 'mutations');
+        $this->addEntity(
+            'Mutation',
+            $name,
+            $this->container->share($class, $class, [$name, $description])->make(),
+            $schema
+        );
+    }
 
-        if (! isset($this->schemas[$schema]['mutations'][$mutation->getName()])) {
-            $this->schemas[$schema]['mutations'][$mutation->getName()] = $mutation->toArray($this);
-        }
+    public function addSubscription(string $class, string $name, string $description, string $schema = 'default') : void
+    {
+        $this->addEntity(
+            'Mutation',
+            $name,
+            $this->container->share($class, $class, [$name, $description])->make(),
+            $schema
+        );
     }
 
     public function getType(string $name)
     {
-        return $this->types[$name];
+        return $this->container->get($this->types[$name]);
     }
 
-    protected function getQueryType(string $schema) : ObjectType
+    protected function getRootType(string $schema, string $type): ?ObjectType
     {
-        $this->initSchemaField($schema, 'queries');
+        if (isset($this->schemas[$schema][$type])) {
+            return new ObjectType([
+                'name'   => $type,
+                'fields' => $this->schemas[$schema][$type],
+            ]);
+        }
 
-        return new ObjectType([
-            'name' => 'Query',
-            'fields' => $this->schemas[$schema]['queries'],
-        ]);
-    }
-
-    protected function getMutationType(string $schema) : ObjectType
-    {
-        $this->initSchemaField($schema, 'mutations');
-
-        return new ObjectType([
-            'name' => 'Mutation',
-            'fields' => $this->schemas[$schema]['mutations'],
-        ]);
-    }
-
-    protected function getSubscriptionType(string $schema)
-    {
-        $this->initSchemaField($schema, 'subscriptions');
-
-        return new ObjectType([
-            'name' => 'Subscription',
-            'fields' => $this->schemas[$schema]['subscriptions'],
-        ]);
+        return null;
     }
 
     public function getSchema(string $schema = 'default')
     {
-        return new Schema([
-            'query' => $this->getQueryType($schema),
-//            'mutation' => $this->getMutationType($schema),
-//            'subscription' => $this->getSubscriptionType($schema),
-            'typeLoader' => Closure::fromCallable([$this, 'getType']),
-        ]);
+        $schemaConfig = SchemaConfig::create();
+
+        if ($query = $this->getRootType($schema, 'Query')) {
+            $schemaConfig->setQuery($query);
+        }
+
+        if ($mutation = $this->getRootType($schema, 'Mutation')) {
+            $schemaConfig->setMutation($mutation);
+        }
+
+        if ($subscription = $this->getRootType($schema, 'Subscription')) {
+            $schemaConfig->setSubscription($subscription);
+        }
+
+        return new Schema($schemaConfig);
     }
 }

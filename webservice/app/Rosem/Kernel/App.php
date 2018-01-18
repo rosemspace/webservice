@@ -3,105 +3,49 @@
 namespace Rosem\Kernel;
 
 use Dotenv\Dotenv;
+use Exception;
 use GraphQL\GraphQL;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Rosem\Access\Database\Models\{
     User, UserRole
 };
 use RosemStandards\Kernel\AppInterface;
 use True\DI\Container;
-use Psr\Container\ContainerInterface;
-use True\DI\ReflectionContainer;
 use Zend\Diactoros\Server;
 
-class App extends Container implements AppInterface
+class App extends Container //implements AppInterface
 {
-    public static function launch() : void
-    {
-        try {
-            $directories = new WebserviceDirectories;
-            $env = new Dotenv($directories->root());
-            $env->load();
-            $modulesConfig = "{$directories->config()}/modules.php";
-
-            if (is_readable($modulesConfig) && file_exists($modulesConfig)) {
-                $modules = include_once $modulesConfig;
-
-                if (is_array($modules)) {
-                    $app = new static;
-                    $app->delegate(new ReflectionContainer);
-
-                    foreach ($modules as $module => $state) {
-                        if ($state && $module !== static::class) {
-                            $app->bind($module); // TODO: we shouldn't do an automatic binding
-                            $app->get($module);
-                        }
-                    }
-
-                    $app->boot();
-                } else {
-                    throw new \Exception('Modules config file is invalid');
-                }
-            } else {
-                throw new \Exception('Modules config file does not exist or not readable');
-            }
-        } catch (ContainerExceptionInterface $e) {
-            echo $e->getMessage();
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
-    }
-
     public function __construct()
     {
         parent::__construct();
 
-        $this->instance(ContainerInterface::class, $this);
+        $this->instance(ContainerInterface::class, $this)->commit();
         $this->alias(ContainerInterface::class, AppInterface::class);
-        // SERVER
-        $this->bind(\Zend\Diactoros\Server::class);
-        // REQUEST
-        $this->instance(
-            \Psr\Http\Message\ServerRequestInterface::class,
-            \Zend\Diactoros\ServerRequestFactory::fromGlobals(
-                $_SERVER,
-                $_GET,
-                $_POST,
-                $_COOKIE,
-                $_FILES
-            )
-        );
-        // RESPONSE
-        $this->share(
-            \Psr\Http\Message\ResponseInterface::class,
-            \Zend\Diactoros\Response::class
-        );
-        // DATABASE
-        $this->share(
-            \Analogue\ORM\Analogue::class,
-            \Analogue\ORM\Analogue::class,
-            [[
-                'driver'    => getenv('DB_DRIVER'),
-                'host'      => getenv('DB_HOST'),
-                'database'  => getenv('DB_NAME'),
-                'username'  => getenv('DB_USERNAME'),
-                'password'  => getenv('DB_PASSWORD'),
-                'charset'   => getenv('DB_CHARSET'),
-                'collation' => getenv('DB_COLLATION'),
-                'prefix'    => getenv('DB_PREFIX'),
-            ]]
-        );
-        // GRAPHQL
-        $this->share(
-            \TrueStandards\GraphQL\GraphInterface::class,
-            \True\GraphQL\Graph::class
-        );
     }
 
-    public function boot()
+    public function boot(string $configFileName)
     {
+        $directories = new AppDirectories; // TODO: get from the container
+        $env = new Dotenv($directories->root());
+        $env->load();
+        $configFilePath = "{$directories->config()}/$configFileName";
+
+        if (is_readable($configFilePath) && file_exists($configFilePath)) {
+            $config = require_once($configFilePath);
+
+            if (is_array($config)) {
+                foreach ($config as $key => $data) {
+                    $this->instance($key, $data)->commit();
+                }
+            } else {
+                throw new Exception('App config file is invalid');
+            }
+        } else {
+            throw new Exception('App config file does not exist or not readable');
+        }
+
         try {
-//        $this->test();
             $this->testGraph();
             $this->make(Server::class, [
                 function () {
@@ -144,7 +88,7 @@ class App extends Container implements AppInterface
                 $input['operationName'] ?? null
             );
             $output = $result->toArray();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $output = [
                 'error' => [
                     'message' => $e->getMessage(),

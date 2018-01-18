@@ -4,14 +4,10 @@ namespace Rosem\Access\GraphQL\Queries;
 
 use GraphQL\Type\Definition\Type;
 use Rosem\Access\Database\Models\User;
-use TrueStandards\GraphQL\AbstractQuery;
+use True\GraphQL\AbstractQuery;
 
 class UsersQuery extends AbstractQuery
 {
-    public $name = 'users';
-
-    public $description = 'Users query';
-
     protected $model = User::class;
 
     public function type()

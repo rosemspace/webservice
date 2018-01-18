@@ -2,42 +2,22 @@
 
 namespace TrueStandards\GraphQL;
 
-use GraphQL\Type\Definition\ResolveInfo;
-
 abstract class AbstractQuery implements QueryInterface
 {
-    protected $name;
-
-    protected $description;
-
     /**
      * @var GraphInterface
      */
     protected $graph;
 
-    /**
-     * @var string
-     */
-    protected $model;
+    protected $name;
 
-    /**
-     * @var \Analogue\ORM\System\Mapper
-     */
-    protected $mapper;
+    protected $description;
 
-    public function __construct(GraphInterface $graph, \Analogue\ORM\Analogue $db)
+    public function __construct(GraphInterface $graph, string $name, string $description)
     {
         $this->graph = $graph;
-        $this->mapper = $db->mapper($this->model);
-    }
-
-    public function args() : array
-    {
-        return [];
-    }
-
-    public function resolve($source, $args, $context, ResolveInfo $info) {
-        return $args ? $this->mapper->where($args)->get() : $this->mapper->all();
+        $this->name = $name;
+        $this->description = $description;
     }
 
     public function getName() : string
@@ -45,19 +25,19 @@ abstract class AbstractQuery implements QueryInterface
         return $this->name;
     }
 
-    public function getDescription() : string
+    public function args() : array
     {
-        return $this->description;
+        return [];
     }
 
     public function toArray() : array
     {
         return [
-            'name' => $this->getName(),
-            'description' => $this->getDescription(),
-            'type' => $this->type(),
-            'args' => $this->args(),
-            'resolve' => \Closure::fromCallable([$this, 'resolve']),
+            'name'        => $this->name,
+            'description' => $this->description,
+            'type'        => $this->type(),
+            'args'        => $this->args(),
+            'resolve'     => \Closure::fromCallable([$this, 'resolve']),
         ];
     }
 }

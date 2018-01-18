@@ -8,8 +8,6 @@ interface QueryInterface
 {
     public function getName() : string;
 
-    public function getDescription() : string;
-
     public function type();
 
     public function args() : array;

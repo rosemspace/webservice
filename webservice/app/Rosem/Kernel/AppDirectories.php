@@ -2,9 +2,9 @@
 
 namespace Rosem\Kernel;
 
-use RosemStandards\Kernel\AbstractWebserviceDirectories;
+use RosemStandards\Kernel\AbstractAppDirectories;
 
-class WebserviceDirectories extends AbstractWebserviceDirectories
+class AppDirectories extends AbstractAppDirectories
 {
     /**
      * @var string

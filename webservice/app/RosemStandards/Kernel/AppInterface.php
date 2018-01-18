@@ -6,5 +6,5 @@ use Psr\Container\ContainerInterface;
 
 interface AppInterface extends ContainerInterface
 {
-    public static function launch() : void;
+    public static function boot(string $configFileName);
 }

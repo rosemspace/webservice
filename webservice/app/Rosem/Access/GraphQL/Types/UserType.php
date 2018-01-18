@@ -3,27 +3,45 @@
 namespace Rosem\Access\GraphQL\Types;
 
 use GraphQL\Type\Definition\Type;
-use TrueStandards\GraphQL\AbstractObjectType;
+use True\GraphQL\AbstractObjectType;
 
 class UserType extends AbstractObjectType
 {
-//    const name = 'User';
-
-    public $name = 'User';
-
-    public $description = 'User type';
-
     public function fields() : array
     {
         return [
-            'id'        => self::field(Type::id(), 'The id of the user'),
-            'firstName' => self::field(Type::string(), 'The first name of the user'),
-            'lastName'  => self::field(Type::string(), 'The last name of the user'),
-            'email'     => self::field(Type::nonNull(Type::string()), 'The email of the user'),
-            'role'      => self::field(
-                Type::nonNull($this->type('UserRole')),
-                'The role of the user'
-            ),
+            'id'        => [
+                'type'        => Type::id(),
+                'description' => 'The id of the user',
+            ],
+            'firstName' => [
+                'type'        => Type::string(),
+                'description' => 'The first name of the user',
+            ],
+            'lastName'  => [
+                'type'        => Type::string(),
+                'description' => 'The last name of the user',
+            ],
+            'email'     => [
+                'type'        => Type::nonNull(Type::string()),
+                'description' => 'The email of the user',
+            ],
+            'role'      => [
+                'type'        => Type::nonNull($this->graph->getType('UserRole')),
+                'description' => 'The role of the user',
+            ],
+            'created_at' => [
+                'type' => Type::string(),
+                'description' => 'The time when the user was created',
+            ],
+            'updated_at' => [
+                'type' => Type::string(),
+                'description' => 'The time when the user was updated',
+            ],
+            'deleted_at' => [
+                'type' => Type::string(),
+                'description' => 'The time when the user was deleted',
+            ],
         ];
     }
 }

@@ -2,13 +2,15 @@
 
 namespace TrueStandards\GraphQL;
 
-use GraphQL\Type\Definition\Type;
-
 interface GraphInterface
 {
-    public function addType(string $name, Type $instance): void;
+    public function addType(string $class, string $name, string $description) : void;
 
-    public function getType(string $name);
+    public function getType(string $type);
 
-    public function addQuery(QueryInterface $query, string $schema = 'default'): void;
+    public function addQuery(string $class, string $name, string $description, string $schema = 'default') : void;
+
+    public function addMutation(string $class, string $name, string $description, string $schema = 'default') : void;
+
+    public function addSubscription(string $class, string $name, string $description, string $schema = 'default') : void;
 }

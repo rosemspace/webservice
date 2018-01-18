@@ -2,7 +2,7 @@
 
 namespace RosemStandards\Kernel;
 
-interface WebserviceDirectoriesInterface
+interface AppDirectoriesInterface
 {
     public function root() : string;
 
