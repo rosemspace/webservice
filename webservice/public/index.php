@@ -6,19 +6,24 @@
  * @author   Roman Shevchenko <iroman.via@gmail.com>
  */
 
+define('APP_START', microtime(true));
+ini_set('display_errors', true);
+ini_set('display_startup_errors', true);
+error_reporting(E_ALL);
+
 /*
 |--------------------------------------------------------------------------
-| Register The Auto Loader
+| Register The Composer Auto Loader
 |--------------------------------------------------------------------------
 |
-| Composer provides a convenient, automatically generated class loader for
-| our application. We just need to utilize it! We'll simply require it
-| into the script here so that we don't have to worry about manual
-| loading any of our classes later on. It feels nice to relax.
+| Composer provides a convenient, automatically generated class loader
+| for our application. We just need to utilize it! We'll require it
+| into the script here so that we do not have to worry about the
+| loading of any our classes "manually". Feels great to relax.
 |
 */
 
-require __DIR__.'/../bootstrap/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +37,4 @@ require __DIR__.'/../bootstrap/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
+require_once __DIR__.'/../bootstrap.php';

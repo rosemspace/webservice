@@ -16,18 +16,15 @@ class AppFactory
     protected static $serviceProviders = [];
 
     /**
-     * @param string $serviceProvidersFileName
+     * @param string $serviceProvidersFilePath
      *
      * @return ContainerInterface
      * @throws Exception
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public static function create(string $serviceProvidersFileName) : ContainerInterface
+    public static function create(string $serviceProvidersFilePath) : ContainerInterface
     {
-        $directories = new AppDirectories;
-        $serviceProvidersFilePath = "{$directories->config()}/$serviceProvidersFileName";
-
         if (is_readable($serviceProvidersFilePath) && file_exists($serviceProvidersFilePath)) {
             $serviceProviders = require_once $serviceProvidersFilePath;
 
@@ -65,11 +62,11 @@ class AppFactory
                 }
 
                 return $app;
-            } else {
-                throw new Exception('Service providers config file is invalid');
             }
-        } else {
-            throw new Exception('Service providers config file does not exist or not readable');
+
+            throw new Exception('Service providers config file is invalid');
         }
+
+        throw new Exception('Service providers config file does not exist or not readable');
     }
 }

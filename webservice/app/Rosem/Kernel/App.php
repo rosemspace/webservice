@@ -24,12 +24,9 @@ class App extends Container //implements AppInterface
         $this->alias(ContainerInterface::class, AppInterface::class);
     }
 
-    public function boot(string $configFileName)
+    public function boot(string $configFilePath)
     {
-        $directories = new AppDirectories; // TODO: get from the container
-        $env = new Dotenv($directories->root());
-        $env->load();
-        $configFilePath = "{$directories->config()}/$configFileName";
+        (new Dotenv(realpath(getcwd() . '/..')))->load();
 
         if (is_readable($configFilePath) && file_exists($configFilePath)) {
             $config = require_once($configFilePath);
@@ -38,13 +35,24 @@ class App extends Container //implements AppInterface
                 foreach ($config as $key => $data) {
                     $this->instance($key, $data)->commit();
                 }
-            } else {
-                throw new Exception('App config file is invalid');
+
+                return $this->start();
             }
-        } else {
-            throw new Exception('App config file does not exist or not readable');
+
+            throw new Exception('App config file is invalid');
         }
 
+        throw new Exception('App config file does not exist or not readable');
+    }
+
+
+
+
+
+
+
+    public function start()
+    {
         try {
             $this->testGraph();
             $this->make(Server::class, [
@@ -55,15 +63,6 @@ class App extends Container //implements AppInterface
             echo $e->getMessage();
         }
     }
-
-
-
-
-
-
-
-
-
 
     public function testGraph()
     {
