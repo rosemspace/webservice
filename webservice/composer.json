@@ -32,6 +32,7 @@
         "tedivm/stash": "0.14.*",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
         "true-code/di": "*",
+        "true-code/event-manager": "*",
         "true-code/graphql": "*",
         "true-code/installer": "*",
         "true-std/app": "*",
@@ -65,6 +66,14 @@
         {
             "type": "path",
             "url": "vendor_local/true-code/di"
+        },
+        {
+            "type": "path",
+            "url": "vendor_local/true-std/event-manager"
+        },
+        {
+            "type": "path",
+            "url": "vendor_local/true-code/event-manager"
         },
         {
             "type": "path",
