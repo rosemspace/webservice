@@ -17,6 +17,7 @@
     "require": {
         "analogue/orm": "~5.5",
         "danielstjules/stringy": "~3.1",
+        "doctrine/orm": "^2.6",
         "filp/whoops": "^2.1",
         "http-interop/http-factory-diactoros": "^0.3",
         "kint-php/kint": "^2.0",
@@ -34,6 +35,7 @@
         "true-code/di": "*",
         "true-code/graphql": "*",
         "true-code/installer": "*",
+        "true-std/app": "*",
         "vlucas/phpdotenv": "^2.4",
         "zendframework/zend-diactoros": "^1.6"
     },
@@ -59,11 +61,11 @@
     "repositories": [
         {
             "type": "path",
-            "url": "vendor_local/true-code/di"
+            "url": "vendor_local/true-std/app"
         },
         {
             "type": "path",
-            "url": "vendor_local/true-code/di-standards"
+            "url": "vendor_local/true-code/di"
         },
         {
             "type": "path",

@@ -1,8 +1,8 @@
 <?php
 
-namespace Rosem\Kernel\Facades;
+namespace Rosem\Kernel\Facade;
 
-use RosemStandards\Kernel\AppInterface;
+use TrueStd\App\AppInterface;
 use True\DI\AbstractFacade;
 
 class App extends AbstractFacade

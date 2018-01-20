@@ -10,12 +10,14 @@ use Psr\Container\ContainerInterface;
 use Rosem\Access\Database\Models\{
     User, UserRole
 };
-use RosemStandards\Kernel\AppInterface;
+use TrueStd\Application\AppInterface;
 use True\DI\Container;
 use Zend\Diactoros\Server;
 
-class App extends Container //implements AppInterface
+class App extends Container implements AppInterface
 {
+    use ConfigTrait;
+
     public function __construct()
     {
         parent::__construct();
@@ -28,21 +30,11 @@ class App extends Container //implements AppInterface
     {
         (new Dotenv(realpath(getcwd() . '/..')))->load();
 
-        if (is_readable($configFilePath) && file_exists($configFilePath)) {
-            $config = require_once($configFilePath);
-
-            if (is_array($config)) {
-                foreach ($config as $key => $data) {
-                    $this->instance($key, $data)->commit();
-                }
-
-                return $this->start();
-            }
-
-            throw new Exception('App config file is invalid');
+        foreach (self::getConfiguration($configFilePath) as $key => $data) {
+            $this->instance($key, $data)->commit();
         }
 
-        throw new Exception('App config file does not exist or not readable');
+        return $this->start();
     }
 
 

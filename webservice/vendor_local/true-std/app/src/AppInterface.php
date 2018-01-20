@@ -1,10 +1,10 @@
 <?php
 
-namespace RosemStandards\Kernel;
+namespace TrueStd\Application;
 
 use Psr\Container\ContainerInterface;
 
 interface AppInterface extends ContainerInterface
 {
-    public static function boot(string $configFileName);
+    public function boot(string $configFilePath);
 }
