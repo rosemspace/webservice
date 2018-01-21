@@ -1,8 +1,8 @@
 <?php
 
-namespace True\DI\Binding;
+namespace TrueCode\Container\Binding;
 
-use True\DI\AbstractContainer;
+use TrueCode\Container\AbstractContainer;
 
 abstract class AbstractAggregateBinding implements BindingInterface
 {

@@ -10,8 +10,10 @@ use Psr\Container\ContainerInterface;
 use Rosem\Access\Database\Models\{
     User, UserRole
 };
+use TrueCode\EventManager\EventManager;
 use TrueStd\Application\AppInterface;
-use True\DI\Container;
+use TrueCode\Container\Container;
+use TrueStd\EventManager\EventInterface;
 use Zend\Diactoros\Server;
 
 class App extends Container implements AppInterface
@@ -26,6 +28,11 @@ class App extends Container implements AppInterface
         $this->alias(ContainerInterface::class, AppInterface::class);
     }
 
+    /**
+     * @param string $configFilePath
+     *
+     * @throws Exception
+     */
     public function boot(string $configFilePath)
     {
         (new Dotenv(realpath(getcwd() . '/..')))->load();
@@ -54,6 +61,22 @@ class App extends Container implements AppInterface
         } catch (ContainerExceptionInterface $e) {
             echo $e->getMessage();
         }
+    }
+
+    public function testListeners()
+    {
+        $em = new EventManager();
+        $em->attach('user.login', function (EventInterface $event) {
+            var_dump($event);
+        });
+        $em->attach('user.login', function (EventInterface $event) {
+            var_dump($event->getTarget());
+        });
+        $em->attach('user.login', function (EventInterface $event) {
+            var_dump($event->getTarget());
+        });
+
+        $em->trigger('user.login', $em, ['test']);
     }
 
     public function testGraph()

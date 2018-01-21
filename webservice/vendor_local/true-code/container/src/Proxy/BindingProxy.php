@@ -1,8 +1,8 @@
 <?php
 
-namespace True\DI\Proxy;
+namespace TrueCode\Container\Proxy;
 
-use True\DI\Binding\{BindingInterface, AbstractBinding};
+use TrueCode\Container\Binding\{BindingInterface, AbstractBinding};
 
 class BindingProxy extends AbstractBinding
 {

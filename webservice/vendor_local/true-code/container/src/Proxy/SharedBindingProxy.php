@@ -1,9 +1,9 @@
 <?php
 
-namespace True\DI\Proxy;
+namespace TrueCode\Container\Proxy;
 
-use True\DI\Binding\BindingInterface;
-use True\DI\Container;
+use TrueCode\Container\Binding\BindingInterface;
+use TrueCode\Container\Container;
 
 class SharedBindingProxy extends BindingProxy
 {
@@ -22,7 +22,7 @@ class SharedBindingProxy extends BindingProxy
     /**
      * @param array $args
      *
-     * @return \True\DI\Binding\BindingInterface
+     * @return \TrueCode\Container\Binding\BindingInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */

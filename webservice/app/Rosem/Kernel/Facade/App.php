@@ -2,8 +2,8 @@
 
 namespace Rosem\Kernel\Facade;
 
-use TrueStd\App\AppInterface;
-use True\DI\AbstractFacade;
+use TrueStd\Application\AppInterface;
+use TrueCode\Container\AbstractFacade;
 
 class App extends AbstractFacade
 {

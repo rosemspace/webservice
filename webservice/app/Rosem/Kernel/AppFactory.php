@@ -5,7 +5,7 @@ namespace Rosem\Kernel;
 use Closure;
 use Exception;
 use Interop\Container\ServiceProviderInterface;
-use True\DI\ReflectionContainer;
+use TrueCode\Container\ReflectionContainer;
 use TrueStd\Application\{AppFactoryInterface, AppInterface};
 
 class AppFactory implements AppFactoryInterface
@@ -41,15 +41,18 @@ class AppFactory implements AppFactoryInterface
                     $serviceProviderInstances[] = $serviceProvider;
 
                     foreach ($serviceProvider->getFactories() as $key => $factory) {
-                        $app->share(
-                            $key,
-                            is_array($factory) ? function () use ($factory) {
-                                $serviceProvider = reset($factory);
-                                $method = next($factory);
-
-                                return (new $serviceProvider)->$method();
-                            } : $factory
-                        )->commit();
+                        if (is_array($factory)) {
+                            $serviceProvider = reset($factory);
+                            $method = next($factory);
+                            $app->share(
+                                $key,
+                                function () use ($app, $serviceProvider, $method) {
+                                    return (new $serviceProvider)->$method($app);
+                                }
+                            )->commit();
+                        } else {
+                            $app->share($key, $factory)->commit();
+                        }
                     }
                 } else {
                     throw new Exception(

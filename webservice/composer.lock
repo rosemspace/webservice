@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8b7c2af94bc485d5005b839819f89e87",
-    "content-hash": "11e3c97d34444fb9869889d222c375a0",
+    "hash": "21543e6c660aa637888e6816a75b63f4",
+    "content-hash": "aea72ec8a2945ab4851238943008f847",
     "packages": [
         {
             "name": "analogue/orm",
@@ -3008,12 +3008,12 @@
             "time": "2017-11-27 11:13:29"
         },
         {
-            "name": "true-code/di",
-            "version": "dev-webservice",
+            "name": "true-code/container",
+            "version": "dev-client",
             "dist": {
                 "type": "path",
-                "url": "vendor_local/true-code/di",
-                "reference": "241a17ca0a46d78ff3c2ecff2235c4adcc25278e",
+                "url": "vendor_local/true-code/container",
+                "reference": "8121d904812185c5a244ed3f1f8b80a9314b71fc",
                 "shasum": null
             },
             "require": {
@@ -3024,7 +3024,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "True\\DI\\": "src"
+                    "TrueCode\\Container\\": "src"
                 }
             },
             "license": [
@@ -3038,7 +3038,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Dependency injection library"
+            "description": "Dependency injection container library"
         },
         {
             "name": "true-code/event-manager",

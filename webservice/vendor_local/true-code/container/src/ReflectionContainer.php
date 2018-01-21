@@ -1,6 +1,6 @@
 <?php
 
-namespace True\DI;
+namespace TrueCode\Container;
 
 class ReflectionContainer extends Container
 {

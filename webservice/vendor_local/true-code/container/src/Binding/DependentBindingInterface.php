@@ -1,6 +1,6 @@
 <?php
 
-namespace True\DI\Binding;
+namespace TrueCode\Container\Binding;
 
 interface DependentBindingInterface
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace True\DI;
+namespace TrueCode\Container;
 
 use ArrayAccess;
 use Psr\Container\ContainerInterface;
-use True\DI\Binding\BindingInterface;
+use TrueCode\Container\Binding\BindingInterface;
 
 /**
  * Abstract container with array functionality.

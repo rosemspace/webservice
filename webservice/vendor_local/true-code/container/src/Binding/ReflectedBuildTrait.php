@@ -1,17 +1,17 @@
 <?php
 
-namespace True\DI\Binding;
+namespace TrueCode\Container\Binding;
 
 use ReflectionClass;
 use SplFixedArray;
-use True\DI\ExtractorTrait;
+use TrueCode\Container\ExtractorTrait;
 
 trait ReflectedBuildTrait
 {
     use ExtractorTrait;
 
     /**
-     * @var \True\DI\AbstractContainer
+     * @var \TrueCode\Container\AbstractContainer
      */
     protected $container;
 

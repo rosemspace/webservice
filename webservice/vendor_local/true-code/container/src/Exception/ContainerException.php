@@ -1,6 +1,6 @@
 <?php
 
-namespace True\DI\Exception;
+namespace TrueCode\Container\Exception;
 
 use Exception;
 use Psr\Container\ContainerExceptionInterface;

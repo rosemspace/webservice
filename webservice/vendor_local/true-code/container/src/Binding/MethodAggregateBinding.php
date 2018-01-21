@@ -1,8 +1,8 @@
 <?php
 
-namespace True\DI\Binding;
+namespace TrueCode\Container\Binding;
 
-use True\DI\ExtractorTrait;
+use TrueCode\Container\ExtractorTrait;
 
 class MethodAggregateBinding extends AbstractAggregateBinding
 {
@@ -35,6 +35,13 @@ class MethodAggregateBinding extends AbstractAggregateBinding
         return $context;
     }
 
+    /**
+     * @param string $method
+     * @param array  $args
+     *
+     * @return BindingInterface
+     * @throws \ReflectionException
+     */
     public function withMethodCall(string $method, array $args = []) : BindingInterface
     {
         $this->aggregate[$method] = new MethodBinding($this->container, $this->getConcrete(), $method, $args);

@@ -1,10 +1,10 @@
 <?php
 
-namespace True\DI\Binding;
+namespace TrueCode\Container\Binding;
 
 use ReflectionMethod;
 use SplFixedArray;
-use True\DI\AbstractContainer;
+use TrueCode\Container\AbstractContainer;
 
 class MethodBinding implements DependentBindingInterface
 {
@@ -20,6 +20,16 @@ class MethodBinding implements DependentBindingInterface
      */
     protected $args;
 
+    /**
+     * MethodBinding constructor.
+     *
+     * @param AbstractContainer $container
+     * @param                   $context
+     * @param                   $concrete
+     * @param array             $args
+     *
+     * @throws \ReflectionException
+     */
     public function __construct(AbstractContainer $container, $context, $concrete, array $args = [])
     {
         $this->container = $container;

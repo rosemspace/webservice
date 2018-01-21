@@ -1,12 +1,12 @@
 <?php
 
-namespace True\DI;
+namespace TrueCode\Container;
 
-use True\DI\Binding\{
+use TrueCode\Container\Binding\{
     BindingInterface, ClassBinding, FunctionBinding, SharedBinding
 };
-use True\DI\Exception\NotFoundException;
-use True\DI\Proxy\SharedBindingProxy;
+use TrueCode\Container\Exception\NotFoundException;
+use TrueCode\Container\Proxy\SharedBindingProxy;
 
 class Container extends AbstractContainer
 {

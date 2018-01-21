@@ -1,15 +1,25 @@
 <?php
 
-namespace True\DI\Binding;
+namespace TrueCode\Container\Binding;
 
 use ReflectionFunction;
 use SplFixedArray;
-use True\DI\AbstractContainer;
+use TrueCode\Container\AbstractContainer;
 
 class FunctionBinding extends AbstractBinding
 {
     use ReflectedBuildTrait;
 
+    /**
+     * FunctionBinding constructor.
+     *
+     * @param AbstractContainer $container
+     * @param string            $abstract
+     * @param callable          $concrete
+     * @param array             $args
+     *
+     * @throws \ReflectionException
+     */
     public function __construct(AbstractContainer $container, string $abstract, callable $concrete, array $args = [])
     {
         parent::__construct($container, $abstract, $concrete, $args);

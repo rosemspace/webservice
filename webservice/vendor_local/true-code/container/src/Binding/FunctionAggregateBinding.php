@@ -1,8 +1,8 @@
 <?php
 
-namespace True\DI\Binding;
+namespace TrueCode\Container\Binding;
 
-use True\DI\ExtractorTrait;
+use TrueCode\Container\ExtractorTrait;
 
 class FunctionAggregateBinding extends AbstractAggregateBinding
 {
@@ -35,6 +35,13 @@ class FunctionAggregateBinding extends AbstractAggregateBinding
         return $context;
     }
 
+    /**
+     * @param callable $function
+     * @param array    $args
+     *
+     * @return BindingInterface
+     * @throws \ReflectionException
+     */
     public function withFunctionCall(callable $function, array $args = []) : BindingInterface
     {
         $this->aggregate[] = new FunctionBinding($this->container, $this->getAbstract(), $function, $args);
