@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6705d7187ec04bed7ed9f970df85f46e",
-    "content-hash": "11b7f5ba64f78a9823def3a95ccff2bf",
+    "hash": "b0e3e403ff3531dc5c936fda87d366a5",
+    "content-hash": "016fa779d8f3e148428690971805a6b3",
     "packages": [
         {
             "name": "analogue/orm",
@@ -1053,6 +1053,113 @@
             ],
             "abandoned": "http-interop/http-server-middleware",
             "time": "2016-09-25 13:30:27"
+        },
+        {
+            "name": "http-interop/http-server-handler",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/http-interop/http-server-handler.git",
+                "reference": "06c8bd8100a66320de306552d323e51bdd8aa7a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/http-interop/http-server-handler/zipball/06c8bd8100a66320de306552d323e51bdd8aa7a8",
+                "reference": "06c8bd8100a66320de306552d323e51bdd8aa7a8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "psr/http-message": "^1.0"
+            },
+            "conflict": {
+                "http-interop/http-middleware": ">=0.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Interop\\Http\\Server\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP server-side request handler",
+            "keywords": [
+                "handler",
+                "http",
+                "psr",
+                "psr-15",
+                "psr-7",
+                "request",
+                "response",
+                "server"
+            ],
+            "time": "2017-11-10 15:32:10"
+        },
+        {
+            "name": "http-interop/http-server-middleware",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/http-interop/http-server-middleware.git",
+                "reference": "23278152afcedba38779614cc8eec898731c5734"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/http-interop/http-server-middleware/zipball/23278152afcedba38779614cc8eec898731c5734",
+                "reference": "23278152afcedba38779614cc8eec898731c5734",
+                "shasum": ""
+            },
+            "require": {
+                "http-interop/http-server-handler": "^1.0",
+                "php": ">=7.0",
+                "psr/http-message": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Interop\\Http\\Server\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP server-side middleware",
+            "keywords": [
+                "http",
+                "middleware",
+                "psr",
+                "psr-15",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "time": "2017-11-09 18:44:37"
         },
         {
             "name": "illuminate/container",
@@ -3171,12 +3278,14 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-std/app",
-                "reference": "a11ebc4b416bc35f180394fbd30c1fc29816a9c2",
+                "reference": "2e2ee726ecceb6417bf5e745ed62546b3818094f",
                 "shasum": null
             },
             "require": {
                 "php": ">=7.1.0",
                 "psr/container": "^1.0",
+                "true-std/http-factory": "*",
+                "true-std/http-server-middleware": "*",
                 "true-std/service-provider": "*"
             },
             "type": "library",
@@ -3228,6 +3337,106 @@
                 }
             ],
             "description": "Events standard"
+        },
+        {
+            "name": "true-std/http-factory",
+            "version": "dev-client",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/true-std/http-factory",
+                "reference": "d5f8753b463fcddc8da08e16fc5172e4559d07fa",
+                "shasum": null
+            },
+            "require": {
+                "http-interop/http-factory": "^0.3",
+                "php": ">=7.1.0",
+                "psr/http-message": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TrueStd\\Http\\Factory\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "HTTP factory standard"
+        },
+        {
+            "name": "true-std/http-server-handler",
+            "version": "dev-client",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/true-std/http-server-handler",
+                "reference": "5ad115b763ff46408d0034544bb93b31fb73af7f",
+                "shasum": null
+            },
+            "require": {
+                "http-interop/http-server-handler": "^1.0",
+                "php": ">=7.1.0",
+                "psr/http-message": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TrueStd\\Http\\Server\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "HTTP server request handler standard"
+        },
+        {
+            "name": "true-std/http-server-middleware",
+            "version": "dev-client",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/true-std/http-server-middleware",
+                "reference": "6466136866b546fa8d93d7cb210de7e0382761dd",
+                "shasum": null
+            },
+            "require": {
+                "http-interop/http-server-middleware": "^1.0",
+                "php": ">=7.1.0",
+                "psr/http-message": "^1.0",
+                "true-std/http-server-handler": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TrueStd\\Http\\Server\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "HTTP server middleware standard"
         },
         {
             "name": "true-std/service-provider",

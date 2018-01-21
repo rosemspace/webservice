@@ -1,6 +1,6 @@
 {
-    "name": "true-std/app",
-    "description": "Application standard",
+    "name": "true-std/http-server-handler",
+    "description": "HTTP server request handler standard",
     "license": "MIT",
     "type": "library",
     "minimum-stability": "dev",
@@ -14,15 +14,13 @@
         }
     ],
     "require": {
+        "http-interop/http-server-handler": "^1.0",
         "php": ">=7.1.0",
-        "psr/container": "^1.0",
-        "true-std/http-factory": "*",
-        "true-std/http-server-middleware": "*",
-        "true-std/service-provider": "*"
+        "psr/http-message": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "TrueStd\\Application\\": "src"
+            "TrueStd\\Http\\Server\\": "src"
         }
     }
 }

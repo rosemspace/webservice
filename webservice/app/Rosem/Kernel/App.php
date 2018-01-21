@@ -6,6 +6,8 @@ use Closure;
 use Dotenv\Dotenv;
 use Exception;
 use GraphQL\GraphQL;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TrueStd\Container\ServiceProviderInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -16,11 +18,26 @@ use TrueCode\Container\Container;
 use TrueCode\EventManager\EventManager;
 use TrueStd\Application\AppInterface;
 use TrueStd\EventManager\EventInterface;
+use TrueStd\Http\Factory\ResponseFactoryInterface;
+use TrueStd\Http\Factory\ServerRequestFactoryInterface;
+use TrueStd\Http\Server\{
+    MiddlewareInterface, RequestHandlerInterface
+};
 use Zend\Diactoros\Server;
 
 class App extends Container implements AppInterface
 {
     use ConfigTrait;
+
+    /**
+     * @var ServiceProviderInterface[]
+     */
+    protected $serviceProviders = [];
+
+    /**
+     * @var RequestHandlerInterface
+     */
+    protected $nextHandler;
 
     public function __construct()
     {
@@ -30,6 +47,28 @@ class App extends Container implements AppInterface
         $this->alias(ContainerInterface::class, AppInterface::class);
     }
 
+    public function addServiceProvider(ServiceProviderInterface $serviceProvider)
+    {
+        $this->serviceProviders[] = $serviceProvider;
+
+        // 1. In the first pass, the container calls the getFactories method of all service providers.
+        foreach ($serviceProvider->getFactories() as $key => $factory) {
+            if (is_array($factory)) {
+                $app = $this;
+                $serviceProvider = reset($factory);
+                $method = next($factory);
+                $this->share(
+                    $key,
+                    function () use ($app, $serviceProvider, $method) {
+                        return (new $serviceProvider)->$method($app);
+                    }
+                )->commit();
+            } else {
+                $this->share($key, $factory)->commit();
+            }
+        }
+    }
+
     /**
      * @param string $serviceProvidersConfigFilePath
      *
@@ -37,9 +76,6 @@ class App extends Container implements AppInterface
      */
     public function addServiceProviders(string $serviceProvidersConfigFilePath)
     {
-        /** @var ServiceProviderInterface[] $serviceProviderInstances */
-        $serviceProviderInstances = [];
-
         // 1. In the first pass, the container calls the getFactories method of all service providers.
         foreach (self::getConfiguration($serviceProvidersConfigFilePath) as $serviceProviderClass) {
             if (
@@ -47,32 +83,7 @@ class App extends Container implements AppInterface
                 class_exists($serviceProviderClass) &&
                 $serviceProviderClass !== static::class
             ) {
-                $serviceProvider = new $serviceProviderClass;
-
-                if ($serviceProvider instanceof ServiceProviderInterface) {
-                    $serviceProviderInstances[] = $serviceProvider;
-
-                    foreach ($serviceProvider->getFactories() as $key => $factory) {
-                        if (is_array($factory)) {
-                            $app = $this;
-                            $serviceProvider = reset($factory);
-                            $method = next($factory);
-                            $this->share(
-                                $key,
-                                function () use ($app, $serviceProvider, $method) {
-                                    return (new $serviceProvider)->$method($app);
-                                }
-                            )->commit();
-                        } else {
-                            $this->share($key, $factory)->commit();
-                        }
-                    }
-                } else {
-                    throw new Exception(
-                        "The service provider $serviceProviderClass should implement " .
-                        ServiceProviderInterface::class
-                    );
-                }
+                $this->addServiceProvider(new $serviceProviderClass);
             } else {
                 throw new Exception(
                     'An item of service providers configuration should be a string' .
@@ -80,20 +91,40 @@ class App extends Container implements AppInterface
                     ServiceProviderInterface::class . ", got $serviceProviderClass");
             }
         }
+    }
 
-        // 2. In the second pass, the container calls the getExtensions method of all service providers.
-        foreach ($serviceProviderInstances as $serviceProvider) {
-            foreach ($serviceProvider->getExtensions() as $key => $factory) {
-                $this->find($key)->withFunctionCall(
-                    is_array($factory) ? Closure::fromCallable($factory) : $factory
-                )->commit();
-            }
+    protected function initDefaultHandler()
+    {
+        if (! $this->nextHandler) {
+            $this->nextHandler = new class ($this) implements RequestHandlerInterface
+            {
+                private $container;
+
+                public function __construct(ContainerInterface $container)
+                {
+                    $this->container = $container;
+                }
+
+                public function handle(ServerRequestInterface $request) : ResponseInterface
+                {
+                    $response = $this->container->get(ResponseFactoryInterface::class)->createResponse(500);
+                    $response->getBody()->write('Internal server error');
+
+                    return $response;
+                }
+            };
         }
     }
 
-    public function addMiddleware() : AppInterface
+    public function addMiddleware(MiddlewareInterface $middleware)
     {
-        return $this;
+        $this->initDefaultHandler();
+        $this->nextHandler = new MiddlewareRequestHandler($middleware, $this->nextHandler);
+    }
+
+    public function addMiddlewareLayers(string $serviceProvidersConfigFilePath)
+    {
+        // TODO: Implement addMiddlewareLayers() method.
     }
 
     /**
@@ -103,19 +134,34 @@ class App extends Container implements AppInterface
      */
     public function boot(string $appConfigFilePath)
     {
+        // 2. In the second pass, the container calls the getExtensions method of all service providers.
+        foreach ($this->serviceProviders as $serviceProvider) {
+            foreach ($serviceProvider->getExtensions() as $key => $factory) {
+                $this->find($key)->withFunctionCall(
+                    is_array($factory) ? Closure::fromCallable($factory) : $factory
+                )->commit();
+            }
+        }
+
         (new Dotenv(realpath(getcwd() . '/..')))->load();
 
         foreach (self::getConfiguration($appConfigFilePath) as $key => $data) {
             $this->instance($key, $data)->commit();
         }
 
-        return $this->start();
+        $this->initDefaultHandler();
+        $request = $this->get(ServerRequestFactoryInterface::class)
+            ->createServerRequestFromArray($_SERVER)
+            ->withQueryParams($_GET)
+            ->withParsedBody($_POST)
+            ->withCookieParams($_COOKIE)
+            ->withUploadedFiles($_FILES);
+        $response = $this->nextHandler->handle($request);
+        $server = new Server(function () {}, $request, $response);
+        $server->listen();
+
+//        return $this->start();
     }
-
-
-
-
-
 
 
     public function start()

@@ -25,6 +25,14 @@ class Container extends AbstractContainer
         return new Proxy\BindingProxy($this, $abstract, $concrete ?: $abstract, $args);
     }
 
+    /**
+     * @param string  $abstract
+     * @param null    $concrete
+     * @param array[] ...$args
+     *
+     * @return BindingInterface
+     * @throws \ReflectionException
+     */
     public function bindForce(string $abstract, $concrete = null, array ...$args) : BindingInterface
     {
         if (! $concrete) {

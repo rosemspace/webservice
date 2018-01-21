@@ -66,6 +66,18 @@
         },
         {
             "type": "path",
+            "url": "vendor_local/true-std/http-factory"
+        },
+        {
+            "type": "path",
+            "url": "vendor_local/true-std/http-server-handler"
+        },
+        {
+            "type": "path",
+            "url": "vendor_local/true-std/http-server-middleware"
+        },
+        {
+            "type": "path",
             "url": "vendor_local/true-std/service-provider"
         },
         {
