@@ -20,7 +20,7 @@ class FunctionAggregateBinding extends AbstractAggregateBinding
         $context = $this->context->make($this->extractFirst($args));
         reset($args);
 
-        // preserve temporary context which will be injected into functions with all next calls
+        // preserve temporary context which will be injected into all functions calls
         $this->container->instance($this->getAbstract(), $context)->commit();
 
         foreach ($this->aggregate as $function) {
@@ -29,7 +29,7 @@ class FunctionAggregateBinding extends AbstractAggregateBinding
             next($args);
         }
 
-        // clean preserved context by reverting original binding
+        // replace preserved earlier temporary context by reverting original binding
         $this->container->set($this->getAbstract(), $this);
 
         return $context;

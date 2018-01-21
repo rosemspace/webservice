@@ -45,7 +45,7 @@ abstract class AbstractAggregateBinding implements BindingInterface
         return $this->context->getAbstract();
     }
 
-    public function getConcrete() : string
+    public function getConcrete()
     {
         return $this->context->getConcrete();
     }

@@ -20,10 +20,17 @@ class MethodAggregateBinding extends AbstractAggregateBinding
         $context = $this->context->make($this->extractFirst($args));
         reset($args);
 
+        // preserve temporary context which will be injected into all methods calls
+        $this->container->instance($this->getAbstract(), $context)->commit();
+
         foreach ($this->aggregate as $method) {
-            $method->make($context, current($args) ?: []);
+            $resolvedArgs = current($args) ?: [];
+            $method->make($context, $resolvedArgs);
             next($args);
         }
+
+        // replace preserved earlier temporary context by reverting original binding
+        $this->container->set($this->getAbstract(), $this);
 
         return $context;
     }
