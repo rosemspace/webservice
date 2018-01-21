@@ -6,5 +6,9 @@ use Psr\Container\ContainerInterface;
 
 interface AppInterface extends ContainerInterface
 {
-    public function boot(string $configFilePath);
+    public function addServiceProviders(string $serviceProvidersConfigFilePath);
+
+    public function addMiddleware() : AppInterface;
+
+    public function boot(string $appConfigFilePath);
 }

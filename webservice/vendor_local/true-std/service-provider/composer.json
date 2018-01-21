@@ -1,6 +1,6 @@
 {
-    "name": "true-std/app",
-    "description": "Application standard",
+    "name": "true-std/service-provider",
+    "description": "Service provider standard",
     "license": "MIT",
     "type": "library",
     "minimum-stability": "dev",
@@ -15,12 +15,11 @@
     ],
     "require": {
         "php": ">=7.1.0",
-        "psr/container": "^1.0",
-        "true-std/service-provider": "*"
+        "psr/container": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "TrueStd\\Application\\": "src"
+            "TrueStd\\Container\\": "src"
         }
     }
 }

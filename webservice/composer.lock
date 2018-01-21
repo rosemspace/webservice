@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "21543e6c660aa637888e6816a75b63f4",
-    "content-hash": "aea72ec8a2945ab4851238943008f847",
+    "hash": "6705d7187ec04bed7ed9f970df85f46e",
+    "content-hash": "11b7f5ba64f78a9823def3a95ccff2bf",
     "packages": [
         {
             "name": "analogue/orm",
@@ -3171,12 +3171,13 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-std/app",
-                "reference": "6403b1b26a1bdb87fdc10fa01cf93ea11883cff3",
+                "reference": "a11ebc4b416bc35f180394fbd30c1fc29816a9c2",
                 "shasum": null
             },
             "require": {
                 "php": ">=7.1.0",
-                "psr/container": "^1.0"
+                "psr/container": "^1.0",
+                "true-std/service-provider": "*"
             },
             "type": "library",
             "autoload": {
@@ -3227,6 +3228,38 @@
                 }
             ],
             "description": "Events standard"
+        },
+        {
+            "name": "true-std/service-provider",
+            "version": "dev-client",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/true-std/service-provider",
+                "reference": "dd111b39fd79e8d85676cbee6cd753895d33e221",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "psr/container": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TrueStd\\Container\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Service provider standard"
         },
         {
             "name": "vlucas/phpdotenv",

@@ -2,32 +2,28 @@
 
 namespace Rosem\Kernel;
 
-use Http\Factory\Diactoros\ServerRequestFactory;
-use Interop\Container\ServiceProviderInterface;
+use TrueStd\Container\ServiceProviderInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\{
     ServerRequestInterface, ResponseInterface
 };
+use TrueStd\Http\Factory\ResponseFactoryInterface;
 use TrueStd\Http\Factory\ServerRequestFactoryInterface;
-use Zend\Diactoros\Response;
 
 class KernelServiceProvider implements ServiceProviderInterface
 {
     /**
      * Returns a list of all container entries registered by this service provider.
-     * - the key is the entry name
-     * - the value is a callable that will return the entry, aka the **factory**
-     * Factories have the following signature:
-     *        function(\Psr\Container\ContainerInterface $container)
      *
      * @return callable[]
      */
-    public function getFactories()
+    public function getFactories() : array
     {
         return [
             ServerRequestInterface::class        => [static::class, 'createRequest'],
             ResponseInterface::class             => [static::class, 'createResponse'],
             ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
+            ResponseFactoryInterface::class      => [static::class, 'createResponseFactory'],
 
             \Zend\Diactoros\Server::class                => function (ContainerInterface $container) {
                 return new \Zend\Diactoros\Server(
@@ -48,18 +44,10 @@ class KernelServiceProvider implements ServiceProviderInterface
 
     /**
      * Returns a list of all container entries extended by this service provider.
-     * - the key is the entry name
-     * - the value is a callable that will return the modified entry
-     * Callables have the following signature:
-     *        function(Psr\Container\ContainerInterface $container, $previous)
-     *     or function(Psr\Container\ContainerInterface $container, $previous = null)
-     * About factories parameters:
-     * - the container (instance of `Psr\Container\ContainerInterface`)
-     * - the entry to be extended. If the entry to be extended does not exist and the parameter is nullable, `null` will be passed.
      *
      * @return callable[]
      */
-    public function getExtensions()
+    public function getExtensions() : array
     {
         return [];
     }
@@ -67,12 +55,12 @@ class KernelServiceProvider implements ServiceProviderInterface
 
     public function createServerRequestFactory()
     {
-        return new ServerRequestFactory;
+        return new \Http\Factory\Diactoros\ServerRequestFactory;
     }
 
-    public function createResponse()
+    public function createResponseFactory()
     {
-        return new Response();
+        return new \Http\Factory\Diactoros\ResponseFactory;
     }
 
     /**
@@ -89,5 +77,17 @@ class KernelServiceProvider implements ServiceProviderInterface
             ->withParsedBody($_POST)
             ->withCookieParams($_COOKIE)
             ->withUploadedFiles($_FILES);
+    }
+
+    /**
+     * @param ContainerInterface $container
+     *
+     * @return ResponseInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function createResponse(ContainerInterface $container)
+    {
+        return $container->get(ResponseFactoryInterface::class)->createResponse(500);
     }
 }

@@ -66,6 +66,10 @@
         },
         {
             "type": "path",
+            "url": "vendor_local/true-std/service-provider"
+        },
+        {
+            "type": "path",
             "url": "vendor_local/true-code/container"
         },
         {
