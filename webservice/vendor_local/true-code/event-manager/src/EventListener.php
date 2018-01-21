@@ -15,29 +15,46 @@ class EventListener implements EventListenerInterface
     protected $listener;
 
     /**
+     * @var int
+     */
+    protected $priority;
+
+    /**
      * Limit of processes.
      *
      * @var int
      */
-    protected $limit;
+    protected $limit = INF;
 
-    public function __construct(callable $listener)
+    public function __construct(callable $listener, int $priority = 0)
     {
         $this->listener = $listener;
+        $this->priority = $priority;
     }
 
-    protected function getRemainingLimit() : int
+    public function getPriority() : int
     {
-        return $this->limit;
+        return $this->priority;
     }
 
-    public function setLimit(int $limit = INF) : void
+    public function getCallable() : callable
+    {
+        return $this->listener;
+    }
+
+    public function setLimit(int $limit) : void
     {
         $this->limit = $limit;
     }
 
     public function process(EventInterface $event)
     {
-        return ${$this->listener}($event);
+        if ($this->limit) {
+            --$this->limit;
+
+            return call_user_func($this->listener, $event);
+        }
+
+        return null;
     }
 }

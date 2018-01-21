@@ -3,26 +3,15 @@
 namespace TrueCode\EventManager;
 
 use TrueStd\EventManager\{
-    EventInterface, EventManagerInterface
+    EventInterface, EventListenerInterface, EventManagerInterface
 };
 
 class EventManager implements EventManagerInterface
 {
     /**
-     * @var array
+     * @var EventListenerCollection[]
      */
     protected $listeners = [];
-
-    protected function normalizePriority($event, $priority, int $count = 1) : string
-    {
-        if (isset($event[$priority])) {
-            [$priority] = explode('-', $priority, 2);
-
-            return $this->normalizePriority($event, "$priority-$count", ++$count);
-        }
-
-        return $priority;
-    }
 
     /**
      * Attaches a listener to an event
@@ -31,19 +20,15 @@ class EventManager implements EventManagerInterface
      * @param callable $callback a callable function
      * @param int      $priority the priority at which the $callback executed
      *
-     * @return bool true on success false on failure
+     * @return EventListenerInterface
      */
     public function attach(string $event, callable $callback, int $priority = 0)
     {
         if (! isset($this->listeners[$event])) {
-            $this->listeners[$event] = [];
-        } else {
-            $priority = $this->normalizePriority($this->listeners[$event], $priority);
+            $this->listeners[$event] = new EventListenerCollection;
         }
 
-        $this->listeners[$event][$priority] = $callback;
-
-        return true;
+        return $this->listeners[$event][] = new EventListener($callback, $priority);
     }
 
     /**
@@ -57,16 +42,16 @@ class EventManager implements EventManagerInterface
     public function detach(string $event, callable $callback)
     {
         if (isset($this->listeners[$event])) {
-            $index = \array_search($callback, $this->listeners[$event], true);
+            foreach ($this->listeners[$event]->getList() as $index => $listener) {
+                if ($listener->getCallable() === $callback) {
+                    unset($this->listeners[$event][$index]);
 
-            if (false !== $index) {
-                unset($this->listeners[$event][$index]);
+                    if (\count($this->listeners[$event]) === 0) {
+                        unset($this->listeners[$event]);
+                    }
 
-                if (\count($this->listeners[$event]) === 0) {
-                    unset($this->listeners[$event]);
+                    return true;
                 }
-
-                return true;
             }
         }
 
@@ -105,20 +90,20 @@ class EventManager implements EventManagerInterface
         $result = true;
 
         if (is_string($event)) {
-            $eventInstance = new Event;
-            $eventInstance->setTarget($target);
-            $eventInstance->setParams($argv);
-        } elseif ($event instanceof EventInterface) {
-            $eventInstance = $event;
-        } else {
+            $name = $event;
+            $event = new Event;
+            $event->setName($name);
+            $event->setTarget($target);
+            $event->setParams($argv);
+        } elseif (! $event instanceof EventInterface) {
             throw new \Exception('Event should be a string or should implement ' . EventInterface::class);
         }
 
-        if (isset($this->listeners[$event])) {
-            foreach ($this->listeners[$event] as $listener) {
-                $result = $listener($eventInstance);
+        if (isset($this->listeners[$event->getName()])) {
+            foreach ($this->listeners[$event->getName()]->getList() as $listener) {
+                $result = $listener->process($event);
 
-                if ($eventInstance->isPropagationStopped()) {
+                if ($event->isPropagationStopped()) {
                     break;
                 }
             }
