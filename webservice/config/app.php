@@ -16,4 +16,12 @@ return [
             'prefix'    => getenv('DB_PREFIX'),
         ],
     ],
+    'admin' => [
+        'route' => 'admin',
+        'username' => getenv('ADMIN_USERNAME'),
+        'password' => getenv('ADMIN_PASSWORD'),
+    ],
+    'blog' => [
+        'route' => 'blog',
+    ],
 ];

@@ -12,6 +12,7 @@ use FastRoute\Dispatcher\{
 use FastRoute\RouteCollector;
 use FastRoute\RouteParser\Std;
 use Psr\Container\ContainerInterface;
+use Rosem\Kernel\Controller\MainController;
 use TrueStd\Container\ServiceProviderInterface;
 
 class RouteServiceProvider implements ServiceProviderInterface
@@ -46,11 +47,12 @@ class RouteServiceProvider implements ServiceProviderInterface
     {
         return [
             RouteCollector::class => function (RouteCollector $r) {
-                $r->addRoute('GET', '/users', 'get_all_users_handler');
-                // {id} must be a number (\d+)
-                $r->addRoute('GET', '/user/{id:\d+}', 'get_user_handler');
-                // The /{title} suffix is optional
-                $r->addRoute('GET', '/articles/{id:\d+}[/{title}]', 'get_article_handler');
+                $r->get( '/{home:.*}', [MainController::class, 'index']);
+
+//                // {id} must be a number (\d+)
+//                $r->addRoute('GET', '/user/{id:\d+}', 'get_user_handler');
+//                // The /{title} suffix is optional
+//                $r->addRoute('GET', '/articles/{id:\d+}[/{title}]', 'get_article_handler');
             },
         ];
     }
