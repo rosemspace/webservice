@@ -2,6 +2,16 @@
 
 namespace TrueStd\Http\Factory;
 
-interface ResponseFactoryInterface extends \Interop\Http\Factory\ResponseFactoryInterface
+use Psr\Http\Message\ResponseInterface;
+
+interface ResponseFactoryInterface
 {
+    /**
+     * Create a new response.
+     *
+     * @param integer $code HTTP status code
+     *
+     * @return ResponseInterface
+     */
+    public function createResponse($code = 200) : ResponseInterface;
 }
