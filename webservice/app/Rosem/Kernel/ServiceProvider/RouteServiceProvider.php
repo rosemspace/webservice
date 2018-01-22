@@ -2,14 +2,26 @@
 
 namespace Rosem\Kernel\ServiceProvider;
 
+use FastRoute\DataGenerator\{
+    CharCountBased as CharCountBasedDataGenerator, GroupCountBased as GroupCountBasedDataGenerator, GroupPosBased as GroupPosBasedDataGenerator, MarkBased as MarkBasedDataGenerator
+};
+use FastRoute\Dispatcher;
+use FastRoute\Dispatcher\{
+    CharCountBased as CharCountBasedDispatcher, GroupCountBased as GroupCountBasedDispatcher, GroupPosBased as GroupPosBasedDispatcher, MarkBased as MarkBasedDispatcher
+};
+use FastRoute\RouteCollector;
+use FastRoute\RouteParser\Std;
 use Psr\Container\ContainerInterface;
 use TrueStd\Container\ServiceProviderInterface;
 
 class RouteServiceProvider implements ServiceProviderInterface
 {
     const TYPE_CHAR_COUNT  = 0;
+
     const TYPE_GROUP_COUNT = 1;
+
     const TYPE_GROUP_POS   = 2;
+
     const TYPE_MARK        = 3;
 
     /**
@@ -20,8 +32,8 @@ class RouteServiceProvider implements ServiceProviderInterface
     public function getFactories() : array
     {
         return [
-            \FastRoute\RouteCollector::class     => [static::class, 'createRouteCollector'],
-            \FastRoute\Dispatcher::class         => [static::class, 'createSimpleRouteDispatcher'],
+            RouteCollector::class     => [static::class, 'createRouteCollector'],
+            Dispatcher::class         => [static::class, 'createSimpleRouteDispatcher'],
         ];
     }
 
@@ -33,7 +45,7 @@ class RouteServiceProvider implements ServiceProviderInterface
     public function getExtensions() : array
     {
         return [
-            \FastRoute\RouteCollector::class => function (\FastRoute\RouteCollector $r) {
+            RouteCollector::class => function (RouteCollector $r) {
                 $r->addRoute('GET', '/users', 'get_all_users_handler');
                 // {id} must be a number (\d+)
                 $r->addRoute('GET', '/user/{id:\d+}', 'get_user_handler');
@@ -43,41 +55,57 @@ class RouteServiceProvider implements ServiceProviderInterface
         ];
     }
 
+    /**
+     * @param ContainerInterface $container
+     *
+     * @return RouteCollector
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function createRouteCollector(ContainerInterface $container)
     {
         switch ($container->get('kernel')['router']) {
             case self::TYPE_CHAR_COUNT:
-                $dataGenerator = \FastRoute\DataGenerator\CharCountBased::class;
+                $dataGenerator = CharCountBasedDataGenerator::class;
                 break;
             case self::TYPE_GROUP_POS:
-                $dataGenerator = \FastRoute\DataGenerator\GroupPosBased::class;
+                $dataGenerator = GroupPosBasedDataGenerator::class;
                 break;
             case self::TYPE_MARK:
-                $dataGenerator = \FastRoute\DataGenerator\MarkBased::class;
+                $dataGenerator = MarkBasedDataGenerator::class;
                 break;
+            case self::TYPE_GROUP_COUNT:
             default:
-                $dataGenerator = \FastRoute\DataGenerator\GroupCountBased::class;
+                $dataGenerator = GroupCountBasedDataGenerator::class;
         }
 
-        return new \FastRoute\RouteCollector(new \FastRoute\RouteParser\Std, new $dataGenerator);
+        return new RouteCollector(new Std, new $dataGenerator);
     }
 
+    /**
+     * @param ContainerInterface $container
+     *
+     * @return mixed
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function createSimpleRouteDispatcher(ContainerInterface $container)
     {
         switch ($container->get('kernel')['router']) {
             case self::TYPE_CHAR_COUNT:
-                $dispatcher = \FastRoute\Dispatcher\CharCountBased::class;
+                $dispatcher = CharCountBasedDispatcher::class;
                 break;
             case self::TYPE_GROUP_POS:
-                $dispatcher = \FastRoute\Dispatcher\GroupPosBased::class;
+                $dispatcher = GroupPosBasedDispatcher::class;
                 break;
             case self::TYPE_MARK:
-                $dispatcher = \FastRoute\Dispatcher\MarkBased::class;
+                $dispatcher = MarkBasedDispatcher::class;
                 break;
+            case self::TYPE_GROUP_COUNT:
             default:
-                $dispatcher = \FastRoute\Dispatcher\GroupCountBased::class;
+                $dispatcher = GroupCountBasedDispatcher::class;
         }
 
-        return new $dispatcher($container->get(\FastRoute\RouteCollector::class)->getData());
+        return new $dispatcher($container->get(RouteCollector::class)->getData());
     }
 }
