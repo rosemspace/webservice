@@ -29,6 +29,11 @@ class App extends Container implements AppInterface
 {
     use ConfigTrait;
 
+    const MODE_DEVELOPMENT = 0;
+    const MODE_MAINTENANCE = 1;
+    const MODE_PRODUCTION  = 2;
+    const MODE_TESTING     = 3;
+
     /**
      * @var ServiceProviderInterface[]
      */
@@ -74,7 +79,7 @@ class App extends Container implements AppInterface
      *
      * @throws Exception
      */
-    public function addServiceProviders(string $serviceProvidersConfigFilePath)
+    public function addServiceProvidersFromFile(string $serviceProvidersConfigFilePath)
     {
         // 1. In the first pass, the container calls the getFactories method of all service providers.
         foreach (self::getConfiguration($serviceProvidersConfigFilePath) as $serviceProviderClass) {
@@ -89,6 +94,15 @@ class App extends Container implements AppInterface
                     'An item of service providers configuration should be a string' .
                     'that represents service provider class which implements ' .
                     ServiceProviderInterface::class . ", got $serviceProviderClass");
+            }
+        }
+
+        // 2. In the second pass, the container calls the getExtensions method of all service providers.
+        foreach ($this->serviceProviders as $serviceProvider) {
+            foreach ($serviceProvider->getExtensions() as $key => $factory) {
+                $this->find($key)->withFunctionCall(
+                    is_array($factory) ? Closure::fromCallable($factory) : $factory
+                )->commit();
             }
         }
     }
@@ -122,9 +136,19 @@ class App extends Container implements AppInterface
         $this->nextHandler = new MiddlewareRequestHandler($middleware, $this->nextHandler);
     }
 
-    public function addMiddlewareLayers(string $serviceProvidersConfigFilePath)
+    public function addMiddlewareLayersFromFile(string $serviceProvidersConfigFilePath)
     {
         // TODO: Implement addMiddlewareLayers() method.
+    }
+
+    public function loadConfig(string $appConfigFilePath)
+    {
+        //TODO: move into boot method when middleware will be lazy loading
+        (new Dotenv(realpath(getcwd() . '/..')))->load();
+
+        foreach (self::getConfiguration($appConfigFilePath) as $key => $data) {
+            $this->instance($key, $data)->commit();
+        }
     }
 
     /**
@@ -134,21 +158,6 @@ class App extends Container implements AppInterface
      */
     public function boot(string $appConfigFilePath)
     {
-        // 2. In the second pass, the container calls the getExtensions method of all service providers.
-        foreach ($this->serviceProviders as $serviceProvider) {
-            foreach ($serviceProvider->getExtensions() as $key => $factory) {
-                $this->find($key)->withFunctionCall(
-                    is_array($factory) ? Closure::fromCallable($factory) : $factory
-                )->commit();
-            }
-        }
-
-        (new Dotenv(realpath(getcwd() . '/..')))->load();
-
-        foreach (self::getConfiguration($appConfigFilePath) as $key => $data) {
-            $this->instance($key, $data)->commit();
-        }
-
         $this->initDefaultHandler();
         $request = $this->get(ServerRequestFactoryInterface::class)
             ->createServerRequestFromArray($_SERVER)

@@ -2,10 +2,11 @@
 
 namespace Rosem\Kernel\Middleware;
 
-use Interop\Http\Server\RequestHandlerInterface;
+use TrueStd\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TrueStd\Http\Server\MiddlewareInterface;
+use Zend\Diactoros\Response;
 
 class ViewMiddleware implements MiddlewareInterface
 {
@@ -17,8 +18,10 @@ class ViewMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
-        $response = $handler->handle($request);
-        $response->getBody()->write('Hello from view!');
+//        $response = $handler->handle($request);
+        $response = new Response;
+        $userID = $request->getAttribute('id');
+        $response->getBody()->write("Hello user with id $userID!");
 
         return $response;
     }

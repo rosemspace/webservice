@@ -1,0 +1,26 @@
+{
+    "name": "true-code/http-factory",
+    "description": "Http factory library",
+    "license": "MIT",
+    "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "ma1oy",
+            "email": "iroman.via@gmail.com",
+            "homepage": "http://truecode.info",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "psr/container": "^1.0",
+        "true-std/http-factory": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "TrueCode\\Http\\Factory\\": "src"
+        }
+    }
+}

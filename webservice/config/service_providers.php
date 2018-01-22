@@ -1,6 +1,7 @@
 <?php
 
 return [
-    Rosem\Kernel\KernelServiceProvider::class,
+    Rosem\Kernel\ServiceProvider\HttpFactoryServiceProvider::class,
+    Rosem\Kernel\ServiceProvider\RouteServiceProvider::class,
     Rosem\Access\AccessServiceProvider::class,
 ];
