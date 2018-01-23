@@ -36,6 +36,7 @@
         "true-code/graphql": "*",
         "true-code/http-factory": "*",
         "true-code/installer": "*",
+        "true-code/route-collector": "*",
         "true-std/app": "*",
         "vlucas/phpdotenv": "^2.4",
         "zendframework/zend-diactoros": "^1.6"
@@ -60,53 +61,19 @@
         }
     },
     "repositories": [
-        {
-            "type": "path",
-            "url": "vendor_local/true-std/app"
-        },
-        {
-            "type": "path",
-            "url": "vendor_local/true-std/http-factory"
-        },
-        {
-            "type": "path",
-            "url": "vendor_local/true-code/http-factory"
-        },
-        {
-            "type": "path",
-            "url": "vendor_local/true-std/http-server-handler"
-        },
-        {
-            "type": "path",
-            "url": "vendor_local/true-std/http-server-middleware"
-        },
-        {
-            "type": "path",
-            "url": "vendor_local/true-std/service-provider"
-        },
-        {
-            "type": "path",
-            "url": "vendor_local/true-code/container"
-        },
-        {
-            "type": "path",
-            "url": "vendor_local/true-std/event-manager"
-        },
-        {
-            "type": "path",
-            "url": "vendor_local/true-code/event-manager"
-        },
-        {
-            "type": "path",
-            "url": "vendor_local/true-code/graphql"
-        },
-        {
-            "type": "path",
-            "url": "vendor_local/true-code/graphql-standards"
-        },
-        {
-            "type": "path",
-            "url": "vendor_local/true-code/installer"
-        }
+        {"type": "path", "url": "vendor_local/true-code/container"},
+        {"type": "path", "url": "vendor_local/true-code/event-manager"},
+        {"type": "path", "url": "vendor_local/true-code/http-factory"},
+        {"type": "path", "url": "vendor_local/true-code/graphql"},
+        {"type": "path", "url": "vendor_local/true-code/graphql-standards"},
+        {"type": "path", "url": "vendor_local/true-code/installer"},
+        {"type": "path", "url": "vendor_local/true-code/route-collector"},
+        {"type": "path", "url": "vendor_local/true-std/app"},
+        {"type": "path", "url": "vendor_local/true-std/event-manager"},
+        {"type": "path", "url": "vendor_local/true-std/http-factory"},
+        {"type": "path", "url": "vendor_local/true-std/http-server-handler"},
+        {"type": "path", "url": "vendor_local/true-std/http-server-middleware"},
+        {"type": "path", "url": "vendor_local/true-std/route-collector"},
+        {"type": "path", "url": "vendor_local/true-std/service-provider"}
     ]
 }

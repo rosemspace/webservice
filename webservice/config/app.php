@@ -2,24 +2,25 @@
 
 return [
     'kernel' => [
-        'router' => [
-            'type' => \Rosem\Kernel\ServiceProvider\RouteServiceProvider::TYPE_GROUP_COUNT,
+        'route' => [
+            'dataGenerator' => \TrueCode\RouteCollector\RouteDataGenerator::DRIVER_GROUP_COUNT,
+            'dispatcher' => \TrueCode\RouteCollector\RouteDispatcher::DRIVER_GROUP_COUNT,
         ],
         'db' => [
-            'driver'    => getenv('DB_DRIVER'),
-            'host'      => getenv('DB_HOST'),
+            'driver'    => getenv('DB_DRIVER', 'mysql'),
+            'host'      => getenv('DB_HOST', 'localhost'),
             'database'  => getenv('DB_NAME'),
-            'username'  => getenv('DB_USERNAME'),
-            'password'  => getenv('DB_PASSWORD'),
-            'charset'   => getenv('DB_CHARSET'),
-            'collation' => getenv('DB_COLLATION'),
-            'prefix'    => getenv('DB_PREFIX'),
+            'username'  => getenv('DB_USERNAME', 'root'),
+            'password'  => getenv('DB_PASSWORD', ''),
+            'charset'   => getenv('DB_CHARSET', 'utf-8'),
+            'collation' => getenv('DB_COLLATION', 'utf8_unicode_ci'),
+            'prefix'    => getenv('DB_PREFIX', ''),
         ],
     ],
     'admin' => [
-        'route' => 'admin',
-        'username' => getenv('ADMIN_USERNAME'),
-        'password' => getenv('ADMIN_PASSWORD'),
+        'uri'      => 'admin',
+        'username' => getenv('ADMIN_USERNAME', 'admin'),
+        'password' => getenv('ADMIN_PASSWORD', 'admin'),
     ],
     'blog' => [
         'route' => 'blog',

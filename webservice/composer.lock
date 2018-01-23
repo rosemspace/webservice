@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9195cdeb9a86f47382b42a37b0c2521e",
-    "content-hash": "6f593afa224716af7e272c64cedd4900",
+    "hash": "470b242e8da9cd1562e9083ac1c8c84e",
+    "content-hash": "5771825c7d8a256b67bb7a5b1ac32aed",
     "packages": [
         {
             "name": "analogue/orm",
@@ -3098,6 +3098,38 @@
             ]
         },
         {
+            "name": "true-code/route-collector",
+            "version": "dev-client",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/true-code/route-collector",
+                "reference": "612cd75a178b1e4c2f64bd3da6c4d7f161f9cde1",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "true-std/route-collector": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TrueCode\\RouteCollector\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Dependency injection container library"
+        },
+        {
             "name": "true-std/app",
             "version": "dev-client",
             "dist": {
@@ -3259,6 +3291,37 @@
                 }
             ],
             "description": "HTTP server middleware standard"
+        },
+        {
+            "name": "true-std/route-collector",
+            "version": "dev-client",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/true-std/route-collector",
+                "reference": "b89b3ec3749ab64b1c68577abc3be712a0d76f2d",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TrueStd\\RouteCollector\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Route collector standard"
         },
         {
             "name": "true-std/service-provider",

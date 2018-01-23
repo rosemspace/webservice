@@ -2,9 +2,10 @@
 
 namespace Rosem\Admin\ServiceProvider;
 
-use FastRoute\RouteCollector;
+use Psr\Container\ContainerInterface;
 use Rosem\Admin\Controller\AdminController;
 use TrueStd\Container\ServiceProviderInterface;
+use TrueStd\RouteCollector\RouteCollectorInterface;
 
 class AdminServiceProvider implements ServiceProviderInterface
 {
@@ -27,8 +28,11 @@ class AdminServiceProvider implements ServiceProviderInterface
     public function getExtensions() : array
     {
         return [
-            RouteCollector::class => function (RouteCollector $r) {
-                $r->get( '/admin[/{admin:.*}]', [AdminController::class, 'index']);
+            RouteCollectorInterface::class => function (ContainerInterface $container) {
+                $container->get(RouteCollectorInterface::class)->get(
+                    "/{$container->get('admin')['uri']}[/{relativePath:.*}]",
+                    [AdminController::class, 'index']
+                );
             },
         ];
     }

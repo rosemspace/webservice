@@ -7,7 +7,7 @@ use TrueStd\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TrueStd\Http\Server\MiddlewareInterface;
-use FastRoute\Dispatcher;
+use TrueStd\RouteCollector\RouteDispatcherInterface;
 
 class RouteMiddleware implements MiddlewareInterface
 {
@@ -15,7 +15,7 @@ class RouteMiddleware implements MiddlewareInterface
 
     protected $responseFactory;
 
-    public function __construct(Dispatcher $router, ResponseFactoryInterface $responseFactory)
+    public function __construct(RouteDispatcherInterface $router, ResponseFactoryInterface $responseFactory)
     {
         $this->router = $router;
         $this->responseFactory = $responseFactory;
@@ -31,11 +31,11 @@ class RouteMiddleware implements MiddlewareInterface
     {
         $route = $this->router->dispatch($request->getMethod(), $request->getUri()->getPath());
 
-        if ($route[0] === Dispatcher::NOT_FOUND) {
+        if ($route[0] === RouteDispatcherInterface::NOT_FOUND) {
             return $this->createNotFoundResponse();
         }
 
-        if ($route[0] === Dispatcher::METHOD_NOT_ALLOWED) {
+        if ($route[0] === RouteDispatcherInterface::METHOD_NOT_ALLOWED) {
             return $this->createMethodNotAllowedResponse();
         }
 
@@ -43,9 +43,11 @@ class RouteMiddleware implements MiddlewareInterface
             $request = $request->withAttribute($name, $value);
         }
 
-        $routeHandler = $route[1];
+        [$controller, $action] = $route[1];
+        $request = $request->withAttribute('controller', $controller);
+        $request = $request->withAttribute('action', $action);
 
-        return $handler->handle($request);
+        return (new $controller)->process($request, $handler);
     }
 
     public function createNotFoundResponse() : ResponseInterface

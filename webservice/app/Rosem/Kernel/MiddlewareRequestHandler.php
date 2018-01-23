@@ -20,11 +20,6 @@ class MiddlewareRequestHandler implements RequestHandlerInterface
         $this->nextHandler = $nextHandler;
     }
 
-    public function setNextHandler(RequestHandlerInterface $nextHandler)
-    {
-        $this->nextHandler = $nextHandler;
-    }
-
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         return $this->middleware->process($request, $this->nextHandler);
