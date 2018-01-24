@@ -5,16 +5,14 @@ namespace TrueCode\Container\Binding;
 use TrueCode\Container\AbstractContainer;
 
 /**
- * Trait CallAggregateTrait.
+ * Trait CallableAggregateTrait.
  */
-trait CallAggregateTrait
+trait CallableAggregateTrait
 {
     /**
      * @var AbstractContainer
      */
     protected $container;
-
-    abstract public function getAbstract() : string;
 
     /**
      * @param string $method

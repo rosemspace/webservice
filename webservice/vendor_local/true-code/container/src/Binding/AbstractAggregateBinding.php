@@ -6,7 +6,7 @@ use TrueCode\Container\AbstractContainer;
 
 abstract class AbstractAggregateBinding implements AggregateBindingInterface
 {
-    use CallAggregateTrait;
+    use CallableAggregateTrait;
 
     /**
      * @var AbstractContainer
@@ -27,7 +27,7 @@ abstract class AbstractAggregateBinding implements AggregateBindingInterface
      * AbstractAggregateBinding constructor.
      *
      * @param AbstractContainer $container
-     * @param BindingInterface|CallAggregateTrait  $context
+     * @param BindingInterface|CallableAggregateTrait  $context
      */
     public function __construct(AbstractContainer $container, BindingInterface $context)
     {
