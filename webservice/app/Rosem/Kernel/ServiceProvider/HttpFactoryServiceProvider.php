@@ -4,6 +4,7 @@ namespace Rosem\Kernel\ServiceProvider;
 
 use Psr\Container\ContainerInterface;
 use TrueStd\Container\ServiceProviderInterface;
+use TrueStd\Http\Factory\MiddlewareFactoryInterface;
 use TrueStd\Http\Factory\ResponseFactoryInterface;
 use TrueStd\Http\Factory\ServerRequestFactoryInterface;
 
@@ -19,6 +20,7 @@ class HttpFactoryServiceProvider implements ServiceProviderInterface
         return [
             ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
             ResponseFactoryInterface::class      => [static::class, 'createResponseFactory'],
+            MiddlewareFactoryInterface::class    => [static::class, 'createMiddlewareFactory'],
 
             \Analogue\ORM\Analogue::class                => function (ContainerInterface $container) {
                 return new \Analogue\ORM\Analogue($container->get('kernel')['db']);
@@ -47,5 +49,9 @@ class HttpFactoryServiceProvider implements ServiceProviderInterface
     public function createResponseFactory()
     {
         return new \TrueCode\Http\Factory\ResponseFactory;
+    }
+
+    public function createMiddlewareFactory(ContainerInterface $container) {
+        return new \TrueCode\Http\Factory\MiddlewareFactory($container);
     }
 }

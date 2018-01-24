@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "470b242e8da9cd1562e9083ac1c8c84e",
+    "hash": "d144cb0339231f914be6e4dd808fa8dd",
     "content-hash": "5771825c7d8a256b67bb7a5b1ac32aed",
     "packages": [
         {
@@ -2908,7 +2908,7 @@
         },
         {
             "name": "true-code/container",
-            "version": "dev-client",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/container",
@@ -2941,7 +2941,7 @@
         },
         {
             "name": "true-code/event-manager",
-            "version": "dev-client",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/event-manager",
@@ -2973,7 +2973,7 @@
         },
         {
             "name": "true-code/graphql",
-            "version": "dev-webservice",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/graphql",
@@ -3006,7 +3006,7 @@
         },
         {
             "name": "true-code/graphql-standards",
-            "version": "dev-webservice",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/graphql-standards",
@@ -3038,16 +3038,17 @@
         },
         {
             "name": "true-code/http-factory",
-            "version": "dev-client",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/http-factory",
-                "reference": "da35055a52256e93b8062985a932e0c8316a6175",
+                "reference": "68814cff912c582091351c8cd1e30a84eb7d7eee",
                 "shasum": null
             },
             "require": {
                 "php": ">=7.1.0",
                 "psr/container": "^1.0",
+                "true-code/container": "*",
                 "true-std/http-factory": "*"
             },
             "type": "library",
@@ -3071,7 +3072,7 @@
         },
         {
             "name": "true-code/installer",
-            "version": "dev-webservice",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/installer",
@@ -3099,7 +3100,7 @@
         },
         {
             "name": "true-code/route-collector",
-            "version": "dev-client",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/route-collector",
@@ -3131,7 +3132,7 @@
         },
         {
             "name": "true-std/app",
-            "version": "dev-client",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-std/app",
@@ -3166,7 +3167,7 @@
         },
         {
             "name": "true-std/event-manager",
-            "version": "dev-client",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-std/event-manager",
@@ -3197,7 +3198,7 @@
         },
         {
             "name": "true-std/http-factory",
-            "version": "dev-client",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-std/http-factory",
@@ -3229,7 +3230,7 @@
         },
         {
             "name": "true-std/http-server-handler",
-            "version": "dev-client",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-std/http-server-handler",
@@ -3261,7 +3262,7 @@
         },
         {
             "name": "true-std/http-server-middleware",
-            "version": "dev-client",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-std/http-server-middleware",
@@ -3294,7 +3295,7 @@
         },
         {
             "name": "true-std/route-collector",
-            "version": "dev-client",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-std/route-collector",
@@ -3325,7 +3326,7 @@
         },
         {
             "name": "true-std/service-provider",
-            "version": "dev-client",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-std/service-provider",

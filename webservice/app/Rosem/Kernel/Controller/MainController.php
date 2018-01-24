@@ -4,20 +4,31 @@ namespace Rosem\Kernel\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Rosem\Kernel\UnionMiddleware;
-use TrueStd\Http\Server\MiddlewareInterface;
+use TrueStd\Http\Factory\ResponseFactoryInterface;
 use TrueStd\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response;
 
-class MainController implements MiddlewareInterface
+class MainController
 {
-    use UnionMiddleware;
+    /**
+     * @var ResponseFactoryInterface
+     */
+    protected $responseFactory;
+
+    /**
+     * MainController constructor.
+     *
+     * @param ResponseFactoryInterface $responseFactory
+     */
+    public function __construct(ResponseFactoryInterface $responseFactory)
+    {
+        $this->responseFactory = $responseFactory;
+    }
 
     public function index(
         ServerRequestInterface $serverRequest,
         RequestHandlerInterface $requestHandler
     ) : ResponseInterface {
-        $response = new Response;
+        $response = $this->responseFactory->createResponse();
         $response->getBody()->write('Hello from main controller');
 
         return $response;

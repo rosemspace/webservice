@@ -14,7 +14,7 @@ use Psr\Container\ContainerInterface;
 use Rosem\Access\Database\Models\{
     User, UserRole
 };
-use TrueCode\Container\Container;
+use TrueCode\Container\ReflectionContainer;
 use TrueCode\EventManager\EventManager;
 use TrueStd\Application\AppInterface;
 use TrueStd\EventManager\EventInterface;
@@ -25,7 +25,7 @@ use TrueStd\Http\Server\{
 };
 use Zend\Diactoros\Server;
 
-class App extends Container implements AppInterface
+class App extends ReflectionContainer implements AppInterface
 {
     use FileConfigTrait;
 

@@ -2,7 +2,9 @@
 
 namespace Rosem\Kernel\Middleware;
 
-use TrueStd\Http\Factory\ResponseFactoryInterface;
+use TrueStd\Http\Factory\{
+    MiddlewareFactoryInterface, ResponseFactoryInterface
+};
 use TrueStd\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -13,21 +15,27 @@ class RouteMiddleware implements MiddlewareInterface
 {
     protected $router;
 
+    protected $middlewareFactory;
+
     protected $responseFactory;
 
-    public function __construct(RouteDispatcherInterface $router, ResponseFactoryInterface $responseFactory)
-    {
+    public function __construct(
+        RouteDispatcherInterface $router,
+        MiddlewareFactoryInterface $middlewareFactory,
+        ResponseFactoryInterface $responseFactory
+    ) {
         $this->router = $router;
+        $this->middlewareFactory = $middlewareFactory;
         $this->responseFactory = $responseFactory;
     }
 
     /**
      * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
+     * @param RequestHandlerInterface $nextHandler
      *
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $nextHandler) : ResponseInterface
     {
         $route = $this->router->dispatch($request->getMethod(), $request->getUri()->getPath());
 
@@ -43,11 +51,7 @@ class RouteMiddleware implements MiddlewareInterface
             $request = $request->withAttribute($name, $value);
         }
 
-        [$controller, $action] = $route[1];
-        $request = $request->withAttribute('controller', $controller);
-        $request = $request->withAttribute('action', $action);
-
-        return (new $controller)->process($request, $handler);
+        return $this->middlewareFactory->createMiddleware($route[1])->process($request, $nextHandler);
     }
 
     public function createNotFoundResponse() : ResponseInterface
