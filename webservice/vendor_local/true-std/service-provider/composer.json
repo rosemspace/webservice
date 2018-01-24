@@ -1,0 +1,25 @@
+{
+    "name": "true-std/service-provider",
+    "description": "Service provider standard",
+    "license": "MIT",
+    "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "ma1oy",
+            "email": "iroman.via@gmail.com",
+            "homepage": "http://truecode.info",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "psr/container": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "TrueStd\\Container\\": "src"
+        }
+    }
+}

@@ -1,0 +1,79 @@
+{
+    "name": "true-code/rosem",
+    "description": "Yet another Web Framework",
+    "keywords": ["framework"],
+    "license": "MIT",
+    "type": "project",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "ma1oy",
+            "email": "iroman.via@gmail.com",
+            "homepage": "http://truecode.info",
+            "role": "lead"
+        }
+    ],
+    "require": {
+        "analogue/orm": "~5.5",
+        "danielstjules/stringy": "~3.1",
+        "doctrine/orm": "^2.6",
+        "filp/whoops": "^2.1",
+        "kint-php/kint": "^2.0",
+        "league/flysystem": "^1.0",
+        "league/plates": "^3.3",
+        "monolog/monolog": "^1.23",
+        "nesbot/carbon": "^1.22",
+        "nikic/fast-route": "^1.2",
+        "php": ">=7.1.0",
+        "psr7-sessions/storageless": "^3.0",
+        "robmorgan/phinx": "^0.9",
+        "symfony/finder": "^4.0",
+        "tedivm/stash": "0.14.*",
+        "tijsverkoyen/css-to-inline-styles": "^2.2",
+        "true-code/container": "*",
+        "true-code/event-manager": "*",
+        "true-code/graphql": "*",
+        "true-code/http-factory": "*",
+        "true-code/installer": "*",
+        "true-code/route-collector": "*",
+        "true-std/app": "*",
+        "vlucas/phpdotenv": "^2.4",
+        "zendframework/zend-diactoros": "^1.6"
+    },
+    "require-dev": {
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "^6.5",
+        "symfony/css-selector": "3.1.*",
+        "symfony/dom-crawler": "3.1.*",
+        "squizlabs/php_codesniffer": "~2.3"
+    },
+    "autoload-dev": {
+        "classmap": [
+
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\": "app/Rosem",
+            "RosemStd\\": "app/RosemStd"
+        }
+    },
+    "repositories": [
+        {"type": "path", "url": "vendor_local/true-code/container"},
+        {"type": "path", "url": "vendor_local/true-code/event-manager"},
+        {"type": "path", "url": "vendor_local/true-code/http-factory"},
+        {"type": "path", "url": "vendor_local/true-code/graphql"},
+        {"type": "path", "url": "vendor_local/true-code/graphql-standards"},
+        {"type": "path", "url": "vendor_local/true-code/installer"},
+        {"type": "path", "url": "vendor_local/true-code/route-collector"},
+        {"type": "path", "url": "vendor_local/true-std/app"},
+        {"type": "path", "url": "vendor_local/true-std/event-manager"},
+        {"type": "path", "url": "vendor_local/true-std/http-factory"},
+        {"type": "path", "url": "vendor_local/true-std/http-server-handler"},
+        {"type": "path", "url": "vendor_local/true-std/http-server-middleware"},
+        {"type": "path", "url": "vendor_local/true-std/route-collector"},
+        {"type": "path", "url": "vendor_local/true-std/service-provider"}
+    ]
+}
