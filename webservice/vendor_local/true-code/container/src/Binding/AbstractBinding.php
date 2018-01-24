@@ -28,11 +28,11 @@ abstract class AbstractBinding implements BindingInterface
      */
     protected $args;
 
-    public function __construct(AbstractContainer $container, string $abstract, $concrete, array $args = [])
+    public function __construct(AbstractContainer $container, string $abstract, $concrete = null, array $args = [])
     {
         $this->container = $container;
         $this->abstract = $abstract;
-        $this->concrete = $concrete;
+        $this->concrete = $concrete ?: $abstract;
         $this->args = $args;
     }
 

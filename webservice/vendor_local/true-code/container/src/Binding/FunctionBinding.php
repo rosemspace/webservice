@@ -20,8 +20,12 @@ class FunctionBinding extends AbstractBinding
      *
      * @throws \ReflectionException
      */
-    public function __construct(AbstractContainer $container, string $abstract, callable $concrete, array $args = [])
-    {
+    public function __construct(
+        AbstractContainer $container,
+        string $abstract,
+        ?callable $concrete = null,
+        array $args = []
+    ) {
         parent::__construct($container, $abstract, $concrete, $args);
 
         $this->reflector = new ReflectionFunction($this->concrete);

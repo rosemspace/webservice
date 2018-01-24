@@ -2,7 +2,7 @@
 
 namespace TrueCode\Container\Binding;
 
-class SharedBinding extends AbstractBinding
+class SharedBinding extends AbstractBinding implements SharedBindingInterface
 {
     public function make(array &...$args)
     {

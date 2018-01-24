@@ -6,11 +6,11 @@ trait ExtractorTrait
 {
     protected function &extractFirst(array &$args)
     {
-        if ($value = reset($args)) {
-            unset($args[key($args)]);
-        } else {
+        if (false === $value = reset($args)) {
             $value = [];
         }
+
+        unset($args[key($args)]);
 
         return $value;
     }

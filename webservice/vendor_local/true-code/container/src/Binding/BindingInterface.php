@@ -15,9 +15,9 @@ interface BindingInterface
 
     public function commit() : self;
 
-    public function withMethodCall(string $method, array $args = []) : self;
+    public function withMethodCall(string $method, array $args = []) : AggregateBindingInterface;
 
-    public function withFunctionCall(callable $function, array $args = []) : self;
+    public function withFunctionCall(callable $function, array $args = []) : AggregateBindingInterface;
 
     public function getAbstract() : string;
 

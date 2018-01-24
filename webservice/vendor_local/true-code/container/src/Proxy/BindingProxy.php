@@ -36,7 +36,7 @@ class BindingProxy extends AbstractBinding
             return $args ?: $defaultArgs ?: [];
         }, $args, $this->args);
 
-        return $this->container->bindForce($this->abstract, $this->concrete, ...$resolvedArgs);
+        return $this->container->forceBind($this->abstract, $this->concrete, ...$resolvedArgs);
     }
 
     public function getContextWithCalls(array &$args) : BindingInterface

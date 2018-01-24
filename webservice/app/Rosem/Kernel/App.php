@@ -27,7 +27,7 @@ use Zend\Diactoros\Server;
 
 class App extends Container implements AppInterface
 {
-    use ConfigTrait;
+    use FileConfigTrait;
 
     const MODE_DEVELOPMENT = 0;
     const MODE_MAINTENANCE = 1;

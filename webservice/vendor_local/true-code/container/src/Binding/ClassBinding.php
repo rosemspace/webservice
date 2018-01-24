@@ -15,12 +15,12 @@ class ClassBinding extends AbstractBinding
      *
      * @param AbstractContainer $container
      * @param string            $abstract
-     * @param                   $concrete
+     * @param string            $concrete
      * @param array             $args
      *
      * @throws \ReflectionException
      */
-    public function __construct(AbstractContainer $container, string $abstract, $concrete, array $args = [])
+    public function __construct(AbstractContainer $container, string $abstract, $concrete = null, array $args = [])
     {
         parent::__construct($container, $abstract, $concrete, $args);
 

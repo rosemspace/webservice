@@ -30,7 +30,7 @@ class MethodBinding implements DependentBindingInterface
      *
      * @throws \ReflectionException
      */
-    public function __construct(AbstractContainer $container, $context, $concrete, array $args = [])
+    public function __construct(AbstractContainer $container, $context, $concrete = null, array $args = [])
     {
         $this->container = $container;
         $this->concrete = $concrete;

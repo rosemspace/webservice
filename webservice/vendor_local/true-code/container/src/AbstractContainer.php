@@ -4,6 +4,7 @@ namespace TrueCode\Container;
 
 use ArrayAccess;
 use Psr\Container\ContainerInterface;
+use TrueCode\Container\Binding\AggregateBindingInterface;
 use TrueCode\Container\Binding\BindingInterface;
 
 /**
@@ -36,10 +37,10 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
     /**
      * @param string $abstract
      *
-     * @return BindingInterface
+     * @return BindingInterface|AggregateBindingInterface|null
      * @throws Exception\NotFoundException
      */
-    public function find(string $abstract) : BindingInterface
+    public function find(string $abstract) : ?BindingInterface
     {
         if ($this->has($abstract)) {
             return $this->bindings[$abstract];
@@ -49,7 +50,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
             return $this->delegate->find($abstract);
         }
 
-        throw new Exception\NotFoundException("$abstract binding not found.");
+        return null;
     }
 
     public function delegate(self $container)
@@ -59,13 +60,15 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
 
     abstract public function bind(string $abstract, $concrete = null, array ...$args) : BindingInterface;
 
-    abstract public function bindForce(string $abstract, $concrete = null, array ...$args) : BindingInterface;
+    abstract public function forceBind(string $abstract, $concrete = null, array ...$args) : BindingInterface;
 
     abstract public function share(string $abstract, $concrete = null, array ...$args) : BindingInterface;
 
     abstract public function instance(string $abstract, $instance) : BindingInterface;
 
     abstract public function make(string $abstract, array ...$args);
+
+    abstract public function call($abstract, array ...$args);
 
     abstract public function isShared(string $abstract) : bool;
 

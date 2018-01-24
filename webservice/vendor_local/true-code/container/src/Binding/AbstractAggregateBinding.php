@@ -4,7 +4,7 @@ namespace TrueCode\Container\Binding;
 
 use TrueCode\Container\AbstractContainer;
 
-abstract class AbstractAggregateBinding implements BindingInterface
+abstract class AbstractAggregateBinding implements AggregateBindingInterface
 {
     use CallAggregateTrait;
 
@@ -33,6 +33,32 @@ abstract class AbstractAggregateBinding implements BindingInterface
     {
         $this->container = $container;
         $this->context = $context;
+    }
+
+    abstract protected function invoke(array &...$args);
+
+    /**
+     * @param array[] ...$args
+     *
+     * @return mixed
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function make(array &...$args)
+    {
+        return $this->invoke(...$args)[0];
+    }
+
+    /**
+     * @param array[] ...$args
+     *
+     * @return mixed
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function call(array &...$args)
+    {
+        return $this->invoke(...$args)[1];
     }
 
     public function commit() : BindingInterface

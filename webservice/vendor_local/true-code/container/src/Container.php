@@ -3,10 +3,8 @@
 namespace TrueCode\Container;
 
 use TrueCode\Container\Binding\{
-    BindingInterface, ClassBinding, FunctionBinding, SharedBinding
+    AggregateBindingInterface, BindingInterface, ClassBinding, FunctionBinding, SharedBinding, SharedBindingInterface
 };
-use TrueCode\Container\Exception\NotFoundException;
-use TrueCode\Container\Proxy\SharedBindingProxy;
 
 class Container extends AbstractContainer
 {
@@ -33,25 +31,51 @@ class Container extends AbstractContainer
      * @return BindingInterface
      * @throws \ReflectionException
      */
-    public function bindForce(string $abstract, $concrete = null, array ...$args) : BindingInterface
+    public function forceBind(string $abstract, $concrete = null, array ...$args) : BindingInterface
     {
         if (! $concrete) {
             $concrete = $abstract;
         }
 
         if (is_string($concrete) && class_exists($concrete)) {
-            $binding = new ClassBinding($this, $abstract, $concrete, $this->extractFirst($args));
-
-            return method_exists($concrete, '__invoke')
-                ? $binding->withMethodCall('__invoke', $args ?: [])
-                : $binding;
+            return $this->forceBindClass($abstract, $concrete, ...$args);
         }
 
         if (is_callable($concrete)) {
-            return new FunctionBinding($this, $abstract, $concrete, reset($args) ?: []);
+            return $this->forceBindFunction($abstract, $concrete, reset($args) ?: []);
         }
 
         return new SharedBinding($this, $abstract, $concrete, reset($args) ?: []);
+    }
+
+    /**
+     * @param string  $abstract
+     * @param null    $concrete
+     * @param array[] ...$args
+     *
+     * @return BindingInterface
+     * @throws \ReflectionException
+     */
+    protected function forceBindClass(string $abstract, $concrete = null, array ...$args) : BindingInterface
+    {
+        $binding = new ClassBinding($this, $abstract, $concrete, $this->extractFirst($args));
+
+        return method_exists($concrete, '__invoke')
+            ? $binding->withMethodCall('__invoke', $args ?: [])
+            : $binding;
+    }
+
+    /**
+     * @param string $abstract
+     * @param null   $concrete
+     * @param array  $args
+     *
+     * @return BindingInterface
+     * @throws \ReflectionException
+     */
+    protected function forceBindFunction(string $abstract, $concrete = null, array $args = []) : BindingInterface
+    {
+        return new FunctionBinding($this, $abstract, $concrete, $args);
     }
 
     /**
@@ -61,13 +85,79 @@ class Container extends AbstractContainer
      * @param array[] ...$args
      *
      * @return mixed
-     * @throws NotFoundException
-     * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function make(string $abstract, array ...$args)
     {
-        return $this->find($abstract)->make(...$args);
+        if (! $binding = $this->find($abstract)) {
+            if ($this->delegate) {
+                return $this->delegate->make($abstract, ...$args);
+            }
+
+            throw new Exception\NotFoundException("$abstract binding not found.");
+        }
+
+        return $binding->make(...$args);
+    }
+
+    /**
+     * @param array|callable $callable
+     * @param array[]        ...$args
+     *
+     * @return mixed
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
+     */
+    public function call($callable, array ...$args)
+    {
+        $notFound = false;
+
+        if (is_array($callable)) {
+            if (is_string(next($callable))) {
+                if (is_string(reset($callable))) {
+                    if ($binding = $this->find(reset($callable))) {
+                        return $binding->withMethodCall(next($callable))->call(...$args);
+                    } else {
+                        $notFound = true;
+                    }
+                } elseif (is_object(reset($callable))) {
+                    $abstract = get_class(reset($callable));
+
+                    if ($binding = $this->find($abstract)) {
+                        return $binding->withMethodCall(next($callable))->call(...$args);
+                    } else {
+                        $notFound = true;
+                    }
+                }
+            } else {
+                throw new Exception\ContainerException(
+                    'Callable array must represent class name or instance and its method'
+                );
+            }
+        } elseif (is_string($callable) && is_callable($callable)) {
+            if ($binding = $this->find($callable)) {
+                if ($binding instanceof AggregateBindingInterface) {
+                    return $binding->call(...$args);
+                } elseif ($binding instanceof FunctionBinding) {
+                    return $binding->make(...$args);
+                } else {
+                    throw new Exception\ContainerException("Binding $callable is not callable");
+                }
+            } else {
+                $notFound = true;
+            }
+        }
+
+        if ($this->delegate) {
+            return $this->delegate->call($callable, ...$args);
+        } elseif ($notFound) {
+            throw new Exception\NotFoundException('Callable binding not found.');
+        }
+
+        throw new Exception\ContainerException(
+            'Callable must be a function name or an array of class name or instance and its method'
+        );
     }
 
     /**
@@ -114,9 +204,6 @@ class Container extends AbstractContainer
     {
         return ($this->delegate && ! $this->has($abstract))
             ? $this->delegate->isShared($abstract)
-            : (
-                $this->bindings[$abstract] instanceof SharedBinding ||
-                $this->bindings[$abstract] instanceof SharedBindingProxy
-            );
+            : $this->bindings[$abstract] instanceof SharedBindingInterface;
     }
 }
