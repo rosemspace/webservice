@@ -3,7 +3,7 @@
 namespace TrueCode\Container;
 
 use TrueCode\Container\Binding\{
-    AggregateBindingInterface, BindingInterface, ClassBinding, FunctionBinding, SharedBinding, SharedBindingInterface
+    AggregateBindingInterface, BindingInterface, ClassBinding, FunctionBinding, SharedBinding, SharedBindingInterface, Proxy\BindingProxyInterface
 };
 
 class Container extends AbstractContainer
@@ -18,9 +18,9 @@ class Container extends AbstractContainer
         AbstractFacade::registerContainer($this);
     }
 
-    public function bind(string $abstract, $concrete = null, array ...$args) : BindingInterface
+    public function bind(string $abstract, $concrete = null, array ...$args) : BindingProxyInterface
     {
-        return new Proxy\BindingProxy($this, $abstract, $concrete ?: $abstract, $args);
+        return new Binding\Proxy\BindingProxy($this, $abstract, $concrete ?: $abstract, $args);
     }
 
     /**
@@ -136,6 +136,14 @@ class Container extends AbstractContainer
                 );
             }
         } elseif (is_string($callable) && is_callable($callable)) {
+            //is a class "classname::method"
+            if (strpos($callable, '::') === false) {
+                $class = $callable;
+                $method = '__invoke';
+            } else {
+                [$class, $method] = explode('::', $callable, 2);
+            }
+
             if ($binding = $this->find($callable)) {
                 if ($binding instanceof AggregateBindingInterface) {
                     return $binding->call(...$args);
@@ -188,9 +196,9 @@ class Container extends AbstractContainer
         return new SharedBinding($this, $abstract, $instance);
     }
 
-    public function share(string $abstract, $concrete = null, array ...$args) : BindingInterface
+    public function share(string $abstract, $concrete = null, array ...$args) : BindingProxyInterface
     {
-        return new Proxy\SharedBindingProxy($this, $abstract, $concrete ?: $abstract, $args);
+        return new Binding\Proxy\SharedBindingProxy($this, $abstract, $concrete ?: $abstract, $args);
     }
 
     /**

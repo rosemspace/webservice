@@ -28,9 +28,9 @@ class ClassBinding extends AbstractBinding
 
         if (
             ($constructor = $this->reflector->getConstructor()) &&
-            ($params = SplFixedArray::fromArray($constructor->getParameters()))
+            ($params = $constructor->getParameters())
         ) {
-            $this->stack = $this->getStack($params);
+            $this->stack = $this->getStack(SplFixedArray::fromArray($params));
         }
     }
 

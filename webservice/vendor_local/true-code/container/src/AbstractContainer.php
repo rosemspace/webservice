@@ -6,6 +6,7 @@ use ArrayAccess;
 use Psr\Container\ContainerInterface;
 use TrueCode\Container\Binding\AggregateBindingInterface;
 use TrueCode\Container\Binding\BindingInterface;
+use TrueCode\Container\Binding\Proxy\BindingProxyInterface;
 
 /**
  * Abstract container with array functionality.
@@ -58,17 +59,17 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
         $this->delegate = $container;
     }
 
-    abstract public function bind(string $abstract, $concrete = null, array ...$args) : BindingInterface;
+    abstract public function bind(string $abstract, $concrete = null, array ...$args) : BindingProxyInterface;
 
     abstract public function forceBind(string $abstract, $concrete = null, array ...$args) : BindingInterface;
 
-    abstract public function share(string $abstract, $concrete = null, array ...$args) : BindingInterface;
+    abstract public function share(string $abstract, $concrete = null, array ...$args) : BindingProxyInterface;
 
     abstract public function instance(string $abstract, $instance) : BindingInterface;
 
     abstract public function make(string $abstract, array ...$args);
 
-    abstract public function call($abstract, array ...$args);
+    abstract public function call($callable, array ...$args);
 
     abstract public function isShared(string $abstract) : bool;
 

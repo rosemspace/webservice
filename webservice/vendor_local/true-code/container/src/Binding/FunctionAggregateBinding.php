@@ -6,7 +6,27 @@ use TrueCode\Container\ExtractorTrait;
 
 class FunctionAggregateBinding extends AbstractAggregateBinding
 {
-    use ExtractorTrait;
+    use ExtractorTrait,
+        AggregateInstantiationTrait;
+
+    protected function aggregateMake(array &$aggregate, array &$args = [], &$result = null)
+    {
+        $localResult = null;
+
+        foreach ($aggregate as $function) {
+            $resolvedArgs = current($args) ?: [];
+            $newResult = $function->make($resolvedArgs);
+            next($args);
+
+            if (null !== $newResult) {
+                $localResult = $newResult;
+            }
+        }
+
+        if (null !== $localResult) {
+            $result = $localResult;
+        }
+    }
 
     /**
      * @param array[] ...$args
@@ -17,22 +37,15 @@ class FunctionAggregateBinding extends AbstractAggregateBinding
      */
     protected function invoke(array &...$args)
     {
-        if (! isset($args[1])) {
-            $args[] = $args[0];
-        }
-
+        $this->normalizeInvokeArgs($args);
         $context = $this->context->make($this->extractFirst($args));
         $result = null;
-        reset($args);
 
         // preserve temporary context which will be injected into all functions calls
         $this->container->instance($this->getAbstract(), $context)->commit();
 
-        foreach ($this->aggregate as $function) {
-            $resolvedArgs = current($args) ?: [];
-            $result = $function->make($resolvedArgs);
-            next($args);
-        }
+        $this->aggregateMake($this->committedAggregate, $args, $result);
+        $this->aggregateMake($this->aggregate, $args, $result);
 
         // replace preserved earlier temporary context by reverting original binding
         $this->container->set($this->getAbstract(), $this);
@@ -49,7 +62,11 @@ class FunctionAggregateBinding extends AbstractAggregateBinding
      */
     public function withFunctionCall(callable $function, array $args = []) : AggregateBindingInterface
     {
-        $this->aggregate[] = new FunctionBinding($this->container, $this->getAbstract(), $function, $args);
+        $binding = new FunctionBinding($this->container, $this->getAbstract(), $function, $args);
+
+        is_string($function)
+            ? $this->aggregate[$function] = $binding
+            : $this->aggregate[] = $binding;
 
         return $this;
     }

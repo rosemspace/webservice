@@ -86,9 +86,10 @@ class App extends Container implements AppInterface
             if (
                 is_string($serviceProviderClass) &&
                 class_exists($serviceProviderClass) &&
-                $serviceProviderClass !== static::class
+                $serviceProviderClass !== static::class &&
+                ($serviceProvider = new $serviceProviderClass) instanceof ServiceProviderInterface
             ) {
-                $this->addServiceProvider(new $serviceProviderClass);
+                $this->addServiceProvider($serviceProvider);
             } else {
                 throw new Exception(
                     'An item of service providers configuration should be a string' .

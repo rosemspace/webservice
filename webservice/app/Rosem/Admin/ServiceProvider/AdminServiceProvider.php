@@ -9,7 +9,6 @@ use TrueStd\RouteCollector\RouteCollectorInterface;
 
 class AdminServiceProvider implements ServiceProviderInterface
 {
-
     /**
      * Returns a list of all container entries registered by this service provider.
      *

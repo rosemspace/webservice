@@ -32,7 +32,7 @@ trait ReflectedBuildTrait
      *
      * @return SplFixedArray $stack
      */
-    protected function getStack(iterable $params) : SplFixedArray
+    private function getStack(iterable $params) : SplFixedArray
     {
         $index = -1;
         $length = count($params);
@@ -53,7 +53,7 @@ trait ReflectedBuildTrait
      *
      * @return array $building
      */
-    protected function build(iterable $stack, array $args = []) : array
+    private function build(iterable $stack, array $args = []) : array
     {
         $stackLength = count($stack);
         $building = [];

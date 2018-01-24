@@ -21,7 +21,12 @@ abstract class AbstractAggregateBinding implements AggregateBindingInterface
     /**
      * @var BindingInterface[]|DependentBindingInterface[]
      */
-    protected $aggregate;
+    protected $aggregate = [];
+
+    /**
+     * @var BindingInterface[]|DependentBindingInterface[]
+     */
+    protected $committedAggregate = [];
 
     /**
      * AbstractAggregateBinding constructor.
@@ -35,34 +40,18 @@ abstract class AbstractAggregateBinding implements AggregateBindingInterface
         $this->context = $context;
     }
 
-    abstract protected function invoke(array &...$args);
-
-    /**
-     * @param array[] ...$args
-     *
-     * @return mixed
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    public function make(array &...$args)
+    protected function normalizeInvokeArgs(array &$args)
     {
-        return $this->invoke(...$args)[0];
-    }
-
-    /**
-     * @param array[] ...$args
-     *
-     * @return mixed
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    public function call(array &...$args)
-    {
-        return $this->invoke(...$args)[1];
+        if (($clone = reset($args)) && ! isset($args[1])) {
+            $args[] = $clone;
+        }
     }
 
     public function commit() : BindingInterface
     {
+        $this->committedAggregate = array_merge($this->committedAggregate, $this->aggregate);
+        $this->aggregate = [];
+
         return $this->container->set($this->getAbstract(), $this);
     }
 

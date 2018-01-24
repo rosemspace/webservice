@@ -30,8 +30,8 @@ class FunctionBinding extends AbstractBinding
 
         $this->reflector = new ReflectionFunction($this->concrete);
 
-        if ($params = SplFixedArray::fromArray($this->reflector->getParameters())) {
-            $this->stack = $this->getStack($params);
+        if ($params = $this->reflector->getParameters()) {
+            $this->stack = $this->getStack(SplFixedArray::fromArray($params));
         }
     }
 
