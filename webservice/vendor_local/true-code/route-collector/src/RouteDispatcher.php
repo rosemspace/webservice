@@ -13,29 +13,29 @@ class RouteDispatcher implements RouteDispatcherInterface
     /**
      * Char count based type.
      */
-    const DRIVER_CHAR_COUNT = 0;
+    const DRIVER_CHAR_COUNT = 'char_count';
 
     /**
      * Group count based type.
      */
-    const DRIVER_GROUP_COUNT = 1;
+    const DRIVER_GROUP_COUNT = 'group_count';
 
     /**
      * Group pos based type.
      */
-    const DRIVER_GROUP_POS = 2;
+    const DRIVER_GROUP_POS = 'group_pos';
 
     /**
      * Mark based type.
      */
-    const DRIVER_MARK = 3;
+    const DRIVER_MARK = 'mark';
 
     /**
      * @var Dispatcher
      */
     protected $driver;
 
-    public function __construct(array $data, int $driverType = self::DRIVER_GROUP_COUNT)
+    public function __construct(array $data, string $driverType = self::DRIVER_GROUP_COUNT)
     {
         switch ($driverType) {
             case self::DRIVER_CHAR_COUNT:

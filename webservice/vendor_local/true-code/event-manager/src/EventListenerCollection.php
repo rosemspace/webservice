@@ -2,7 +2,10 @@
 
 namespace TrueCode\EventManager;
 
-class EventListenerCollection implements \ArrayAccess, \Countable
+use ArrayAccess;
+use Countable;
+
+class EventListenerCollection implements ArrayAccess, Countable
 {
     /**
      * @var EventListener[]
@@ -23,10 +26,10 @@ class EventListenerCollection implements \ArrayAccess, \Countable
             usort(
                 $this->listeners,
                 function (
-                    EventListener $listener1,
-                    EventListener $listener2
+                    EventListener $currentListener,
+                    EventListener $nextListener
                 ) {
-                    return $listener2->getPriority() <=> $listener1->getPriority();
+                    return $nextListener->getPriority() <=> $currentListener->getPriority();
                 }
             );
             $this->ordered = true;

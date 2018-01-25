@@ -83,7 +83,7 @@ class EventManager implements EventManagerInterface
      * @param  array|object          $argv
      *
      * @return mixed
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function trigger($event, $target = null, $argv = [])
     {
@@ -96,7 +96,8 @@ class EventManager implements EventManagerInterface
             $event->setTarget($target);
             $event->setParams($argv);
         } elseif (! $event instanceof EventInterface) {
-            throw new \Exception('Event should be a string or should implement ' . EventInterface::class);
+            throw new \InvalidArgumentException('Event should be a string or should implement ' .
+                EventInterface::class);
         }
 
         if (isset($this->listeners[$event->getName()])) {
