@@ -2,10 +2,11 @@
 
 namespace Rosem\Kernel\Controller;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\{
+    ResponseInterface, ServerRequestInterface
+};
+use Psr\Http\Server\RequestHandlerInterface;
 use TrueStd\Http\Factory\ResponseFactoryInterface;
-use TrueStd\Http\Server\RequestHandlerInterface;
 
 class MainController
 {

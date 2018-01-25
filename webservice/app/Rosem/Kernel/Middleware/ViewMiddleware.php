@@ -2,10 +2,12 @@
 
 namespace Rosem\Kernel\Middleware;
 
-use TrueStd\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use TrueStd\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\{
+    ResponseInterface, ServerRequestInterface
+};
+use Psr\Http\Server\{
+    MiddlewareInterface, RequestHandlerInterface
+};
 use Zend\Diactoros\Response;
 
 class ViewMiddleware implements MiddlewareInterface

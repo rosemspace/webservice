@@ -5,7 +5,7 @@ namespace Rosem\Kernel;
 use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
 };
-use TrueStd\Http\Server\{
+use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
 

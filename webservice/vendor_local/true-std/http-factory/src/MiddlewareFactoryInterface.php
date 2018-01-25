@@ -2,7 +2,7 @@
 
 namespace TrueStd\Http\Factory;
 
-use TrueStd\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\MiddlewareInterface;
 
 interface MiddlewareFactoryInterface
 {

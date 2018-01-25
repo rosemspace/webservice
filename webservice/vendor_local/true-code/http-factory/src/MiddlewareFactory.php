@@ -6,11 +6,11 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
 };
-use TrueCode\Container\Container;
-use TrueStd\Http\Factory\MiddlewareFactoryInterface;
-use TrueStd\Http\Server\{
+use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
+use TrueCode\Container\Container;
+use TrueStd\Http\Factory\MiddlewareFactoryInterface;
 
 class MiddlewareFactory implements MiddlewareFactoryInterface
 {

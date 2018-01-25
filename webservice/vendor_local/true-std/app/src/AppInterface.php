@@ -4,7 +4,7 @@ namespace TrueStd\Application;
 
 use Psr\Container\ContainerInterface;
 use TrueStd\Container\ServiceProviderInterface;
-use TrueStd\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\MiddlewareInterface;
 
 interface AppInterface extends ContainerInterface
 {

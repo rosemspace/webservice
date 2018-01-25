@@ -2,13 +2,15 @@
 
 namespace Rosem\Kernel\Middleware;
 
+use Psr\Http\Message\{
+    ResponseInterface, ServerRequestInterface
+};
+use Psr\Http\Server\{
+    MiddlewareInterface, RequestHandlerInterface
+};
 use TrueStd\Http\Factory\{
     MiddlewareFactoryInterface, ResponseFactoryInterface
 };
-use TrueStd\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use TrueStd\Http\Server\MiddlewareInterface;
 use TrueStd\RouteCollector\RouteDispatcherInterface;
 
 class RouteMiddleware implements MiddlewareInterface

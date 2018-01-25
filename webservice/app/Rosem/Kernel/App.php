@@ -20,7 +20,7 @@ use TrueStd\Application\AppInterface;
 use TrueStd\EventManager\EventInterface;
 use TrueStd\Http\Factory\ResponseFactoryInterface;
 use TrueStd\Http\Factory\ServerRequestFactoryInterface;
-use TrueStd\Http\Server\{
+use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
 use Zend\Diactoros\Server;
