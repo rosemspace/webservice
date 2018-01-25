@@ -1,9 +1,10 @@
 <?php
 
-namespace Rosem\Admin\ServiceProvider;
+namespace Rosem\Admin;
 
 use Psr\Container\ContainerInterface;
 use Rosem\Admin\Controller\AdminController;
+use TrueStd\App\AppConfigInterface;
 use TrueStd\Container\ServiceProviderInterface;
 use TrueStd\RouteCollector\RouteCollectorInterface;
 
@@ -29,7 +30,7 @@ class AdminServiceProvider implements ServiceProviderInterface
         return [
             RouteCollectorInterface::class => function (ContainerInterface $container) {
                 $container->get(RouteCollectorInterface::class)->get(
-                    "/{$container->get('admin')['uri']}[/{relativePath:.*}]",
+                    "/{$container->get(AppConfigInterface::class)->get('admin.uri')}[/{relativePath:.*}]",
                     [AdminController::class, 'index']
                 );
             },

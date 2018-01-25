@@ -1,6 +1,6 @@
 <?php
 
-namespace TrueStd\Application;
+namespace TrueStd\App;
 
 interface AppFactoryInterface
 {

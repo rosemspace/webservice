@@ -1,24 +1,14 @@
 <?php
 
-namespace TrueStd\Application;
+namespace TrueStd\App;
 
 use Psr\Container\ContainerInterface;
-use TrueStd\Container\ServiceProviderInterface;
-use Psr\Http\Server\MiddlewareInterface;
 
 interface AppInterface extends ContainerInterface
 {
-    public function addServiceProvider(ServiceProviderInterface $serviceProvider);
+    public function loadServiceProviders(string $serviceProvidersConfigFilePath);
 
-//    public function addServiceProviders(array $serviceProvidersConfig);
-
-    public function addServiceProvidersFromFile(string $serviceProvidersConfigFilePath);
-
-    public function addMiddleware(MiddlewareInterface $middleware);
-
-//    public function addMiddlewareLayers(array $serviceProvidersConfig);
-
-    public function addMiddlewareLayersFromFile(string $serviceProvidersConfigFilePath);
+    public function loadMiddlewares(string $serviceProvidersConfigFilePath);
 
     public function boot(string $appConfigFilePath);
 }

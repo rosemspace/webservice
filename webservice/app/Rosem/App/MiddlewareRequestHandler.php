@@ -1,0 +1,50 @@
+<?php
+
+namespace Rosem\App;
+
+use Psr\Http\Message\{
+    ResponseInterface, ServerRequestInterface
+};
+use Psr\Http\Server\{
+    MiddlewareInterface, RequestHandlerInterface
+};
+use TrueCode\Container\Container;
+
+class MiddlewareRequestHandler implements RequestHandlerInterface
+{
+    private $container;
+
+    /**
+     * @var MiddlewareInterface
+     */
+    private $middleware;
+
+    private $nextHandler;
+
+    public function __construct(
+        Container $container,
+        string $middleware,
+        RequestHandlerInterface $nextHandler
+    ) {
+        $this->container = $container;
+        $this->middleware = $middleware;
+        $this->nextHandler = $nextHandler;
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     *
+     * @return ResponseInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \ReflectionException
+     */
+    public function handle(ServerRequestInterface $request) : ResponseInterface
+    {
+        if (is_string($this->middleware)) {
+            $this->middleware = $this->container->forceBind($this->middleware)->make();
+        }
+
+        return $this->middleware->process($request, $this->nextHandler);
+    }
+}

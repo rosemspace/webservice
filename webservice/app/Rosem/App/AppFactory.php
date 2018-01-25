@@ -1,8 +1,8 @@
 <?php
 
-namespace Rosem\Kernel;
+namespace Rosem\App;
 
-use TrueStd\Application\{AppFactoryInterface, AppInterface};
+use TrueStd\App\{AppFactoryInterface, AppInterface};
 
 class AppFactory implements AppFactoryInterface
 {

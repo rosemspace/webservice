@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\Kernel;
+namespace Rosem\App;
 
 use Exception;
 

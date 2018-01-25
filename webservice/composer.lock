@@ -1676,16 +1676,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v3.1.3",
+            "version": "v3.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "579f4ce846734a1cf55d6a531d00ca07a43e3cda"
+                "reference": "e57b3a09784f846411aa7ed664eedb73e3399078"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/579f4ce846734a1cf55d6a531d00ca07a43e3cda",
-                "reference": "579f4ce846734a1cf55d6a531d00ca07a43e3cda",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/e57b3a09784f846411aa7ed664eedb73e3399078",
+                "reference": "e57b3a09784f846411aa7ed664eedb73e3399078",
                 "shasum": ""
             },
             "require": {
@@ -1723,7 +1723,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2017-12-26 14:43:21"
+            "time": "2018-01-25 21:31:33"
         },
         {
             "name": "ocramius/code-generator-utils",
@@ -3242,7 +3242,7 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-std/app",
-                "reference": "a09c1df83c3e8404b11cec0588d0c0b6a4d2c435",
+                "reference": "d36e7d0e95a06ddbf44ed8eb88d11638d427bcda",
                 "shasum": null
             },
             "require": {
@@ -3255,7 +3255,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "TrueStd\\Application\\": "src"
+                    "TrueStd\\App\\": "src"
                 }
             },
             "license": [

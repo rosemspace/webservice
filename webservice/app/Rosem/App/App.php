@@ -1,27 +1,31 @@
 <?php
 
-namespace Rosem\Kernel;
+namespace Rosem\App;
 
 use Closure;
 use Dotenv\Dotenv;
 use Exception;
 use GraphQL\GraphQL;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use TrueStd\Container\ServiceProviderInterface;
-use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\{
+    ResponseInterface, ServerRequestInterface
+};
+use Psr\Http\Server\{
+    MiddlewareInterface, RequestHandlerInterface
+};
 use Rosem\Access\Database\Models\{
     User, UserRole
 };
+use TrueCode\Container\Exception\ContainerException;
 use TrueCode\Container\ReflectionContainer;
 use TrueCode\EventManager\EventManager;
-use TrueStd\Application\AppInterface;
+use TrueStd\App\{
+    AppConfigInterface, AppInterface
+};
+use TrueStd\Container\ServiceProviderInterface;
 use TrueStd\EventManager\EventInterface;
-use TrueStd\Http\Factory\ResponseFactoryInterface;
-use TrueStd\Http\Factory\ServerRequestFactoryInterface;
-use Psr\Http\Server\{
-    MiddlewareInterface, RequestHandlerInterface
+use TrueStd\Http\Factory\{
+    ResponseFactoryInterface, ServerRequestFactoryInterface
 };
 use Zend\Diactoros\Server;
 
@@ -29,15 +33,10 @@ class App extends ReflectionContainer implements AppInterface
 {
     use FileConfigTrait;
 
-    const MODE_DEVELOPMENT = 0;
-    const MODE_MAINTENANCE = 1;
-    const MODE_PRODUCTION  = 2;
-    const MODE_TESTING     = 3;
-
-    /**
-     * @var ServiceProviderInterface[]
-     */
-    protected $serviceProviders = [];
+    const ENV_DEVELOPMENT = 'development';
+    const ENV_MAINTENANCE = 'maintenance';
+    const ENV_PRODUCTION = 'production';
+    const ENV_TESTING = 'testing';
 
     /**
      * @var RequestHandlerInterface
@@ -52,11 +51,8 @@ class App extends ReflectionContainer implements AppInterface
         $this->alias(ContainerInterface::class, AppInterface::class);
     }
 
-    public function addServiceProvider(ServiceProviderInterface $serviceProvider)
+    protected function addServiceProvider(ServiceProviderInterface $serviceProvider)
     {
-        $this->serviceProviders[] = $serviceProvider;
-
-        // 1. In the first pass, the container calls the getFactories method of all service providers.
         foreach ($serviceProvider->getFactories() as $key => $factory) {
             if (is_array($factory)) {
                 $app = $this;
@@ -65,7 +61,7 @@ class App extends ReflectionContainer implements AppInterface
                 $this->share(
                     $key,
                     function () use ($app, $serviceProvider, $method) {
-                        return (new $serviceProvider)->$method($app);
+                        return $app->make($serviceProvider)->$method($app);
                     }
                 )->commit();
             } else {
@@ -78,28 +74,32 @@ class App extends ReflectionContainer implements AppInterface
      * @param string $serviceProvidersConfigFilePath
      *
      * @throws Exception
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \ReflectionException
      */
-    public function addServiceProvidersFromFile(string $serviceProvidersConfigFilePath)
+    public function loadServiceProviders(string $serviceProvidersConfigFilePath)
     {
+        /** @var ServiceProviderInterface[] $serviceProviders */
+        $serviceProviders = [];
+
         // 1. In the first pass, the container calls the getFactories method of all service providers.
         foreach (self::getConfiguration($serviceProvidersConfigFilePath) as $serviceProviderClass) {
             if (
                 is_string($serviceProviderClass) &&
-                class_exists($serviceProviderClass) &&
-                $serviceProviderClass !== static::class &&
-                ($serviceProvider = new $serviceProviderClass) instanceof ServiceProviderInterface
+                class_exists($serviceProviderClass)
             ) {
-                $this->addServiceProvider($serviceProvider);
+                $this->addServiceProvider($serviceProviders[] = $this->forceBind($serviceProviderClass)->make());
             } else {
                 throw new Exception(
-                    'An item of service providers configuration should be a string' .
+                    'An item of service providers configuration should be a string ' .
                     'that represents service provider class which implements ' .
                     ServiceProviderInterface::class . ", got $serviceProviderClass");
             }
         }
 
         // 2. In the second pass, the container calls the getExtensions method of all service providers.
-        foreach ($this->serviceProviders as $serviceProvider) {
+        foreach ($serviceProviders as $serviceProvider) {
             foreach ($serviceProvider->getExtensions() as $key => $factory) {
                 $this->find($key)->withFunctionCall(
                     is_array($factory) ? Closure::fromCallable($factory) : $factory
@@ -108,47 +108,65 @@ class App extends ReflectionContainer implements AppInterface
         }
     }
 
-    protected function initDefaultHandler()
+    /**
+     * @return RequestHandlerInterface
+     */
+    protected function getDefaultHandler()
     {
-        if (! $this->nextHandler) {
-            $this->nextHandler = new class ($this) implements RequestHandlerInterface
+        return new class ($this) implements RequestHandlerInterface
+        {
+            private $container;
+
+            public function __construct(ContainerInterface $container)
             {
-                private $container;
+                $this->container = $container;
+            }
 
-                public function __construct(ContainerInterface $container)
-                {
-                    $this->container = $container;
-                }
+            /**
+             * @param ServerRequestInterface $request
+             *
+             * @return ResponseInterface
+             * @throws \Psr\Container\ContainerExceptionInterface
+             * @throws \Psr\Container\NotFoundExceptionInterface
+             */
+            public function handle(ServerRequestInterface $request) : ResponseInterface
+            {
+                $response = $this->container->get(ResponseFactoryInterface::class)->createResponse(500);
+                $response->getBody()->write('Internal server error');
 
-                public function handle(ServerRequestInterface $request) : ResponseInterface
-                {
-                    $response = $this->container->get(ResponseFactoryInterface::class)->createResponse(500);
-                    $response->getBody()->write('Internal server error');
-
-                    return $response;
-                }
-            };
-        }
+                return $response;
+            }
+        };
     }
 
-    public function addMiddleware(MiddlewareInterface $middleware)
+    protected function addMiddleware(string $middleware)
     {
-        $this->initDefaultHandler();
-        $this->nextHandler = new MiddlewareRequestHandler($middleware, $this->nextHandler);
+        $this->nextHandler = new MiddlewareRequestHandler($this, $middleware, $this->nextHandler);
     }
 
-    public function addMiddlewareLayersFromFile(string $serviceProvidersConfigFilePath)
+    /**
+     * @param string $middlewaresConfigFilePath
+     *
+     * @throws Exception
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function loadMiddlewares(string $middlewaresConfigFilePath)
     {
-        // TODO: Implement addMiddlewareLayers() method.
-    }
+        $this->nextHandler = $this->getDefaultHandler();
 
-    public function loadConfig(string $appConfigFilePath)
-    {
-        //TODO: move into boot method when middleware will be lazy loading
-        (new Dotenv(realpath(getcwd() . '/..')))->load();
-
-        foreach (self::getConfiguration($appConfigFilePath) as $key => $data) {
-            $this->instance($key, $data)->commit();
+        foreach (self::getConfiguration($middlewaresConfigFilePath) as $middlewareClass) {
+            if (
+                is_string($middlewareClass) &&
+                class_exists($middlewareClass)
+            ) {
+                $this->addMiddleware($middlewareClass);
+            } else {
+                throw new Exception(
+                    'An item of middlewares configuration should be a string ' .
+                    'that represents middleware class which implements ' .
+                    MiddlewareInterface::class . ", got $middlewareClass");
+            }
         }
     }
 
@@ -156,10 +174,24 @@ class App extends ReflectionContainer implements AppInterface
      * @param string $appConfigFilePath
      *
      * @throws Exception
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function boot(string $appConfigFilePath)
     {
-        $this->initDefaultHandler();
+        $dotenv = new Dotenv(realpath(getcwd() . '/..'));
+        $dotenv->load();
+        $dotenv->required('APP_ENV')->allowedValues([
+            self::ENV_DEVELOPMENT,
+            self::ENV_MAINTENANCE,
+            self::ENV_PRODUCTION,
+            self::ENV_TESTING,
+        ]);
+        $this->instance(Dotenv::class, $dotenv)->commit();
+        $this->instance(
+            AppConfigInterface::class,
+            new AppConfig(self::getConfiguration($appConfigFilePath))
+        )->commit();
         $request = $this->get(ServerRequestFactoryInterface::class)
             ->createServerRequestFromArray($_SERVER)
             ->withQueryParams($_GET)
@@ -167,10 +199,9 @@ class App extends ReflectionContainer implements AppInterface
             ->withCookieParams($_COOKIE)
             ->withUploadedFiles($_FILES);
         $response = $this->nextHandler->handle($request);
-        $server = new Server(function () {}, $request, $response);
+        $server = new Server(function () {
+        }, $request, $response);
         $server->listen();
-
-//        return $this->start();
     }
 
 
@@ -182,7 +213,7 @@ class App extends ReflectionContainer implements AppInterface
                 function () {
                 },
             ])->listen();
-        } catch (ContainerExceptionInterface $e) {
+        } catch (ContainerException $e) {
             echo $e->getMessage();
         }
     }
