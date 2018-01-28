@@ -43,7 +43,7 @@ class AdminController
     {
         $response = $this->responseFactory->createResponse();
         $response->getBody()->write($this->view->render(
-            'Rosem\Admin::templates/admin',
+            'Rosem.Admin::templates/admin',
             [
                 'appName'         => $this->appConfig->get('app.name'),
                 'metaTitlePrefix' => $this->appConfig->get('admin.meta.titlePrefix'),

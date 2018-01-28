@@ -4,6 +4,7 @@ return [
     'app'        => [
         'name'  => getenv('APP_NAME'),
         'env'   => getenv('APP_ENV', 'development'),
+        'lang'  => 'en-US',
         'paths' => [
             'root' => getenv('APP_DIR'),
         ],

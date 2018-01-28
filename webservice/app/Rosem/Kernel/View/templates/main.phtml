@@ -6,9 +6,9 @@
  */
 ?>
 <?php $v->layout(__DIR__ . '/../layouts/base', [
-    'metaTitlePrefix' => $metaTitlePrefix,
-    'metaTitle'       => $metaTitle,
-    'metaTitleSuffix' => $metaTitleSuffix,
+    'metaTitlePrefix' => $v($metaTitlePrefix ?? ''),
+    'metaTitle'       => $v($metaTitle),
+    'metaTitleSuffix' => $v($metaTitleSuffix ?? ''),
 ]) ?>
 
 <?php $v->push('styles') ?>

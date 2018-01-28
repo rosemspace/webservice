@@ -55,6 +55,14 @@ class KernelServiceProvider implements ServiceProviderInterface
                     'index',
                 ]);
             },
+            ViewInterface::class => function (ContainerInterface $container, ViewInterface $view) {
+                $appConfig = $container->get(AppConfigInterface::class);
+                $view->addData([
+                    'lang' => $appConfig->get('app.lang'),
+                    'charset' => $appConfig->get('app.meta.charset'),
+                ]);
+                $view->addDirectoryAlias('Rosem.Kernel', __DIR__ . '/View');
+            },
         ];
     }
 
@@ -115,11 +123,9 @@ class KernelServiceProvider implements ServiceProviderInterface
 
     public function createView(ContainerInterface $container)
     {
-//        $container->get(AppConfigInterface::class)->get('webservice.paths.');
-
-        return new class (new \League\Plates\Engine([
-            'base_dir' => $container->get(AppConfigInterface::class)->get('app.paths.root')
-        ])) implements ViewInterface {
+        return new class (\League\Plates\Engine::create(
+            $container->get(AppConfigInterface::class)->get('app.paths.root')
+        )) implements ViewInterface {
             /**
              * @var \League\Plates\Engine
              */
@@ -128,10 +134,6 @@ class KernelServiceProvider implements ServiceProviderInterface
             public function __construct(\League\Plates\Engine $engine)
             {
                 $this->engine = $engine;
-                // TODO: make as glob
-                $this->engine->addFolder('assets', __DIR__ . '/../../../public');
-                $this->engine->addFolder('Rosem\Kernel', __DIR__ . '/View');
-                $this->engine->addFolder('Rosem\Admin', __DIR__ . '/../Admin/View');
 //                $this->engine->register(new \League\Plates\Extension\Asset(BASEDIR . '/public'));
             }
 
@@ -147,6 +149,16 @@ class KernelServiceProvider implements ServiceProviderInterface
             public function render(string $templateName, array $data = [], array $attributes = []) : string
             {
                 return $this->engine->render($templateName, $data, $attributes);
+            }
+
+            public function addDirectoryAlias(string $alias, string $path) : void
+            {
+                $this->engine->addFolder($alias, $path);
+            }
+            
+            public function addData(array $data) : void
+            {
+                $this->engine->addData($data);
             }
         };
     }

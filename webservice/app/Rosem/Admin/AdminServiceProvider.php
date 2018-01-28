@@ -7,6 +7,7 @@ use Rosem\Admin\Controller\AdminController;
 use TrueStd\App\AppConfigInterface;
 use TrueStd\Container\ServiceProviderInterface;
 use TrueStd\RouteCollector\RouteCollectorInterface;
+use TrueStd\View\ViewInterface;
 
 class AdminServiceProvider implements ServiceProviderInterface
 {
@@ -33,6 +34,9 @@ class AdminServiceProvider implements ServiceProviderInterface
                     "/{$container->get(AppConfigInterface::class)->get('admin.uri')}[/{relativePath:.*}]",
                     [AdminController::class, 'index']
                 );
+            },
+            ViewInterface::class => function (ContainerInterface $container, ViewInterface $view) {
+                $view->addDirectoryAlias('Rosem.Admin', __DIR__ . '/View');
             },
         ];
     }

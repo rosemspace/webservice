@@ -1,12 +1,14 @@
 <?php
 /**
- * @var string $title
+ * @var string $metaTitlePrefix
+ * @var string $metaTitle
+ * @var string $metaTitleSuffix
  */
 ?>
 <?php $v->layout('Rosem/Kernel/View/layouts/base', [
-    'metaTitlePrefix' => $metaTitlePrefix,
-    'metaTitle'       => $metaTitle,
-    'metaTitleSuffix' => $metaTitleSuffix,
+    'metaTitlePrefix' => $v($metaTitlePrefix ?? ''),
+    'metaTitle'       => $v($metaTitle),
+    'metaTitleSuffix' => $v($metaTitleSuffix ?? ''),
 ]) ?>
 
 <?php $v->push('styles') ?>
