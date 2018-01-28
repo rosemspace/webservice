@@ -21,7 +21,7 @@
         "filp/whoops": "^2.1",
         "kint-php/kint": "^2.0",
         "league/flysystem": "^1.0",
-        "league/plates": "^3.3",
+        "league/plates": "dev-master",
         "monolog/monolog": "^1.23",
         "nesbot/carbon": "^1.22",
         "nikic/fast-route": "^1.2",
@@ -38,6 +38,7 @@
         "true-code/installer": "*",
         "true-code/route-collector": "*",
         "true-std/app": "*",
+        "true-std/view": "*",
         "vlucas/phpdotenv": "^2.4",
         "zendframework/zend-diactoros": "^1.6"
     },
@@ -74,6 +75,7 @@
         {"type": "path", "url": "vendor_local/true-std/http-server-handler"},
         {"type": "path", "url": "vendor_local/true-std/http-server-middleware"},
         {"type": "path", "url": "vendor_local/true-std/route-collector"},
-        {"type": "path", "url": "vendor_local/true-std/service-provider"}
+        {"type": "path", "url": "vendor_local/true-std/service-provider"},
+        {"type": "path", "url": "vendor_local/true-std/view"}
     ]
 }

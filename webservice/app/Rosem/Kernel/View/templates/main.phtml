@@ -1,0 +1,24 @@
+<?php
+/**
+ * @var string $metaTitlePrefix
+ * @var string $metaTitle
+ * @var string $metaTitleSuffix
+ */
+?>
+<?php $v->layout(__DIR__ . '/../layouts/base', [
+    'metaTitlePrefix' => $metaTitlePrefix,
+    'metaTitle'       => $metaTitle,
+    'metaTitleSuffix' => $metaTitleSuffix,
+]) ?>
+
+<?php $v->push('styles') ?>
+<link rel="stylesheet" id="main-styles">
+<?php $v->end() ?>
+
+<?php $v->push('scripts'); ?>
+<script type="text/javascript" id="main-scripts"></script>
+<?php $v->end(); ?>
+
+<?php $v->start('body') ?>
+<div id="app">Start home</div>
+<?php $v->end() ?>

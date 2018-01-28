@@ -1,21 +1,37 @@
 <?php
 
 return [
-    'app' => [
-        'env' => getenv('APP_ENV', 'development'),
-    ],
-    'kernel' => [
-        'route' => [
-            'data_generator' => getenv(
-                'ROUTE_DATA_GENERATOR',
-                \TrueCode\RouteCollector\RouteDataGenerator::DRIVER_GROUP_COUNT
-            ),
-            'dispatcher'     => getenv(
-                'ROUTE_DISPATCHER',
-                \TrueCode\RouteCollector\RouteDispatcher::DRIVER_GROUP_COUNT
-            ),
+    'app'        => [
+        'name'  => getenv('APP_NAME'),
+        'env'   => getenv('APP_ENV', 'development'),
+        'paths' => [
+            'root' => getenv('APP_DIR'),
         ],
-        'database'    => [
+        'meta'  => [
+            'charset'     => 'utf-8',
+            'titlePrefix' => '${app.name} | ',
+            'title'       => 'Welcome',
+            'titleSuffix' => '',
+        ],
+    ],
+    'webservice' => [
+        'paths' => [
+            'root'   => getenv('WEBSERVICE_DIR'),
+            'public' => getenv('WEBSERVICE_PUBLIC_DIR'),
+        ],
+    ],
+    'client'     => [
+        'paths' => [
+            'root'   => getenv('CLIENT_DIR'),
+            'public' => getenv('CLIENT_PUBLIC_DIR'),
+        ],
+    ],
+    'kernel'     => [
+        'route'    => [
+            'data_generator' => getenv('ROUTE_DATA_GENERATOR', 'group_count'),
+            'dispatcher'     => getenv('ROUTE_DISPATCHER', 'group_count'),
+        ],
+        'database' => [
             'paths'         => [
                 'migrations' => __DIR__ . '/app/*/*/etc/db/migrations',
                 'seeds'      => __DIR__ . '/app/*/*/etc/db/seeds',
@@ -39,13 +55,18 @@ return [
             'version_order' => 'creation',
         ],
     ],
-    'admin'  => [
+    'admin'      => [
         'uri'              => 'admin',
+        'meta'             => [
+            'titlePrefix' => 'Admin | ',
+            'title'       => '${app.name} dashboard',
+            'titleSuffix' => '',
+        ],
         'username'         => getenv('ADMIN_USERNAME', 'admin'),
         'password'         => getenv('ADMIN_PASSWORD', 'admin'),
-        'session_lifetime' => getenv('ADMIN_SESSION_LIFETIME'),
+        'session_lifetime' => getenv('ADMIN_SESSION_LIFETIME', 3000),
     ],
-    'blog'   => [
+    'blog'       => [
         'uri' => 'blog',
     ],
 ];

@@ -11,6 +11,7 @@ use TrueStd\Http\Factory\{
 use TrueStd\RouteCollector\{
     RouteCollectorInterface, RouteDispatcherInterface
 };
+use TrueStd\View\ViewInterface;
 
 class KernelServiceProvider implements ServiceProviderInterface
 {
@@ -27,6 +28,7 @@ class KernelServiceProvider implements ServiceProviderInterface
             MiddlewareFactoryInterface::class    => [static::class, 'createMiddlewareFactory'],
             RouteCollectorInterface::class       => [static::class, 'createRouteCollector'],
             RouteDispatcherInterface::class      => [static::class, 'createSimpleRouteDispatcher'],
+            ViewInterface::class                 => [static::class, 'createView'],
 
             \Analogue\ORM\Analogue::class                => function (ContainerInterface $container) {
                 return new \Analogue\ORM\Analogue(
@@ -109,5 +111,43 @@ class KernelServiceProvider implements ServiceProviderInterface
                     \TrueCode\RouteCollector\RouteDispatcher::DRIVER_GROUP_COUNT
                 )
         );
+    }
+
+    public function createView(ContainerInterface $container)
+    {
+//        $container->get(AppConfigInterface::class)->get('webservice.paths.');
+
+        return new class (new \League\Plates\Engine([
+            'base_dir' => $container->get(AppConfigInterface::class)->get('app.paths.root')
+        ])) implements ViewInterface {
+            /**
+             * @var \League\Plates\Engine
+             */
+            private $engine;
+
+            public function __construct(\League\Plates\Engine $engine)
+            {
+                $this->engine = $engine;
+                // TODO: make as glob
+                $this->engine->addFolder('assets', __DIR__ . '/../../../public');
+                $this->engine->addFolder('Rosem\Kernel', __DIR__ . '/View');
+                $this->engine->addFolder('Rosem\Admin', __DIR__ . '/../Admin/View');
+//                $this->engine->register(new \League\Plates\Extension\Asset(BASEDIR . '/public'));
+            }
+
+            /**
+             * Create a new template and render it.
+             *
+             * @param  string $templateName
+             * @param  array  $data
+             * @param array   $attributes
+             *
+             * @return string
+             */
+            public function render(string $templateName, array $data = [], array $attributes = []) : string
+            {
+                return $this->engine->render($templateName, $data, $attributes);
+            }
+        };
     }
 }

@@ -8,6 +8,8 @@ use TrueStd\App\AppConfigInterface;
 
 class AppConfig implements AppConfigInterface, ArrayAccess, Countable
 {
+    protected const REGEX_VAR = '/\${([a-zA-Z0-9_.-]+)}/';
+
     /**
      * Data array
      *
@@ -39,6 +41,17 @@ class AppConfig implements AppConfigInterface, ArrayAccess, Countable
         return new static($data);
     }
 
+    protected function replaceVars($value)
+    {
+        if (is_string($value) && strpos($value, '$') !== false) {
+            $value = preg_replace_callback(self::REGEX_VAR, function ($matches) {
+                return $this->get($matches[1], $matches[0]);
+            }, $value);
+        }
+
+        return $value;
+    }
+
     /**
      * Recursively getting value from array by query
      *
@@ -54,9 +67,9 @@ class AppConfig implements AppConfigInterface, ArrayAccess, Countable
     {
         $next = &$array[$path[$offset]];
 
-        return $offset < $lastIndex
+        return $next && $offset < $lastIndex
             ? $this->getVal($next, $default, $path, ++$offset, $lastIndex)
-            : (null === $next ? $default : $next);
+            : $this->replaceVars(null === $next ? $default : $next);
     }
 
     /**

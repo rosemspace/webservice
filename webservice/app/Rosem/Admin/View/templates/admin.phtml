@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var string $title
+ */
+?>
+<?php $v->layout('Rosem/Kernel/View/layouts/base', [
+    'metaTitlePrefix' => $metaTitlePrefix,
+    'metaTitle'       => $metaTitle,
+    'metaTitleSuffix' => $metaTitleSuffix,
+]) ?>
+
+<?php $v->push('styles') ?>
+<link rel="stylesheet" id="admin-styles">
+<?php $v->end() ?>
+
+<?php $v->unshift('scripts') ?>
+<script type="text/javascript" id="admin-scripts"></script>
+<?php $v->end() ?>
+
+<?php $v->push('body') ?>
+<div id="app">Hello from admin</div>
+<?php $v->end() ?>

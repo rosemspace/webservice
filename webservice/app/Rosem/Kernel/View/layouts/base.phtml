@@ -1,0 +1,33 @@
+<?php
+/**
+ * @var string $appName
+ * @var string $lang
+ * @var string $metaTitlePrefix
+ * @var string $metaTitle
+ * @var string $metaTitleSuffix
+ */
+?>
+<!doctype html>
+<html lang="<?=$lang ?? 'en-US'?>">
+<head>
+    <meta charset="<?=$charset ?? 'utf-8'?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?=$metaTitlePrefix?><?=$metaTitle?><?=$metaTitleSuffix?></title>
+<!--    <link rel="stylesheet" href="--><?php //echo $v->asset('/css/style.css')?><!--">-->
+<!--    <link rel="stylesheet" href="--><?php //echo $v->asset('/css/app.css')?><!--">-->
+    <?=$v->section('styles')?>
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:300,300i,400,400i,700,700i" rel="stylesheet">
+    <?=$v->section('head_scripts')?>
+</head>
+<body>
+<?=$v->section('body')?>
+<noscript>
+    <p>To use <mark><?=$appName?></mark>, please enable JavaScript.</p>
+</noscript>
+<!--<script src="--><?php //echo $v->static('assets::js/vendor.bundle.js')?><!--"></script>-->
+<!--<script src="--><?php //echo $v->static('assets::js/app.js')?><!--"></script>-->
+<!--<script src="--><?php //echo $v->asset('/js/vendor.bundle.js')?><!--"></script>-->
+<!--<script src="--><?php //echo $v->asset('/js/app.js')?><!--"></script>-->
+<?=$v->section('scripts')?>
+</body>
+</html>

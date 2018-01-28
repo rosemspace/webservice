@@ -59,10 +59,7 @@ class RouteMiddleware implements MiddlewareInterface
     public function createNotFoundResponse() : ResponseInterface
     {
         $response = $this->responseFactory->createResponse(404);
-
-        if ($response->getBody()->isWritable()) {
-            $response->getBody()->write('Not found :(');
-        }
+        $response->getBody()->write('Not found :(');
 
         return $response;
     }
@@ -70,10 +67,7 @@ class RouteMiddleware implements MiddlewareInterface
     public function createMethodNotAllowedResponse() : ResponseInterface
     {
         $response = $this->responseFactory->createResponse(405);
-
-        if ($response->getBody()->isWritable()) {
-            $response->getBody()->write('Method not allowed :(');
-        }
+        $response->getBody()->write('Method not allowed :(');
 
         return $response;
     }
