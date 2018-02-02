@@ -1,22 +1,18 @@
 <?php
 /**
- * @var string $metaTitlePrefix
  * @var string $metaTitle
- * @var string $metaTitleSuffix
  */
 ?>
-<?php $v->layout(__DIR__ . '/../layouts/base', [
-    'metaTitlePrefix' => $v($metaTitlePrefix ?? ''),
-    'metaTitle'       => $v($metaTitle),
-    'metaTitleSuffix' => $v($metaTitleSuffix ?? ''),
+<?php $v->layout('Rosem.Kernel::layouts/base', [
+    'metaTitle' => $v($metaTitle),
 ]) ?>
 
 <?php $v->push('styles') ?>
-<link rel="stylesheet" id="main-styles">
+<link rel="stylesheet" href="<?php echo '/css/site.css' ?>">
 <?php $v->end() ?>
 
 <?php $v->push('scripts'); ?>
-<script type="text/javascript" id="main-scripts"></script>
+<script src="<?php echo '/js/site.js' ?>"></script>
 <?php $v->end(); ?>
 
 <?php $v->start('body') ?>

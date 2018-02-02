@@ -1,22 +1,18 @@
 <?php
 /**
- * @var string $metaTitlePrefix
  * @var string $metaTitle
- * @var string $metaTitleSuffix
  */
 ?>
 <?php $v->layout('Rosem/Kernel/View/layouts/base', [
-    'metaTitlePrefix' => $v($metaTitlePrefix ?? ''),
-    'metaTitle'       => $v($metaTitle),
-    'metaTitleSuffix' => $v($metaTitleSuffix ?? ''),
+    'metaTitle' => $v($metaTitle),
 ]) ?>
 
 <?php $v->push('styles') ?>
-<link rel="stylesheet" id="admin-styles">
+<link rel="stylesheet" href="<?php echo '/css/admin.css' ?>">
 <?php $v->end() ?>
 
 <?php $v->unshift('scripts') ?>
-<script type="text/javascript" id="admin-scripts"></script>
+<script src="<?php echo '/js/admin.js' ?>"></script>
 <?php $v->end() ?>
 
 <?php $v->push('body') ?>

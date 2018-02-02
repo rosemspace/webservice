@@ -31,15 +31,15 @@ class RouteCollector implements RouteCollectorInterface
      *
      * @param string|string[] $httpMethod
      * @param string $route
-     * @param mixed  $handler
+     * @param mixed  ...$handlers
      */
-    public function addRoute($httpMethod, string $route, $handler) : void {
+    public function addRoute($httpMethod, string $route, ...$handlers) : void {
         $route = $this->currentGroupPrefix . $route;
         $routeDataList = $this->routeParser->parse($route);
 
         foreach ((array) $httpMethod as $method) {
             foreach ($routeDataList as $routeData) {
-                $this->dataGenerator->addRoute($method, $routeData, $handler);
+                $this->dataGenerator->addRoute($method, $routeData, $handlers);
             }
         }
     }
@@ -65,10 +65,10 @@ class RouteCollector implements RouteCollectorInterface
      * This is simply an alias of $this->addRoute('GET', $route, $handler)
      *
      * @param string $route
-     * @param mixed  $handler
+     * @param mixed  ...$handlers
      */
-    public function get(string $route, $handler) : void {
-        $this->addRoute(self::GET, $route, $handler);
+    public function get(string $route, ...$handlers) : void {
+        $this->addRoute(self::GET, $route, ...$handlers);
     }
 
     /**
@@ -77,10 +77,10 @@ class RouteCollector implements RouteCollectorInterface
      * This is simply an alias of $this->addRoute('POST', $route, $handler)
      *
      * @param string $route
-     * @param mixed  $handler
+     * @param mixed  ...$handlers
      */
-    public function post(string $route, $handler) : void {
-        $this->addRoute(self::POST, $route, $handler);
+    public function post(string $route, ...$handlers) : void {
+        $this->addRoute(self::POST, $route, ...$handlers);
     }
 
     /**
@@ -89,10 +89,10 @@ class RouteCollector implements RouteCollectorInterface
      * This is simply an alias of $this->addRoute('PUT', $route, $handler)
      *
      * @param string $route
-     * @param mixed  $handler
+     * @param mixed  ...$handlers
      */
-    public function put(string $route, $handler) : void {
-        $this->addRoute(self::PUT, $route, $handler);
+    public function put(string $route, ...$handlers) : void {
+        $this->addRoute(self::PUT, $route, ...$handlers);
     }
 
     /**
@@ -101,10 +101,10 @@ class RouteCollector implements RouteCollectorInterface
      * This is simply an alias of $this->addRoute('DELETE', $route, $handler)
      *
      * @param string $route
-     * @param mixed  $handler
+     * @param mixed  ...$handlers
      */
-    public function delete(string $route, $handler) : void {
-        $this->addRoute(self::DELETE, $route, $handler);
+    public function delete(string $route, ...$handlers) : void {
+        $this->addRoute(self::DELETE, $route, ...$handlers);
     }
 
     /**
@@ -113,10 +113,10 @@ class RouteCollector implements RouteCollectorInterface
      * This is simply an alias of $this->addRoute('PATCH', $route, $handler)
      *
      * @param string $route
-     * @param mixed  $handler
+     * @param mixed  ...$handlers
      */
-    public function patch(string $route, $handler) : void {
-        $this->addRoute(self::PATCH, $route, $handler);
+    public function patch(string $route, ...$handlers) : void {
+        $this->addRoute(self::PATCH, $route, ...$handlers);
     }
 
     /**
@@ -125,10 +125,10 @@ class RouteCollector implements RouteCollectorInterface
      * This is simply an alias of $this->addRoute('HEAD', $route, $handler)
      *
      * @param string $route
-     * @param mixed  $handler
+     * @param mixed  ...$handlers
      */
-    public function head(string $route, $handler) : void {
-        $this->addRoute(self::HEAD, $route, $handler);
+    public function head(string $route, ...$handlers) : void {
+        $this->addRoute(self::HEAD, $route, ...$handlers);
     }
 
     /**

@@ -27,7 +27,7 @@ class KernelServiceProvider implements ServiceProviderInterface
             ResponseFactoryInterface::class      => [static::class, 'createResponseFactory'],
             MiddlewareFactoryInterface::class    => [static::class, 'createMiddlewareFactory'],
             RouteCollectorInterface::class       => [static::class, 'createRouteCollector'],
-            RouteDispatcherInterface::class      => [static::class, 'createSimpleRouteDispatcher'],
+            RouteDispatcherInterface::class      => [static::class, 'createRouteDispatcher'],
             ViewInterface::class                 => [static::class, 'createView'],
 
             \Analogue\ORM\Analogue::class                => function (ContainerInterface $container) {
@@ -49,8 +49,11 @@ class KernelServiceProvider implements ServiceProviderInterface
     public function getExtensions() : array
     {
         return [
-            RouteCollectorInterface::class => function (RouteCollectorInterface $r) {
-                $r->get('/{relativePath:.*}', [
+            RouteCollectorInterface::class => function (
+                ContainerInterface $container,
+                RouteCollectorInterface $routeCollector
+            ) {
+                $routeCollector->get('/{relativePath:.*}', [
                     \Rosem\Kernel\Controller\MainController::class,
                     'index',
                 ]);
@@ -109,7 +112,7 @@ class KernelServiceProvider implements ServiceProviderInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function createSimpleRouteDispatcher(ContainerInterface $container)
+    public function createRouteDispatcher(ContainerInterface $container)
     {
         return new \TrueCode\RouteCollector\RouteDispatcher(
             $container->get(RouteCollectorInterface::class)->getData(),

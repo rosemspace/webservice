@@ -53,7 +53,7 @@ class RouteMiddleware implements MiddlewareInterface
             $request = $request->withAttribute($name, $value);
         }
 
-        return $this->middlewareFactory->createMiddleware($route[1])->process($request, $nextHandler);
+        return $this->middlewareFactory->createMiddleware(...$route[1])->process($request, $nextHandler);
     }
 
     public function createNotFoundResponse() : ResponseInterface

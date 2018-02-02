@@ -11,11 +11,11 @@
 |
 */
 
-try {
+//try {
     $app = Rosem\App\AppFactory::create();
     $app->loadServiceProviders(__DIR__ . '/config/service_providers.php');
     $app->loadMiddlewares(__DIR__ . '/config/middlewares.php');
     $app->boot(__DIR__ . '/config/app.php');
-} catch (\Exception $e) {
-    echo $e->getMessage();
-}
+//} catch (\Exception $e) {
+//    echo $e->getMessage();
+//}

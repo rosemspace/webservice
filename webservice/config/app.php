@@ -11,7 +11,7 @@ return [
         'meta'  => [
             'charset'     => 'utf-8',
             'titlePrefix' => '${app.name} | ',
-            'title'       => 'Welcome',
+            'title'       => '${app.meta.titlePrefix}Welcome${app.meta.titleSuffix}',
             'titleSuffix' => '',
         ],
     ],

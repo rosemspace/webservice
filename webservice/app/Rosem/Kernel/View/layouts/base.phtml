@@ -2,9 +2,7 @@
 /**
  * @var string $appName
  * @var string $lang
- * @var string $metaTitlePrefix
  * @var string $metaTitle
- * @var string $metaTitleSuffix
  */
 ?>
 <!doctype html>
@@ -12,11 +10,13 @@
 <head>
     <meta charset="<?=$v($charset ?? 'utf-8')?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?=$v($metaTitlePrefix ?? '')?><?=$v($metaTitle)?><?=$v($metaTitleSuffix ?? '')?></title>
-<!--    <link rel="stylesheet" href="--><?php //echo $v->asset('/css/style.css')?><!--">-->
+    <title><?=$v($metaTitle)?></title>
+    <link rel="stylesheet" href="<?php echo '/css/rosem.css'?>">
 <!--    <link rel="stylesheet" href="--><?php //echo $v->asset('/css/app.css')?><!--">-->
     <?=$v->section('styles')?>
-    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:300,300i,400,400i,700,700i" rel="stylesheet">
+<!--    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:100,200,300,400,500,600,700" rel="stylesheet">
+    <!--    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:300,300i,400,400i,700,700i" rel="stylesheet">-->
     <?=$v->section('head_scripts')?>
 </head>
 <body>
@@ -25,7 +25,6 @@
     <p>To use <mark><?=$v($appName)?></mark>, please enable JavaScript.</p>
 </noscript>
 <script src="<?php echo '/js/vendor.bundle.js'?>"></script>
-<script src="<?php echo '/js/app.js'?>"></script>
 <?=$v->section('scripts')?>
 </body>
 </html>

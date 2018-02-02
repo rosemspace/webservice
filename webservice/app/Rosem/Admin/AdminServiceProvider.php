@@ -29,8 +29,11 @@ class AdminServiceProvider implements ServiceProviderInterface
     public function getExtensions() : array
     {
         return [
-            RouteCollectorInterface::class => function (ContainerInterface $container) {
-                $container->get(RouteCollectorInterface::class)->get(
+            RouteCollectorInterface::class => function (
+                ContainerInterface $container,
+                RouteCollectorInterface $routeCollector
+            ) {
+                $routeCollector->get(
                     "/{$container->get(AppConfigInterface::class)->get('admin.uri')}[/{relativePath:.*}]",
                     [AdminController::class, 'index']
                 );
