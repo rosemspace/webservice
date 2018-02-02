@@ -1,0 +1,99 @@
+:root {
+    /* Controls */
+
+    @custom-selector :--text-input
+        input:not(
+            [type=button],
+            [type=checkbox],
+            [type=color],
+            [type=file],
+            [type=hidden],
+            [type=image],
+            [type=radio],
+            [type=range],
+            [type=reset],
+            [type=submit]
+        ),
+        textarea,
+        [contenteditable=true],
+        [role=textbox];
+
+    @custom-selector :--form-button
+        input:matches(
+            [type=button],
+            [type=reset],
+            [type=submit]
+        ),
+        button;
+
+    @custom-selector :--button
+        input:matches(
+            [type=button],
+            [type=submit]
+        ),
+        button,
+        [role=button];
+
+    @custom-selector :--submit
+        input[type=submit],
+        button[type=submit];
+
+    @custom-selector :--form-control
+        button,
+        input,
+        select,
+        textarea;
+
+    @custom-selector :--control
+        button,
+        input,
+        select,
+        textarea,
+        [role=button],
+        [role=checkbox],
+        [role=textbox],
+        [contenteditable=true];
+
+    @custom-selector :--placeholder
+        ::placeholder,
+        [aria-placeholder];
+
+    /* Control states */
+
+    @custom-selector :--hover
+        :hover,
+        [hovered];
+
+    @custom-selector :--focus
+        :focus,
+        [focused];
+
+    @custom-selector :--disabled
+        [disabled],
+        [aria-disabled=true];
+
+    @custom-selector :--enter :hover, :focus;
+
+    @custom-selector :--check
+        [aria-checked=true];
+
+    @custom-selector :--check-mix
+        [aria-checked=mixed];
+
+
+    /* Typography */
+
+    @custom-selector :--heading h1, h2, h3, h4, h5, h6;
+
+    @custom-selector :--area article, section, form, nav, aside, header, footer;
+
+    @custom-selector :--icon
+        i[class^=icon];
+
+    @custom-selector :--popup [id^=popup];
+    @custom-selector :--popper .BasePopper;
+
+    @custom-selector :--edge-children
+        :first-child,
+        :last-child;
+}
