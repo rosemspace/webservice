@@ -22,7 +22,7 @@ class AggregateBindingProxy extends AbstractAggregateBinding implements Aggregat
 
     protected $aggregate = [[], []];
 
-    protected $committedAggregate = [[], []];
+    protected $aggregateCommitted = [[], []];
 
     public function withMethodCall(string $method, array $args = []) : AggregateBindingInterface
     {
@@ -38,39 +38,33 @@ class AggregateBindingProxy extends AbstractAggregateBinding implements Aggregat
         return $this;
     }
 
+    protected function resolveAggregate(BindingInterface $binding, array &$aggregate)
+    {
+        if ($aggregate[self::METHOD]) {
+            foreach ($aggregate[self::METHOD] as $method => $args) {
+                $binding = $binding->withMethodCall($method, $args);
+            }
+        }
+
+        if ($aggregate[self::FUNCTION]) {
+            foreach ($aggregate[self::FUNCTION] as [$function, $args]) {
+                $binding = $binding->withFunctionCall($function, $args);
+            }
+        }
+
+        return $binding;
+    }
+
     public function resolve() : AggregateBindingInterface
     {
         $contextBinding = $this->context->resolve();
+        $resolvedBinding = $this->resolveAggregate($contextBinding, $this->aggregateCommitted);
 
-        if ($this->committedAggregate[self::METHOD]) {
-            foreach ($this->committedAggregate[self::METHOD] as $method => $args) {
-                $contextBinding = $contextBinding->withMethodCall($method, $args);
-            }
-
-            $contextBinding->commit();
+        if ($resolvedBinding !== $contextBinding) {
+            $resolvedBinding->commit();
         }
 
-        if ($this->committedAggregate[self::FUNCTION]) {
-            foreach ($this->committedAggregate[self::FUNCTION] as [$function, $args]) {
-                $contextBinding = $contextBinding->withFunctionCall($function, $args);
-            }
-
-            $contextBinding->commit();
-        }
-
-        if ($this->aggregate[self::METHOD]) {
-            foreach ($this->aggregate[self::METHOD] as $method => $args) {
-                $contextBinding = $contextBinding->withMethodCall($method, $args);
-            }
-        }
-
-        if ($this->aggregate[self::FUNCTION]) {
-            foreach ($this->aggregate[self::FUNCTION] as [$function, $args]) {
-                $contextBinding = $contextBinding->withFunctionCall($function, $args);
-            }
-        }
-
-        return $contextBinding;
+        return $this->resolveAggregate($resolvedBinding, $this->aggregate);
     }
 
     /**
@@ -97,11 +91,23 @@ class AggregateBindingProxy extends AbstractAggregateBinding implements Aggregat
         return $this->resolve()->call(...$args);
     }
 
+    /**
+     * @param array[] ...$args
+     *
+     * @return mixed
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function invoke(array &...$args)
+    {
+        return $this->resolve()->invoke(...$args);
+    }
+
     public function commit() : BindingInterface
     {
-        $this->committedAggregate = [
-            self::METHOD   => array_merge($this->committedAggregate[self::METHOD], $this->aggregate[self::METHOD]),
-            self::FUNCTION => array_merge($this->committedAggregate[self::FUNCTION], $this->aggregate[self::FUNCTION]),
+        $this->aggregateCommitted = [
+            self::METHOD   => array_merge($this->aggregateCommitted[self::METHOD], $this->aggregate[self::METHOD]),
+            self::FUNCTION => array_merge($this->aggregateCommitted[self::FUNCTION], $this->aggregate[self::FUNCTION]),
         ];
         $this->aggregate = [[], []];
 

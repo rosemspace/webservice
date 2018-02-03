@@ -2,11 +2,9 @@
 
 namespace TrueCode\Container\Binding\Proxy;
 
-use TrueCode\Container\Binding\{
-    AggregateBindingInterface, BindingInterface
-};
+use TrueCode\Container\Binding\AggregateBindingInterface;
 
-interface AggregateBindingProxyInterface extends BindingInterface
+interface AggregateBindingProxyInterface extends AggregateBindingInterface
 {
     public function resolve() : AggregateBindingInterface;
 }

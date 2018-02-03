@@ -5,9 +5,9 @@ namespace TrueCode\Container\Binding;
 use TrueCode\Container\AbstractContainer;
 
 /**
- * Trait CallableAggregateTrait.
+ * Trait AggregateTrait.
  */
-trait CallableAggregateTrait
+trait AggregateTrait
 {
     /**
      * @var AbstractContainer

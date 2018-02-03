@@ -2,14 +2,12 @@
 
 namespace TrueCode\Container\Binding;
 
-use TrueCode\Container\ExtractorTrait;
-
 class MethodAggregateBinding extends AbstractAggregateBinding
 {
-    use ExtractorTrait,
-        AggregateInstantiationTrait;
+    use AggregateProcessTrait;
+    use AggregateTrait;
 
-    protected function aggregateMake(array &$aggregate, $context, array &$args = [], &$result = null)
+    protected function makeAggregate(array &$aggregate, $context, array &$args = [], &$result = null)
     {
         $localResult = null;
 
@@ -35,17 +33,17 @@ class MethodAggregateBinding extends AbstractAggregateBinding
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    protected function invoke(array &...$args)
+    protected function process(array &...$args) : array
     {
-        $this->normalizeInvokeArgs($args);
-        $context = $this->context->make($this->extractFirst($args));
+        $this->normalizeArgs($args);
+        $context = $this->make(...$args);
         $result = null;
 
         // preserve temporary context which will be injected into all methods calls
         $this->container->instance($this->getAbstract(), $context)->commit();
 
-        $this->aggregateMake($this->committedAggregate, $context, $args, $result);
-        $this->aggregateMake($this->aggregate, $context, $args, $result);
+        $this->makeAggregate($this->aggregateCommitted, $context, $args, $result);
+        $this->makeAggregate($this->aggregate, $context, $args, $result);
 
         // replace preserved earlier temporary context by reverting original binding
         $this->container->set($this->getAbstract(), $this);

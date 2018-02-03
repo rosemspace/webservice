@@ -69,6 +69,8 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
 
     abstract public function make(string $abstract, array ...$args);
 
+    abstract public function invoke($abstract, array ...$args);
+
     abstract public function call($callable, array ...$args);
 
     abstract public function isShared(string $abstract) : bool;

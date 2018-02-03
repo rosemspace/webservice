@@ -101,6 +101,21 @@ class Container extends AbstractContainer
         return $binding->make(...$args);
     }
 
+    public function invoke($abstract, array ...$args)
+    {
+        if (! $binding = $this->find($abstract)) {
+            if ($this->delegate) {
+                return $this->delegate->invoke($abstract, ...$args);
+            }
+
+            throw new Exception\NotFoundException("$abstract binding not found.");
+        }
+
+        return $binding instanceof AggregateBindingInterface
+            ? $binding->invoke(...$args)
+            : $binding->make(...$args);
+    }
+
     /**
      * @param array|callable $callable
      * @param array[]        ...$args
@@ -177,7 +192,7 @@ class Container extends AbstractContainer
      */
     public function get($abstract)
     {
-        return $this->make($abstract);
+        return $this->invoke($abstract);
     }
 
     /**

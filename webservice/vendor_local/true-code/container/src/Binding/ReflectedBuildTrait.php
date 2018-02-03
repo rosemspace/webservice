@@ -62,7 +62,7 @@ trait ReflectedBuildTrait
             $item = $stack[--$stackLength];
 
             if ($item instanceof ReflectionClass && ! is_object(reset($args))) {
-                $building[] = $this->container->make(
+                $building[] = $this->container->invoke(
                     $item->name,
                     $this->container->has($item->name) && $this->container->isShared($item->name)
                         ? $args

@@ -12,4 +12,13 @@ interface AggregateBindingInterface extends BindingInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function call(array &...$args);
+
+    /**
+     * @param array[] ...$args
+     *
+     * @return mixed
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function invoke(array &...$args);
 }

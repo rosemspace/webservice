@@ -2,11 +2,13 @@
 
 namespace TrueCode\Container\Binding;
 
-use TrueCode\Container\AbstractContainer;
+use TrueCode\Container\{
+    AbstractContainer, ExtractorTrait
+};
 
 abstract class AbstractAggregateBinding implements AggregateBindingInterface
 {
-    use CallableAggregateTrait;
+    use ExtractorTrait;
 
     /**
      * @var AbstractContainer
@@ -26,13 +28,13 @@ abstract class AbstractAggregateBinding implements AggregateBindingInterface
     /**
      * @var BindingInterface[]|DependentBindingInterface[]
      */
-    protected $committedAggregate = [];
+    protected $aggregateCommitted = [];
 
     /**
      * AbstractAggregateBinding constructor.
      *
-     * @param AbstractContainer $container
-     * @param BindingInterface|CallableAggregateTrait  $context
+     * @param AbstractContainer               $container
+     * @param BindingInterface|AggregateTrait $context
      */
     public function __construct(AbstractContainer $container, BindingInterface $context)
     {
@@ -40,16 +42,21 @@ abstract class AbstractAggregateBinding implements AggregateBindingInterface
         $this->context = $context;
     }
 
-    protected function normalizeInvokeArgs(array &$args)
+    protected function normalizeArgs(array &$args)
     {
         if (($clone = reset($args)) && ! isset($args[1])) {
             $args[] = $clone;
         }
     }
 
+    public function make(array &...$args)
+    {
+        return $this->context->make($this->extractFirst($args));
+    }
+
     public function commit() : BindingInterface
     {
-        $this->committedAggregate = array_merge($this->committedAggregate, $this->aggregate);
+        $this->aggregateCommitted = array_merge($this->aggregateCommitted, $this->aggregate);
         $this->aggregate = [];
 
         return $this->container->set($this->getAbstract(), $this);
