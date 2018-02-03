@@ -28,7 +28,7 @@ class FunctionBinding extends AbstractBinding
     ) {
         parent::__construct($container, $abstract, $concrete, $args);
 
-        $this->reflector = new ReflectionFunction($this->concrete);
+        $this->reflector = new ReflectionFunction($this->getConcrete());
 
         if ($params = $this->reflector->getParameters()) {
             $this->stack = $this->getStack(SplFixedArray::fromArray($params));

@@ -5,9 +5,9 @@ namespace TrueCode\Container\Binding;
 use TrueCode\Container\AbstractContainer;
 
 /**
- * Trait AggregateTrait.
+ * Trait AggregateFactoryTrait.
  */
-trait AggregateTrait
+trait AggregateFactoryTrait
 {
     /**
      * @var AbstractContainer

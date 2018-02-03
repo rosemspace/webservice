@@ -24,7 +24,7 @@ class ClassBinding extends AbstractBinding
     {
         parent::__construct($container, $abstract, $concrete, $args);
 
-        $this->reflector = new ReflectionClass($this->concrete);
+        $this->reflector = new ReflectionClass($this->getConcrete());
 
         if (
             ($constructor = $this->reflector->getConstructor()) &&

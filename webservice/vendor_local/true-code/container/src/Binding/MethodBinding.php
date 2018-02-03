@@ -11,11 +11,6 @@ class MethodBinding implements DependentBindingInterface
     use ReflectedBuildTrait;
 
     /**
-     * @var string
-     */
-    protected $concrete;
-
-    /**
      * @var array
      */
     protected $args;
@@ -24,18 +19,17 @@ class MethodBinding implements DependentBindingInterface
      * MethodBinding constructor.
      *
      * @param AbstractContainer $container
-     * @param                   $context
-     * @param                   $concrete
+     * @param mixed             $context
+     * @param string            $method
      * @param array             $args
      *
      * @throws \ReflectionException
      */
-    public function __construct(AbstractContainer $container, $context, $concrete = null, array $args = [])
+    public function __construct(AbstractContainer $container, $context, string $method, array $args = [])
     {
         $this->container = $container;
-        $this->concrete = $concrete;
         $this->args = $args;
-        $this->reflector = new ReflectionMethod($context, $this->concrete);
+        $this->reflector = new ReflectionMethod($context, $method);
 
         if ($params = SplFixedArray::fromArray($this->reflector->getParameters())) {
             $this->stack = $this->getStack($params);

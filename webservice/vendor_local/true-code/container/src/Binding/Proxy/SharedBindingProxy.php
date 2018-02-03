@@ -30,8 +30,8 @@ class SharedBindingProxy extends BindingProxy implements SharedBindingInterface
     {
         $instance = $this->resolve()->make(...$args);
 
-        if ($this->committed) {
-            $this->container->instance($this->abstract, $instance)->commit();
+        if (! $this->committed) {
+            $this->container->instance($this->getAbstract(), $instance)->commit();
         }
 
         return $instance;

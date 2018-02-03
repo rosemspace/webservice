@@ -34,7 +34,7 @@ abstract class AbstractAggregateBinding implements AggregateBindingInterface
      * AbstractAggregateBinding constructor.
      *
      * @param AbstractContainer               $container
-     * @param BindingInterface|AggregateTrait $context
+     * @param BindingInterface|AggregateFactoryTrait $context
      */
     public function __construct(AbstractContainer $container, BindingInterface $context)
     {

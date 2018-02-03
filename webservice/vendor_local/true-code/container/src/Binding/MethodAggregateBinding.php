@@ -4,8 +4,8 @@ namespace TrueCode\Container\Binding;
 
 class MethodAggregateBinding extends AbstractAggregateBinding
 {
+    use AggregateFactoryTrait;
     use AggregateProcessTrait;
-    use AggregateTrait;
 
     protected function makeAggregate(array &$aggregate, $context, array &$args = [], &$result = null)
     {

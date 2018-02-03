@@ -6,7 +6,7 @@ use TrueCode\Container\AbstractContainer;
 
 abstract class AbstractBinding implements BindingInterface
 {
-    use AggregateTrait;
+    use AggregateFactoryTrait;
 
     /**
      * @var AbstractContainer

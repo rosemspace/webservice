@@ -37,7 +37,7 @@ class BindingProxy extends AbstractBinding implements BindingProxyInterface
 
     public function resolve() : BindingInterface
     {
-        return $this->container->forceBind($this->abstract, $this->concrete, ...$this->args);
+        return $this->container->forceBind($this->getAbstract(), $this->getConcrete(), ...$this->args);
     }
 
     /**
@@ -50,8 +50,8 @@ class BindingProxy extends AbstractBinding implements BindingProxyInterface
     public function make(array &...$args)
     {
         return $this->committed
-            ? $this->resolve()->commit()->make(...$args)
-            : $this->resolve()->make(...$args);
+            ? $this->resolve()->make(...$args)
+            : $this->resolve()->commit()->make(...$args);
     }
 
     public function commit() : BindingInterface
