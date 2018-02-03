@@ -1,15 +1,15 @@
 <?php
 
-namespace TrueCode\Container\Binding\Proxy;
+namespace TrueCode\Container\Definition\Proxy;
 
 use TrueCode\Container\{
-    Binding\AbstractAggregateBinding,
-    Binding\AggregateBindingInterface,
-    Binding\BindingInterface,
+    Definition\Aggregate\AbstractAggregatedDefinition,
+    Definition\Aggregate\AggregatedDefinitionInterface,
+    Definition\DefinitionInterface,
     ExtractorTrait
 };
 
-class AggregateBindingProxy extends AbstractAggregateBinding implements AggregateBindingProxyInterface
+class AggregatedDefinitionProxy extends AbstractAggregatedDefinition implements AggregatedDefinitionProxyInterface
 {
     use ExtractorTrait;
 
@@ -18,25 +18,25 @@ class AggregateBindingProxy extends AbstractAggregateBinding implements Aggregat
     protected const FUNCTION = 1;
 
     /**
-     * @var BindingProxyInterface
+     * @var DefinitionProxyInterface
      */
     protected $context;
 
-    public function withMethodCall(string $method, array $args = []) : AggregateBindingInterface
+    public function withMethodCall(string $method, array $args = []) : AggregatedDefinitionInterface
     {
         $this->aggregate[] = [self::METHOD, $method, $args];
 
         return $this;
     }
 
-    public function withFunctionCall(callable $function, array $args = []) : AggregateBindingInterface
+    public function withFunctionCall(callable $function, array $args = []) : AggregatedDefinitionInterface
     {
         $this->aggregate[] = [self::FUNCTION, $function, $args];
 
         return $this;
     }
 
-    protected function resolveAggregate(BindingInterface $binding, array &$aggregate)
+    protected function resolveAggregate(DefinitionInterface $binding, array &$aggregate)
     {
         if ($aggregate) {
             foreach ($aggregate as [$type, $callable, $args]) {
@@ -49,7 +49,7 @@ class AggregateBindingProxy extends AbstractAggregateBinding implements Aggregat
         return $binding;
     }
 
-    public function resolve() : AggregateBindingInterface
+    public function resolve() : AggregatedDefinitionInterface
     {
         $contextBinding = $this->context->resolve();
         $resolvedBinding = $this->resolveAggregate($contextBinding, $this->aggregateCommitted);
@@ -97,7 +97,7 @@ class AggregateBindingProxy extends AbstractAggregateBinding implements Aggregat
         return $this->resolve()->invoke(...$args);
     }
 
-    public function commit() : BindingInterface
+    public function commit() : DefinitionInterface
     {
         $this->aggregateCommitted = array_merge($this->aggregateCommitted, $this->aggregate);
         $this->aggregate = [];

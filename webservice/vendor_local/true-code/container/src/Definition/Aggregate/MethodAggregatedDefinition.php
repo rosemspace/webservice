@@ -1,12 +1,14 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition\Aggregate;
 
-class MethodAggregateBinding extends AbstractAggregateBinding
+class MethodAggregatedDefinition extends AbstractAggregatedDefinition
 {
-    use AggregateFactoryTrait, AggregateProcessTrait, AggregateTrait {
-        AggregateFactoryTrait::withFunctionCall insteadof AggregateTrait;
-        AggregateTrait::withMethodCall insteadof AggregateFactoryTrait;
+    use CollectorTrait,
+        FactoryTrait,
+        ProcessTrait {
+        CollectorTrait::withMethodCall insteadof FactoryTrait;
+        FactoryTrait::withFunctionCall insteadof CollectorTrait;
     }
 
     protected function makeAggregate(array &$aggregate, $context, array &$args = [], &$result = null)

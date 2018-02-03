@@ -16,7 +16,7 @@ class Graph implements GraphInterface
     protected $container;
 
     /**
-     * @var \TrueCode\Container\Binding\BindingInterface[]
+     * @var \TrueCode\Container\Definition\DefinitionInterface[]
      */
     protected $types   = [];
 

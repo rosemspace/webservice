@@ -1,6 +1,6 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition;
 
 use ReflectionClass;
 use SplFixedArray;

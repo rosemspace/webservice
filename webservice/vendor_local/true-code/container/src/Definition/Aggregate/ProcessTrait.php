@@ -1,8 +1,8 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition\Aggregate;
 
-trait AggregateProcessTrait
+trait ProcessTrait
 {
     /**
      * @param array[] ...$args

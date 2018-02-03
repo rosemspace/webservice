@@ -1,12 +1,12 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition;
 
 use TrueCode\Container\AbstractContainer;
 
-abstract class AbstractBinding implements BindingInterface
+abstract class AbstractDefinition implements DefinitionInterface
 {
-    use AggregateFactoryTrait;
+    use Aggregate\FactoryTrait;
 
     /**
      * @var AbstractContainer
@@ -36,7 +36,7 @@ abstract class AbstractBinding implements BindingInterface
         $this->args = $args;
     }
 
-    public function commit() : BindingInterface
+    public function commit() : DefinitionInterface
     {
         return $this->container->set($this->getAbstract(), $this);
     }

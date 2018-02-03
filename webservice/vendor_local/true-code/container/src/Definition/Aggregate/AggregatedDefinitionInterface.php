@@ -1,8 +1,10 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition\Aggregate;
 
-interface AggregateBindingInterface extends BindingInterface
+use TrueCode\Container\Definition\DefinitionInterface;
+
+interface AggregatedDefinitionInterface extends DefinitionInterface
 {
     /**
      * @param array[] ...$args

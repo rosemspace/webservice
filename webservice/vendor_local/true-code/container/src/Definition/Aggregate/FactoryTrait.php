@@ -1,13 +1,13 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition\Aggregate;
 
 use InvalidArgumentException;
 
 /**
  * Trait AggregateFactoryTrait.
  */
-trait AggregateFactoryTrait
+trait FactoryTrait
 {
     protected function validateMethod(string $method)
     {
@@ -29,27 +29,27 @@ trait AggregateFactoryTrait
      * @param string $method
      * @param array  $args
      *
-     * @return AggregateBindingInterface
+     * @return AggregatedDefinitionInterface
      * @throws \ReflectionException
      */
-    public function withMethodCall(string $method, array $args = []) : AggregateBindingInterface
+    public function withMethodCall(string $method, array $args = []) : AggregatedDefinitionInterface
     {
         $this->validateMethod($method);
 
-        return (new MethodAggregateBinding($this->container, $this))->withMethodCall($method, $args);
+        return (new MethodAggregatedDefinition($this->container, $this))->withMethodCall($method, $args);
     }
 
     /**
      * @param callable $function
      * @param array    $args
      *
-     * @return AggregateBindingInterface
+     * @return AggregatedDefinitionInterface
      * @throws \ReflectionException
      */
-    public function withFunctionCall(callable $function, array $args = []) : AggregateBindingInterface
+    public function withFunctionCall(callable $function, array $args = []) : AggregatedDefinitionInterface
     {
         $this->validateFunction($function);
 
-        return (new FunctionAggregateBinding($this->container, $this))->withFunctionCall($function, $args);
+        return (new FunctionAggregatedDefinition($this->container, $this))->withFunctionCall($function, $args);
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace TrueCode\Container\Binding\Proxy;
+namespace TrueCode\Container\Definition\Proxy;
 
 use TrueCode\Container\{
-    Binding\SharedBindingInterface,
+    Definition\SharedDefinitionInterface,
     Container
 };
 
-class SharedBindingProxy extends BindingProxy implements SharedBindingInterface
+class SharedDefinitionProxy extends DefinitionProxy implements SharedDefinitionInterface
 {
     /**
      * @var array

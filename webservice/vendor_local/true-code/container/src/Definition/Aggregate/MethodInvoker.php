@@ -1,12 +1,15 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition\Aggregate;
 
 use ReflectionMethod;
 use SplFixedArray;
-use TrueCode\Container\AbstractContainer;
+use TrueCode\Container\{
+    AbstractContainer,
+    Definition\ReflectedBuildTrait
+};
 
-class MethodBinding
+class MethodInvoker
 {
     use ReflectedBuildTrait;
 

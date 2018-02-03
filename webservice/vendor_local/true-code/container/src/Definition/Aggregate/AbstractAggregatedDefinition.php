@@ -1,13 +1,14 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition\Aggregate;
 
 use TrueCode\Container\{
     AbstractContainer,
+    Definition\DefinitionInterface,
     ExtractorTrait
 };
 
-abstract class AbstractAggregateBinding implements AggregateBindingInterface
+abstract class AbstractAggregatedDefinition implements AggregatedDefinitionInterface
 {
     use ExtractorTrait;
 
@@ -17,27 +18,27 @@ abstract class AbstractAggregateBinding implements AggregateBindingInterface
     protected $container;
 
     /**
-     * @var BindingInterface
+     * @var DefinitionInterface
      */
     protected $context;
 
     /**
-     * @var BindingInterface[]
+     * @var DefinitionInterface[]
      */
     protected $aggregate = [];
 
     /**
-     * @var BindingInterface[]
+     * @var DefinitionInterface[]
      */
     protected $aggregateCommitted = [];
 
     /**
      * AbstractAggregateBinding constructor.
      *
-     * @param AbstractContainer $container
-     * @param BindingInterface  $context
+     * @param AbstractContainer                $container
+     * @param DefinitionInterface|FactoryTrait $context
      */
-    public function __construct(AbstractContainer $container, BindingInterface $context)
+    public function __construct(AbstractContainer $container, DefinitionInterface $context)
     {
         $this->container = $container;
         $this->context = $context;
@@ -62,7 +63,7 @@ abstract class AbstractAggregateBinding implements AggregateBindingInterface
         return $this->context->make($this->extractFirst($args));
     }
 
-    public function commit() : BindingInterface
+    public function commit() : DefinitionInterface
     {
         $this->aggregateCommitted = array_merge($this->aggregateCommitted, $this->aggregate);
         $this->aggregate = [];

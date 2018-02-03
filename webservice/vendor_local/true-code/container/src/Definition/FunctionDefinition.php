@@ -1,12 +1,12 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition;
 
 use ReflectionFunction;
 use SplFixedArray;
 use TrueCode\Container\AbstractContainer;
 
-class FunctionBinding extends AbstractBinding
+class FunctionDefinition extends AbstractDefinition
 {
     use ReflectedBuildTrait;
 

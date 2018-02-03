@@ -4,10 +4,10 @@ namespace TrueCode\Container;
 
 use ArrayAccess;
 use Psr\Container\ContainerInterface;
-use TrueCode\Container\Binding\{
-    AggregateBindingInterface,
-    BindingInterface,
-    Proxy\BindingProxyInterface
+use TrueCode\Container\Definition\{
+    AggregatedDefinitionInterface,
+    DefinitionInterface,
+    Proxy\DefinitionProxyInterface
 };
 
 /**
@@ -23,7 +23,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
     /**
      * The container's bindings.
      *
-     * @var BindingInterface[]
+     * @var DefinitionInterface[]
      */
     protected $bindings = [];
 
@@ -32,7 +32,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      */
     protected $delegate;
 
-    public function set(string $abstract, BindingInterface $binding) : BindingInterface
+    public function set(string $abstract, DefinitionInterface $binding) : DefinitionInterface
     {
         return $this->bindings[$abstract] = $binding;
     }
@@ -40,10 +40,10 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
     /**
      * @param string $abstract
      *
-     * @return BindingInterface|AggregateBindingInterface|null
+     * @return DefinitionInterface|AggregatedDefinitionInterface|null
      * @throws Exception\NotFoundException
      */
-    public function find(string $abstract) : ?BindingInterface
+    public function find(string $abstract) : ?DefinitionInterface
     {
         if ($this->has($abstract)) {
             return $this->bindings[$abstract];
@@ -61,13 +61,13 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
         $this->delegate = $container;
     }
 
-    abstract public function bind(string $abstract, $concrete = null, array ...$args) : BindingProxyInterface;
+    abstract public function bind(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface;
 
-    abstract public function forceBind(string $abstract, $concrete = null, array ...$args) : BindingInterface;
+    abstract public function forceBind(string $abstract, $concrete = null, array ...$args) : DefinitionInterface;
 
-    abstract public function share(string $abstract, $concrete = null, array ...$args) : BindingProxyInterface;
+    abstract public function share(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface;
 
-    abstract public function instance(string $abstract, $instance) : BindingInterface;
+    abstract public function instance(string $abstract, $instance) : DefinitionInterface;
 
     abstract public function make(string $abstract, array ...$args);
 

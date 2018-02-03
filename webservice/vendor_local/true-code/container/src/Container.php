@@ -2,8 +2,14 @@
 
 namespace TrueCode\Container;
 
-use TrueCode\Container\Binding\{
-    AggregateBindingInterface, BindingInterface, ClassBinding, FunctionBinding, SharedBinding, SharedBindingInterface, Proxy\BindingProxyInterface
+use TrueCode\Container\Definition\{
+    Aggregate\AggregatedDefinitionInterface,
+    ClassDefinition,
+    DefinitionInterface,
+    FunctionDefinition,
+    Proxy\DefinitionProxyInterface,
+    SharedDefinition,
+    SharedDefinitionInterface
 };
 
 class Container extends AbstractContainer
@@ -18,9 +24,9 @@ class Container extends AbstractContainer
         AbstractFacade::registerContainer($this);
     }
 
-    public function bind(string $abstract, $concrete = null, array ...$args) : BindingProxyInterface
+    public function bind(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface
     {
-        return new Binding\Proxy\BindingProxy($this, $abstract, $concrete ?: $abstract, $args);
+        return new Definition\Proxy\DefinitionProxy($this, $abstract, $concrete ?: $abstract, $args);
     }
 
     /**
@@ -28,10 +34,10 @@ class Container extends AbstractContainer
      * @param null    $concrete
      * @param array[] ...$args
      *
-     * @return BindingInterface
+     * @return DefinitionInterface
      * @throws \ReflectionException
      */
-    public function forceBind(string $abstract, $concrete = null, array ...$args) : BindingInterface
+    public function forceBind(string $abstract, $concrete = null, array ...$args) : DefinitionInterface
     {
         if (! $concrete) {
             $concrete = $abstract;
@@ -45,7 +51,7 @@ class Container extends AbstractContainer
             return $this->forceBindFunction($abstract, $concrete, reset($args) ?: []);
         }
 
-        return new SharedBinding($this, $abstract, $concrete, reset($args) ?: []);
+        return new SharedDefinition($this, $abstract, $concrete, reset($args) ?: []);
     }
 
     /**
@@ -53,12 +59,12 @@ class Container extends AbstractContainer
      * @param null    $concrete
      * @param array[] ...$args
      *
-     * @return BindingInterface
+     * @return DefinitionInterface
      * @throws \ReflectionException
      */
-    protected function forceBindClass(string $abstract, $concrete = null, array ...$args) : BindingInterface
+    protected function forceBindClass(string $abstract, $concrete = null, array ...$args) : DefinitionInterface
     {
-        $binding = new ClassBinding($this, $abstract, $concrete, $this->extractFirst($args));
+        $binding = new ClassDefinition($this, $abstract, $concrete, $this->extractFirst($args));
 
         return method_exists($concrete, '__invoke')
             ? $binding->withMethodCall('__invoke', $args ?: [])
@@ -70,12 +76,12 @@ class Container extends AbstractContainer
      * @param null   $concrete
      * @param array  $args
      *
-     * @return BindingInterface
+     * @return DefinitionInterface
      * @throws \ReflectionException
      */
-    protected function forceBindFunction(string $abstract, $concrete = null, array $args = []) : BindingInterface
+    protected function forceBindFunction(string $abstract, $concrete = null, array $args = []) : DefinitionInterface
     {
-        return new FunctionBinding($this, $abstract, $concrete, $args);
+        return new FunctionDefinition($this, $abstract, $concrete, $args);
     }
 
     /**
@@ -112,7 +118,7 @@ class Container extends AbstractContainer
             throw new Exception\NotFoundException("$abstract binding not found.");
         }
 
-        return $binding instanceof AggregateBindingInterface
+        return $binding instanceof AggregatedDefinitionInterface
             ? $binding->invoke(...$args)
             : $binding->make(...$args);
     }
@@ -162,12 +168,12 @@ class Container extends AbstractContainer
             }
 
             if ($binding = $this->find($callable)) {
-                if ($binding instanceof AggregateBindingInterface) {
+                if ($binding instanceof AggregatedDefinitionInterface) {
                     return $binding->call(...$args);
-                } elseif ($binding instanceof FunctionBinding) {
+                } elseif ($binding instanceof FunctionDefinition) {
                     return $binding->make(...$args);
                 } else {
-                    throw new Exception\ContainerException("Binding $callable is not callable");
+                    throw new Exception\ContainerException("Definition $callable is not callable");
                 }
             } else {
                 $notFound = true;
@@ -208,14 +214,14 @@ class Container extends AbstractContainer
         $this->bindings[$alias] = &$this->bindings[$abstract];
     }
 
-    public function instance(string $abstract, $instance) : BindingInterface
+    public function instance(string $abstract, $instance) : DefinitionInterface
     {
-        return new SharedBinding($this, $abstract, $instance);
+        return new SharedDefinition($this, $abstract, $instance);
     }
 
-    public function share(string $abstract, $concrete = null, array ...$args) : BindingProxyInterface
+    public function share(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface
     {
-        return new Binding\Proxy\SharedBindingProxy($this, $abstract, $concrete ?: $abstract, $args);
+        return new Definition\Proxy\SharedDefinitionProxy($this, $abstract, $concrete ?: $abstract, $args);
     }
 
     /**
@@ -229,6 +235,6 @@ class Container extends AbstractContainer
     {
         return ($this->delegate && ! $this->has($abstract))
             ? $this->delegate->isShared($abstract)
-            : $this->bindings[$abstract] instanceof SharedBindingInterface;
+            : $this->bindings[$abstract] instanceof SharedDefinitionInterface;
     }
 }

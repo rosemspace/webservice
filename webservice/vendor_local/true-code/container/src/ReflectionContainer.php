@@ -2,8 +2,9 @@
 
 namespace TrueCode\Container;
 
-use TrueCode\Container\Binding\{
-    AggregateBindingInterface, FunctionBinding
+use TrueCode\Container\Definition\{
+    Aggregate\AggregatedDefinitionInterface,
+    FunctionDefinition
 };
 
 class ReflectionContainer extends Container
@@ -65,12 +66,12 @@ class ReflectionContainer extends Container
         } elseif (is_callable($callable)) {
             if (is_string($callable)) {
                 if ($binding = $this->find($callable)) {
-                    if ($binding instanceof AggregateBindingInterface) {
+                    if ($binding instanceof AggregatedDefinitionInterface) {
                         return $binding->call(...$args);
-                    } elseif ($binding instanceof FunctionBinding) {
+                    } elseif ($binding instanceof FunctionDefinition) {
                         return $binding->make(...$args);
                     } else {
-                        throw new Exception\ContainerException("Binding $callable is not callable");
+                        throw new Exception\ContainerException("Definition $callable is not callable");
                     }
                 }
 
