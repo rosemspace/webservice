@@ -123,72 +123,66 @@ class Container extends AbstractContainer
             : $binding->make(...$args);
     }
 
-    /**
-     * @param array|callable $callable
-     * @param array[]        ...$args
-     *
-     * @return mixed
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     */
     public function call($callable, array ...$args)
     {
-        $notFound = false;
+        if (is_string($callable)) {
+            if (is_callable($callable)) {
+                if ($binding = $this->find($callable)) {
+                    return $binding instanceof AggregatedDefinitionInterface
+                        ? $binding->call(...$args)
+                        : $binding->make(...$args);
+                } elseif ($this->delegate) {
+                    return $this->delegate->call($callable, ...$args);
+                }
 
-        if (is_array($callable)) {
+                // error: not found
+            } else {
+                // is a $callable "classname::method"
+                if (strpos($callable, '::') !== false) {
+                    [$class, $method] = explode('::', $callable, 2);
+
+                    if ($binding = $this->find($class)) {
+                        return $binding->withMethodCall($method)->call(...$args);
+                    } elseif ($this->delegate) {
+                        return $this->delegate->call([$class, $method], ...$args);
+                    }
+
+                    // error
+                } elseif ($binding = $this->find($callable)) {
+                    return $binding instanceof AggregatedDefinitionInterface
+                        ? $binding->call(...$args)
+                        : $binding->make(...$args);
+                } elseif ($this->delegate) {
+                    return $this->delegate->call($callable, ...$args);
+                }
+
+                // error: not found
+            }
+        } elseif (is_array($callable)) {
             if (is_string(next($callable))) {
+                // when all array items are strings
                 if (is_string(reset($callable))) {
                     if ($binding = $this->find(reset($callable))) {
                         return $binding->withMethodCall(next($callable))->call(...$args);
-                    } else {
-                        $notFound = true;
+                    } elseif ($this->delegate) {
+                        return $this->delegate->call($callable, ...$args);
                     }
-                } elseif (is_object(reset($callable))) {
-                    $abstract = get_class(reset($callable));
 
-                    if ($binding = $this->find($abstract)) {
-                        return $binding->withMethodCall(next($callable))->call(...$args);
-                    } else {
-                        $notFound = true;
-                    }
+                    // error: not found
                 }
-            } else {
-                throw new Exception\ContainerException(
-                    'Callable array must represent class name or instance and its method'
-                );
-            }
-        } elseif (is_string($callable) && is_callable($callable)) {
-            // TODO: add support for "::"
-            //is a class "classname::method"
-            if (strpos($callable, '::') === false) {
-                $class = $callable;
-                $method = '__invoke';
-            } else {
-                [$class, $method] = explode('::', $callable, 2);
+                // when first array item is an object and second is a string
+                elseif (is_object($instance = reset($callable))) {
+                    return $this->instance(get_class($instance), $instance)
+                        ->withMethodCall(next($callable))->call(...$args);
+                }
+
+                // error: invalid array items
             }
 
-            if ($binding = $this->find($callable)) {
-                if ($binding instanceof AggregatedDefinitionInterface) {
-                    return $binding->call(...$args);
-                } elseif ($binding instanceof FunctionDefinition) {
-                    return $binding->make(...$args);
-                } else {
-                    throw new Exception\ContainerException("Definition $callable is not callable");
-                }
-            } else {
-                $notFound = true;
-            }
+            // error: call() expects parameter 1 to be a valid callback, second array member is not a valid method
         }
 
-        if ($this->delegate) {
-            return $this->delegate->call($callable, ...$args);
-        } elseif ($notFound) {
-            throw new Exception\NotFoundException('Callable binding not found.');
-        }
-
-        throw new Exception\ContainerException(
-            'Callable must be a function name or an array of class name or instance and its method'
-        );
+        // error: invalid argument
     }
 
     /**

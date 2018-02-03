@@ -5,7 +5,7 @@ namespace TrueCode\Container;
 use ArrayAccess;
 use Psr\Container\ContainerInterface;
 use TrueCode\Container\Definition\{
-    AggregatedDefinitionInterface,
+    Aggregate\AggregatedDefinitionInterface,
     DefinitionInterface,
     Proxy\DefinitionProxyInterface
 };

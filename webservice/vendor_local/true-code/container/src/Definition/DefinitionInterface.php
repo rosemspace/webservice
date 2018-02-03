@@ -2,6 +2,8 @@
 
 namespace TrueCode\Container\Definition;
 
+use TrueCode\Container\Definition\Aggregate\AggregatedDefinitionInterface;
+
 interface DefinitionInterface
 {
     /**
@@ -15,9 +17,9 @@ interface DefinitionInterface
 
     public function commit() : self;
 
-    public function withMethodCall(string $method, array $args = []) : Aggregate\AggregatedDefinitionInterface;
+    public function withMethodCall(string $method, array $args = []) : AggregatedDefinitionInterface;
 
-    public function withFunctionCall(callable $function, array $args = []) : Aggregate\AggregatedDefinitionInterface;
+    public function withFunctionCall(callable $function, array $args = []) : AggregatedDefinitionInterface;
 
     public function getAbstract() : string;
 
