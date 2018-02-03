@@ -2,10 +2,12 @@
 
 namespace TrueCode\Container\Binding\Proxy;
 
-use TrueCode\Container\Binding\{
-    AbstractAggregateBinding, AggregateBindingInterface, BindingInterface
+use TrueCode\Container\{
+    Binding\AbstractAggregateBinding,
+    Binding\AggregateBindingInterface,
+    Binding\BindingInterface,
+    ExtractorTrait
 };
-use TrueCode\Container\ExtractorTrait;
 
 class AggregateBindingProxy extends AbstractAggregateBinding implements AggregateBindingProxyInterface
 {
@@ -20,35 +22,27 @@ class AggregateBindingProxy extends AbstractAggregateBinding implements Aggregat
      */
     protected $context;
 
-    protected $aggregate = [[], []];
-
-    protected $aggregateCommitted = [[], []];
-
     public function withMethodCall(string $method, array $args = []) : AggregateBindingInterface
     {
-        $this->aggregate[self::METHOD][$method] = $args;
+        $this->aggregate[] = [self::METHOD, $method, $args];
 
         return $this;
     }
 
     public function withFunctionCall(callable $function, array $args = []) : AggregateBindingInterface
     {
-        $this->aggregate[self::FUNCTION][] = [$function, $args];
+        $this->aggregate[] = [self::FUNCTION, $function, $args];
 
         return $this;
     }
 
     protected function resolveAggregate(BindingInterface $binding, array &$aggregate)
     {
-        if ($aggregate[self::METHOD]) {
-            foreach ($aggregate[self::METHOD] as $method => $args) {
-                $binding = $binding->withMethodCall($method, $args);
-            }
-        }
-
-        if ($aggregate[self::FUNCTION]) {
-            foreach ($aggregate[self::FUNCTION] as [$function, $args]) {
-                $binding = $binding->withFunctionCall($function, $args);
+        if ($aggregate) {
+            foreach ($aggregate as [$type, $callable, $args]) {
+                $binding = $type === self::METHOD
+                    ? $binding->withMethodCall($callable, $args)
+                    : $binding->withFunctionCall($callable, $args);
             }
         }
 
@@ -105,11 +99,8 @@ class AggregateBindingProxy extends AbstractAggregateBinding implements Aggregat
 
     public function commit() : BindingInterface
     {
-        $this->aggregateCommitted = [
-            self::METHOD   => array_merge($this->aggregateCommitted[self::METHOD], $this->aggregate[self::METHOD]),
-            self::FUNCTION => array_merge($this->aggregateCommitted[self::FUNCTION], $this->aggregate[self::FUNCTION]),
-        ];
-        $this->aggregate = [[], []];
+        $this->aggregateCommitted = array_merge($this->aggregateCommitted, $this->aggregate);
+        $this->aggregate = [];
 
         return $this->container->set($this->getAbstract(), $this);
     }

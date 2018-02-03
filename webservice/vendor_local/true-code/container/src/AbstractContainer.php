@@ -4,9 +4,11 @@ namespace TrueCode\Container;
 
 use ArrayAccess;
 use Psr\Container\ContainerInterface;
-use TrueCode\Container\Binding\AggregateBindingInterface;
-use TrueCode\Container\Binding\BindingInterface;
-use TrueCode\Container\Binding\Proxy\BindingProxyInterface;
+use TrueCode\Container\Binding\{
+    AggregateBindingInterface,
+    BindingInterface,
+    Proxy\BindingProxyInterface
+};
 
 /**
  * Abstract container with array functionality.

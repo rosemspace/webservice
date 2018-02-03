@@ -2,8 +2,10 @@
 
 namespace TrueCode\Container\Binding\Proxy;
 
-use TrueCode\Container\Binding\SharedBindingInterface;
-use TrueCode\Container\Container;
+use TrueCode\Container\{
+    Binding\SharedBindingInterface,
+    Container
+};
 
 class SharedBindingProxy extends BindingProxy implements SharedBindingInterface
 {

@@ -16,6 +16,8 @@ trait AggregateTrait
      */
     public function withMethodCall(string $method, array $args = []) : AggregateBindingInterface
     {
+        $this->validateMethod($method);
+
         $this->aggregate[$method] = new MethodBinding($this->container, $this->getConcrete(), $method, $args);
 
         return $this;
@@ -30,6 +32,8 @@ trait AggregateTrait
      */
     public function withFunctionCall(callable $function, array $args = []) : AggregateBindingInterface
     {
+        $this->validateFunction($function);
+
         $binding = new FunctionBinding($this->container, $this->getAbstract(), $function, $args);
 
         is_string($function)

@@ -3,7 +3,9 @@
 namespace TrueCode\Container\Binding\Proxy;
 
 use TrueCode\Container\Binding\{
-    AggregateBindingInterface, BindingInterface, AbstractBinding
+    AbstractBinding,
+    AggregateBindingInterface,
+    BindingInterface
 };
 
 class BindingProxy extends AbstractBinding implements BindingProxyInterface

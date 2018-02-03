@@ -103,6 +103,7 @@ class Container extends AbstractContainer
 
     public function invoke($abstract, array ...$args)
     {
+        // TODO: improve - make like call method
         if (! $binding = $this->find($abstract)) {
             if ($this->delegate) {
                 return $this->delegate->invoke($abstract, ...$args);
@@ -151,6 +152,7 @@ class Container extends AbstractContainer
                 );
             }
         } elseif (is_string($callable) && is_callable($callable)) {
+            // TODO: add support for "::"
             //is a class "classname::method"
             if (strpos($callable, '::') === false) {
                 $class = $callable;

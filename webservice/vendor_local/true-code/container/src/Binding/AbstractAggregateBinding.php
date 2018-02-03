@@ -3,7 +3,8 @@
 namespace TrueCode\Container\Binding;
 
 use TrueCode\Container\{
-    AbstractContainer, ExtractorTrait
+    AbstractContainer,
+    ExtractorTrait
 };
 
 abstract class AbstractAggregateBinding implements AggregateBindingInterface
@@ -21,20 +22,20 @@ abstract class AbstractAggregateBinding implements AggregateBindingInterface
     protected $context;
 
     /**
-     * @var BindingInterface[]|DependentBindingInterface[]
+     * @var BindingInterface[]
      */
     protected $aggregate = [];
 
     /**
-     * @var BindingInterface[]|DependentBindingInterface[]
+     * @var BindingInterface[]
      */
     protected $aggregateCommitted = [];
 
     /**
      * AbstractAggregateBinding constructor.
      *
-     * @param AbstractContainer               $container
-     * @param BindingInterface|AggregateFactoryTrait $context
+     * @param AbstractContainer $container
+     * @param BindingInterface  $context
      */
     public function __construct(AbstractContainer $container, BindingInterface $context)
     {
@@ -49,6 +50,13 @@ abstract class AbstractAggregateBinding implements AggregateBindingInterface
         }
     }
 
+    /**
+     * @param array[] ...$args
+     *
+     * @return mixed
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function make(array &...$args)
     {
         return $this->context->make($this->extractFirst($args));

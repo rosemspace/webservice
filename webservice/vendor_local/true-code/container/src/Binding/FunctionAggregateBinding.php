@@ -4,8 +4,7 @@ namespace TrueCode\Container\Binding;
 
 class FunctionAggregateBinding extends AbstractAggregateBinding
 {
-    use AggregateProcessTrait;
-    use AggregateFactoryTrait, AggregateTrait {
+    use AggregateFactoryTrait, AggregateProcessTrait, AggregateTrait {
         AggregateFactoryTrait::withMethodCall insteadof AggregateTrait;
         AggregateTrait::withFunctionCall insteadof AggregateFactoryTrait;
     }
