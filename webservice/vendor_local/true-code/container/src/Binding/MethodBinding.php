@@ -6,7 +6,7 @@ use ReflectionMethod;
 use SplFixedArray;
 use TrueCode\Container\AbstractContainer;
 
-class MethodBinding implements DependentBindingInterface
+class MethodBinding
 {
     use ReflectedBuildTrait;
 

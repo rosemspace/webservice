@@ -4,8 +4,11 @@ namespace TrueCode\Container\Binding;
 
 class MethodAggregateBinding extends AbstractAggregateBinding
 {
-    use AggregateFactoryTrait;
     use AggregateProcessTrait;
+    use AggregateFactoryTrait, AggregateTrait {
+        AggregateFactoryTrait::withFunctionCall insteadof AggregateTrait;
+        AggregateTrait::withMethodCall insteadof AggregateFactoryTrait;
+    }
 
     protected function makeAggregate(array &$aggregate, $context, array &$args = [], &$result = null)
     {
@@ -49,19 +52,5 @@ class MethodAggregateBinding extends AbstractAggregateBinding
         $this->container->set($this->getAbstract(), $this);
 
         return [$context, $result];
-    }
-
-    /**
-     * @param string $method
-     * @param array  $args
-     *
-     * @return AggregateBindingInterface
-     * @throws \ReflectionException
-     */
-    public function withMethodCall(string $method, array $args = []) : AggregateBindingInterface
-    {
-        $this->aggregate[$method] = new MethodBinding($this->container, $this->getConcrete(), $method, $args);
-
-        return $this;
     }
 }

@@ -2,18 +2,11 @@
 
 namespace TrueCode\Container\Binding;
 
-use TrueCode\Container\AbstractContainer;
-
 /**
  * Trait AggregateFactoryTrait.
  */
 trait AggregateFactoryTrait
 {
-    /**
-     * @var AbstractContainer
-     */
-    protected $container;
-
     /**
      * @param string $method
      * @param array  $args
