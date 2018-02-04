@@ -15,7 +15,7 @@
     ],
     "require": {
         "true-code/graphql-standards": "*",
-        "php": ">=7.1.0",
+        "php": ">=7.2.0",
         "webonyx/graphql-php": "^0.11"
     },
     "autoload": {

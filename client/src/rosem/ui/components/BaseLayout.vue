@@ -37,15 +37,5 @@
         & > :--content    { grid-area: content;    }
         & > :--sidebar    { grid-area: sidebar;    }
         & > :--footer     { grid-area: footer;     }
-
-
-
-        & > nav, & > aside { //TODO: remove
-            background: silver;
-        }
-
-        & > header, & > footer { //TODO: remove
-            background: gainsboro;
-        }
     }
 </style>

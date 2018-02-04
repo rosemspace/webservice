@@ -1,35 +1,36 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition;
 
-use ReflectionClass;
+use ReflectionFunction;
 use SplFixedArray;
 use TrueCode\Container\AbstractContainer;
 
-class ClassBinding extends AbstractBinding
+class FunctionDefinition extends AbstractDefinition
 {
     use ReflectedBuildTrait;
 
     /**
-     * ClassBinding constructor.
+     * FunctionBinding constructor.
      *
      * @param AbstractContainer $container
      * @param string            $abstract
-     * @param string            $concrete
+     * @param callable          $concrete
      * @param array             $args
      *
      * @throws \ReflectionException
      */
-    public function __construct(AbstractContainer $container, string $abstract, $concrete = null, array $args = [])
-    {
+    public function __construct(
+        AbstractContainer $container,
+        string $abstract,
+        ?callable $concrete = null,
+        array $args = []
+    ) {
         parent::__construct($container, $abstract, $concrete, $args);
 
-        $this->reflector = new ReflectionClass($this->concrete);
+        $this->reflector = new ReflectionFunction($this->getConcrete());
 
-        if (
-            ($constructor = $this->reflector->getConstructor()) &&
-            ($params = $constructor->getParameters())
-        ) {
+        if ($params = $this->reflector->getParameters()) {
             $this->stack = $this->getStack(SplFixedArray::fromArray($params));
         }
     }
@@ -37,12 +38,12 @@ class ClassBinding extends AbstractBinding
     /**
      * @param array[] ...$args
      *
-     * @return object
+     * @return mixed
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function make(array &...$args)
     {
-        return $this->reflector->newInstanceArgs($this->build($this->stack, reset($args) ?: $this->args));
+        return $this->reflector->invokeArgs($this->build($this->stack, reset($args) ?: $this->args));
     }
 }

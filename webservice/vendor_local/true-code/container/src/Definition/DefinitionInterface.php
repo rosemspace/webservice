@@ -1,8 +1,10 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition;
 
-interface BindingInterface
+use TrueCode\Container\Definition\Aggregate\AggregatedDefinitionInterface;
+
+interface DefinitionInterface
 {
     /**
      * @param array[] ...$args
@@ -15,9 +17,9 @@ interface BindingInterface
 
     public function commit() : self;
 
-    public function withMethodCall(string $method, array $args = []) : AggregateBindingInterface;
+    public function withMethodCall(string $method, array $args = []) : AggregatedDefinitionInterface;
 
-    public function withFunctionCall(callable $function, array $args = []) : AggregateBindingInterface;
+    public function withFunctionCall(callable $function, array $args = []) : AggregatedDefinitionInterface;
 
     public function getAbstract() : string;
 

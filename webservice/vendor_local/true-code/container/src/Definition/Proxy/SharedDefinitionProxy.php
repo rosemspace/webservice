@@ -1,11 +1,13 @@
 <?php
 
-namespace TrueCode\Container\Binding\Proxy;
+namespace TrueCode\Container\Definition\Proxy;
 
-use TrueCode\Container\Binding\SharedBindingInterface;
-use TrueCode\Container\Container;
+use TrueCode\Container\{
+    Definition\SharedDefinitionInterface,
+    Container
+};
 
-class SharedBindingProxy extends BindingProxy implements SharedBindingInterface
+class SharedDefinitionProxy extends DefinitionProxy implements SharedDefinitionInterface
 {
     /**
      * @var array
@@ -30,8 +32,8 @@ class SharedBindingProxy extends BindingProxy implements SharedBindingInterface
     {
         $instance = $this->resolve()->make(...$args);
 
-        if ($this->committed) {
-            $this->container->instance($this->abstract, $instance)->commit();
+        if (! $this->committed) {
+            $this->container->instance($this->getAbstract(), $instance)->commit();
         }
 
         return $instance;

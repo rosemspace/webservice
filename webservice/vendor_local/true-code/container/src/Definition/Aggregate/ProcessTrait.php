@@ -1,8 +1,8 @@
 <?php
 
-namespace TrueCode\Container\Binding;
+namespace TrueCode\Container\Definition\Aggregate;
 
-trait AggregateInstantiationTrait
+trait ProcessTrait
 {
     /**
      * @param array[] ...$args
@@ -11,7 +11,7 @@ trait AggregateInstantiationTrait
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    abstract protected function invoke(array &...$args) : array;
+    abstract protected function process(array &...$args) : array;
 
     /**
      * @param array[] ...$args
@@ -20,9 +20,9 @@ trait AggregateInstantiationTrait
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function make(array &...$args)
+    public function invoke(array &...$args)
     {
-        return $this->invoke(...$args)[0];
+        return $this->process(...$args)[0];
     }
 
     /**
@@ -34,6 +34,6 @@ trait AggregateInstantiationTrait
      */
     public function call(array &...$args)
     {
-        return $this->invoke(...$args)[1];
+        return $this->process(...$args)[1];
     }
 }
