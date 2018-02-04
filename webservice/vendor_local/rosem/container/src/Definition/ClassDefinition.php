@@ -11,7 +11,7 @@ class ClassDefinition extends AbstractDefinition
     use ReflectedBuildTrait;
 
     /**
-     * ClassBinding constructor.
+     * ClassDefinition constructor.
      *
      * @param AbstractContainer $container
      * @param string            $abstract

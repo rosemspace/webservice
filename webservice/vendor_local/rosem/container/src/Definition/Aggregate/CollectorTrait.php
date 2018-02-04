@@ -36,11 +36,11 @@ trait CollectorTrait
     {
         $this->validateFunction($function);
 
-        $binding = new FunctionDefinition($this->container, $this->getAbstract(), $function, $args);
+        $definition = new FunctionDefinition($this->container, $this->getAbstract(), $function, $args);
 
         is_string($function)
-            ? $this->aggregate[$function] = $binding
-            : $this->aggregate[] = $binding;
+            ? $this->aggregate[$function] = $definition
+            : $this->aggregate[] = $definition;
 
         return $this;
     }

@@ -33,7 +33,7 @@ abstract class AbstractAggregatedDefinition implements AggregatedDefinitionInter
     protected $aggregateCommitted = [];
 
     /**
-     * AbstractAggregateBinding constructor.
+     * AbstractAggregateDefinition constructor.
      *
      * @param AbstractContainer                $container
      * @param DefinitionInterface|FactoryTrait $context

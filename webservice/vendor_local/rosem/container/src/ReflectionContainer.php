@@ -10,7 +10,7 @@ use Rosem\Container\Definition\{
 class ReflectionContainer extends Container
 {
     /**
-     * Make with binding.
+     * Make with definition.
      *
      * @param string  $abstract
      * @param array[] ...$args
@@ -27,10 +27,10 @@ class ReflectionContainer extends Container
                 return $this->delegate->make($abstract, ...$args);
             }
 
-            return $this->forceBind($abstract)->make(...$args);
+            return $this->defineNow($abstract)->make(...$args);
         }
 
-        return $this->bindings[$abstract]->make(...$args);
+        return $this->definitions[$abstract]->make(...$args);
     }
 
     /**
@@ -56,32 +56,32 @@ class ReflectionContainer extends Container
                 )
                 )
             ) {
-                if ($binding = $this->find($abstract)) {
-                    return $binding->withMethodCall(next($callable))->call(...$args);
+                if ($definition = $this->find($abstract)) {
+                    return $definition->withMethodCall(next($callable))->call(...$args);
                 }
 
-                return $this->forceBindClass($abstract)->commit()
+                return $this->defineClassNow($abstract)->commit()
                     ->withMethodCall(next($callable))->call(...$args);
             }
         } elseif (is_callable($callable)) {
             if (is_string($callable)) {
-                if ($binding = $this->find($callable)) {
-                    if ($binding instanceof AggregatedDefinitionInterface) {
-                        return $binding->call(...$args);
-                    } elseif ($binding instanceof FunctionDefinition) {
-                        return $binding->make(...$args);
+                if ($definition = $this->find($callable)) {
+                    if ($definition instanceof AggregatedDefinitionInterface) {
+                        return $definition->call(...$args);
+                    } elseif ($definition instanceof FunctionDefinition) {
+                        return $definition->make(...$args);
                     } else {
                         throw new Exception\ContainerException("Definition $callable is not callable");
                     }
                 }
 
-                return $this->forceBindFunction($callable)->commit()->make(...$args);
+                return $this->defineFunctionNow($callable)->commit()->make(...$args);
             }
 
-            return $this->forceBindFunction(__FUNCTION__, $callable)->make(...$args);
+            return $this->defineFunctionNow(__FUNCTION__, $callable)->make(...$args);
         }
 
-        throw new Exception\ContainerException('Callable must be a binding name, function name,
+        throw new Exception\ContainerException('Callable must be a definition name, function name,
         closure or an array of class name or instance and its method.');
     }
 }

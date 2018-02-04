@@ -32,14 +32,14 @@ class DoubleStringCallStrategy
      */
     protected function process(array $abstract, array $args)
     {
-        if ($binding = $this->container->find(reset($abstract))) {
-            return $binding->withMethodCall(next($abstract))->call(...$args);
+        if ($definition = $this->container->find(reset($abstract))) {
+            return $definition->withMethodCall(next($abstract))->call(...$args);
         } elseif ($this->containerDelegate) {
             return $this->containerDelegate->call($abstract, ...$args);
         }
 
         if ($this->autowiring) {
-            return $this->container->forceBindClass($abstract)->commit()
+            return $this->container->defineClassNow($abstract)->commit()
                 ->withMethodCall(next($callable))->call(...$args);
         } else {
             throw new NotFoundException('Definition not found');

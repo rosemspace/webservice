@@ -24,7 +24,7 @@ class Container extends AbstractContainer
         AbstractFacade::registerContainer($this);
     }
 
-    public function bind(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface
+    public function define(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface
     {
         return new Definition\Proxy\DefinitionProxy($this, $abstract, $concrete ?: $abstract, $args);
     }
@@ -37,18 +37,18 @@ class Container extends AbstractContainer
      * @return DefinitionInterface
      * @throws \ReflectionException
      */
-    public function forceBind(string $abstract, $concrete = null, array ...$args) : DefinitionInterface
+    public function defineNow(string $abstract, $concrete = null, array ...$args) : DefinitionInterface
     {
         if (! $concrete) {
             $concrete = $abstract;
         }
 
         if (is_string($concrete) && class_exists($concrete)) {
-            return $this->forceBindClass($abstract, $concrete, ...$args);
+            return $this->defineClassNow($abstract, $concrete, ...$args);
         }
 
         if (is_callable($concrete)) {
-            return $this->forceBindFunction($abstract, $concrete, reset($args) ?: []);
+            return $this->defineFunctionNow($abstract, $concrete, reset($args) ?: []);
         }
 
         return new SharedDefinition($this, $abstract, $concrete, reset($args) ?: []);
@@ -62,13 +62,13 @@ class Container extends AbstractContainer
      * @return DefinitionInterface
      * @throws \ReflectionException
      */
-    protected function forceBindClass(string $abstract, $concrete = null, array ...$args) : DefinitionInterface
+    protected function defineClassNow(string $abstract, $concrete = null, array ...$args) : DefinitionInterface
     {
-        $binding = new ClassDefinition($this, $abstract, $concrete, $this->extractFirst($args));
+        $definition = new ClassDefinition($this, $abstract, $concrete, $this->extractFirst($args));
 
         return method_exists($concrete, '__invoke')
-            ? $binding->withMethodCall('__invoke', $args ?: [])
-            : $binding;
+            ? $definition->withMethodCall('__invoke', $args ?: [])
+            : $definition;
     }
 
     /**
@@ -79,7 +79,7 @@ class Container extends AbstractContainer
      * @return DefinitionInterface
      * @throws \ReflectionException
      */
-    protected function forceBindFunction(string $abstract, $concrete = null, array $args = []) : DefinitionInterface
+    protected function defineFunctionNow(string $abstract, $concrete = null, array $args = []) : DefinitionInterface
     {
         return new FunctionDefinition($this, $abstract, $concrete, $args);
     }
@@ -96,41 +96,41 @@ class Container extends AbstractContainer
      */
     public function make(string $abstract, array ...$args)
     {
-        if (! $binding = $this->find($abstract)) {
+        if (!$definition = $this->find($abstract)) {
             if ($this->delegate) {
                 return $this->delegate->make($abstract, ...$args);
             }
 
-            throw new Exception\NotFoundException("$abstract binding not found.");
+            throw new Exception\NotFoundException("$abstract definition not found.");
         }
 
-        return $binding->make(...$args);
+        return $definition->make(...$args);
     }
 
     public function invoke($abstract, array ...$args)
     {
         // TODO: improve - make like call method
-        if (! $binding = $this->find($abstract)) {
+        if (! $definition = $this->find($abstract)) {
             if ($this->delegate) {
                 return $this->delegate->invoke($abstract, ...$args);
             }
 
-            throw new Exception\NotFoundException("$abstract binding not found.");
+            throw new Exception\NotFoundException("$abstract definition not found.");
         }
 
-        return $binding instanceof AggregatedDefinitionInterface
-            ? $binding->invoke(...$args)
-            : $binding->make(...$args);
+        return $definition instanceof AggregatedDefinitionInterface
+            ? $definition->invoke(...$args)
+            : $definition->make(...$args);
     }
 
     public function call($callable, array ...$args)
     {
         if (is_string($callable)) {
             if (is_callable($callable)) {
-                if ($binding = $this->find($callable)) {
-                    return $binding instanceof AggregatedDefinitionInterface
-                        ? $binding->call(...$args)
-                        : $binding->make(...$args);
+                if ($definition = $this->find($callable)) {
+                    return $definition instanceof AggregatedDefinitionInterface
+                        ? $definition->call(...$args)
+                        : $definition->make(...$args);
                 } elseif ($this->delegate) {
                     return $this->delegate->call($callable, ...$args);
                 }
@@ -141,17 +141,17 @@ class Container extends AbstractContainer
                 if (strpos($callable, '::') !== false) {
                     [$class, $method] = explode('::', $callable, 2);
 
-                    if ($binding = $this->find($class)) {
-                        return $binding->withMethodCall($method)->call(...$args);
+                    if ($definition = $this->find($class)) {
+                        return $definition->withMethodCall($method)->call(...$args);
                     } elseif ($this->delegate) {
                         return $this->delegate->call([$class, $method], ...$args);
                     }
 
                     // error
-                } elseif ($binding = $this->find($callable)) {
-                    return $binding instanceof AggregatedDefinitionInterface
-                        ? $binding->call(...$args)
-                        : $binding->make(...$args);
+                } elseif ($definition = $this->find($callable)) {
+                    return $definition instanceof AggregatedDefinitionInterface
+                        ? $definition->call(...$args)
+                        : $definition->make(...$args);
                 } elseif ($this->delegate) {
                     return $this->delegate->call($callable, ...$args);
                 }
@@ -162,8 +162,8 @@ class Container extends AbstractContainer
             if (is_string(next($callable))) {
                 // when all array items are strings
                 if (is_string(reset($callable))) {
-                    if ($binding = $this->find(reset($callable))) {
-                        return $binding->withMethodCall(next($callable))->call(...$args);
+                    if ($definition = $this->find(reset($callable))) {
+                        return $definition->withMethodCall(next($callable))->call(...$args);
                     } elseif ($this->delegate) {
                         return $this->delegate->call($callable, ...$args);
                     }
@@ -205,7 +205,7 @@ class Container extends AbstractContainer
      */
     public function alias(string $abstract, string $alias) : void
     {
-        $this->bindings[$alias] = &$this->bindings[$abstract];
+        $this->definitions[$alias] = &$this->definitions[$abstract];
     }
 
     public function instance(string $abstract, $instance) : DefinitionInterface
@@ -229,6 +229,6 @@ class Container extends AbstractContainer
     {
         return ($this->delegate && ! $this->has($abstract))
             ? $this->delegate->isShared($abstract)
-            : $this->bindings[$abstract] instanceof SharedDefinitionInterface;
+            : $this->definitions[$abstract] instanceof SharedDefinitionInterface;
     }
 }

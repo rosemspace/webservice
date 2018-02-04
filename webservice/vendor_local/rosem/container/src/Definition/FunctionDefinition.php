@@ -11,7 +11,7 @@ class FunctionDefinition extends AbstractDefinition
     use ReflectedBuildTrait;
 
     /**
-     * FunctionBinding constructor.
+     * FunctionDefinition constructor.
      *
      * @param AbstractContainer $container
      * @param string            $abstract

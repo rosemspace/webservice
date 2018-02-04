@@ -21,20 +21,20 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
     protected const CLASS_METHOD_SEPARATOR = '::';
 
     /**
-     * The container's bindings.
+     * The container's definitions.
      *
      * @var DefinitionInterface[]
      */
-    protected $bindings = [];
+    protected $definitions = [];
 
     /**
      * @var self
      */
     protected $delegate;
 
-    public function set(string $abstract, DefinitionInterface $binding) : DefinitionInterface
+    public function set(string $abstract, DefinitionInterface $definition) : DefinitionInterface
     {
-        return $this->bindings[$abstract] = $binding;
+        return $this->definitions[$abstract] = $definition;
     }
 
     /**
@@ -46,7 +46,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
     public function find(string $abstract) : ?DefinitionInterface
     {
         if ($this->has($abstract)) {
-            return $this->bindings[$abstract];
+            return $this->definitions[$abstract];
         }
 
         if ($this->delegate) {
@@ -61,9 +61,9 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
         $this->delegate = $container;
     }
 
-    abstract public function bind(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface;
+    abstract public function define(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface;
 
-    abstract public function forceBind(string $abstract, $concrete = null, array ...$args) : DefinitionInterface;
+    abstract public function defineNow(string $abstract, $concrete = null, array ...$args) : DefinitionInterface;
 
     abstract public function share(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface;
 
@@ -89,7 +89,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      */
     public function has($id) : bool
     {
-        return isset($this->bindings[$id]);
+        return isset($this->definitions[$id]);
     }
 
     /**
@@ -129,7 +129,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      */
     public function offsetSet($abstract, $concrete)
     {
-        $this->bind($abstract, $concrete);
+        $this->define($abstract, $concrete);
     }
 
     /**
@@ -139,6 +139,6 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        unset($this->bindings[$offset]);
+        unset($this->definitions[$offset]);
     }
 }

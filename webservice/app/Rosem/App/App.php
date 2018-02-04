@@ -89,7 +89,7 @@ class App extends ReflectionContainer implements AppInterface
                 is_string($serviceProviderClass) &&
                 class_exists($serviceProviderClass)
             ) {
-                $this->addServiceProvider($serviceProviders[] = $this->forceBind($serviceProviderClass)->make());
+                $this->addServiceProvider($serviceProviders[] = $this->defineNow($serviceProviderClass)->make());
             } else {
                 throw new Exception(
                     'An item of service providers configuration should be a string ' .

@@ -19,7 +19,7 @@ class MethodInvoker
     protected $args;
 
     /**
-     * MethodBinding constructor.
+     * MethodDefinition constructor.
      *
      * @param AbstractContainer $container
      * @param mixed             $context

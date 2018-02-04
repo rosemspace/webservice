@@ -39,7 +39,7 @@ class DefinitionProxy extends AbstractDefinition implements DefinitionProxyInter
 
     public function resolve() : DefinitionInterface
     {
-        return $this->container->forceBind($this->getAbstract(), $this->getConcrete(), ...$this->args);
+        return $this->container->defineNow($this->getAbstract(), $this->getConcrete(), ...$this->args);
     }
 
     /**

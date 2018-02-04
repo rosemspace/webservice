@@ -36,29 +36,29 @@ class AggregatedDefinitionProxy extends AbstractAggregatedDefinition implements 
         return $this;
     }
 
-    protected function resolveAggregate(DefinitionInterface $binding, array &$aggregate)
+    protected function resolveAggregate(DefinitionInterface $definition, array &$aggregate)
     {
         if ($aggregate) {
             foreach ($aggregate as [$type, $callable, $args]) {
-                $binding = $type === self::METHOD
-                    ? $binding->withMethodCall($callable, $args)
-                    : $binding->withFunctionCall($callable, $args);
+                $definition = $type === self::METHOD
+                    ? $definition->withMethodCall($callable, $args)
+                    : $definition->withFunctionCall($callable, $args);
             }
         }
 
-        return $binding;
+        return $definition;
     }
 
     public function resolve() : AggregatedDefinitionInterface
     {
-        $contextBinding = $this->context->resolve();
-        $resolvedBinding = $this->resolveAggregate($contextBinding, $this->aggregateCommitted);
+        $contextDefinition = $this->context->resolve();
+        $resolvedDefinition = $this->resolveAggregate($contextDefinition, $this->aggregateCommitted);
 
-        if ($resolvedBinding !== $contextBinding) {
-            $resolvedBinding->commit();
+        if ($resolvedDefinition !== $contextDefinition) {
+            $resolvedDefinition->commit();
         }
 
-        return $this->resolveAggregate($resolvedBinding, $this->aggregate);
+        return $this->resolveAggregate($resolvedDefinition, $this->aggregate);
     }
 
     /**

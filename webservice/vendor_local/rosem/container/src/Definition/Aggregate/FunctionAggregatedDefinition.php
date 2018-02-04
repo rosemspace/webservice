@@ -49,7 +49,7 @@ class FunctionAggregatedDefinition extends AbstractAggregatedDefinition
         $this->makeAggregate($this->aggregateCommitted, $args, $result);
         $this->makeAggregate($this->aggregate, $args, $result);
 
-        // replace preserved earlier temporary context by reverting original binding
+        // replace preserved earlier temporary context by reverting original definition
         $this->container->set($this->getAbstract(), $this);
 
         return [$context, $result];
