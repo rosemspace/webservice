@@ -43,8 +43,10 @@ module.exports = {
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.common.js',
-            '@rosem': path.resolve(__dirname, 'src/rosem'),
             'rosem.css': path.resolve(__dirname, 'src/rosem/css/style.pcss'),
+            'rosem-ui': path.resolve(__dirname, 'src/rosem/ui'),
+
+            '@rosem': path.resolve(__dirname, 'src/rosem'),
         },
         extensions: ['.html', '.js', '.vue', '.json', '.yml', '.png'],
     },
