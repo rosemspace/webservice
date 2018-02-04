@@ -9,28 +9,19 @@ use Rosem\Container\Definition\{
 
 class ReflectionContainer extends Container
 {
-    /**
-     * Make with definition.
-     *
-     * @param string  $abstract
-     * @param array[] ...$args
-     *
-     * @return mixed
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \ReflectionException
-     */
-    public function make(string $abstract, array ...$args)
+    public function has($id) : bool
     {
-        if (! $this->has($abstract)) {
-            if ($this->delegate) {
-                return $this->delegate->make($abstract, ...$args);
-            }
-
-            return $this->defineNow($abstract)->make(...$args);
+        if (parent::has($id)) {
+            return true;
         }
 
-        return $this->definitions[$abstract]->make(...$args);
+        if (class_exists($id)) {
+            $this->defineNow($id)->commit();
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

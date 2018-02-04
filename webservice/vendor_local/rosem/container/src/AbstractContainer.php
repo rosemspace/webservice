@@ -89,7 +89,15 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
      */
     public function has($id) : bool
     {
-        return isset($this->definitions[$id]);
+        if (isset($this->definitions[$id])) {
+            return true;
+        }
+
+        if ($this->delegate) {
+            return $this->delegate->has($id);
+        }
+
+        return false;
     }
 
     /**

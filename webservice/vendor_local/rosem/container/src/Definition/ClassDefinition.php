@@ -26,6 +26,10 @@ class ClassDefinition extends AbstractDefinition
 
         $this->reflector = new ReflectionClass($this->getConcrete());
 
+        if ($this->reflector->isAbstract()) {
+            throw new \InvalidArgumentException("Abstract class given {$this->reflector->getName()}");
+        }
+
         if (
             ($constructor = $this->reflector->getConstructor()) &&
             ($params = $constructor->getParameters())
