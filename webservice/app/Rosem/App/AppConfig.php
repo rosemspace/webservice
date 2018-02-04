@@ -4,7 +4,7 @@ namespace Rosem\App;
 
 use ArrayAccess;
 use Countable;
-use TrueStd\App\AppConfigInterface;
+use Psrnext\App\AppConfigInterface;
 
 class AppConfig implements AppConfigInterface, ArrayAccess, Countable
 {

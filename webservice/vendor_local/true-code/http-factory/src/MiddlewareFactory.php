@@ -10,7 +10,7 @@ use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
 use TrueCode\Container\Container;
-use TrueStd\Http\Factory\MiddlewareFactoryInterface;
+use Psrnext\Http\Factory\MiddlewareFactoryInterface;
 
 class MiddlewareFactory implements MiddlewareFactoryInterface
 {

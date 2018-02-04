@@ -4,7 +4,7 @@ namespace TrueCode\RouteCollector;
 
 use FastRoute\DataGenerator;
 use FastRoute\RouteParser;
-use TrueStd\RouteCollector\RouteCollectorInterface;
+use Psrnext\RouteCollector\RouteCollectorInterface;
 
 class RouteCollector implements RouteCollectorInterface
 {

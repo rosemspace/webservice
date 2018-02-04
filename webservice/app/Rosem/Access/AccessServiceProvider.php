@@ -2,7 +2,7 @@
 
 namespace Rosem\Access;
 
-use TrueStd\Container\ServiceProviderInterface;
+use Psrnext\Container\ServiceProviderInterface;
 use Psr\Container\ContainerInterface;
 use TrueStandards\GraphQL\GraphInterface;
 use Rosem\Access\GraphQL\{

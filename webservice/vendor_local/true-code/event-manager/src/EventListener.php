@@ -2,8 +2,8 @@
 
 namespace TrueCode\EventManager;
 
-use TrueStd\EventManager\EventInterface;
-use TrueStd\EventManager\EventListenerInterface;
+use Psrnext\EventManager\EventInterface;
+use Psrnext\EventManager\EventListenerInterface;
 
 class EventListener implements EventListenerInterface
 {

@@ -2,7 +2,7 @@
 
 namespace TrueCode\EventManager;
 
-use TrueStd\EventManager\EventInterface;
+use Psrnext\EventManager\EventInterface;
 
 class Event implements EventInterface
 {

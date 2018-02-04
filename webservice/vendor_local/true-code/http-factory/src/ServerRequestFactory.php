@@ -3,7 +3,7 @@
 namespace TrueCode\Http\Factory;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TrueStd\Http\Factory\ServerRequestFactoryInterface;
+use Psrnext\Http\Factory\ServerRequestFactoryInterface;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\ServerRequestFactory as DiactorosServerRequestFactory;
 

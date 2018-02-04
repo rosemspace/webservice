@@ -3,9 +3,9 @@
 namespace Rosem\Kernel\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use TrueStd\App\AppConfigInterface;
-use TrueStd\Http\Factory\ResponseFactoryInterface;
-use TrueStd\View\ViewInterface;
+use Psrnext\App\AppConfigInterface;
+use Psrnext\Http\Factory\ResponseFactoryInterface;
+use Psrnext\View\ViewInterface;
 
 class MainController
 {

@@ -2,7 +2,7 @@
 
 namespace Rosem\App;
 
-use TrueStd\App\{AppFactoryInterface, AppInterface};
+use Psrnext\App\{AppFactoryInterface, AppInterface};
 
 class AppFactory implements AppFactoryInterface
 {

@@ -6,7 +6,7 @@ use FastRoute\Dispatcher;
 use FastRoute\Dispatcher\{
     CharCountBased, GroupCountBased, GroupPosBased, MarkBased
 };
-use TrueStd\RouteCollector\RouteDispatcherInterface;
+use Psrnext\RouteCollector\RouteDispatcherInterface;
 
 class RouteDispatcher implements RouteDispatcherInterface
 {

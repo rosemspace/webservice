@@ -3,7 +3,7 @@
 namespace TrueCode\Http\Factory;
 
 use Psr\Http\Message\UploadedFileInterface;
-use TrueStd\Http\Factory\UploadedFileFactoryInterface;
+use Psrnext\Http\Factory\UploadedFileFactoryInterface;
 use Zend\Diactoros\UploadedFile;
 
 class UploadedFileFactory implements UploadedFileFactoryInterface

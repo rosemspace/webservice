@@ -3,15 +3,15 @@
 namespace Rosem\Kernel;
 
 use Psr\Container\ContainerInterface;
-use TrueStd\App\AppConfigInterface;
-use TrueStd\Container\ServiceProviderInterface;
-use TrueStd\Http\Factory\{
+use Psrnext\App\AppConfigInterface;
+use Psrnext\Container\ServiceProviderInterface;
+use Psrnext\Http\Factory\{
     MiddlewareFactoryInterface, ResponseFactoryInterface, ServerRequestFactoryInterface
 };
-use TrueStd\RouteCollector\{
+use Psrnext\RouteCollector\{
     RouteCollectorInterface, RouteDispatcherInterface
 };
-use TrueStd\View\ViewInterface;
+use Psrnext\View\ViewInterface;
 
 class KernelServiceProvider implements ServiceProviderInterface
 {

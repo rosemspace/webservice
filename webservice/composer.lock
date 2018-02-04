@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1b03dc17f98966d983e53847ad8fa6a1",
-    "content-hash": "a429632221bfc5bc24f74dbdca39c85f",
+    "hash": "e29df47d2ee3befda15dbbf5ba00df70",
+    "content-hash": "4a13b8b9869b11177e85426ec234891d",
     "packages": [
         {
             "name": "analogue/orm",
@@ -2383,6 +2383,198 @@
             "time": "2018-01-27 16:01:43"
         },
         {
+            "name": "psrnext/app",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/psrnext/app",
+                "reference": "d3a38314fb0fceeb19b7740c4a1794ce5bb6e66b",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "psr/container": "^1.0",
+                "psr/http-server-middleware": "^1.0",
+                "psrnext/http-factory": "*",
+                "psrnext/service-provider": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psrnext\\App\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Application standard"
+        },
+        {
+            "name": "psrnext/event-manager",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/psrnext/event-manager",
+                "reference": "8e6b5e8001f0490311050927d1c595e1b0a52375",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psrnext\\EventManager\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Events standard"
+        },
+        {
+            "name": "psrnext/http-factory",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/psrnext/http-factory",
+                "reference": "42937bf77c657d3b187972505c9e1ba8b0b5c401",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "psr/http-message": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psrnext\\Http\\Factory\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "HTTP factory standard"
+        },
+        {
+            "name": "psrnext/route-collector",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/psrnext/route-collector",
+                "reference": "668af7b29e0a7b6966532dfeedf1289d59a5046b",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psrnext\\RouteCollector\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Route collector standard"
+        },
+        {
+            "name": "psrnext/service-provider",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/psrnext/service-provider",
+                "reference": "6db2f330685c62e6fc90653915f84f2a4f1ce831",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "psr/container": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psrnext\\Container\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Service provider standard"
+        },
+        {
+            "name": "psrnext/view",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/psrnext/view",
+                "reference": "fd124ef30ae7db8780de4efea00ce21d16e68cdb",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psrnext\\View\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "http://truecode.info",
+                    "role": "Developer"
+                }
+            ],
+            "description": "View standard"
+        },
+        {
             "name": "robmorgan/phinx",
             "version": "0.9.2",
             "source": {
@@ -3030,12 +3222,12 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/container",
-                "reference": "8121d904812185c5a244ed3f1f8b80a9314b71fc",
+                "reference": "4dc2305601999f682015eb04217338573dabefac",
                 "shasum": null
             },
             "require": {
                 "container-interop/service-provider": "^0.4.0",
-                "php": ">=7.1.0",
+                "php": ">=7.2.0",
                 "psr/container": "^1.0"
             },
             "type": "library",
@@ -3063,12 +3255,12 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/event-manager",
-                "reference": "85274eaf753edb336e7e2514c815d3463f8263b2",
+                "reference": "bed9b581155352b6ad134d91d1ccb39e753c828e",
                 "shasum": null
             },
             "require": {
-                "php": ">=7.1.0",
-                "true-std/event-manager": "*"
+                "php": ">=7.2.0",
+                "psrnext/event-manager": "*"
             },
             "type": "library",
             "autoload": {
@@ -3095,11 +3287,11 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/graphql",
-                "reference": "58674a1b78c36fd5da437bcc32ada5480a092758",
+                "reference": "b65cad1b33e9646f4374b15fd2702602dbc292cf",
                 "shasum": null
             },
             "require": {
-                "php": ">=7.1.0",
+                "php": ">=7.2.0",
                 "true-code/graphql-standards": "*",
                 "webonyx/graphql-php": "^0.11"
             },
@@ -3128,11 +3320,11 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/graphql-standards",
-                "reference": "b5a83ce6ca6ce1127ca6cb36a9bbc344f2ab0cba",
+                "reference": "adde30447192e7c8ce8ec980791ccda814863b32",
                 "shasum": null
             },
             "require": {
-                "php": ">=7.1.0",
+                "php": ">=7.2.0",
                 "webonyx/graphql-php": "^0.11"
             },
             "type": "library",
@@ -3160,14 +3352,14 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/http-factory",
-                "reference": "68814cff912c582091351c8cd1e30a84eb7d7eee",
+                "reference": "49fc23bf31a251ca7e7de74033150c91049378bd",
                 "shasum": null
             },
             "require": {
-                "php": ">=7.1.0",
+                "php": ">=7.2.0",
                 "psr/container": "^1.0",
-                "true-code/container": "*",
-                "true-std/http-factory": "*"
+                "psrnext/http-factory": "*",
+                "true-code/container": "*"
             },
             "type": "library",
             "autoload": {
@@ -3222,12 +3414,12 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/true-code/route-collector",
-                "reference": "612cd75a178b1e4c2f64bd3da6c4d7f161f9cde1",
+                "reference": "f1fea3b498e13924414ee3afc820d65d4b5a904d",
                 "shasum": null
             },
             "require": {
-                "php": ">=7.1.0",
-                "true-std/route-collector": "*"
+                "php": ">=7.2.0",
+                "psrnext/route-collector": "*"
             },
             "type": "library",
             "autoload": {
@@ -3247,198 +3439,6 @@
                 }
             ],
             "description": "Dependency injection container library"
-        },
-        {
-            "name": "true-std/app",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-std/app",
-                "reference": "d36e7d0e95a06ddbf44ed8eb88d11638d427bcda",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.1.0",
-                "psr/container": "^1.0",
-                "psr/http-server-middleware": "^1.0",
-                "true-std/http-factory": "*",
-                "true-std/service-provider": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueStd\\App\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Application standard"
-        },
-        {
-            "name": "true-std/event-manager",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-std/event-manager",
-                "reference": "74c9e298e63ddd2332b0271134ed8c3cc116090f",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueStd\\EventManager\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Events standard"
-        },
-        {
-            "name": "true-std/http-factory",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-std/http-factory",
-                "reference": "4715ddc9841e61050d50292d87bbe04503b6db65",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.1.0",
-                "psr/http-message": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueStd\\Http\\Factory\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "HTTP factory standard"
-        },
-        {
-            "name": "true-std/route-collector",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-std/route-collector",
-                "reference": "b89b3ec3749ab64b1c68577abc3be712a0d76f2d",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueStd\\RouteCollector\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Route collector standard"
-        },
-        {
-            "name": "true-std/service-provider",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-std/service-provider",
-                "reference": "dd111b39fd79e8d85676cbee6cd753895d33e221",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.1.0",
-                "psr/container": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueStd\\Container\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Service provider standard"
-        },
-        {
-            "name": "true-std/view",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-std/view",
-                "reference": "398056bd55f0017c9b3da184174cd7adefaad134",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueStd\\View\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "View standard"
         },
         {
             "name": "vlucas/phpdotenv",

@@ -1,0 +1,24 @@
+{
+    "name": "psrnext/route-collector",
+    "description": "Route collector standard",
+    "license": "MIT",
+    "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "ma1oy",
+            "email": "iroman.via@gmail.com",
+            "homepage": "http://truecode.info",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Psrnext\\RouteCollector\\": "src"
+        }
+    }
+}

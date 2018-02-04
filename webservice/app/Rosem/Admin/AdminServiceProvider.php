@@ -4,10 +4,10 @@ namespace Rosem\Admin;
 
 use Psr\Container\ContainerInterface;
 use Rosem\Admin\Controller\AdminController;
-use TrueStd\App\AppConfigInterface;
-use TrueStd\Container\ServiceProviderInterface;
-use TrueStd\RouteCollector\RouteCollectorInterface;
-use TrueStd\View\ViewInterface;
+use Psrnext\App\AppConfigInterface;
+use Psrnext\Container\ServiceProviderInterface;
+use Psrnext\RouteCollector\RouteCollectorInterface;
+use Psrnext\View\ViewInterface;
 
 class AdminServiceProvider implements ServiceProviderInterface
 {

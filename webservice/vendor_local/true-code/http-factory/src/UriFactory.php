@@ -3,7 +3,7 @@
 namespace TrueCode\Http\Factory;
 
 use Psr\Http\Message\UriInterface;
-use TrueStd\Http\Factory\UriFactoryInterface;
+use Psrnext\Http\Factory\UriFactoryInterface;
 use Zend\Diactoros\Uri;
 
 class UriFactory implements UriFactoryInterface

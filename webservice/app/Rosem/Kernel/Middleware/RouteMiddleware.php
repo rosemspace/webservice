@@ -8,10 +8,10 @@ use Psr\Http\Message\{
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
-use TrueStd\Http\Factory\{
+use Psrnext\Http\Factory\{
     MiddlewareFactoryInterface, ResponseFactoryInterface
 };
-use TrueStd\RouteCollector\RouteDispatcherInterface;
+use Psrnext\RouteCollector\RouteDispatcherInterface;
 
 class RouteMiddleware implements MiddlewareInterface
 {

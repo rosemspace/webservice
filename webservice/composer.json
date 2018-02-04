@@ -27,6 +27,8 @@
         "nikic/fast-route": "^1.2",
         "php": ">=7.1.0",
         "psr7-sessions/storageless": "^4.0",
+        "psrnext/app": "*",
+        "psrnext/view": "*",
         "robmorgan/phinx": "^0.9",
         "symfony/finder": "^4.0",
         "tedivm/stash": "0.14.*",
@@ -37,8 +39,6 @@
         "true-code/http-factory": "*",
         "true-code/installer": "*",
         "true-code/route-collector": "*",
-        "true-std/app": "*",
-        "true-std/view": "*",
         "vlucas/phpdotenv": "^2.4",
         "zendframework/zend-diactoros": "^1.6"
     },
@@ -68,13 +68,11 @@
         {"type": "path", "url": "vendor_local/true-code/graphql-standards"},
         {"type": "path", "url": "vendor_local/true-code/installer"},
         {"type": "path", "url": "vendor_local/true-code/route-collector"},
-        {"type": "path", "url": "vendor_local/true-std/app"},
-        {"type": "path", "url": "vendor_local/true-std/event-manager"},
-        {"type": "path", "url": "vendor_local/true-std/http-factory"},
-        {"type": "path", "url": "vendor_local/true-std/http-server-handler"},
-        {"type": "path", "url": "vendor_local/true-std/http-server-middleware"},
-        {"type": "path", "url": "vendor_local/true-std/route-collector"},
-        {"type": "path", "url": "vendor_local/true-std/service-provider"},
-        {"type": "path", "url": "vendor_local/true-std/view"}
+        {"type": "path", "url": "vendor_local/psrnext/app"},
+        {"type": "path", "url": "vendor_local/psrnext/event-manager"},
+        {"type": "path", "url": "vendor_local/psrnext/http-factory"},
+        {"type": "path", "url": "vendor_local/psrnext/route-collector"},
+        {"type": "path", "url": "vendor_local/psrnext/service-provider"},
+        {"type": "path", "url": "vendor_local/psrnext/view"}
     ]
 }

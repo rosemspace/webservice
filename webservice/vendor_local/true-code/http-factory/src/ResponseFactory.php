@@ -3,7 +3,7 @@
 namespace TrueCode\Http\Factory;
 
 use Psr\Http\Message\ResponseInterface;
-use TrueStd\Http\Factory\ResponseFactoryInterface;
+use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Zend\Diactoros\Response;
 
 class ResponseFactory implements ResponseFactoryInterface

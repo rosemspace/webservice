@@ -2,7 +2,7 @@
 
 namespace TrueCode\EventManager;
 
-use TrueStd\EventManager\{
+use Psrnext\EventManager\{
     EventInterface, EventListenerInterface, EventManagerInterface
 };
 

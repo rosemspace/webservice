@@ -3,7 +3,7 @@
 namespace TrueCode\Http\Factory;
 
 use Psr\Http\Message\StreamInterface;
-use TrueStd\Http\Factory\StreamFactoryInterface;
+use Psrnext\Http\Factory\StreamFactoryInterface;
 use Zend\Diactoros\Stream;
 
 class StreamFactory implements StreamFactoryInterface

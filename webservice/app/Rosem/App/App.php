@@ -19,12 +19,12 @@ use Rosem\Access\Database\Models\{
 use TrueCode\Container\Exception\ContainerException;
 use TrueCode\Container\ReflectionContainer;
 use TrueCode\EventManager\EventManager;
-use TrueStd\App\{
+use Psrnext\App\{
     AppConfigInterface, AppInterface
 };
-use TrueStd\Container\ServiceProviderInterface;
-use TrueStd\EventManager\EventInterface;
-use TrueStd\Http\Factory\{
+use Psrnext\Container\ServiceProviderInterface;
+use Psrnext\EventManager\EventInterface;
+use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
 use Zend\Diactoros\Server;
