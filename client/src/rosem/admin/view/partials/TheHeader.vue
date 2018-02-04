@@ -20,34 +20,34 @@
                 <p>Semenyshyn</p>
             </div>
 
-            <button v-pop:hover.bottom-end="$_uuid()">
-                <vue-avatar alt="Romanna Semenyshyn"
-                            src="https://avatars0.githubusercontent.com/u/31832630?s=460&v=4"
-                />
-            </button>
-            <rosem-poptip :name="$_uuid.last">
-                <transition slot-scope="tooltip" name="fade-from-top">
-                    <p v-show="tooltip.open">This is a tooltip text!!!</p>
-                </transition>
-            </rosem-poptip>
-
-            <!--<button v-pop:click.bottom-end="'user-menu'">-->
+            <!--<button v-pop:hover.bottom-end="$_rosem_popup.nextId()">-->
                 <!--<vue-avatar alt="Romanna Semenyshyn"-->
                             <!--src="https://avatars0.githubusercontent.com/u/31832630?s=460&v=4"-->
                 <!--/>-->
             <!--</button>-->
-            <!--<rosem-base-poptip name="user-menu" place="bottom-end">-->
-                <!--<transition name="fade-from-top" slot-scope="popup">-->
-                    <!--<rosem-popper v-show="popup.open">-->
-                        <!--<ul>-->
-                            <!--<li>Profile</li>-->
-                            <!--<li>Settings</li>-->
-                            <!--<li>Lock</li>-->
-                            <!--<li>Sign out</li>-->
-                        <!--</ul>-->
-                    <!--</rosem-popper>-->
+            <!--<rosem-popup :name="$_rosem_popup.id">-->
+                <!--<transition slot-scope="tooltip" name="fade-from-top">-->
+                    <!--<p v-show="tooltip.open">This is a tooltip text!!!</p>-->
                 <!--</transition>-->
-            <!--</rosem-base-poptip>-->
+            <!--</rosem-popup>-->
+
+            <button v-pop:click.bottom-end="'user-menu'">
+                <vue-avatar alt="Romanna Semenyshyn"
+                            src="https://avatars0.githubusercontent.com/u/31832630?s=460&v=4"
+                />
+            </button>
+            <rosem-popup name="user-menu" place="bottom-end">
+                <transition name="fade-from-top" slot-scope="popup">
+                    <rosem-popup-tooltip v-show="popup.open">
+                        <ul>
+                            <li>Profile</li>
+                            <li>Settings</li>
+                            <li>Lock</li>
+                            <li>Sign out</li>
+                        </ul>
+                    </rosem-popup-tooltip>
+                </transition>
+            </rosem-popup>
             <!--src="https://avatars1.githubusercontent.com/u/13917198?s=460&v=4"-->
         </div>
     </header>

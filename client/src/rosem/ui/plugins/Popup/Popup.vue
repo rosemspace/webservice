@@ -1,15 +1,12 @@
 <template>
     <div :id="`popup-${name}`" :class="$options.name">
-        <slot name="control" :id="_uid" />
-        <div ref="popover">
-            <slot :open="open" />
-        </div>
+        <slot :open="open" />
     </div>
 </template>
 
 <script>
     export default {
-        name: 'RosemPoptip',
+        name: 'RosemPopup',
 
 //        render(h) {
 //            return h(this.tag, {
@@ -31,7 +28,7 @@
 
             name: {
                 type: String,
-                // required: true,
+                required: true,
             }
         },
 
@@ -42,7 +39,6 @@
         data() {
             return {
                 open: false,
-                poptip: this.$_poptip,
             }
         },
 
@@ -50,14 +46,10 @@
 
         mounted() {
             this.$nextTick(() => {
-                const name = this.name || this._uid;
-
-                console.log(this.$refs.popover);
-
-                this.$_poptip.add(name, {
+                this.$_rosem_popup.add(this.name, {
                     eventBus: this.$root,
                     // targetElement: this.$slots.control,
-                    popperElement: ! this.name ? this.$refs.popover : this.$el,
+                    popperElement: this.$el,
                     closeOnControlClick: true,
                     closeOnSelfClick: true,
                     closeOnClickOutside: true,
@@ -65,14 +57,14 @@
                 });
 
                 this.$root.$on('poptip:open', event => {
-                    if (name === event.name) {
-                        this.$_poptip.update(name);
+                    if (this.name === event.name) {
+                        this.$_rosem_popup.update(this.name);
                         this.open = true;
                     }
                 });
 
                 this.$root.$on('poptip:close', event => {
-                    if (name === event.name) {
+                    if (this.name === event.name) {
                         this.open = false;
                     }
                 });
@@ -80,13 +72,13 @@
         },
 
         destroyed() {
-            this.$_poptip.remove(this.name);
+            this.$_rosem_popup.remove(this.name);
         },
     }
 </script>
 
 <style lang="postcss">
-    .RosemPoptip {
+    .RosemPopup {
         & [x-arrow] {
             width: 0;
             height: 0;
@@ -97,7 +89,7 @@
         }
     }
 
-    .RosemPoptip[x-placement^="top"] {
+    .RosemPopup[x-placement^="top"] {
         & [x-arrow] {
             border-width: 5px 5px 0 5px;
             border-left-color: transparent;
@@ -110,7 +102,7 @@
         }
     }
 
-    .RosemPoptip[x-placement^="right"]{
+    .RosemPopup[x-placement^="right"]{
         & [x-arrow] {
             border-width: 5px 5px 5px 0;
             border-left-color: transparent;
@@ -123,7 +115,7 @@
         }
     }
 
-    .RosemPoptip[x-placement^="bottom"] {
+    .RosemPopup[x-placement^="bottom"] {
         & [x-arrow] {
             border-width: 0 5px 5px 5px;
             border-left-color: transparent;
@@ -136,7 +128,7 @@
         }
     }
 
-    .RosemPoptip[x-placement^="left"] {
+    .RosemPopup[x-placement^="left"] {
         & [x-arrow] {
             border-width: 5px 0 5px 5px;
             border-top-color: transparent;

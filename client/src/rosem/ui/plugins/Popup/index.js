@@ -1,22 +1,13 @@
-import Poptip from './Poptip';
-import Popper from './Popper';
-import PoptipManager from './poptipManager';
+import Popup from './Popup';
+import PopupTooltip from './PopupTooltip';
+import PopupManager from './PopupManager';
 
 export default {
     install (Vue, params = {}) {
-        const poptipManager = Vue.prototype.$_poptip = new PoptipManager;
+        const popupManager = Vue.prototype.$_rosem_popup = new PopupManager;
 
-        let uuid = 0;
-
-        Vue.prototype.$_uuid = () => {
-            Vue.prototype.$_uuid.last = uuid.toString();
-            uuid += 1;
-
-            return Vue.prototype.$_uuid.last;
-        };
-
-        Vue.component(Poptip.name, Poptip);
-        Vue.component(Popper.name, Popper);
+        Vue.component(Popup.name, Popup);
+        Vue.component(PopupTooltip.name, PopupTooltip);
         Vue.directive('pop', {
             bind(el, binding, vnode) {
                 if (! binding.value) {
@@ -30,7 +21,7 @@ export default {
 
                 const firstModifier = Object.entries(binding.modifiers)[0];
 
-                poptipManager.add(binding.value, {
+                popupManager.add(binding.value, {
                     eventBus: vnode.context.$root,
                     targetElement: el,
                     placement: firstModifier[1] ? firstModifier[0] : '',
@@ -38,14 +29,14 @@ export default {
 
                 if (! binding.arg || binding.arg === 'click') {
                     el.addEventListener('click', event => {
-                        poptipManager.toggle(binding.value);
+                        popupManager.toggle(binding.value);
                     });
                 } else if (binding.arg === 'hover') {
                     el.addEventListener('mouseenter', event => {
-                        poptipManager.open(binding.value);
+                        popupManager.open(binding.value);
                     });
                     el.addEventListener('mouseleave', event => {
-                        poptipManager.close(binding.value);
+                        popupManager.close(binding.value);
                     });
                 } else {
                     throw new Error('modifier of the v-pop directive should be "click" or "hover"');
@@ -53,7 +44,7 @@ export default {
             },
 
             unbind: function (target, binding) {
-                poptipManager.remove(binding.arg);
+                popupManager.remove(binding.arg);
             },
         });
     },

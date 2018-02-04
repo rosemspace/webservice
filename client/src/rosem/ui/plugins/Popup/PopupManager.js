@@ -1,15 +1,21 @@
 import Popper from 'popper.js';
 
-export default class PopManager {
+export default class PopupManager {
     initialized = false;
     bindings = {};
     activeList = [];
+    _id = 0;
+    id;
 
     init () {
         if (!this.initialized) {
             document.addEventListener('click', this.eventListener = this._onDocumentClick.bind(this));
             this.initialized = true;
         }
+    }
+
+    nextId() {
+        return this.id = (++this._id).toString();
     }
 
     destroy () {

@@ -7,6 +7,6 @@
 
 <script>
     export default {
-        name: 'RosemBasePopper',
+        name: 'RosemPopupTooltip',
     }
 </script>
