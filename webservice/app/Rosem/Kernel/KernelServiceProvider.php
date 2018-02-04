@@ -71,35 +71,35 @@ class KernelServiceProvider implements ServiceProviderInterface
 
     public function createServerRequestFactory()
     {
-        return new \TrueCode\Http\Factory\ServerRequestFactory;
+        return new \Rosem\Http\Factory\ServerRequestFactory;
     }
 
     public function createResponseFactory()
     {
-        return new \TrueCode\Http\Factory\ResponseFactory;
+        return new \Rosem\Http\Factory\ResponseFactory;
     }
 
     public function createMiddlewareFactory(ContainerInterface $container)
     {
-        return new \TrueCode\Http\Factory\MiddlewareFactory($container);
+        return new \Rosem\Http\Factory\MiddlewareFactory($container);
     }
 
     /**
      * @param ContainerInterface $container
      *
-     * @return \TrueCode\RouteCollector\RouteCollector
+     * @return \Rosem\RouteCollector\RouteCollector
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function createRouteCollector(ContainerInterface $container)
     {
-        return new \TrueCode\RouteCollector\RouteCollector(
+        return new \Rosem\RouteCollector\RouteCollector(
             new \FastRoute\RouteParser\Std,
-            new \TrueCode\RouteCollector\RouteDataGenerator(
+            new \Rosem\RouteCollector\RouteDataGenerator(
                 $container->get(AppConfigInterface::class)
                     ->get(
                         'kernel.route.data_generator',
-                        \TrueCode\RouteCollector\RouteDataGenerator::DRIVER_GROUP_COUNT
+                        \Rosem\RouteCollector\RouteDataGenerator::DRIVER_GROUP_COUNT
                     )
             )
         );
@@ -114,12 +114,12 @@ class KernelServiceProvider implements ServiceProviderInterface
      */
     public function createRouteDispatcher(ContainerInterface $container)
     {
-        return new \TrueCode\RouteCollector\RouteDispatcher(
+        return new \Rosem\RouteCollector\RouteDispatcher(
             $container->get(RouteCollectorInterface::class)->getData(),
             $container->get(AppConfigInterface::class)
                 ->get(
                     'kernel.route.dispatcher',
-                    \TrueCode\RouteCollector\RouteDispatcher::DRIVER_GROUP_COUNT
+                    \Rosem\RouteCollector\RouteDispatcher::DRIVER_GROUP_COUNT
                 )
         );
     }

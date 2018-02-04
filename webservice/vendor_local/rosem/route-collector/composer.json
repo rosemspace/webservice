@@ -1,6 +1,6 @@
 {
-    "name": "psrnext/event-manager",
-    "description": "Events standard",
+    "name": "rosem/route-collector",
+    "description": "Dependency injection container library",
     "license": "MIT",
     "type": "library",
     "minimum-stability": "dev",
@@ -14,11 +14,12 @@
         }
     ],
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.0",
+        "psrnext/route-collector": "*"
     },
     "autoload": {
         "psr-4": {
-            "Psrnext\\EventManager\\": "src"
+            "Rosem\\RouteCollector\\": "src"
         }
     }
 }

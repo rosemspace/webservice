@@ -1,6 +1,6 @@
 {
-    "name": "psrnext/event-manager",
-    "description": "Events standard",
+    "name": "rosem/event-manager",
+    "description": "Event management library",
     "license": "MIT",
     "type": "library",
     "minimum-stability": "dev",
@@ -14,11 +14,12 @@
         }
     ],
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.0",
+        "psrnext/event-manager": "*"
     },
     "autoload": {
         "psr-4": {
-            "Psrnext\\EventManager\\": "src"
+            "Rosem\\EventManager\\": "src"
         }
     }
 }

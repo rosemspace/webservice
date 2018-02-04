@@ -16,9 +16,9 @@ use Psr\Http\Server\{
 use Rosem\Access\Database\Models\{
     User, UserRole
 };
-use TrueCode\Container\Exception\ContainerException;
-use TrueCode\Container\ReflectionContainer;
-use TrueCode\EventManager\EventManager;
+use Rosem\Container\Exception\ContainerException;
+use Rosem\Container\ReflectionContainer;
+use Rosem\EventManager\EventManager;
 use Psrnext\App\{
     AppConfigInterface, AppInterface
 };

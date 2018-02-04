@@ -8,7 +8,7 @@ use Psr\Http\Message\{
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
-use TrueCode\Container\Container;
+use Rosem\Container\Container;
 
 class MiddlewareRequestHandler implements RequestHandlerInterface
 {

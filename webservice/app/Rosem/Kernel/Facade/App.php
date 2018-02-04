@@ -3,7 +3,7 @@
 namespace Rosem\Kernel\Facade;
 
 use Psrnext\App\AppInterface;
-use TrueCode\Container\AbstractFacade;
+use Rosem\Container\AbstractFacade;
 
 class App extends AbstractFacade
 {

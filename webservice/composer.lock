@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e29df47d2ee3befda15dbbf5ba00df70",
-    "content-hash": "4a13b8b9869b11177e85426ec234891d",
+    "hash": "9e6c03b135be853a1ad37e47d9f68767",
+    "content-hash": "a1473e938242c4b6d0485d03cd2587b9",
     "packages": [
         {
             "name": "analogue/orm",
@@ -2388,7 +2388,7 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/psrnext/app",
-                "reference": "d3a38314fb0fceeb19b7740c4a1794ce5bb6e66b",
+                "reference": "6d8641ea8fe47933032a6d1f6e0df1f0c0f7798f",
                 "shasum": null
             },
             "require": {
@@ -2411,7 +2411,7 @@
                 {
                     "name": "ma1oy",
                     "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
+                    "homepage": "https://rosem.io",
                     "role": "Developer"
                 }
             ],
@@ -2423,7 +2423,7 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/psrnext/event-manager",
-                "reference": "8e6b5e8001f0490311050927d1c595e1b0a52375",
+                "reference": "c0ac8de1968ecfe3881d4bbee73753c03ff59b02",
                 "shasum": null
             },
             "require": {
@@ -2442,7 +2442,7 @@
                 {
                     "name": "ma1oy",
                     "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
+                    "homepage": "https://rosem.io",
                     "role": "Developer"
                 }
             ],
@@ -2454,7 +2454,7 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/psrnext/http-factory",
-                "reference": "42937bf77c657d3b187972505c9e1ba8b0b5c401",
+                "reference": "7bb10a4ae10370d6c8b9529759c3edbbb4c0bee5",
                 "shasum": null
             },
             "require": {
@@ -2474,7 +2474,7 @@
                 {
                     "name": "ma1oy",
                     "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
+                    "homepage": "https://rosem.io",
                     "role": "Developer"
                 }
             ],
@@ -2486,7 +2486,7 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/psrnext/route-collector",
-                "reference": "668af7b29e0a7b6966532dfeedf1289d59a5046b",
+                "reference": "f2da95964def5702a50961eaa66fc14475cb25c3",
                 "shasum": null
             },
             "require": {
@@ -2505,7 +2505,7 @@
                 {
                     "name": "ma1oy",
                     "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
+                    "homepage": "https://rosem.io",
                     "role": "Developer"
                 }
             ],
@@ -2517,7 +2517,7 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/psrnext/service-provider",
-                "reference": "6db2f330685c62e6fc90653915f84f2a4f1ce831",
+                "reference": "8a4b2d2826f88362d0ed1322468a456990d23f7c",
                 "shasum": null
             },
             "require": {
@@ -2537,7 +2537,7 @@
                 {
                     "name": "ma1oy",
                     "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
+                    "homepage": "https://rosem.io",
                     "role": "Developer"
                 }
             ],
@@ -2549,7 +2549,7 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/psrnext/view",
-                "reference": "fd124ef30ae7db8780de4efea00ce21d16e68cdb",
+                "reference": "a8847bd302138f1173de82c112124c80cddb5f24",
                 "shasum": null
             },
             "require": {
@@ -2568,7 +2568,7 @@
                 {
                     "name": "ma1oy",
                     "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
+                    "homepage": "https://rosem.io",
                     "role": "Developer"
                 }
             ],
@@ -2644,6 +2644,230 @@
                 "phinx"
             ],
             "time": "2017-12-23 06:48:51"
+        },
+        {
+            "name": "rosem/container",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/rosem/container",
+                "reference": "5af3a2e599cc7a075dd0d54243e80b7669869a81",
+                "shasum": null
+            },
+            "require": {
+                "container-interop/service-provider": "^0.4.0",
+                "php": ">=7.2.0",
+                "psr/container": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rosem\\Container\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "https://rosem.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Dependency injection container library"
+        },
+        {
+            "name": "rosem/event-manager",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/rosem/event-manager",
+                "reference": "5bae53c1b5ef2f68feba78585343c6ec13484f9a",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "psrnext/event-manager": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rosem\\EventManager\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "https://rosem.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Event management library"
+        },
+        {
+            "name": "rosem/graphql",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/rosem/graphql",
+                "reference": "9e8a24852f9bd994f8e62d0d0de43011af278b49",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "rosem/graphql-standards": "*",
+                "webonyx/graphql-php": "^0.11"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "True\\GraphQL\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "https://rosem.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "GraphQL connection library"
+        },
+        {
+            "name": "rosem/graphql-standards",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/rosem/graphql-standards",
+                "reference": "45452a0c800117dcb09cddb8c75bdcb6097d504e",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "webonyx/graphql-php": "^0.11"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "TrueStandards\\GraphQL\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "https://rosem.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "GraphQL standards"
+        },
+        {
+            "name": "rosem/http-factory",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/rosem/http-factory",
+                "reference": "c51f1b0f370b4c8f7947f15e1cde8ba46fb0c8dc",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "psr/container": "^1.0",
+                "psrnext/http-factory": "*",
+                "rosem/container": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rosem\\Http\\Factory\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "https://rosem.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Http factory library"
+        },
+        {
+            "name": "rosem/installer",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/rosem/installer",
+                "reference": "4588db0dfb975ab58bdc07f6769423050bd11093",
+                "shasum": null
+            },
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.3"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "True\\Installer\\ModulePlugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "True\\Installer\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "rosem/route-collector",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/rosem/route-collector",
+                "reference": "73520ff8532494feaa2b0a5e566454e8ee4a9a79",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "psrnext/route-collector": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rosem\\RouteCollector\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "https://rosem.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Dependency injection container library"
         },
         {
             "name": "symfony/config",
@@ -3215,230 +3439,6 @@
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
             "time": "2017-11-27 11:13:29"
-        },
-        {
-            "name": "true-code/container",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-code/container",
-                "reference": "4dc2305601999f682015eb04217338573dabefac",
-                "shasum": null
-            },
-            "require": {
-                "container-interop/service-provider": "^0.4.0",
-                "php": ">=7.2.0",
-                "psr/container": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueCode\\Container\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Dependency injection container library"
-        },
-        {
-            "name": "true-code/event-manager",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-code/event-manager",
-                "reference": "bed9b581155352b6ad134d91d1ccb39e753c828e",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psrnext/event-manager": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueCode\\EventManager\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Event management library"
-        },
-        {
-            "name": "true-code/graphql",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-code/graphql",
-                "reference": "b65cad1b33e9646f4374b15fd2702602dbc292cf",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "true-code/graphql-standards": "*",
-                "webonyx/graphql-php": "^0.11"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "True\\GraphQL\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "GraphQL connection library"
-        },
-        {
-            "name": "true-code/graphql-standards",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-code/graphql-standards",
-                "reference": "adde30447192e7c8ce8ec980791ccda814863b32",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "webonyx/graphql-php": "^0.11"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueStandards\\GraphQL\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "GraphQL standards"
-        },
-        {
-            "name": "true-code/http-factory",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-code/http-factory",
-                "reference": "49fc23bf31a251ca7e7de74033150c91049378bd",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psr/container": "^1.0",
-                "psrnext/http-factory": "*",
-                "true-code/container": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueCode\\Http\\Factory\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Http factory library"
-        },
-        {
-            "name": "true-code/installer",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-code/installer",
-                "reference": "a61516f8679e3702e8d16505ef96c8fe0a5ac461",
-                "shasum": null
-            },
-            "require": {
-                "composer-plugin-api": "^1.0"
-            },
-            "require-dev": {
-                "composer/composer": "^1.3"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "True\\Installer\\ModulePlugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "True\\Installer\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "true-code/route-collector",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/true-code/route-collector",
-                "reference": "f1fea3b498e13924414ee3afc820d65d4b5a904d",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psrnext/route-collector": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueCode\\RouteCollector\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "http://truecode.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Dependency injection container library"
         },
         {
             "name": "vlucas/phpdotenv",
