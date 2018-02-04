@@ -13,8 +13,8 @@ import VueResource from 'vue-resource'
 import VueResourceCaseConverter from 'vue-resource-case-converter';
 import VueMeta from 'vue-meta'
 import VueTouch from 'vue-touch'
-import * as UiComponents from 'rosem-ui';
-import * as UiPlugins from 'rosem-ui/plugins';
+import * as UiComponents from '@rosem/ui';
+import * as UiPlugins from '@rosem/ui/plugins';
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
@@ -55,3 +55,5 @@ for (let [name, plugin] of Object.entries(UiPlugins)) {
 }
 
 export default Vue;
+
+export resolveViews from './resolveViews';

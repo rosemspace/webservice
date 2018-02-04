@@ -1,33 +1,35 @@
 'use strict';
 
-import webpack from 'webpack';
-import path from 'path';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import DashboardPlugin from 'webpack-dashboard/plugin';
+// import webpack from 'webpack';
+// import path from 'path';
+// import ExtractTextPlugin from 'extract-text-webpack-plugin';
+// import DashboardPlugin from 'webpack-dashboard/plugin';
 // import StyleLintPlugin from 'stylelint-webpack-plugin';
+const webpack = require('webpack'),
+    path = require('path'),
+    ExtractTextPlugin = require('extract-text-webpack-plugin'),
+    DashboardPlugin = require('webpack-dashboard/plugin');
 
-let NODE_ENV = process.env.NODE_ENV || 'development';
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // const extractCSS = new ExtractTextPlugin({filename: 'css/[name].css', allChunks: true});
 const extractCSS = new ExtractTextPlugin('css/[name].css');
 // const extractDocs = new ExtractTextPlugin('docs/docs.md');
 
-const pathResolve = value => path.resolve(__dirname, value);
-
-export default {
-    context: pathResolve('./src'),
+module.exports = {
+    context: path.resolve(__dirname, './src'),
 
     entry: {
         vendor: ['vue', 'vuex', 'vue-router', 'vue-resource', 'vue-touch'],
 
-        site: './rosem/site/src',
-        admin: './rosem/admin/src',
+        site: './rosem/site',
+        admin: './rosem/admin',
         rosem: 'rosem.css',
         // admin: ['./scripts/views/admin.js', './styles/themes/default/admin.pcss'],
     },
 
     output: {
-        path: pathResolve('../webservice/public'),
+        path: path.resolve(__dirname, '../webservice/public'),
         publicPath: '/',
         filename: 'js/[name].js',
         // library: '[name]' // add global variable
@@ -41,13 +43,10 @@ export default {
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.common.js',
-
-            'rosem-css': pathResolve('src/rosem/css/definitions'),
-            'rosem.css': pathResolve('src/rosem/css/style.pcss'),
-            'rosem-kernel': pathResolve('src/rosem/kernel/src'),
-            'rosem-ui': pathResolve('src/rosem/ui/src'),
+            '@rosem': path.resolve(__dirname, 'src/rosem'),
+            'rosem.css': path.resolve(__dirname, 'src/rosem/css/style.pcss'),
         },
-        extensions: ['.html', '.js', '.vue', '.json', '.yml', '.png']
+        extensions: ['.html', '.js', '.vue', '.json', '.yml', '.png'],
     },
 
     watch: NODE_ENV === 'development',
@@ -95,7 +94,7 @@ export default {
                                     options: {
                                         sourceMap: true,
                                         resources: [
-                                            pathResolve('src/rosem/css/definitions/*.pcss'),
+                                            path.resolve(__dirname, 'src/rosem/css/definitions/*.pcss'),
                                         ]
                                     }
                                 }

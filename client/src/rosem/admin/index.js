@@ -1,8 +1,7 @@
-import App from 'rosem-kernel';
 import VueRouter from 'vue-router';
+import App, { resolveViews } from '@rosem/kernel';
 // import store from '../../store';
 import routes from './routes';
-import resolveViews from 'rosem-kernel/resolveViews';
 
 export default new App({
     el: '#app',
