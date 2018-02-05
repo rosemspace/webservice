@@ -27,7 +27,9 @@
         "nikic/fast-route": "^1.2",
         "php": ">=7.1.0",
         "psr7-sessions/storageless": "^4.0",
-        "psrnext/app": "*",
+        "psrnext/app": "^0.0.1",
+        "psrnext/http-factory": "^0.0.1",
+        "psrnext/service-provider": "^0.0.1",
         "psrnext/view": "*",
         "robmorgan/phinx": "^0.9",
         "rosem/container": "*",
@@ -68,11 +70,8 @@
         {"type": "path", "url": "vendor_local/rosem/graphql-standards"},
         {"type": "path", "url": "vendor_local/rosem/installer"},
         {"type": "path", "url": "vendor_local/rosem/route-collector"},
-        {"type": "path", "url": "vendor_local/psrnext/app"},
         {"type": "path", "url": "vendor_local/psrnext/event-manager"},
-        {"type": "path", "url": "vendor_local/psrnext/http-factory"},
         {"type": "path", "url": "vendor_local/psrnext/route-collector"},
-        {"type": "path", "url": "vendor_local/psrnext/service-provider"},
         {"type": "path", "url": "vendor_local/psrnext/view"}
     ]
 }
