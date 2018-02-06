@@ -12,6 +12,7 @@
 //            return h(this.tag, {
 //                attrs: {
 //                    id: `popup-${this.name}`,
+//                    class: this.$options.name,
 //                },
 //            }, [
 //                this.$scopedSlots.default({
@@ -32,41 +33,27 @@
             }
         },
 
-        watch: {},
-
-        computed: {},
-
         data() {
             return {
                 open: false,
             }
         },
 
-        methods: {},
+        beforeCreate() {
+            this.$_rosem_popup.init(this.$root);
+        },
 
         mounted() {
             this.$nextTick(() => {
                 this.$_rosem_popup.add(this.name, {
-                    eventBus: this.$root,
-                    // targetElement: this.$slots.control,
                     popperElement: this.$el,
                     closeOnControlClick: true,
                     closeOnSelfClick: true,
                     closeOnClickOutside: true,
                     closeOnPressEscape: true,
                 });
-
-                this.$root.$on('poptip:open', event => {
-                    if (this.name === event.name) {
-                        this.$_rosem_popup.update(this.name);
-                        this.open = true;
-                    }
-                });
-
-                this.$root.$on('poptip:close', event => {
-                    if (this.name === event.name) {
-                        this.open = false;
-                    }
+                this.$_rosem_popup.onToggle(this.name, event => {
+                    this.open = event.open;
                 });
             });
         },
@@ -79,6 +66,8 @@
 
 <style lang="postcss">
     .RosemPopup {
+        margin: 1rem;
+
         & [x-arrow] {
             width: 0;
             height: 0;

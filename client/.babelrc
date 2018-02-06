@@ -15,6 +15,12 @@
     "transform-async-generator-functions",
     "transform-async-to-generator",
     "transform-class-properties",
+    [
+      "transform-private",
+      {
+        "pattern": "^_"
+      }
+    ],
     "transform-export-extensions",
     "transform-object-rest-spread",
     [

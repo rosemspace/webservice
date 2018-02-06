@@ -10,3 +10,9 @@
         name: 'RosemPopupTooltip',
     }
 </script>
+
+<style lang="postcss">
+    .RosemPopupTooltip {
+        background: white;
+    }
+</style>

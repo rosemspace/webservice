@@ -1,34 +1,40 @@
 import Popper from 'popper.js';
 
 export default class PopupManager {
-    initialized = false;
-    bindings = {};
-    activeList = [];
-    _id = 0;
-    id;
+    _initialized = false;
+    _bindings = {};
+    _activeList = [];
+    _uid = 0;
+    _eventBus;
+    _eventListener;
 
-    init () {
-        if (!this.initialized) {
-            document.addEventListener('click', this.eventListener = this._onDocumentClick.bind(this));
-            this.initialized = true;
+    get uid () {
+        this._uid.toString();
+    }
+
+    init (eventBus) {
+        if (!this._initialized) {
+            this._eventBus = eventBus;
+            document.addEventListener('click', this._eventListener = this._onDocumentClick.bind(this));
+            this._initialized = true;
         }
     }
 
-    nextId() {
-        return this.id = (++this._id).toString();
+    nextUid () {
+        return (++this._uid).toString();
     }
 
     destroy () {
-        if (this.initialized) {
-            document.removeEventListener('click', this.eventListener);
-            this.initialized = false;
+        if (this._initialized) {
+            document.removeEventListener('click', this._eventListener);
+            this._initialized = false;
         }
     }
 
     _onDocumentClick (event) {
-        for (let i = this.activeList.length; --i >= 0;) {
-            const activePopperName = this.activeList[i],
-                binding = this.bindings[activePopperName];
+        for (let i = this._activeList.length; --i >= 0;) {
+            const activePopperName = this._activeList[i],
+                binding = this._bindings[activePopperName];
 
             if (binding.closeOnClickOutside &&
                 (!binding.popperElement.contains(event.target) || binding.closeOnSelfClick) &&
@@ -40,18 +46,14 @@ export default class PopupManager {
     };
 
     add (name, newParams) {
-        let params = this.bindings[name];
+        let binding = this._bindings[name];
+        this._bindings[name] = binding ? Object.assign(binding, newParams) : binding = newParams;
 
-        this.bindings[name] = params ? Object.assign(params, newParams) : params = newParams;
-
-        console.log(newParams);
-
-        if (params.targetElement && params.popperElement) {
-            params.eventBus = newParams.eventBus;
-            params.popper = new Popper(params.targetElement, params.popperElement, {
+        if (binding.targetElement && binding.popperElement) {
+            binding.popper = new Popper(binding.targetElement, binding.popperElement, {
                 // arrowElement: binding.pointerElement,
                 originalPlacement: 'bottom',
-                placement: params.placement,
+                placement: binding.placement,
                 // flipped: false,
                 // removeOnDestroy: true,
                 modifiers: {
@@ -64,56 +66,65 @@ export default class PopupManager {
                 }
             });
             // binding.popper.enableEventListeners();
-            this.init();
         }
     }
 
     remove (name) {
-        if (this.bindings[name]) {
-            this.bindings[name].popper.destroy();
-            delete this.bindings[name];
+        if (this._bindings[name]) {
+            this._bindings[name].popper.destroy();
+            delete this._bindings[name];
 
-            if (!Object.keys(this.bindings).length) {
+            if (!Object.keys(this._bindings).length) {
                 this.destroy();
             }
         }
     }
 
     update (name) {
-        this.bindings[name].popper.scheduleUpdate();
+        this._bindings[name].popper.scheduleUpdate();
     }
 
     _forceOpen (name) {
-        this.activeList.push(name);
-        let binding = this.bindings[name];
+        this._activeList.push(name);
+        const binding = this._bindings[name];
         binding.open = true;
-        binding.eventBus.$emit('poptip:open', {name});
+        this._eventBus.$emit(`rosem-popup:${name}`, binding);
     }
 
     open (name) {
-        if (!this.bindings[name].open) {
+        if (!this._bindings[name].open) {
             this._forceOpen(name);
         }
     }
 
     _forceClose (name) {
-        this.activeList.splice(this.activeList.indexOf(name), 1);
-        let binding = this.bindings[name];
+        this._activeList.splice(this._activeList.indexOf(name), 1);
+        const binding = this._bindings[name];
         binding.open = false;
-        binding.eventBus.$emit('poptip:close', {name});
+        this._eventBus.$emit(`rosem-popup:${name}`, binding);
     }
 
     close (name) {
-        if (this.bindings[name].open) {
+        if (this._bindings[name].open) {
             this._forceClose(name);
         }
     }
 
     toggle (name) {
-        const binding = this.bindings[name];
+        const binding = this._bindings[name];
 
         binding.open && binding.closeOnControlClick
             ? this._forceClose(name)
             : this._forceOpen(name);
+    }
+
+    onToggle (name, eventListener) {
+        this._eventBus.$on(`rosem-popup:${name}`, event => {
+            if (event.open) {
+                this.update(name);
+            }
+
+            eventListener(event);
+        });
     }
 }

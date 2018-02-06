@@ -20,12 +20,12 @@
                 <p>Semenyshyn</p>
             </div>
 
-            <!--<button v-pop:hover.bottom-end="$_rosem_popup.nextId()">-->
+            <!--<button v-pop:hover.bottom-end="$_rosem_popup.nextUid()">-->
                 <!--<vue-avatar alt="Romanna Semenyshyn"-->
                             <!--src="https://avatars0.githubusercontent.com/u/31832630?s=460&v=4"-->
                 <!--/>-->
             <!--</button>-->
-            <!--<rosem-popup :name="$_rosem_popup.id">-->
+            <!--<rosem-popup :name="$_rosem_popup.uid">-->
                 <!--<transition slot-scope="tooltip" name="fade-from-top">-->
                     <!--<p v-show="tooltip.open">This is a tooltip text!!!</p>-->
                 <!--</transition>-->
@@ -81,10 +81,10 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            text-transform: uppercase;
             margin-left: 3rem;
 
             & > li > a {
+                text-transform: uppercase;
                 padding: 2rem 1rem;
                 border-bottom: 0 solid transparent;
                 color: #d2efff;
@@ -121,19 +121,16 @@
                     margin: 1rem;
 
                     & > :--popper {
-                        & > ul {
-                            padding: .5rem 0;
-                            border-radius: 2px;
-                            background: white;
-                            box-shadow: 0 2px 2px #98AFC0;
+                        padding: .5rem 0;
+                        border-radius: 2px;
+                        box-shadow: 0 2px 2px #98AFC0;
 
-                            & > li {
-                                padding: 1rem;
-                                transition: background-color .1s;
+                        & > ul > li {
+                            padding: 1rem;
+                            transition: background-color .1s;
 
-                                &:hover {
-                                    background: #F0F5F7;
-                                }
+                            &:hover {
+                                background: #F0F5F7;
                             }
                         }
                     }

@@ -22,7 +22,6 @@ export default {
                 const firstModifier = Object.entries(binding.modifiers)[0];
 
                 popupManager.add(binding.value, {
-                    eventBus: vnode.context.$root,
                     targetElement: el,
                     placement: firstModifier[1] ? firstModifier[0] : '',
                 });
