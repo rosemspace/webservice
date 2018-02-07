@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6fb11835a0964ea8c9307fb9025a7ba0",
-    "content-hash": "e61476f12a897c33f1381fd1a72f278f",
+    "hash": "892d0629a3effa98e40dc126c6264b41",
+    "content-hash": "5bb9f979a223d1923a73fc5973a0d364",
     "packages": [
         {
             "name": "analogue/orm",
@@ -902,7 +902,7 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v5.5.33",
+            "version": "v5.5.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -946,7 +946,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.5.33",
+            "version": "v5.5.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -990,16 +990,16 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v5.5.33",
+            "version": "v5.5.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "e25d8236f849d2166fdd13ab15e391aecb954a4a"
+                "reference": "4c608d7e46baa06f5250de1a4a459c1d0dbb08ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/e25d8236f849d2166fdd13ab15e391aecb954a4a",
-                "reference": "e25d8236f849d2166fdd13ab15e391aecb954a4a",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/4c608d7e46baa06f5250de1a4a459c1d0dbb08ad",
+                "reference": "4c608d7e46baa06f5250de1a4a459c1d0dbb08ad",
                 "shasum": ""
             },
             "require": {
@@ -1045,11 +1045,11 @@
                 "orm",
                 "sql"
             ],
-            "time": "2018-01-24 13:56:01"
+            "time": "2018-02-05 15:11:42"
         },
         {
             "name": "illuminate/events",
-            "version": "v5.5.33",
+            "version": "v5.5.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
@@ -1094,7 +1094,7 @@
         },
         {
             "name": "illuminate/pagination",
-            "version": "v5.5.33",
+            "version": "v5.5.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
@@ -1138,16 +1138,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v5.5.33",
+            "version": "v5.5.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "f6eb4fc687a1956cb44007604cd31dc50858eca9"
+                "reference": "139eb279bc18a1229c6c49a618d122c613edb2c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/f6eb4fc687a1956cb44007604cd31dc50858eca9",
-                "reference": "f6eb4fc687a1956cb44007604cd31dc50858eca9",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/139eb279bc18a1229c6c49a618d122c613edb2c7",
+                "reference": "139eb279bc18a1229c6c49a618d122c613edb2c7",
                 "shasum": ""
             },
             "require": {
@@ -1191,7 +1191,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2018-01-19 13:47:08"
+            "time": "2018-02-04 20:29:16"
         },
         {
             "name": "kint-php/kint",
@@ -1443,12 +1443,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/plates.git",
-                "reference": "94dfb19719f02aeacd0ce0a353856f88af3e6c9f"
+                "reference": "f53f4c1fa4bf307d0f3858a348172ff4faf7669a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/plates/zipball/94dfb19719f02aeacd0ce0a353856f88af3e6c9f",
-                "reference": "94dfb19719f02aeacd0ce0a353856f88af3e6c9f",
+                "url": "https://api.github.com/repos/thephpleague/plates/zipball/f53f4c1fa4bf307d0f3858a348172ff4faf7669a",
+                "reference": "f53f4c1fa4bf307d0f3858a348172ff4faf7669a",
                 "shasum": ""
             },
             "require": {
@@ -1507,7 +1507,7 @@
                 "templating",
                 "views"
             ],
-            "time": "2018-01-31 07:14:59"
+            "time": "2018-01-31 07:20:23"
         },
         {
             "name": "monolog/monolog",
@@ -2426,12 +2426,17 @@
         },
         {
             "name": "psrnext/event-manager",
-            "version": "dev-master",
+            "version": "v0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/psrnext/event-manager.git",
+                "reference": "31869143467b5799df675376719f2850f425f635"
+            },
             "dist": {
-                "type": "path",
-                "url": "vendor_local/psrnext/event-manager",
-                "reference": "c0ac8de1968ecfe3881d4bbee73753c03ff59b02",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/psrnext/event-manager/zipball/31869143467b5799df675376719f2850f425f635",
+                "reference": "31869143467b5799df675376719f2850f425f635",
+                "shasum": ""
             },
             "require": {
                 "php": ">=7.2.0"
@@ -2442,6 +2447,7 @@
                     "Psrnext\\EventManager\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2453,7 +2459,8 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Events standard"
+            "description": "Events management standard",
+            "time": "2018-02-07 19:25:55"
         },
         {
             "name": "psrnext/http-factory",
@@ -2496,12 +2503,17 @@
         },
         {
             "name": "psrnext/route-collector",
-            "version": "dev-master",
+            "version": "v0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/psrnext/route-collector.git",
+                "reference": "dffb10066ee3599cd9f52d178972133d375d4fdf"
+            },
             "dist": {
-                "type": "path",
-                "url": "vendor_local/psrnext/route-collector",
-                "reference": "f2da95964def5702a50961eaa66fc14475cb25c3",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/psrnext/route-collector/zipball/dffb10066ee3599cd9f52d178972133d375d4fdf",
+                "reference": "dffb10066ee3599cd9f52d178972133d375d4fdf",
+                "shasum": ""
             },
             "require": {
                 "php": ">=7.2.0"
@@ -2512,6 +2524,7 @@
                     "Psrnext\\RouteCollector\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2523,7 +2536,8 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Route collector standard"
+            "description": "Route collector standard",
+            "time": "2018-02-07 19:34:53"
         },
         {
             "name": "psrnext/service-provider",
@@ -2565,13 +2579,18 @@
             "time": "2018-02-05 21:50:56"
         },
         {
-            "name": "psrnext/view",
-            "version": "dev-master",
+            "name": "psrnext/view-renderer",
+            "version": "v0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/psrnext/view-renderer.git",
+                "reference": "bfa5f676b7acdfb244f80c5aa56160296bbb38f7"
+            },
             "dist": {
-                "type": "path",
-                "url": "vendor_local/psrnext/view",
-                "reference": "a8847bd302138f1173de82c112124c80cddb5f24",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/psrnext/view-renderer/zipball/bfa5f676b7acdfb244f80c5aa56160296bbb38f7",
+                "reference": "bfa5f676b7acdfb244f80c5aa56160296bbb38f7",
+                "shasum": ""
             },
             "require": {
                 "php": ">=7.2.0"
@@ -2579,9 +2598,10 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Psrnext\\View\\": "src"
+                    "Psrnext\\ViewRenderer\\": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2593,7 +2613,8 @@
                     "role": "Developer"
                 }
             ],
-            "description": "View standard"
+            "description": "View renderer standard",
+            "time": "2018-02-07 19:43:25"
         },
         {
             "name": "robmorgan/phinx",
@@ -2705,12 +2726,12 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/event-manager",
-                "reference": "5bae53c1b5ef2f68feba78585343c6ec13484f9a",
+                "reference": "69f444d4a388aba21c144d6d999c94d20f754ed2",
                 "shasum": null
             },
             "require": {
                 "php": ">=7.2.0",
-                "psrnext/event-manager": "*"
+                "psrnext/event-manager": "^0.0.1"
             },
             "type": "library",
             "autoload": {
@@ -2802,13 +2823,13 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/http-factory",
-                "reference": "c51f1b0f370b4c8f7947f15e1cde8ba46fb0c8dc",
+                "reference": "6bf7d558004c0e5c611cffde375694977e92d338",
                 "shasum": null
             },
             "require": {
                 "php": ">=7.2.0",
                 "psr/container": "^1.0",
-                "psrnext/http-factory": "*",
+                "psrnext/http-factory": "^0.0.1",
                 "rosem/container": "*"
             },
             "type": "library",
@@ -2864,12 +2885,12 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/route-collector",
-                "reference": "73520ff8532494feaa2b0a5e566454e8ee4a9a79",
+                "reference": "2b40d57d110966db092b037e6baa519cee0783b4",
                 "shasum": null
             },
             "require": {
                 "php": ">=7.2.0",
-                "psrnext/route-collector": "*"
+                "psrnext/route-collector": "^0.0.1"
             },
             "type": "library",
             "autoload": {

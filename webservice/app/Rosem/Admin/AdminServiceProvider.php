@@ -7,7 +7,7 @@ use Rosem\Admin\Controller\AdminController;
 use Psrnext\App\AppConfigInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\RouteCollector\RouteCollectorInterface;
-use Psrnext\View\ViewInterface;
+use Psrnext\ViewRenderer\ViewRendererInterface;
 
 class AdminServiceProvider implements ServiceProviderInterface
 {
@@ -38,8 +38,11 @@ class AdminServiceProvider implements ServiceProviderInterface
                     [AdminController::class, 'index']
                 );
             },
-            ViewInterface::class => function (ContainerInterface $container, ViewInterface $view) {
-                $view->addDirectoryAlias('Rosem.Admin', __DIR__ . '/View');
+            ViewRendererInterface::class => function (
+                ContainerInterface $container,
+                ViewRendererInterface $view
+            ) {
+                $view->addPathAlias(__DIR__ . '/View', 'Rosem.Admin');
             },
         ];
     }

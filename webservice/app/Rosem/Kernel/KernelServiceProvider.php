@@ -3,15 +3,16 @@
 namespace Rosem\Kernel;
 
 use Psr\Container\ContainerInterface;
-use Psrnext\App\AppConfigInterface;
-use Psrnext\Container\ServiceProviderInterface;
+use Psrnext\{
+    App\AppConfigInterface,
+    Container\ServiceProviderInterface,
+    RouteCollector\RouteCollectorInterface,
+    RouteCollector\RouteDispatcherInterface,
+    ViewRenderer\ViewRendererInterface
+};
 use Psrnext\Http\Factory\{
     MiddlewareFactoryInterface, ResponseFactoryInterface, ServerRequestFactoryInterface
 };
-use Psrnext\RouteCollector\{
-    RouteCollectorInterface, RouteDispatcherInterface
-};
-use Psrnext\View\ViewInterface;
 
 class KernelServiceProvider implements ServiceProviderInterface
 {
@@ -28,7 +29,7 @@ class KernelServiceProvider implements ServiceProviderInterface
             MiddlewareFactoryInterface::class    => [static::class, 'createMiddlewareFactory'],
             RouteCollectorInterface::class       => [static::class, 'createRouteCollector'],
             RouteDispatcherInterface::class      => [static::class, 'createRouteDispatcher'],
-            ViewInterface::class                 => [static::class, 'createView'],
+            ViewRendererInterface::class         => [static::class, 'createViewRenderer'],
 
             \Analogue\ORM\Analogue::class                => function (ContainerInterface $container) {
                 return new \Analogue\ORM\Analogue(
@@ -58,13 +59,16 @@ class KernelServiceProvider implements ServiceProviderInterface
                     'index',
                 ]);
             },
-            ViewInterface::class => function (ContainerInterface $container, ViewInterface $view) {
+            ViewRendererInterface::class           => function (
+                ContainerInterface $container,
+                ViewRendererInterface $view
+            ) {
                 $appConfig = $container->get(AppConfigInterface::class);
                 $view->addData([
-                    'lang' => $appConfig->get('app.lang'),
+                    'lang'    => $appConfig->get('app.lang'),
                     'charset' => $appConfig->get('app.meta.charset'),
                 ]);
-                $view->addDirectoryAlias('Rosem.Kernel', __DIR__ . '/View');
+                $view->addPathAlias(__DIR__ . '/View', 'Rosem.Kernel');
             },
         ];
     }
@@ -124,11 +128,12 @@ class KernelServiceProvider implements ServiceProviderInterface
         );
     }
 
-    public function createView(ContainerInterface $container)
+    public function createViewRenderer(ContainerInterface $container)
     {
         return new class (\League\Plates\Engine::create(
             $container->get(AppConfigInterface::class)->get('app.paths.root')
-        )) implements ViewInterface {
+        )) implements ViewRendererInterface
+        {
             /**
              * @var \League\Plates\Engine
              */
@@ -154,11 +159,11 @@ class KernelServiceProvider implements ServiceProviderInterface
                 return $this->engine->render($templateName, $data, $attributes);
             }
 
-            public function addDirectoryAlias(string $alias, string $path) : void
+            public function addPathAlias(string $path, string $alias) : void
             {
                 $this->engine->addFolder($alias, $path);
             }
-            
+
             public function addData(array $data) : void
             {
                 $this->engine->addData($data);

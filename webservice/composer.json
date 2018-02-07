@@ -28,9 +28,8 @@
         "php": ">=7.1.0",
         "psr7-sessions/storageless": "^4.0",
         "psrnext/app": "^0.0.1",
-        "psrnext/http-factory": "^0.0.1",
         "psrnext/service-provider": "^0.0.1",
-        "psrnext/view": "*",
+        "psrnext/view-renderer": "^0.0.1",
         "robmorgan/phinx": "^0.9",
         "rosem/container": "*",
         "rosem/event-manager": "*",
@@ -69,9 +68,6 @@
         {"type": "path", "url": "vendor_local/rosem/graphql"},
         {"type": "path", "url": "vendor_local/rosem/graphql-standards"},
         {"type": "path", "url": "vendor_local/rosem/installer"},
-        {"type": "path", "url": "vendor_local/rosem/route-collector"},
-        {"type": "path", "url": "vendor_local/psrnext/event-manager"},
-        {"type": "path", "url": "vendor_local/psrnext/route-collector"},
-        {"type": "path", "url": "vendor_local/psrnext/view"}
+        {"type": "path", "url": "vendor_local/rosem/route-collector"}
     ]
 }

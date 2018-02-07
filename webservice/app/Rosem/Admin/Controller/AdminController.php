@@ -5,7 +5,7 @@ namespace Rosem\Admin\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psrnext\App\AppConfigInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\View\ViewInterface;
+use Psrnext\ViewRenderer\ViewRendererInterface;
 
 class AdminController
 {
@@ -15,7 +15,7 @@ class AdminController
     protected $responseFactory;
 
     /**
-     * @var ViewInterface
+     * @var ViewRendererInterface
      */
     protected $view;
 
@@ -31,7 +31,7 @@ class AdminController
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        ViewInterface $view,
+        ViewRendererInterface $view,
         AppConfigInterface $appConfig
     ) {
         $this->responseFactory = $responseFactory;
