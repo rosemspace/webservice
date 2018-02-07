@@ -4,10 +4,10 @@
         <nav>
             <ul>
                 <li>
-                    <router-link :to="{name: 'board'}">Board</router-link>
+                    <router-link :to="{name: '@rosem/admin:board'}">Board</router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: 'blog'}">Blog</router-link>
+                    <router-link :to="{name: '@rosem/admin:blog'}">Blog</router-link>
                 </li>
                 <li>
                     <a href="/admin">Admin</a>

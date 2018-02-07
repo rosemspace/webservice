@@ -1,21 +1,17 @@
 export default [
     {
         path: '/admin',
-        name: 'admin',
+        name: '@rosem/admin:admin',
         component: 'layouts/TheAdminLayout',
-        // components: {
-            // default: 'layouts/TheAdminLayout',
-            // header: 'partials/TheHeader',
-        // },
         children: [
             {
                 path: 'board',
-                name: 'board',
+                name: '@rosem/admin:board',
                 component: 'pages/TheDashboardPage',
             },
             {
                 path: 'blog',
-                name: 'blog',
+                name: '@rosem/admin:blog',
                 component: 'pages/TheBlogPage',
             },
         ],
@@ -26,7 +22,7 @@ export default [
         children: [
             {
                 path: '',
-                name: '404',
+                name: '@rosem/admin:404',
                 component: 'pages/TheNotFoundPage',
             },
         ],
