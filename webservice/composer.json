@@ -34,6 +34,7 @@
         "rosem/container": "*",
         "rosem/event-manager": "*",
         "rosem/graphql": "*",
+        "rosem/hasher": "*",
         "rosem/http-factory": "*",
         "rosem/installer": "*",
         "rosem/route-collector": "*",
@@ -64,6 +65,7 @@
     "repositories": [
         {"type": "path", "url": "vendor_local/rosem/container"},
         {"type": "path", "url": "vendor_local/rosem/event-manager"},
+        {"type": "path", "url": "vendor_local/rosem/hasher"},
         {"type": "path", "url": "vendor_local/rosem/http-factory"},
         {"type": "path", "url": "vendor_local/rosem/graphql"},
         {"type": "path", "url": "vendor_local/rosem/graphql-standards"},
