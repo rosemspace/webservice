@@ -1,14 +1,9 @@
-let path = require('path');
-
 module.exports = {
     parser: 'postcss-scss',
     plugins: [
         require('postcss-import'),
         require('postcss-nesting'),
-        require('postcss-url')({
-            from: path.resolve(__dirname, 'src/rosem/css/style.css'),
-            to: path.resolve(__dirname, '../webservice/public/css/style.css')
-        }),
+        require('postcss-url'), //TODO: add options
         require('postcss-apply'),
         require('css-mqpacker'),
         require('postcss-custom-properties'),
@@ -19,6 +14,8 @@ module.exports = {
         require('postcss-custom-selectors'),
         require('postcss-selector-not'),
         require('postcss-selector-matches'),
+        require('postcss-image-set-polyfill'),
+        require('postcss-sorting'),
         // require('postcss-smart-import')({ /* ...options */ }),
         // require('precss')({ /* ...options */ }),
         // require('autoprefixer'),

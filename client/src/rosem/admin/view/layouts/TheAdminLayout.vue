@@ -16,8 +16,8 @@
         name: 'TheAdminLayout',
 
         components: {
-            TheHeader
-        }
+            TheHeader,
+        },
     };
 </script>
 
