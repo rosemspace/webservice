@@ -68,6 +68,7 @@ class KernelServiceProvider implements ServiceProviderInterface
                     'lang'            => $appConfig->get('app.lang'),
                     'charset'         => $appConfig->get('app.meta.charset'),
                     'appName'         => $appConfig->get('app.name'),
+                    'appEnv'          => $appConfig->get('app.env'),
                     'metaTitlePrefix' => $appConfig->get('app.meta.titlePrefix'),
                     'metaTitleSuffix' => $appConfig->get('app.meta.titleSuffix'),
                     'polyfills'       => $appConfig->get('app.polyfills'),

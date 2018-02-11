@@ -2,12 +2,18 @@
 /**
  * @var object|Closure $v
  * @var string $appName
+ * @var string $appEnv
  * @var string $lang
  * @var string $metaTitlePrefix
  * @var string $metaTitle
  * @var string $metaTitleSuffix
  * @var array $polyfills
  */
+
+$config = [
+    'appName' => $appName,
+    'locale' => $lang,
+];
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $v($lang ?? 'en-US') ?>">
@@ -21,11 +27,15 @@
 </head>
 <body>
 <?php echo $v->section('body')?>
+<!--Global configuration object-->
+<script>window.config = <?php echo json_encode($config) ?>;</script>
 <noscript>
     <p>To use <mark><?php echo $v($appName) ?></mark>, please enable JavaScript.</p>
 </noscript>
 <!--Polyfill JS features via polyfill.io-->
-<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=<?php echo implode(',', $polyfills) ?>"></script>
+<script src="https://cdn.polyfill.io/v2/polyfill<?php
+echo $appEnv === \Rosem\App\AppEnvironment::DEVELOPMENT ? '' : '.min' ?>.js?features=<?php
+echo implode(',', $polyfills) ?>"></script>
 <!--The bundle of vendor packages-->
 <script src="<?php echo '/js/vendor.bundle.js'?>"></script>
 <!--Custom scripts-->
