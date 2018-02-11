@@ -11,7 +11,7 @@ module.exports = {
         }),
         require('postcss-apply'),
         require('css-mqpacker'),
-        require('postcss-css-variables'),
+        require('postcss-custom-properties'),
         require('postcss-calc'),
         require('postcss-color-function'),
         require('postcss-custom-media'),

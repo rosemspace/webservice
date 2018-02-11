@@ -95,10 +95,8 @@ module.exports = {
                                     loader: 'sass-resources-loader',
                                     options: {
                                         sourceMap: true,
-                                        resources: [
-                                            path.resolve(__dirname, 'src/rosem/css/definitions/*.pcss'),
-                                        ]
-                                    }
+                                        resources: path.resolve(__dirname, './src/rosem/css/resources/*.pcss'),
+                                    },
                                 }
                             ]
                         }),
