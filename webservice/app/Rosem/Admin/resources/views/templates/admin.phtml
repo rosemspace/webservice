@@ -1,13 +1,15 @@
 <?php
 /**
+ * @var object|Closure $v
  * @var string $metaTitle
  */
 ?>
-<?php $v->layout('Rosem/Kernel/View/layouts/base', [
+<?php $v->layout('Rosem\Kernel::layouts/base', [
     'metaTitle' => $v($metaTitle),
 ]) ?>
 
 <?php $v->push('styles') ?>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:100,200,300,400,500,600,700">
 <link rel="stylesheet" href="<?php echo '/css/admin.css' ?>">
 <?php $v->end() ?>
 
@@ -15,6 +17,6 @@
 <script src="<?php echo '/js/admin.js' ?>"></script>
 <?php $v->end() ?>
 
-<?php $v->push('body') ?>
-<div id="app">Hello from admin</div>
+<?php $v->start('body') ?>
+<div id="app">Admin</div>
 <?php $v->end() ?>

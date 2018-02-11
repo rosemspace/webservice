@@ -2,17 +2,28 @@
 
 return [
     'app'        => [
-        'name'  => getenv('APP_NAME'),
-        'env'   => getenv('APP_ENV', 'development'),
-        'lang'  => 'en-US',
-        'paths' => [
+        'name'      => getenv('APP_NAME'),
+        'env'       => getenv('APP_ENV', 'development'),
+        'lang'      => 'en-US',
+        'paths'     => [
             'root' => getenv('APP_DIR'),
         ],
-        'meta'  => [
+        'meta'      => [
             'charset'     => 'utf-8',
             'titlePrefix' => '${app.name} | ',
-            'title'       => '${app.meta.titlePrefix}Welcome${app.meta.titleSuffix}',
+            'title'       => 'Welcome',
             'titleSuffix' => '',
+        ],
+        'polyfills' => [
+            'Promise',
+            'Object.assign',
+            'Object.values',
+            'Array.prototype.find',
+            'Array.prototype.findIndex',
+            'Array.prototype.includes',
+            'String.prototype.includes',
+            'String.prototype.startsWith',
+            'String.prototype.endsWith',
         ],
     ],
     'webservice' => [
@@ -59,8 +70,8 @@ return [
     'admin'      => [
         'uri'              => 'admin',
         'meta'             => [
-            'titlePrefix' => 'Admin | ',
-            'title'       => '${app.name} dashboard',
+            'titlePrefix' => '${app.name} admin | ',
+            'title'       => 'Dashboard',
             'titleSuffix' => '',
         ],
         'username'         => getenv('ADMIN_USERNAME', 'admin'),

@@ -33,11 +33,6 @@ class App extends ReflectionContainer implements AppInterface
 {
     use FileConfigTrait;
 
-    const ENV_DEVELOPMENT = 'development';
-    const ENV_MAINTENANCE = 'maintenance';
-    const ENV_PRODUCTION = 'production';
-    const ENV_TESTING = 'testing';
-
     /**
      * @var RequestHandlerInterface
      */
@@ -182,10 +177,10 @@ class App extends ReflectionContainer implements AppInterface
         $dotenv = new Dotenv(realpath(getcwd() . '/..'));
         $dotenv->load();
         $dotenv->required('APP_ENV')->allowedValues([
-            self::ENV_DEVELOPMENT,
-            self::ENV_MAINTENANCE,
-            self::ENV_PRODUCTION,
-            self::ENV_TESTING,
+            AppEnvironment::DEVELOPMENT,
+            AppEnvironment::MAINTENANCE,
+            AppEnvironment::PRODUCTION,
+            AppEnvironment::TESTING,
         ]);
         $this->instance(Dotenv::class, $dotenv)->commit();
         $this->instance(

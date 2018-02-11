@@ -45,12 +45,12 @@ class MainController
     {
         $response = $this->responseFactory->createResponse();
         $response->getBody()->write($this->view->render(
-            'Rosem.Kernel::templates/main',
+            'Rosem\Kernel::templates/main',
             [
-                'appName'         => $this->appConfig->get('app.name'),
-                'metaTitlePrefix' => $this->appConfig->get('app.meta.titlePrefix'),
-                'metaTitle'       => $this->appConfig->get('app.meta.title'),
-                'metaTitleSuffix' => $this->appConfig->get('app.meta.titleSuffix'),
+                'metaTitle' => $this->appConfig->get(
+                    'app.meta.title',
+                    $this->appConfig->get('app.name', 'Rosem')
+                ),
             ]
         ));
 

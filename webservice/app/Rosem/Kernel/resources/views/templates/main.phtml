@@ -1,9 +1,10 @@
 <?php
 /**
+ * @var object|Closure $v
  * @var string $metaTitle
  */
 ?>
-<?php $v->layout('Rosem.Kernel::layouts/base', [
+<?php $v->layout('Rosem\Kernel::layouts/base', [
     'metaTitle' => $v($metaTitle),
 ]) ?>
 
@@ -11,10 +12,10 @@
 <link rel="stylesheet" href="<?php echo '/css/site.css' ?>">
 <?php $v->end() ?>
 
-<?php $v->push('scripts'); ?>
+<?php $v->unshift('scripts'); ?>
 <script src="<?php echo '/js/site.js' ?>"></script>
 <?php $v->end(); ?>
 
 <?php $v->start('body') ?>
-<div id="app">Start home</div>
+<div id="app">Site</div>
 <?php $v->end() ?>

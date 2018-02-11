@@ -53,6 +53,10 @@ class RouteMiddleware implements MiddlewareInterface
             $request = $request->withAttribute($name, $value);
         }
 
+        foreach ($route[1] as $callable) {
+
+        }
+
         return $this->middlewareFactory->createMiddleware(...$route[1])->process($request, $nextHandler);
     }
 

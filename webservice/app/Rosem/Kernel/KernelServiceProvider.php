@@ -59,16 +59,20 @@ class KernelServiceProvider implements ServiceProviderInterface
                     'index',
                 ]);
             },
-            ViewRendererInterface::class           => function (
+            ViewRendererInterface::class   => function (
                 ContainerInterface $container,
                 ViewRendererInterface $view
             ) {
                 $appConfig = $container->get(AppConfigInterface::class);
                 $view->addData([
-                    'lang'    => $appConfig->get('app.lang'),
-                    'charset' => $appConfig->get('app.meta.charset'),
+                    'lang'            => $appConfig->get('app.lang'),
+                    'charset'         => $appConfig->get('app.meta.charset'),
+                    'appName'         => $appConfig->get('app.name'),
+                    'metaTitlePrefix' => $appConfig->get('app.meta.titlePrefix'),
+                    'metaTitleSuffix' => $appConfig->get('app.meta.titleSuffix'),
+                    'polyfills'       => $appConfig->get('app.polyfills'),
                 ]);
-                $view->addPathAlias(__DIR__ . '/View', 'Rosem.Kernel');
+                $view->addPathAlias(__DIR__ . '/resources/views', __NAMESPACE__);
             },
         ];
     }

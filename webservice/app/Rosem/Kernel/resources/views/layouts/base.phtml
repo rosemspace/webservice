@@ -1,0 +1,34 @@
+<?php
+/**
+ * @var object|Closure $v
+ * @var string $appName
+ * @var string $lang
+ * @var string $metaTitlePrefix
+ * @var string $metaTitle
+ * @var string $metaTitleSuffix
+ * @var array $polyfills
+ */
+?>
+<!DOCTYPE html>
+<html lang="<?php echo $v($lang ?? 'en-US') ?>">
+<head>
+    <meta charset="<?php echo $v($charset ?? 'utf-8') ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title><?php echo $v($metaTitlePrefix . $metaTitle . $metaTitleSuffix) ?></title>
+    <link rel="stylesheet" href="<?php echo '/css/rosem.css'?>">
+    <?php echo $v->section('styles') ?>
+    <?php echo $v->section('head_scripts')?>
+</head>
+<body>
+<?php echo $v->section('body')?>
+<noscript>
+    <p>To use <mark><?php echo $v($appName) ?></mark>, please enable JavaScript.</p>
+</noscript>
+<!--Polyfill JS features via polyfill.io-->
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=<?php echo implode(',', $polyfills) ?>"></script>
+<!--The bundle of vendor packages-->
+<script src="<?php echo '/js/vendor.bundle.js'?>"></script>
+<!--Custom scripts-->
+<?php echo $v->section('scripts') ?>
+</body>
+</html>

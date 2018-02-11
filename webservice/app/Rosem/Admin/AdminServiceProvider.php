@@ -42,7 +42,7 @@ class AdminServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 ViewRendererInterface $view
             ) {
-                $view->addPathAlias(__DIR__ . '/View', 'Rosem.Admin');
+                $view->addPathAlias(__DIR__ . '/resources/views', __NAMESPACE__);
             },
         ];
     }

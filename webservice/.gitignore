@@ -8,3 +8,4 @@
 /.vagrant
 npm-debug.log
 .env
+/app/*/*/database/*.sqlite

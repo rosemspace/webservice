@@ -28,6 +28,8 @@ class AdminController
      * MainController constructor.
      *
      * @param ResponseFactoryInterface $responseFactory
+     * @param ViewRendererInterface    $view
+     * @param AppConfigInterface       $appConfig
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
@@ -43,9 +45,8 @@ class AdminController
     {
         $response = $this->responseFactory->createResponse();
         $response->getBody()->write($this->view->render(
-            'Rosem.Admin::templates/admin',
+            'Rosem\Admin::templates/admin',
             [
-                'appName'         => $this->appConfig->get('app.name'),
                 'metaTitlePrefix' => $this->appConfig->get('admin.meta.titlePrefix'),
                 'metaTitle'       => $this->appConfig->get('admin.meta.title'),
                 'metaTitleSuffix' => $this->appConfig->get('admin.meta.titleSuffix'),
