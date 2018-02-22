@@ -1,15 +1,14 @@
-import { easeOutElastic } from './easing';
+import { easeInElastic, easeOutElastic, easeOutExpo, easeOutBounce } from './easing';
+import { circleIn, circleInOut } from './easing/circle';
 
 export default {
-    name: 'VueMotion',
+    name: 'RosemMotion',
 
-    render(h) {
-        let defaultScopedSlot = this.$scopedSlots.default({
+    render() {
+        return this.$scopedSlots.default({
             playing: this.playing,
             value: this.motionValue,
-        });
-
-        return this.virtual ? defaultScopedSlot[0] : h(this.tag, [defaultScopedSlot]);
+        })
     },
 
     props: {
@@ -17,48 +16,40 @@ export default {
             type: String,
             default: 'div',
         },
-
-        virtual: {
-            type: Boolean,
-            default: true,
-        },
-
         value: {
             type: Number | String,
             default: 0,
             validator: v => v === v && Object.prototype.toString.call(v) === '[object Number]' || v === 'auto',
         },
-
         delay: {
             type: Number | Object,
             default: 300
         },
-
         duration: {
             type: Number | Object,
             default: 300
         },
-
         precision: {
             type: Number,
             default: Infinity
         },
-
         easing: {
             type: Function,
-            default: easeOutElastic,
-//                default: easeOutExpo,
+            // default: timeFraction => timeFraction,
+            // default: circleIn,
+            default: circleInOut,
+            // default: easeOutBounce
+            // default: easeInElastic,
+            // default: easeOutElastic,
+            //    default: easeOutExpo,
         },
-
         reverse: {
             type: Boolean,
             default: false,
         },
-
         params: {
             type: Object
         },
-
         process: {
             type: Function,
             default() {}
@@ -79,20 +70,13 @@ export default {
     },
 
     computed: {
-        factor({ precision }) {
-            return Math.pow(10, precision);
+        factor() {
+            return Math.pow(10, this.precision);
         },
-        approximate({ precision, factor }) {
-            return Number.isFinite(precision)
-                ? value => Math.round(value * factor) / factor
+        approximate() {
+            return Number.isFinite(this.precision)
+                ? value => Math.round(value * this.factor) / this.factor
                 : value => value;
-        },
-        calculatedValue() {
-            const styles = window.getComputedStyle(this.$el);
-
-            return this.value === 'auto'
-                ? Math.ceil(this.$el.offsetHeight + parseFloat(styles.marginTop) + parseFloat(styles.marginBottom))
-                : this.value;
         },
         calculateDelay() {
             return Object(this.delay) === this.delay ? this.delay : {};
@@ -116,10 +100,10 @@ export default {
     methods: {
         play({reverse = false} = {}) {
             this.playing = true;
-            cancelAnimationFrame(this.animationId);
+            cancelAnimationFrame(this.animationId); // TODO: add motion reset
             this.animationId = requestAnimationFrame((time) => {
                 this.startTime = time;
-                this.$emit('begin', time);
+                this.$emit('motion-start', time);
                 this.nextFrame(time);
             });
         },
@@ -139,9 +123,8 @@ export default {
                 this.timePassed = this.duration;
                 this.$nextTick(() => {
                     this.playing = false;
-                    this.$emit('complete', time);
+                    this.$emit('motion-end', time);
                 });
-
             }
 
             const timeFraction = this.timePassed / this.duration,
@@ -151,8 +134,4 @@ export default {
             this.process(timeFraction, deformation);
         },
     },
-
-    created() {
-
-    }
 }
