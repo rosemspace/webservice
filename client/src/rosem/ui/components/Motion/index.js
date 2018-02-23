@@ -1,5 +1,5 @@
 import { easeInElastic, easeOutElastic, easeOutExpo, easeOutBounce } from './easing';
-import { circleIn, circleInOut } from './easing/circle';
+import { circleIn, circleOut, circleInOut } from './easing/circle';
 
 export default {
     name: 'RosemMotion',
@@ -37,11 +37,12 @@ export default {
             type: Function,
             // default: timeFraction => timeFraction,
             // default: circleIn,
-            default: circleInOut,
-            // default: easeOutBounce
+            // default: circleOut,
+            // default: circleInOut,
+            default: easeOutBounce,
             // default: easeInElastic,
             // default: easeOutElastic,
-            //    default: easeOutExpo,
+            // default: easeOutExpo,
         },
         reverse: {
             type: Boolean,
