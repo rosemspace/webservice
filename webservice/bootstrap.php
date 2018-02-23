@@ -10,6 +10,26 @@
 | the IoC container for the system binding all of the various parts.
 |
 */
+//function test($name) {
+//    return "Hello, $name";
+//}
+//
+//class App extends Rosem\Container\Container
+//{
+//    public function __construct()
+//    {
+//        $this->set('.env', $this->class(Dotenv\Dotenv::class, [__DIR__]));
+//        $this->set('test', $this->function(function ($name) {
+//            return "Bie, $name";
+//        }, ['Rosem']));
+//    }
+//}
+//
+//$app = new App();
+//echo '<pre>';
+//var_dump($app->get('test'));
+//echo '</pre>';
+//die;
 
 //try {
     $app = Rosem\App\AppFactory::create();

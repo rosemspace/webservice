@@ -12,8 +12,8 @@
 <link rel="stylesheet" href="<?php echo '/css/site.css' ?>">
 <?php $v->end() ?>
 
-<?php $v->unshift('scripts'); ?>
-<script src="<?php echo '/js/site.js' ?>"></script>
+<?php $v->push('scripts'); ?>
+<script defer src="<?php echo '/js/site.js' ?>"></script>
 <?php $v->end(); ?>
 
 <?php $v->start('body') ?>
