@@ -10,9 +10,9 @@ export default new App({
     // },
     // store,
     router: new VueRouter({
+        mode: 'history',
         routes: resolveViews(routes, path => import(`./view/${path}`)),
         linkActiveClass: 'active',
-        mode: 'history',
         scrollBehavior (to, from, savedPosition) {
             return savedPosition || {x: 0, y: 0};
         }

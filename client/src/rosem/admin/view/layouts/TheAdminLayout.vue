@@ -34,6 +34,7 @@
         }
 
         & >>> .page-content {
+            display: contents;
             contain: paint;
             overflow: hidden;
             z-index: 0;

@@ -1,21 +1,19 @@
-const loadView = (path, importCallback) => typeof path === 'string' ? () => importCallback(path) : path;
+const resolveView = (path, importCallback) => typeof path === 'string' ? () => importCallback(path) : path;
 
-const prepareViewsInRoutes = (routes, importCallback) => {
+export default function resolveViews(routes, importCallback) {
     for (const route of routes) {
         if (route.component) {
             const path = route.component;
-            route.component = loadView(path, importCallback);
+            route.component = resolveView(path, importCallback);
         } else if (route.components) {
             for (const [name, path] of Object.entries(route.components)) {
-                route.components[name] = loadView(path, importCallback);
+                route.components[name] = resolveView(path, importCallback);
             }
         }
 
         if (route.children) {
-            prepareViewsInRoutes(route.children, importCallback);
+            resolveViews(route.children, importCallback);
         }
     }
     return routes;
 };
-
-export default prepareViewsInRoutes;

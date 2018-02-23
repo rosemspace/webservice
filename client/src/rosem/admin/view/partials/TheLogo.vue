@@ -1,6 +1,6 @@
 <template>
     <div :class="$options.name">
-        <router-link :to="{name: '@rosem/admin:admin'}">
+        <router-link :to="{name: 'admin'}">
             <img src="../../images/logo.png" alt="The logo" />
             <!--<span>Rosem</span>-->
         </router-link>

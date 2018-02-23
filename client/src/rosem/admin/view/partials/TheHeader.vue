@@ -4,10 +4,13 @@
         <nav>
             <ul>
                 <li>
-                    <router-link :to="{name: '@rosem/admin:board'}">Board</router-link>
+                    <router-link :to="{name: 'admin-carousel'}">Carousel</router-link>
                 </li>
                 <li>
-                    <router-link :to="{name: '@rosem/admin:blog'}">Blog</router-link>
+                    <router-link :to="{name: 'admin-dashboard'}">Board</router-link>
+                </li>
+                <li>
+                    <router-link :to="{name: 'admin-blog'}">Blog</router-link>
                 </li>
                 <li>
                     <a href="/admin">Admin</a>
@@ -123,7 +126,7 @@
                     & > :--popper {
                         padding: .5rem 0;
                         border-radius: 2px;
-                        box-shadow: 0 2px 2px #98AFC0;
+                        filter: drop-shadow(0 2px 2px #98AFC0);
 
                         & > ul > li {
                             padding: 1rem;
