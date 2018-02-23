@@ -5,6 +5,11 @@ export default [
         component: 'layouts/TheAdminLayout',
         children: [
             {
+                path: 'carousel',
+                name: 'admin-carousel',
+                component: 'pages/TheCarouselPage',
+            },
+            {
                 path: 'board',
                 name: 'admin-dashboard',
                 component: 'pages/TheDashboardPage',
