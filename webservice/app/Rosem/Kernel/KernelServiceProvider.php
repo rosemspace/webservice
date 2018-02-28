@@ -3,6 +3,9 @@
 namespace Rosem\Kernel;
 
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psrnext\{
     App\AppConfigInterface,
     Container\ServiceProviderInterface,
@@ -46,6 +49,7 @@ class KernelServiceProvider implements ServiceProviderInterface
      * Returns a list of all container entries extended by this service provider.
      *
      * @return callable[]
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function getExtensions() : array
     {
@@ -54,10 +58,26 @@ class KernelServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector
             ) {
-                $routeCollector->get('/{relativePath:.*}', [
-                    \Rosem\Kernel\Controller\MainController::class,
-                    'index',
-                ]);
+                $routeCollector->get(
+                    '/{uri-path:.*}',
+                    function (
+                        ServerRequestInterface $request,
+                        RequestHandlerInterface $nextHandler
+                    ) use ($container) : ResponseInterface {
+                        $appConfig = $container->get(AppConfigInterface::class);
+                        $request = $request->withAttribute('view', [
+                            'template'  => 'Rosem\Kernel::templates/main',
+                            'variables' => [
+                                'metaTitle' => $appConfig->get(
+                                    'app.meta.title',
+                                    $appConfig->get('app.name', 'Rosem')
+                                ),
+                            ],
+                        ]);
+
+                        return $nextHandler->handle($request);
+                    }
+                );
             },
             ViewRendererInterface::class   => function (
                 ContainerInterface $container,

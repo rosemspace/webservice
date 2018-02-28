@@ -1,11 +1,8 @@
-/tmp
-/cache
-/logs
+/.env
+/.vagrant
 /node_modules
 /public/js
 /public/css
+/tmp
+/var
 /vendor
-/.vagrant
-npm-debug.log
-.env
-/app/*/*/database/*.sqlite

@@ -180,6 +180,7 @@ class App extends ReflectionContainer implements AppInterface
             AppEnvironment::DEVELOPMENT,
             AppEnvironment::MAINTENANCE,
             AppEnvironment::PRODUCTION,
+            AppEnvironment::STAGING,
             AppEnvironment::TESTING,
         ]);
         $this->instance(Dotenv::class, $dotenv)->commit();

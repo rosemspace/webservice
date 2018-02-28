@@ -21,6 +21,11 @@ class RouteMiddleware implements MiddlewareInterface
 
     protected $responseFactory;
 
+    /**
+     * @var string Attribute name for handler reference
+     */
+    protected $attribute = 'request-handler';
+
     public function __construct(
         RouteDispatcherInterface $router,
         MiddlewareFactoryInterface $middlewareFactory,
@@ -29,6 +34,20 @@ class RouteMiddleware implements MiddlewareInterface
         $this->router = $router;
         $this->middlewareFactory = $middlewareFactory;
         $this->responseFactory = $responseFactory;
+    }
+
+    /**
+     * Set the attribute name to store handler reference.
+     *
+     * @param string $attribute
+     *
+     * @return RouteMiddleware
+     */
+    public function attribute(string $attribute) : self
+    {
+        $this->attribute = $attribute;
+
+        return $this;
     }
 
     /**
@@ -53,11 +72,21 @@ class RouteMiddleware implements MiddlewareInterface
             $request = $request->withAttribute($name, $value);
         }
 
-        foreach ($route[1] as $callable) {
+        $request = $this->setHandler($request, $route[1]);
 
-        }
+        return $nextHandler->handle($request);
+    }
 
-        return $this->middlewareFactory->createMiddleware(...$route[1])->process($request, $nextHandler);
+    /**
+     * Set the handler reference on the request.
+     *
+     * @param mixed $handler
+     *
+     * @return ServerRequestInterface
+     */
+    protected function setHandler(ServerRequestInterface $request, $handler) : ServerRequestInterface
+    {
+        return $request->withAttribute($this->attribute, $handler);
     }
 
     public function createNotFoundResponse() : ResponseInterface
