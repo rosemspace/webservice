@@ -3,56 +3,18 @@
 namespace Rosem\RouteCollector;
 
 use FastRoute\Dispatcher;
-use FastRoute\Dispatcher\{
-    CharCountBased, GroupCountBased, GroupPosBased, MarkBased
-};
 use Psrnext\RouteCollector\RouteDispatcherInterface;
 
 class RouteDispatcher implements RouteDispatcherInterface
 {
     /**
-     * Char count based type.
-     */
-    const DRIVER_CHAR_COUNT = 'char_count';
-
-    /**
-     * Group count based type.
-     */
-    const DRIVER_GROUP_COUNT = 'group_count';
-
-    /**
-     * Group pos based type.
-     */
-    const DRIVER_GROUP_POS = 'group_pos';
-
-    /**
-     * Mark based type.
-     */
-    const DRIVER_MARK = 'mark';
-
-    /**
      * @var Dispatcher
      */
     protected $driver;
 
-    public function __construct(array $data, string $driverType = self::DRIVER_GROUP_COUNT)
+    public function __construct(Dispatcher $dispatcher)
     {
-        switch ($driverType) {
-            case self::DRIVER_CHAR_COUNT:
-                $dispatcher = CharCountBased::class;
-                break;
-            case self::DRIVER_GROUP_POS:
-                $dispatcher = GroupPosBased::class;
-                break;
-            case self::DRIVER_MARK:
-                $dispatcher = MarkBased::class;
-                break;
-            case self::DRIVER_GROUP_COUNT:
-            default:
-                $dispatcher = GroupCountBased::class;
-        }
-
-        $this->driver = new $dispatcher($data);
+        $this->driver = $dispatcher;
     }
 
     /**

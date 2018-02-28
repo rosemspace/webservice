@@ -18,7 +18,8 @@ class RouteCollector implements RouteCollectorInterface
      * @param RouteParser   $routeParser
      * @param DataGenerator $dataGenerator
      */
-    public function __construct(RouteParser $routeParser, DataGenerator $dataGenerator) {
+    public function __construct(RouteParser $routeParser, DataGenerator $dataGenerator)
+    {
         $this->routeParser = $routeParser;
         $this->dataGenerator = $dataGenerator;
         $this->currentGroupPrefix = '';
@@ -26,33 +27,33 @@ class RouteCollector implements RouteCollectorInterface
 
     /**
      * Adds a route to the collection.
-     *
      * The syntax used in the $route string depends on the used route parser.
      *
      * @param string|string[] $httpMethod
-     * @param string $route
-     * @param mixed  ...$handlers
+     * @param string          $route
+     * @param mixed           $handler
      */
-    public function addRoute($httpMethod, string $route, ...$handlers) : void {
+    public function addRoute($httpMethod, string $route, $handler) : void
+    {
         $route = $this->currentGroupPrefix . $route;
         $routeDataList = $this->routeParser->parse($route);
 
-        foreach ((array) $httpMethod as $method) {
+        foreach ((array)$httpMethod as $method) {
             foreach ($routeDataList as $routeData) {
-                $this->dataGenerator->addRoute($method, $routeData, $handlers);
+                $this->dataGenerator->addRoute($method, $routeData, $handler);
             }
         }
     }
 
     /**
      * Create a route group with a common prefix.
-     *
      * All routes created in the passed callback will have the given group prefix prepended.
      *
-     * @param string $prefix
+     * @param string   $prefix
      * @param callable $callback
      */
-    public function addGroup(string $prefix, callable $callback) : void {
+    public function addGroup(string $prefix, callable $callback) : void
+    {
         $previousGroupPrefix = $this->currentGroupPrefix;
         $this->currentGroupPrefix = $previousGroupPrefix . $prefix;
         $callback($this);
@@ -61,74 +62,74 @@ class RouteCollector implements RouteCollectorInterface
 
     /**
      * Adds a GET route to the collection
-     *
      * This is simply an alias of $this->addRoute('GET', $route, $handler)
      *
      * @param string $route
-     * @param mixed  ...$handlers
+     * @param mixed  $handler
      */
-    public function get(string $route, ...$handlers) : void {
-        $this->addRoute(self::GET, $route, ...$handlers);
+    public function get(string $route, $handler) : void
+    {
+        $this->addRoute(self::GET, $route, $handler);
     }
 
     /**
      * Adds a POST route to the collection
-     *
      * This is simply an alias of $this->addRoute('POST', $route, $handler)
      *
      * @param string $route
-     * @param mixed  ...$handlers
+     * @param mixed  $handler
      */
-    public function post(string $route, ...$handlers) : void {
-        $this->addRoute(self::POST, $route, ...$handlers);
+    public function post(string $route, $handler) : void
+    {
+        $this->addRoute(self::POST, $route, ...$handler);
     }
 
     /**
      * Adds a PUT route to the collection
-     *
      * This is simply an alias of $this->addRoute('PUT', $route, $handler)
      *
      * @param string $route
-     * @param mixed  ...$handlers
+     * @param mixed  $handler
      */
-    public function put(string $route, ...$handlers) : void {
-        $this->addRoute(self::PUT, $route, ...$handlers);
+    public function put(string $route, $handler) : void
+    {
+        $this->addRoute(self::PUT, $route, $handler);
     }
 
     /**
      * Adds a DELETE route to the collection
-     *
      * This is simply an alias of $this->addRoute('DELETE', $route, $handler)
      *
      * @param string $route
-     * @param mixed  ...$handlers
+     * @param mixed  $handler
      */
-    public function delete(string $route, ...$handlers) : void {
-        $this->addRoute(self::DELETE, $route, ...$handlers);
+    public function delete(string $route, $handler) : void
+    {
+        $this->addRoute(self::DELETE, $route, $handler);
     }
 
     /**
      * Adds a PATCH route to the collection
-     *
      * This is simply an alias of $this->addRoute('PATCH', $route, $handler)
      *
      * @param string $route
-     * @param mixed  ...$handlers
+     * @param mixed  $handler
      */
-    public function patch(string $route, ...$handlers) : void {
-        $this->addRoute(self::PATCH, $route, ...$handlers);
+    public function patch(string $route, $handler) : void
+    {
+        $this->addRoute(self::PATCH, $route, $handler);
     }
 
     /**
      * Adds a HEAD route to the collection
-     *
      * This is simply an alias of $this->addRoute('HEAD', $route, $handler)
      *
      * @param string $route
-     * @param mixed  ...$handlers
+     * @param mixed  $handler
      */
-    public function head(string $route, ...$handlers) : void {
-        $this->addRoute(self::HEAD, $route, ...$handlers);
+    public function head(string $route, $handler) : void
+    {
+        $this->addRoute(self::HEAD, $route, $handler);
     }
 
     /**
@@ -136,7 +137,8 @@ class RouteCollector implements RouteCollectorInterface
      *
      * @return array
      */
-    public function getData() {
+    public function getData()
+    {
         return $this->dataGenerator->getData();
     }
 }

@@ -8,16 +8,12 @@ use Psr\Http\Message\{
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
-use Psrnext\Http\Factory\{
-    MiddlewareFactoryInterface, ResponseFactoryInterface
-};
+use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\RouteCollector\RouteDispatcherInterface;
 
 class RouteMiddleware implements MiddlewareInterface
 {
     protected $router;
-
-    protected $middlewareFactory;
 
     protected $responseFactory;
 
@@ -28,11 +24,9 @@ class RouteMiddleware implements MiddlewareInterface
 
     public function __construct(
         RouteDispatcherInterface $router,
-        MiddlewareFactoryInterface $middlewareFactory,
         ResponseFactoryInterface $responseFactory
     ) {
         $this->router = $router;
-        $this->middlewareFactory = $middlewareFactory;
         $this->responseFactory = $responseFactory;
     }
 

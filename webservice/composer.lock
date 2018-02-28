@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "13fac5ac039b69ec752c9f59502ecfd4",
-    "content-hash": "31a16d43149e871e6fee9946a0490951",
+    "hash": "2794ee3f584c6b34fbe7df550ec4b2eb",
+    "content-hash": "c01768a0b02ac64d45f48aa3362d05bd",
     "packages": [
         {
             "name": "analogue/orm",
@@ -1688,16 +1688,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v3.1.4",
+            "version": "v3.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "e57b3a09784f846411aa7ed664eedb73e3399078"
+                "reference": "bb87e28e7d7b8d9a7fda231d37457c9210faf6ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/e57b3a09784f846411aa7ed664eedb73e3399078",
-                "reference": "e57b3a09784f846411aa7ed664eedb73e3399078",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bb87e28e7d7b8d9a7fda231d37457c9210faf6ce",
+                "reference": "bb87e28e7d7b8d9a7fda231d37457c9210faf6ce",
                 "shasum": ""
             },
             "require": {
@@ -1735,7 +1735,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2018-01-25 21:31:33"
+            "time": "2018-02-28 20:30:58"
         },
         {
             "name": "ocramius/code-generator-utils",
@@ -2387,24 +2387,21 @@
         },
         {
             "name": "psrnext/app",
-            "version": "v0.0.1",
+            "version": "v0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psrnext/app.git",
-                "reference": "d6d8c04afc1a6911f13ec8a82a3837bbff4bcf91"
+                "reference": "7a1f5285c4c65680a21939e2777c3f240f84d0c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/app/zipball/d6d8c04afc1a6911f13ec8a82a3837bbff4bcf91",
-                "reference": "d6d8c04afc1a6911f13ec8a82a3837bbff4bcf91",
+                "url": "https://api.github.com/repos/psrnext/app/zipball/7a1f5285c4c65680a21939e2777c3f240f84d0c8",
+                "reference": "7a1f5285c4c65680a21939e2777c3f240f84d0c8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.0",
-                "psr/container": "^1.0",
-                "psr/http-server-middleware": "^1.0",
-                "psrnext/http-factory": "^0.0.1",
-                "psrnext/service-provider": "^0.0.1"
+                "psr/container": "^1.0"
             },
             "type": "library",
             "autoload": {
@@ -2425,7 +2422,7 @@
                 }
             ],
             "description": "Application standard",
-            "time": "2018-02-05 21:54:17"
+            "time": "2018-02-28 21:18:40"
         },
         {
             "name": "psrnext/event-manager",
@@ -2505,16 +2502,16 @@
         },
         {
             "name": "psrnext/http-factory",
-            "version": "v0.0.1",
+            "version": "v0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psrnext/http-factory.git",
-                "reference": "620dcac0862ef425e7b805e5c272d771fd84c20f"
+                "reference": "fceef839e96040b18f6b606f5943f537a7192e9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/http-factory/zipball/620dcac0862ef425e7b805e5c272d771fd84c20f",
-                "reference": "620dcac0862ef425e7b805e5c272d771fd84c20f",
+                "url": "https://api.github.com/repos/psrnext/http-factory/zipball/fceef839e96040b18f6b606f5943f537a7192e9e",
+                "reference": "fceef839e96040b18f6b606f5943f537a7192e9e",
                 "shasum": ""
             },
             "require": {
@@ -2540,20 +2537,20 @@
                 }
             ],
             "description": "HTTP factories standard",
-            "time": "2018-02-05 21:41:36"
+            "time": "2018-02-28 20:35:54"
         },
         {
             "name": "psrnext/route-collector",
-            "version": "v0.0.1",
+            "version": "v0.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psrnext/route-collector.git",
-                "reference": "dffb10066ee3599cd9f52d178972133d375d4fdf"
+                "reference": "c69edeb5f43f7d5d1b353ce82640feaf68b8b672"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/route-collector/zipball/dffb10066ee3599cd9f52d178972133d375d4fdf",
-                "reference": "dffb10066ee3599cd9f52d178972133d375d4fdf",
+                "url": "https://api.github.com/repos/psrnext/route-collector/zipball/c69edeb5f43f7d5d1b353ce82640feaf68b8b672",
+                "reference": "c69edeb5f43f7d5d1b353ce82640feaf68b8b672",
                 "shasum": ""
             },
             "require": {
@@ -2578,7 +2575,7 @@
                 }
             ],
             "description": "Route collector standard",
-            "time": "2018-02-07 19:34:53"
+            "time": "2018-02-28 21:10:16"
         },
         {
             "name": "psrnext/service-provider",
@@ -3052,13 +3049,13 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/http-factory",
-                "reference": "6bf7d558004c0e5c611cffde375694977e92d338",
+                "reference": "f26e21f6088e1cf0ecf5adddc3d6afe90705389d",
                 "shasum": null
             },
             "require": {
                 "php": ">=7.2.0",
                 "psr/container": "^1.0",
-                "psrnext/http-factory": "^0.0.1",
+                "psrnext/http-factory": "^0.0.2",
                 "rosem/container": "*"
             },
             "type": "library",
@@ -3114,12 +3111,12 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/route-collector",
-                "reference": "2b40d57d110966db092b037e6baa519cee0783b4",
+                "reference": "efbaf88e724fd27b5594105e33a02200f5007a80",
                 "shasum": null
             },
             "require": {
                 "php": ">=7.2.0",
-                "psrnext/route-collector": "^0.0.1"
+                "psrnext/route-collector": "^0.0.2"
             },
             "type": "library",
             "autoload": {

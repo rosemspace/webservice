@@ -14,7 +14,7 @@ use Psrnext\{
     ViewRenderer\ViewRendererInterface
 };
 use Psrnext\Http\Factory\{
-    MiddlewareFactoryInterface, ResponseFactoryInterface, ServerRequestFactoryInterface
+    ResponseFactoryInterface, ServerRequestFactoryInterface
 };
 
 class KernelServiceProvider implements ServiceProviderInterface
@@ -29,7 +29,6 @@ class KernelServiceProvider implements ServiceProviderInterface
         return [
             ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
             ResponseFactoryInterface::class      => [static::class, 'createResponseFactory'],
-            MiddlewareFactoryInterface::class    => [static::class, 'createMiddlewareFactory'],
             RouteCollectorInterface::class       => [static::class, 'createRouteCollector'],
             RouteDispatcherInterface::class      => [static::class, 'createRouteDispatcher'],
             ViewRendererInterface::class         => [static::class, 'createViewRenderer'],
@@ -65,14 +64,12 @@ class KernelServiceProvider implements ServiceProviderInterface
                         RequestHandlerInterface $nextHandler
                     ) use ($container) : ResponseInterface {
                         $appConfig = $container->get(AppConfigInterface::class);
-                        $request = $request->withAttribute('view', [
-                            'template'  => 'Rosem\Kernel::templates/main',
-                            'variables' => [
-                                'metaTitle' => $appConfig->get(
-                                    'app.meta.title',
-                                    $appConfig->get('app.name', 'Rosem')
-                                ),
-                            ],
+                        $request = $request->withAttribute('view-data', [
+                            '__template__'  => 'Rosem\Kernel::templates/main',
+                            'metaTitle' => $appConfig->get(
+                                'app.meta.title',
+                                $appConfig->get('app.name', 'Rosem')
+                            ),
                         ]);
 
                         return $nextHandler->handle($request);
@@ -108,29 +105,16 @@ class KernelServiceProvider implements ServiceProviderInterface
         return new \Rosem\Http\Factory\ResponseFactory;
     }
 
-    public function createMiddlewareFactory(ContainerInterface $container)
-    {
-        return new \Rosem\Http\Factory\MiddlewareFactory($container);
-    }
-
     /**
-     * @param ContainerInterface $container
-     *
      * @return \Rosem\RouteCollector\RouteCollector
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function createRouteCollector(ContainerInterface $container)
+    public function createRouteCollector()
     {
         return new \Rosem\RouteCollector\RouteCollector(
             new \FastRoute\RouteParser\Std,
-            new \Rosem\RouteCollector\RouteDataGenerator(
-                $container->get(AppConfigInterface::class)
-                    ->get(
-                        'kernel.route.data_generator',
-                        \Rosem\RouteCollector\RouteDataGenerator::DRIVER_GROUP_COUNT
-                    )
-            )
+            new \FastRoute\DataGenerator\GroupCountBased
         );
     }
 
@@ -144,12 +128,7 @@ class KernelServiceProvider implements ServiceProviderInterface
     public function createRouteDispatcher(ContainerInterface $container)
     {
         return new \Rosem\RouteCollector\RouteDispatcher(
-            $container->get(RouteCollectorInterface::class)->getData(),
-            $container->get(AppConfigInterface::class)
-                ->get(
-                    'kernel.route.dispatcher',
-                    \Rosem\RouteCollector\RouteDispatcher::DRIVER_GROUP_COUNT
-                )
+            new \FastRoute\Dispatcher\GroupCountBased($container->get(RouteCollectorInterface::class)->getData())
         );
     }
 

@@ -35,7 +35,6 @@ class HandlerDispatcherMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
         //TODO: handler from callable, etc
-        //TODO: remove [0] when route-collector will be changed
-        return $this->container->call($request->getAttribute('request-handler')[0], [], [$request, $handler]);
+        return $this->container->call($request->getAttribute('request-handler'), [], [$request, $handler]);
     }
 }

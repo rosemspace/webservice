@@ -39,10 +39,6 @@ return [
         ],
     ],
     'kernel'     => [
-        'route'    => [
-            'data_generator' => getenv('ROUTE_DATA_GENERATOR', 'group_count'),
-            'dispatcher'     => getenv('ROUTE_DISPATCHER', 'group_count'),
-        ],
         'database' => [
             'paths'         => [
                 'migrations' => __DIR__ . '/app/*/*/etc/db/migrations',
