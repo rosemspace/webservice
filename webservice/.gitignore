@@ -1,6 +1,5 @@
 /.env
 /.vagrant
-/node_modules
 /public/js
 /public/css
 /tmp

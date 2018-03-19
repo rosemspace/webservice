@@ -65,9 +65,9 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess
 
     abstract public function defineNow(string $abstract, $concrete = null, array ...$args) : DefinitionInterface;
 
-    abstract public function share(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface;
+    abstract protected function share(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface;
 
-    abstract public function instance(string $abstract, $instance) : DefinitionInterface;
+    abstract protected function instance(string $abstract, $instance) : DefinitionInterface;
 
     abstract public function make(string $abstract, array ...$args);
 

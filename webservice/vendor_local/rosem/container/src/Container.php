@@ -138,7 +138,7 @@ class Container extends AbstractContainer
                 // error: not found
             } else {
                 // is a $callable "classname::method"
-                if (strpos($callable, '::') !== false) {
+                if (strpos($callable, '::') !== false) { //ClassMethodCall
                     [$class, $method] = explode('::', $callable, 2);
 
                     if ($definition = $this->find($class)) {
@@ -203,7 +203,7 @@ class Container extends AbstractContainer
      * @param string $alias
      * @param string $abstract
      */
-    public function alias(string $abstract, string $alias) : void
+    protected function alias(string $abstract, string $alias) : void
     {
         $this->definitions[$alias] = &$this->definitions[$abstract];
     }
@@ -213,7 +213,7 @@ class Container extends AbstractContainer
         return new SharedDefinition($this, $abstract, $instance);
     }
 
-    public function share(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface
+    protected function share(string $abstract, $concrete = null, array ...$args) : DefinitionProxyInterface
     {
         return new Definition\Proxy\SharedDefinitionProxy($this, $abstract, $concrete ?: $abstract, $args);
     }

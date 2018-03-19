@@ -2,6 +2,8 @@
 
 namespace Rosem\Container\Definition\Aggregate;
 
+use Rosem\Container\Definition\SharedDefinition;
+
 class FunctionAggregatedDefinition extends AbstractAggregatedDefinition
 {
     use CollectorTrait,
@@ -44,7 +46,7 @@ class FunctionAggregatedDefinition extends AbstractAggregatedDefinition
         $result = null;
 
         // preserve temporary context which will be injected into all functions calls
-        $this->container->instance($this->getAbstract(), $context)->commit();
+        $this->container->set($this->getAbstract(), new SharedDefinition($this->container, $this->getAbstract(), $context))->commit();
 
         $this->makeAggregate($this->aggregateCommitted, $args, $result);
         $this->makeAggregate($this->aggregate, $args, $result);

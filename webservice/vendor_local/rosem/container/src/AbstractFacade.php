@@ -3,7 +3,6 @@
 namespace Rosem\Container;
 
 use Psr\Container\ContainerInterface;
-use RuntimeException;
 
 /**
  * Class AbstractFacade
@@ -25,6 +24,14 @@ abstract class AbstractFacade
     protected static $resolvedInstances;
 
     /**
+     * Private constructor; non-instantiable.
+     * @codeCoverageIgnore
+     */
+    private function __construct()
+    {
+    }
+
+    /**
      * Set the container instance.
      *
      * @param  ContainerInterface $container
@@ -39,14 +46,15 @@ abstract class AbstractFacade
      * Get the registered name of the component.
      *
      * @return string|object
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
-    protected abstract static function getFacadeAccessor();
+    abstract protected static function getFacadeAccessor();
 
     /**
      * Get the root object behind the facade.
      *
      * @return mixed
+     * @throws \RuntimeException
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      */
@@ -65,7 +73,7 @@ abstract class AbstractFacade
      */
     protected static function resolveFacadeInstance($name)
     {
-        return is_object($name)
+        return \is_object($name)
             ? $name
             : static::$resolvedInstances[$name]
             ?? (static::$resolvedInstances[$name] = static::$container->get($name));
@@ -76,7 +84,7 @@ abstract class AbstractFacade
      *
      * @param  string $name
      */
-    public static function clearResolvedFacadeInstance(string $name)
+    public static function clearResolvedFacadeInstance(string $name) : void
     {
         unset(static::$resolvedInstances[$name]);
     }
@@ -86,7 +94,7 @@ abstract class AbstractFacade
      *
      * @return void
      */
-    public static function clearResolvedFacadeInstances()
+    public static function clearResolvedFacadeInstances() : void
     {
         static::$resolvedInstances = [];
     }
@@ -97,7 +105,7 @@ abstract class AbstractFacade
      * @param  string $method
      * @param  array  $args
      * @return mixed
-     * @throws RuntimeException
+     * @throws \RuntimeException
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      */
@@ -106,7 +114,7 @@ abstract class AbstractFacade
         $instance = static::getFacadeRoot();
 
         if (! $instance) {
-            throw new RuntimeException('A facade root has not been set.');
+            throw new \RuntimeException('A facade root has not been set.');
         }
 
         return $instance->$method(...$args);

@@ -1,0 +1,34 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "chrome": "59",
+          "node": "current"
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "syntax-dynamic-import",
+    "transform-async-generator-functions",
+    "transform-async-to-generator",
+    "transform-class-properties",
+    [
+      "transform-private",
+      {
+        "pattern": "^_"
+      }
+    ],
+    "transform-export-extensions",
+    "transform-object-rest-spread",
+    [
+      "transform-strict-mode",
+      {
+        "strict": true
+      }
+    ],
+    "transform-vue-jsx"
+  ]
+}
