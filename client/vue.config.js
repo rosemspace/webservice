@@ -3,7 +3,7 @@ const path = require("path"),
   HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  lintOnSave: true,
+  // lintOnSave: true,
   configureWebpack: config => {
     // console.log(config);
     // console.log(config.module.rules.find(value => value.test.test('.vue')).use[0].options.loaders);
