@@ -1,0 +1,29 @@
+:root {
+    --speed-normal: .3s;
+
+    --fade-active: {
+        transition-property: opacity;
+        transition-duration: var(--speed-normal);
+    };
+    --fade-inactive: {
+        opacity: 0;
+    };
+}
+
+/* Fade */
+.fade-enter-active, .fade-leave-active {
+    @apply --fade-active;
+}
+
+.fade-enter, .fade-leave-to {
+    @apply --fade-inactive;
+}
+
+/* Fade from top */
+.fade-from-top-enter-active, .fade-from-top-leave-active {
+    transition: opacity .3s, transform .3s;
+}
+.fade-from-top-enter, .fade-from-top-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}

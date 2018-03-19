@@ -1,0 +1,27 @@
+{
+  "plugins": {
+    "postcss-import": {},
+    "postcss-nesting": {},
+    "postcss-url": {},
+    "postcss-apply": {},
+    "css-mqpacker": {},
+    "postcss-custom-properties": {},
+    "postcss-calc": {},
+    "postcss-color-function": {},
+    "postcss-custom-media": {},
+    "postcss-media-minmax": {},
+    "postcss-custom-selectors": {},
+    "postcss-selector-not": {},
+    "postcss-selector-matches": {},
+    "postcss-image-set-polyfill": {},
+    "postcss-sorting": {},
+    "autoprefixer": {},
+    "cssnano": {
+      "zindex": false,
+      "discardComments": {
+        "removeAll": true
+      }
+    }
+  },
+  "parser": "postcss-scss"
+}

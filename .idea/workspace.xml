@@ -1,0 +1,1900 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="610389f3-e1da-4a31-8bf7-68dffe228bbc" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/.editorconfig" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/images/bg-clouds.jpg" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/images/logo.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/routes/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/view/icons/arrows.svg" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/view/layouts/TheAdminLayout.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/view/pages/TheBlogPage.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/view/pages/TheCarouselPage.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/view/pages/TheDashboardPage.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/view/pages/TheNotFoundPage.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/view/partials/TheHeader.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/admin/view/partials/TheLogo.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/css/animations.pcss" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/css/config.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/css/reset.pcss" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/css/resources/breakpoints.pcss" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/css/resources/palette.pcss" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/css/resources/selectors.pcss" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/css/resources/spaces.pcss" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/css/resources/variables.pcss" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/css/style.pcss" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/css/typography.pcss" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/kernel/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/kernel/mixins/uuid.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/kernel/resolveViews.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/site/build.config.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/site/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/site/routes/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/site/view/layouts/TheMainLayout.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/site/view/pages/TheAboutPage.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/site/view/pages/TheHomePage.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/site/view/pages/TheNotFoundPage.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/site/view/partials/TheHeader.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/site/view/partials/TheLogo.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/BaseLayout.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Carousel/Carousel.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Carousel/SlideCarousel.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Carousel/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/MotionVisualiser.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/2d/bezier.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/2d/cubicBezier.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/bezier.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/circle.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/easeIn.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/easeInElastic.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/easeOutBounce.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/easeOutElastic.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/easeOutExpo.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/linear.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/presets.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/quardBezier.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/VueAvatar/VueAvatar.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/components/VueAvatar/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/layouts.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/plugins/Popup/Pop.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/plugins/Popup/Popper.vue" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/plugins/Popup/PopperManager.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/plugins/Popup/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/src/rosem/ui/plugins/index.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/client/vue.config.js" />
+      <change beforePath="$PROJECT_DIR$/client/.babelrc" afterPath="$PROJECT_DIR$/client/.babelrc" />
+      <change beforePath="$PROJECT_DIR$/client/.postcssrc" afterPath="$PROJECT_DIR$/client/.postcssrc" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" afterPath="$PROJECT_DIR$/client/package-lock.json" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" afterPath="$PROJECT_DIR$/client/package.json" />
+      <change beforePath="$PROJECT_DIR$/client/src/main.js" afterPath="$PROJECT_DIR$/client/src/main.js" />
+      <change beforePath="$PROJECT_DIR$/client/src/router.js" afterPath="$PROJECT_DIR$/client/src/router.js" />
+    </list>
+    <ignored path=".idea/" />
+    <ignored path="$PROJECT_DIR$/.idea/httpRequests/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/webservice/composer.json</pharConfigPath>
+    <executablePath>/usr/local/bin/composer</executablePath>
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_TABLE_DETAILS" value="true" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="rosem@localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="rosem@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="rosem@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="rosem: schema" type="c314c289:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="rosem@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="rosem: schema" type="c314c289:MysqlImplModel$Schema" />
+        <item name="schema_migrations_log: table" type="98d5ac3d:MysqlImplModel$Table" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="rosem" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="vue.config.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/client/vue.config.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="12" column="6" lean-forward="true" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
+              <folding>
+                <marker date="1521466328483" expanded="true" signature="2451:2454" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base.phtml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webservice/app/Rosem/Kernel/resources/views/layouts/base.phtml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bootstrap.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/webservice/bootstrap.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".babelrc" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/.babelrc">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="98">
+              <caret line="7" column="47" lean-forward="false" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="854">
+              <caret line="61" column="28" lean-forward="false" selection-start-line="61" selection-start-column="28" selection-end-line="61" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/src/rosem/admin/index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="266">
+              <caret line="20" column="12" lean-forward="false" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
+              <folding>
+                <marker date="1521500910761" expanded="true" signature="691:694" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TheHeader.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/src/rosem/admin/view/partials/TheHeader.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="546">
+              <caret line="39" column="18" lean-forward="false" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/src/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="196">
+              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="router.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/src/router.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="112">
+              <caret line="8" column="18" lean-forward="false" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+              <folding>
+                <element signature="e#0#22#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>play`</find>
+      <find>perfor</find>
+      <find>canvas</find>
+      <find>drawAreaWidth</find>
+      <find>boundaryOffsetX</find>
+      <find>props</find>
+      <find>10px</find>
+      <find>dl</find>
+      <find>psrnext/http</find>
+      <find>http-factory[dev-master]</find>
+      <find>middlewareFac</find>
+      <find>startTime</find>
+      <find>timePassed</find>
+      <find>startValue</find>
+      <find>event</find>
+      <find>motionValue</find>
+      <find>factor</find>
+      <find>intervalValue</find>
+      <find>--header-scale</find>
+      <find>use-nam</find>
+      <find>intervalOscillation</find>
+      <find>oscillation</find>
+      <find>rosem-pop</find>
+      <find>rosem</find>
+      <find>carouselProps</find>
+      <find>app.js</find>
+      <find>lock</find>
+      <find>env</find>
+      <find>render</find>
+      <find>user-menu</find>
+    </findStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/webservice/vendor_local/true-code/di-standards</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor_local/true-code/di</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor/analogue/orm</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor_local/true-code/di/src</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor_local/true-code/container</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor/league/plates/test/integration/fixtures/standard</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor/league/plates/test/integration/fixtures</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor/league</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor/league/plates</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor/league/plates/src</dir>
+      <dir>$PROJECT_DIR$/client</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor_local/true-code/container/src</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor_local/psrnext</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor_local/true-code</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor_local</dir>
+      <dir>$PROJECT_DIR$/webservice/app</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor_local/rosem/container</dir>
+      <dir>$PROJECT_DIR$/client/src/rosem/admin/view</dir>
+      <dir>$PROJECT_DIR$/client/src/rosem</dir>
+      <dir>$PROJECT_DIR$/webservice/app/Rosem</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor_local/rosem/container/src</dir>
+      <dir>$PROJECT_DIR$/client/src/rosem/admin</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor/zendframework/zend-diactoros/src</dir>
+      <dir>$PROJECT_DIR$/webservice/vendor/zendframework/zend-diactoros</dir>
+      <dir>$PROJECT_DIR$/client/src/rosem/css</dir>
+      <dir>$PROJECT_DIR$</dir>
+      <dir>$PROJECT_DIR$/webservice</dir>
+      <dir>$PROJECT_DIR$/client/src/rosem/ui/plugins</dir>
+      <dir>$PROJECT_DIR$/client/src</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/client" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/webservice/config/middlewares.php" />
+        <option value="$PROJECT_DIR$/webservice/vendor_local/rosem/http-factory/composer.json" />
+        <option value="$PROJECT_DIR$/webservice/config/app.php" />
+        <option value="$PROJECT_DIR$/webservice/app/Rosem/Kernel/Middleware/ViewMiddleware.php" />
+        <option value="$PROJECT_DIR$/webservice/vendor_local/rosem/route-collector/composer.json" />
+        <option value="$PROJECT_DIR$/webservice/composer.json" />
+        <option value="$PROJECT_DIR$/webservice/.env.example" />
+        <option value="$PROJECT_DIR$/webservice/vendor_local/rosem/route-collector/src/RouteDataGenerator.php" />
+        <option value="$PROJECT_DIR$/webservice/app/Rosem/Kernel/KernelServiceProvider.php" />
+        <option value="$PROJECT_DIR$/webservice/vendor_local/rosem/route-collector/src/RouteDispatcher.php" />
+        <option value="$PROJECT_DIR$/webservice/vendor_local/rosem/route-collector/src/RouteCollector.php" />
+        <option value="$PROJECT_DIR$/client/src/rosem/css/resources/spaces.pcss" />
+        <option value="$PROJECT_DIR$/webservice/vendor_local/rosem/database/src/EntityMapper.php" />
+        <option value="$PROJECT_DIR$/client/src/rosem/css/typography.pcss" />
+        <option value="$PROJECT_DIR$/webservice/app/Rosem/Kernel/resources/views/layouts/base.phtml" />
+        <option value="$PROJECT_DIR$/webservice/app/Rosem/App/App.php" />
+        <option value="$PROJECT_DIR$/webservice/app/Rosem/Kernel/Middleware/HandlerDispatcherMiddleware.php" />
+        <option value="$PROJECT_DIR$/client/src/rosem/ui/plugins/Popup/PopupManager.js" />
+        <option value="$PROJECT_DIR$/client/src/rosem/ui/plugins/Popup/Popup.vue" />
+        <option value="$PROJECT_DIR$/client/src/rosem/ui/plugins/Popup/Pop.vue" />
+        <option value="$PROJECT_DIR$/client/src/rosem/ui/plugins/Popup/Popper.vue" />
+        <option value="$PROJECT_DIR$/client/src/rosem/css/resources/selectors.pcss" />
+        <option value="$PROJECT_DIR$/client/src/rosem/ui/components/Carousel/Carousel.vue" />
+        <option value="$PROJECT_DIR$/client2/.postcssrc" />
+        <option value="$PROJECT_DIR$/client2/.postcssrc.yaml" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/client/.gitignore" />
+        <option value="$PROJECT_DIR$/webservice/.gitignore" />
+        <option value="$PROJECT_DIR$/client/src/rosem/site/view/partials/TheHeader.vue" />
+        <option value="$PROJECT_DIR$/client/src/rosem/admin/view/layouts/TheAdminLayout.vue" />
+        <option value="$PROJECT_DIR$/client/src/rosem/site/view/partials/TheLogo.vue" />
+        <option value="$PROJECT_DIR$/client/src/rosem/admin/view/partials/TheLogo.vue" />
+        <option value="$PROJECT_DIR$/client/src/rosem/css/style.pcss" />
+        <option value="$PROJECT_DIR$/client/src/main.js" />
+        <option value="$PROJECT_DIR$/client/src/rosem/css/resources/breakpoints.pcss" />
+        <option value="$PROJECT_DIR$/client/.postcssrc" />
+        <option value="$PROJECT_DIR$/client/src/rosem/admin/view/partials/test.pcss" />
+        <option value="$PROJECT_DIR$/client/.editorconfig" />
+        <option value="$PROJECT_DIR$/client/src/rosem/admin/view/partials/TheHeader.vue" />
+        <option value="$PROJECT_DIR$/client/src/rosem/admin/view/pages/TheCarouselPage.vue" />
+        <option value="$PROJECT_DIR$/client/src/rosem/kernel/index.js" />
+        <option value="$PROJECT_DIR$/client/src/rosem/site/index.js" />
+        <option value="$PROJECT_DIR$/client/src/rosem/ui/components/Carousel/SlideCarousel.vue" />
+        <option value="$PROJECT_DIR$/client/src/rosem/ui/plugins/Popup/index.js" />
+        <option value="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/easeInElastic.js" />
+        <option value="$PROJECT_DIR$/client/src/rosem/ui/components/Motion/index.js" />
+        <option value="$PROJECT_DIR$/client/package.json" />
+        <option value="$PROJECT_DIR$/client/src/rosem/admin/index.js" />
+        <option value="$PROJECT_DIR$/client/.babelrc" />
+        <option value="$PROJECT_DIR$/client/src/router.js" />
+        <option value="$PROJECT_DIR$/client/vue.config.js" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBowerSettings">
+    <node-interpreter value="project" />
+    <bower-package value="" />
+    <bower.json value="" />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
+    <package-json value="$PROJECT_DIR$/client/package.json" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="PhpServers">
+    <servers>
+      <server host="rosem.app" id="6a701d50-019f-4d97-ba37-56d5df2265b9" name="rosem.app" />
+    </servers>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP 7">
+    <include_path>
+      <path value="$PROJECT_DIR$/webservice/vendor/composer" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psr/simple-cache" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psr/http-server-middleware" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/webservice/vendor/nikic/fast-route" />
+      <path value="$PROJECT_DIR$/webservice/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/webservice/vendor/filp/whoops" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psr/http-server-handler" />
+      <path value="$PROJECT_DIR$/webservice/vendor/rosem/event-manager" />
+      <path value="$PROJECT_DIR$/webservice/vendor/rosem/installer" />
+      <path value="$PROJECT_DIR$/webservice/vendor/rosem/http-factory" />
+      <path value="$PROJECT_DIR$/webservice/vendor/rosem/container" />
+      <path value="$PROJECT_DIR$/webservice/vendor/rosem/hasher" />
+      <path value="$PROJECT_DIR$/webservice/vendor/rosem/route-collector" />
+      <path value="$PROJECT_DIR$/webservice/vendor/rosem/graphql" />
+      <path value="$PROJECT_DIR$/webservice/vendor/rosem/graphql-standards" />
+      <path value="$PROJECT_DIR$/webservice/vendor/tedivm/stash" />
+      <path value="$PROJECT_DIR$/webservice/vendor/nesbot/carbon" />
+      <path value="$PROJECT_DIR$/webservice/vendor/league/plates" />
+      <path value="$PROJECT_DIR$/webservice/vendor/league/flysystem" />
+      <path value="$PROJECT_DIR$/webservice/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/webservice/vendor/mockery/mockery" />
+      <path value="$PROJECT_DIR$/webservice/vendor/dflydev/fig-cookies" />
+      <path value="$PROJECT_DIR$/webservice/vendor/vlucas/phpdotenv" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phpspec/prophecy" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phar-io/version" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phar-io/manifest" />
+      <path value="$PROJECT_DIR$/webservice/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phpunit/phpunit-mock-objects" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phpunit/php-text-template" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phpunit/php-file-iterator" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psrnext/app" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phpunit/phpunit" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phpunit/php-code-coverage" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phpunit/php-token-stream" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psrnext/service-provider" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psrnext/event-manager" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psrnext/view-renderer" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psrnext/http-factory" />
+      <path value="$PROJECT_DIR$/webservice/vendor/symfony/css-selector" />
+      <path value="$PROJECT_DIR$/webservice/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psrnext/hasher" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psrnext/route-collector" />
+      <path value="$PROJECT_DIR$/webservice/vendor/symfony/filesystem" />
+      <path value="$PROJECT_DIR$/webservice/vendor/symfony/config" />
+      <path value="$PROJECT_DIR$/webservice/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/webservice/vendor/symfony/translation" />
+      <path value="$PROJECT_DIR$/webservice/vendor/theseer/tokenizer" />
+      <path value="$PROJECT_DIR$/webservice/vendor/symfony/dom-crawler" />
+      <path value="$PROJECT_DIR$/webservice/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/webservice/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/webservice/vendor/doctrine/common" />
+      <path value="$PROJECT_DIR$/webservice/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/webservice/vendor/analogue/orm" />
+      <path value="$PROJECT_DIR$/webservice/vendor/webonyx/graphql-php" />
+      <path value="$PROJECT_DIR$/webservice/vendor/doctrine/annotations" />
+      <path value="$PROJECT_DIR$/webservice/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/webservice/vendor/doctrine/instantiator" />
+      <path value="$PROJECT_DIR$/webservice/vendor/doctrine/collections" />
+      <path value="$PROJECT_DIR$/webservice/vendor/hamcrest/hamcrest-php" />
+      <path value="$PROJECT_DIR$/webservice/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/webservice/vendor/doctrine/orm" />
+      <path value="$PROJECT_DIR$/webservice/vendor/doctrine/inflector" />
+      <path value="$PROJECT_DIR$/webservice/vendor/ocramius/package-versions" />
+      <path value="$PROJECT_DIR$/webservice/vendor/lcobucci/clock" />
+      <path value="$PROJECT_DIR$/webservice/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/webservice/vendor/kint-php/kint" />
+      <path value="$PROJECT_DIR$/webservice/vendor/robmorgan/phinx" />
+      <path value="$PROJECT_DIR$/webservice/vendor/ocramius/code-generator-utils" />
+      <path value="$PROJECT_DIR$/webservice/vendor/ocramius/generated-hydrator" />
+      <path value="$PROJECT_DIR$/webservice/vendor/ocramius/proxy-manager" />
+      <path value="$PROJECT_DIR$/webservice/vendor/sebastian/environment" />
+      <path value="$PROJECT_DIR$/webservice/vendor/sebastian/exporter" />
+      <path value="$PROJECT_DIR$/webservice/vendor/sebastian/comparator" />
+      <path value="$PROJECT_DIR$/webservice/vendor/sebastian/global-state" />
+      <path value="$PROJECT_DIR$/webservice/vendor/sebastian/resource-operations" />
+      <path value="$PROJECT_DIR$/webservice/vendor/sebastian/object-reflector" />
+      <path value="$PROJECT_DIR$/webservice/vendor/sebastian/object-enumerator" />
+      <path value="$PROJECT_DIR$/webservice/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/webservice/vendor/squizlabs/php_codesniffer" />
+      <path value="$PROJECT_DIR$/webservice/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/webservice/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/webservice/vendor/sebastian/code-unit-reverse-lookup" />
+      <path value="$PROJECT_DIR$/webservice/vendor/illuminate/database" />
+      <path value="$PROJECT_DIR$/webservice/vendor/illuminate/container" />
+      <path value="$PROJECT_DIR$/webservice/vendor/fzaninotto/faker" />
+      <path value="$PROJECT_DIR$/webservice/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/webservice/vendor/illuminate/events" />
+      <path value="$PROJECT_DIR$/webservice/vendor/illuminate/support" />
+      <path value="$PROJECT_DIR$/webservice/vendor/illuminate/contracts" />
+      <path value="$PROJECT_DIR$/webservice/vendor/illuminate/pagination" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phpdocumentor/type-resolver" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phpdocumentor/reflection-docblock" />
+      <path value="$PROJECT_DIR$/webservice/vendor/danielstjules/stringy" />
+      <path value="$PROJECT_DIR$/webservice/vendor/tijsverkoyen/css-to-inline-styles" />
+      <path value="$PROJECT_DIR$/webservice/vendor/zendframework/zend-code" />
+      <path value="$PROJECT_DIR$/webservice/vendor/zendframework/zend-stdlib" />
+      <path value="$PROJECT_DIR$/webservice/vendor/psr7-sessions/storageless" />
+      <path value="$PROJECT_DIR$/webservice/vendor/phpdocumentor/reflection-common" />
+      <path value="$PROJECT_DIR$/webservice/vendor/container-interop/service-provider" />
+      <path value="$PROJECT_DIR$/webservice/vendor/zendframework/zend-diactoros" />
+      <path value="$PROJECT_DIR$/webservice/vendor/zendframework/zend-eventmanager" />
+      <path value="$PROJECT_DIR$/webservice/vendor/zendframework/zend-hydrator" />
+    </include_path>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="53" />
+    <option name="y" value="-4" />
+    <option name="width" value="1313" />
+    <option name="height" value="772" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Bitwise operation issuesJavaScript</id>
+          </State>
+          <State>
+            <id>CSS</id>
+          </State>
+          <State>
+            <id>Code style issuesJavaScript</id>
+          </State>
+          <State>
+            <id>Control flow issuesJavaScript</id>
+          </State>
+          <State>
+            <id>DOM issuesJavaScript</id>
+          </State>
+          <State>
+            <id>Data flow issuesJavaScript</id>
+          </State>
+          <State>
+            <id>ECMAScript 6 migration aidsJavaScript</id>
+          </State>
+          <State>
+            <id>Error handlingJavaScript</id>
+          </State>
+          <State>
+            <id>File Watchers</id>
+          </State>
+          <State>
+            <id>General</id>
+          </State>
+          <State>
+            <id>GeneralJavaScript</id>
+          </State>
+          <State>
+            <id>GeneralPHP</id>
+          </State>
+          <State>
+            <id>HTML</id>
+          </State>
+          <State>
+            <id>JSON</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+          <State>
+            <id>JavaScript function metricsJavaScript</id>
+          </State>
+          <State>
+            <id>PHP</id>
+          </State>
+          <State>
+            <id>PHP Strict StandardsPHP</id>
+          </State>
+          <State>
+            <id>PHPDocPHP</id>
+          </State>
+          <State>
+            <id>Potentially confusing code constructsJavaScript</id>
+          </State>
+          <State>
+            <id>Probable bugsCSS</id>
+          </State>
+          <State>
+            <id>Probable bugsJavaScript</id>
+          </State>
+          <State>
+            <id>Probable bugsPHP</id>
+          </State>
+          <State>
+            <id>RELAX NG</id>
+          </State>
+          <State>
+            <id>SQL</id>
+          </State>
+          <State>
+            <id>Spelling</id>
+          </State>
+          <State>
+            <id>Type compatibilityPHP</id>
+          </State>
+          <State>
+            <id>TypeScript</id>
+          </State>
+          <State>
+            <id>UndefinedPHP</id>
+          </State>
+          <State>
+            <id>Vue</id>
+          </State>
+          <State>
+            <id>XML</id>
+          </State>
+          <State>
+            <id>XPath</id>
+          </State>
+          <State>
+            <id>XSLT</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>XmlUnboundNsPrefix</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scratches" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="client" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="client" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="public" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="client" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="src" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="client_old" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="webservice" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="webservice" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="webservice" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="webservice" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Kernel" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="webservice" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Kernel" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="resources" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="webservice" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Kernel" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="resources" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="views" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="webservice" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="app" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Kernel" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="resources" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="views" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="layouts" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="rosem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="rosem" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="webservice" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="public" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
+    <property name="Constants" value="false" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/webservice/.env" />
+    <property name="settings.editor.splitter.proportion" value="0.2924614" />
+    <property name="javascript.nodejs.core.library.configured.version" value="9.4.0" />
+    <property name="node.js.path.for.package.stylelint" value="project" />
+    <property name="node.js.detected.package.stylelint" value="true" />
+    <property name="node.js.selected.package.stylelint" value="" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/webservice/public" />
+      <recent name="$PROJECT_DIR$/webservice/public/images" />
+      <recent name="$PROJECT_DIR$/webservice/vendor_local/rosem/container_new/src" />
+      <recent name="$PROJECT_DIR$/webservice/vendor_local/rosem/hash-manager" />
+      <recent name="$PROJECT_DIR$/webservice/vendor_local/true-code/container/src/Binding" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/client/src" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/webservice/var" />
+      <recent name="$PROJECT_DIR$/bkp" />
+      <recent name="$PROJECT_DIR$/webservice/app/Rosem/Admin/resources" />
+    </key>
+  </component>
+  <component name="RestClientSettings">
+    <option name="REQUEST_HISTORY">
+      <list>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://rosem.app" />
+          <option name="urlPath" value="/graphql" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="query" />
+                <option name="value" value="query Query {   echo(message: &quot;Hello World&quot;) }" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://rosem.app" />
+          <option name="urlPath" value="/graphql" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="query" />
+                <option name="value" value="query Query {   echo(message: &quot;Hello World&quot;) }" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="query" />
+                <option name="value" value="query Query {   echo(message: &quot;Hello World&quot;) }" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://rosem.app" />
+          <option name="urlPath" value="/graphql" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="query" />
+                <option name="value" value="{}" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://rosem.app" />
+          <option name="urlPath" value="/graphql" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parameters">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="query" />
+                <option name="value" value="{echo(message: &quot;Hello World&quot;)}" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+        <RestClientRequest>
+          <option name="httpMethod" value="GET" />
+          <option name="urlBase" value="http://rosem.app" />
+          <option name="urlPath" value="/graphql" />
+          <option name="headers">
+            <list>
+              <KeyValuePair>
+                <option name="key" value="Accept" />
+                <option name="value" value="*/*" />
+              </KeyValuePair>
+              <KeyValuePair>
+                <option name="key" value="Cache-Control" />
+                <option name="value" value="no-cache" />
+              </KeyValuePair>
+            </list>
+          </option>
+          <option name="parametersEnabled" value="true" />
+          <option name="textToSend" value="" />
+          <option name="filesToSend" value="" />
+        </RestClientRequest>
+      </list>
+    </option>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="PHP Script.index.php">
+    <configuration name="Strategy" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner directory="$PROJECT_DIR$/webservice/vendor_local/rosem/container/src/Strategy" />
+    </configuration>
+    <configuration name="bootstrap.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/webservice/bootstrap.php" />
+    <configuration name="index.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/webservice/public/index.php" />
+    <configuration name="build" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+    </configuration>
+    <configuration name="lint" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="lint" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+    </configuration>
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="PHP Script.index.php" />
+      <item index="1" class="java.lang.String" itemvalue="PHP Script.bootstrap.php" />
+      <item index="2" class="java.lang.String" itemvalue="PHPUnit.Strategy" />
+      <item index="3" class="java.lang.String" itemvalue="npm.build" />
+      <item index="4" class="java.lang.String" itemvalue="npm.lint" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="npm.lint" />
+        <item index="1" class="java.lang.String" itemvalue="npm.build" />
+        <item index="2" class="java.lang.String" itemvalue="PHP Script.index.php" />
+        <item index="3" class="java.lang.String" itemvalue="PHP Script.bootstrap.php" />
+        <item index="4" class="java.lang.String" itemvalue="PHPUnit.Strategy" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="610389f3-e1da-4a31-8bf7-68dffe228bbc" name="Default" comment="" />
+      <created>1512501102495</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1512501102495</updated>
+      <workItem from="1512501103786" duration="11629000" />
+      <workItem from="1512556875540" duration="18173000" />
+      <workItem from="1512596947756" duration="99726000" />
+      <workItem from="1513085312988" duration="202000" />
+      <workItem from="1513085669346" duration="63674000" />
+      <workItem from="1513263245149" duration="58460000" />
+      <workItem from="1513454303738" duration="30576000" />
+      <workItem from="1513587643074" duration="100000" />
+      <workItem from="1513688135536" duration="22000" />
+      <workItem from="1513701940837" duration="3838000" />
+      <workItem from="1513859934868" duration="14922000" />
+      <workItem from="1513890206343" duration="7128000" />
+      <workItem from="1513939157666" duration="512000" />
+      <workItem from="1513941567337" duration="26736000" />
+      <workItem from="1514204922423" duration="48439000" />
+      <workItem from="1514362845049" duration="143822000" />
+      <workItem from="1515010364262" duration="4705000" />
+      <workItem from="1515339186057" duration="46852000" />
+      <workItem from="1515581848746" duration="1216000" />
+      <workItem from="1516137688915" duration="2387000" />
+      <workItem from="1516140262906" duration="488000" />
+      <workItem from="1516142701173" duration="625000" />
+      <workItem from="1516144080191" duration="47000" />
+      <workItem from="1516177372463" duration="675000" />
+      <workItem from="1516303207955" duration="4348000" />
+      <workItem from="1516373785720" duration="751000" />
+      <workItem from="1516379618263" duration="28000" />
+      <workItem from="1516382343984" duration="10795000" />
+      <workItem from="1516439994576" duration="48112000" />
+      <workItem from="1516557140299" duration="11432000" />
+      <workItem from="1516623056573" duration="6457000" />
+      <workItem from="1516642412098" duration="12129000" />
+      <workItem from="1516704429108" duration="4762000" />
+      <workItem from="1516718487708" duration="32374000" />
+      <workItem from="1516786372798" duration="93995000" />
+      <workItem from="1517156602324" duration="76704000" />
+      <workItem from="1517401806039" duration="8999000" />
+      <workItem from="1517414171942" duration="28890000" />
+      <workItem from="1517503534467" duration="28941000" />
+      <workItem from="1517643955078" duration="38713000" />
+      <workItem from="1517743458269" duration="24548000" />
+      <workItem from="1517818412209" duration="4545000" />
+      <workItem from="1517850082472" duration="6891000" />
+      <workItem from="1517910190784" duration="10724000" />
+      <workItem from="1518019764336" duration="7464000" />
+      <workItem from="1518078897528" duration="143000" />
+      <workItem from="1518088289483" duration="5320000" />
+      <workItem from="1518118380648" duration="6044000" />
+      <workItem from="1518127881605" duration="2000" />
+      <workItem from="1518166726309" duration="633000" />
+      <workItem from="1518192626659" duration="36000" />
+      <workItem from="1518336660731" duration="50499000" />
+      <workItem from="1518601109114" duration="345000" />
+      <workItem from="1518881343673" duration="614000" />
+      <workItem from="1518984982840" duration="72000" />
+      <workItem from="1519217443419" duration="3742000" />
+      <workItem from="1519237656487" duration="824000" />
+      <workItem from="1519284180105" duration="21000" />
+      <workItem from="1519286635956" duration="53215000" />
+      <workItem from="1519471120985" duration="76856000" />
+      <workItem from="1519816905688" duration="2948000" />
+      <workItem from="1519829925698" duration="2235000" />
+      <workItem from="1519843303236" duration="12487000" />
+      <workItem from="1519920309803" duration="2134000" />
+      <workItem from="1520007515518" duration="12514000" />
+      <workItem from="1520171068389" duration="22535000" />
+      <workItem from="1520360775555" duration="14000000" />
+      <workItem from="1520839507937" duration="13000" />
+      <workItem from="1520839563804" duration="28000" />
+      <workItem from="1521027765998" duration="2443000" />
+      <workItem from="1521062525510" duration="714000" />
+      <workItem from="1521145177153" duration="4652000" />
+      <workItem from="1521185261296" duration="26000" />
+      <workItem from="1521224219660" duration="13970000" />
+      <workItem from="1521353697915" duration="38000" />
+      <workItem from="1521353764988" duration="2308000" />
+      <workItem from="1521389280406" duration="3405000" />
+      <workItem from="1521396487461" duration="1069000" />
+      <workItem from="1521397580343" duration="7133000" />
+      <workItem from="1521445142780" duration="25000" />
+      <workItem from="1521462516963" duration="4562000" />
+      <workItem from="1521477290369" duration="900000" />
+    </task>
+    <task id="LOCAL-00034" summary="added basic middleware system">
+      <created>1516564667534</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1516564667534</updated>
+    </task>
+    <task id="LOCAL-00035" summary="removed dependencies of interop interfaces">
+      <created>1516624074860</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1516624074860</updated>
+    </task>
+    <task id="LOCAL-00036" summary="added custom http-factory implementation / improved route middleware">
+      <created>1516662270021</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1516662270021</updated>
+    </task>
+    <task id="LOCAL-00037" summary="improved route service provider code">
+      <created>1516662668434</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1516662668434</updated>
+    </task>
+    <task id="LOCAL-00038" summary="added very basic structure of admin module">
+      <created>1516664090157</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1516664090157</updated>
+    </task>
+    <task id="LOCAL-00039" summary="added route standards and realization / improved main and admin controllers">
+      <created>1516728583494</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1516728583494</updated>
+    </task>
+    <task id="LOCAL-00040" summary="added call method into di container / improved binding process">
+      <created>1516753485503</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1516753485503</updated>
+    </task>
+    <task id="LOCAL-00041" summary="changed name for callable aggregate trait">
+      <created>1516753936404</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1516753936404</updated>
+    </task>
+    <task id="LOCAL-00042" summary="fixed bugs in di container and improve it">
+      <created>1516818549422</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1516818549422</updated>
+    </task>
+    <task id="LOCAL-00043" summary="added middleware factory / improved controllers / fixed di bugs">
+      <created>1516835526591</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1516835526591</updated>
+    </task>
+    <task id="LOCAL-00044" summary="migrated to psr http server handler and middleware">
+      <created>1516838878456</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1516838878456</updated>
+    </task>
+    <task id="LOCAL-00045" summary="small fixes">
+      <created>1516911912372</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1516911912372</updated>
+    </task>
+    <task id="LOCAL-00046" summary="improved configuration and middlewares loading">
+      <created>1516922165201</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1516922165201</updated>
+    </task>
+    <task id="LOCAL-00047" summary="added view standards and basic main and admin templates">
+      <created>1517157134795</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1517157134795</updated>
+    </task>
+    <task id="LOCAL-00048" summary="extended view standards and improved controllers">
+      <created>1517178603800</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1517178603800</updated>
+    </task>
+    <task id="LOCAL-00049" summary="added multihandlers support for routes">
+      <created>1517591339358</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1517591339358</updated>
+    </task>
+    <task id="LOCAL-00050" summary="added basic front functionality">
+      <created>1517593390916</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1517593390923</updated>
+    </task>
+    <task id="LOCAL-00051" summary="added invoke mathod to binding and container / improved naming">
+      <created>1517670103083</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1517670103084</updated>
+    </task>
+    <task id="LOCAL-00052" summary="renamed AggregateTrait to AggregateFactoryTrait / fixed container bugs">
+      <created>1517672874189</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1517672874190</updated>
+    </task>
+    <task id="LOCAL-00053" summary="added AggregateTrait to use calls through insteadof operator">
+      <created>1517675428098</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1517675428098</updated>
+    </task>
+    <task id="LOCAL-00054" summary="improved aggregate binding proxy / added validation to aggregate bindings">
+      <created>1517680718976</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1517680718977</updated>
+    </task>
+    <task id="LOCAL-00055" summary="improved naming of classes in di container">
+      <created>1517683807673</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1517683807673</updated>
+    </task>
+    <task id="LOCAL-00056" summary="improved call method in di container">
+      <created>1517700082401</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1517700082401</updated>
+    </task>
+    <task id="LOCAL-00057" summary="bump php version to 7.2 in local packages">
+      <created>1517744504476</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1517744504477</updated>
+    </task>
+    <task id="LOCAL-00058" summary="improved module structure on client side">
+      <created>1517746872858</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1517746872858</updated>
+    </task>
+    <task id="LOCAL-00059" summary="made rosem-ui as the standalone package">
+      <created>1517747799562</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1517747799562</updated>
+    </task>
+    <task id="LOCAL-00060" summary="changed namespace from true-std to psrnext">
+      <created>1517749364410</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1517749364410</updated>
+    </task>
+    <task id="LOCAL-00061" summary="changed namespace from true-code to rosem">
+      <created>1517751841477</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1517751841477</updated>
+    </task>
+    <task id="LOCAL-00062" summary="changed bind methods to define in di container">
+      <created>1517754210766</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1517754210766</updated>
+    </task>
+    <task id="LOCAL-00063" summary="updated popup components">
+      <created>1517760596780</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1517760596781</updated>
+    </task>
+    <task id="LOCAL-00064" summary="improved has method in di container">
+      <created>1517778888349</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1517778888349</updated>
+    </task>
+    <task id="LOCAL-00065" summary="added real psrnext packages to composer.json">
+      <created>1517869158809</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1517869158810</updated>
+    </task>
+    <task id="LOCAL-00066" summary="improved popup ui component">
+      <created>1517953396559</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1517953396559</updated>
+    </task>
+    <task id="LOCAL-00067" summary="add namespaces to admin routes">
+      <created>1518028292496</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1518028292497</updated>
+    </task>
+    <task id="LOCAL-00068" summary="updated packages to use packagist dependencies instead of local">
+      <created>1518034281607</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1518034281607</updated>
+    </task>
+    <task id="LOCAL-00069" summary="removed useless psrnext local packages">
+      <created>1518034340646</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1518034340646</updated>
+    </task>
+    <task id="LOCAL-00070" summary="added hasher library with bcrypt and argon hashing">
+      <created>1518126108812</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1518126108813</updated>
+    </task>
+    <task id="LOCAL-00071" summary="improved views / added polyfills support">
+      <created>1518346092073</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1518346092075</updated>
+    </task>
+    <task id="LOCAL-00072" summary="added robots.txt / added basic configuration in base layout">
+      <created>1518348765502</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1518348765502</updated>
+    </task>
+    <task id="LOCAL-00073" summary="updated package.json / renamed css definitions to resources">
+      <created>1518367234076</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1518367234076</updated>
+    </task>
+    <task id="LOCAL-00074" summary="added more postcss plugins">
+      <created>1518370219405</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1518370219405</updated>
+    </task>
+    <task id="LOCAL-00075" summary="added server.php file which allow to use built-in PHP web server">
+      <created>1518371800000</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1518371800000</updated>
+    </task>
+    <task id="LOCAL-00076" summary="improved motion component and added curve visualiser">
+      <created>1519338095399</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1519338095400</updated>
+    </task>
+    <task id="LOCAL-00077" summary="improved motion visualiser component">
+      <created>1519415565880</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1519415565880</updated>
+    </task>
+    <task id="LOCAL-00078" summary="changed namespace of admin routes">
+      <created>1519415666440</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1519415666440</updated>
+    </task>
+    <task id="LOCAL-00079" summary="added basic carousel component">
+      <created>1519415727678</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1519415727678</updated>
+    </task>
+    <task id="LOCAL-00080" summary="improved backend views">
+      <created>1519417145734</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1519417145735</updated>
+    </task>
+    <task id="LOCAL-00081" summary="added handler dispatcher and view middlewares">
+      <created>1519849962971</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1519849962974</updated>
+    </task>
+    <task id="LOCAL-00082" summary="improved route collector and removed middleware factory dependency">
+      <created>1519854809451</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1519854809451</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="Strategy - 2018.02.04 at 12h 09m 18s.xml">
+      <configuration name="Strategy" configurationId="PHPUnitRunConfigurationType" />
+    </history-entry>
+    <history-entry file="Strategy - 2018.02.04 at 12h 58m 37s.xml">
+      <configuration name="Strategy" configurationId="PHPUnitRunConfigurationType" />
+    </history-entry>
+    <history-entry file="Strategy - 2018.02.04 at 12h 59m 11s.xml">
+      <configuration name="Strategy" configurationId="PHPUnitRunConfigurationType" />
+    </history-entry>
+    <history-entry file="bootstrap - 2018.01.19 at 23h 38m 08s.xml">
+      <configuration name="bootstrap" configurationId="PHPUnitRunConfigurationType" />
+    </history-entry>
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="1355061000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="53" y="-4" width="1313" height="772" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3431221" sideWeight="0.5224941" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45749614" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.284925" sideWeight="0.53626376" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.4853986" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991317" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3431221" sideWeight="0.47750592" order="7" side_tool="false" content_ui="tabs" x="53" y="24" width="1313" height="744" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2762431" sideWeight="0.46373627" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291239" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.284925" sideWeight="0.5144231" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.284925" sideWeight="0.5146831" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41421947" sideWeight="0.49171272" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="GraphQL" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.57496136" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32302937" sideWeight="0.5146014" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="GraphQL" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.57496136" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45749614" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32302937" sideWeight="0.4853986" order="10" side_tool="false" content_ui="tabs" x="53" y="24" width="1313" height="744" />
+      <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25887924" sideWeight="0.49149922" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291239" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32921174" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2573007" sideWeight="0.50850075" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41421947" sideWeight="0.49171272" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2573007" sideWeight="0.50850075" order="2" side_tool="true" content_ui="tabs" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="webservice" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="made rosem-ui as the standalone package" />
+    <MESSAGE value="changed namespace from true-std to psrnext" />
+    <MESSAGE value="changed namespace from true-code to rosem" />
+    <MESSAGE value="changed bind methods to define in di container" />
+    <MESSAGE value="updated popup components" />
+    <MESSAGE value="improved has method in di container" />
+    <MESSAGE value="added real psrnext packages to composer.json" />
+    <MESSAGE value="improved popup ui component" />
+    <MESSAGE value="add namespaces to admin routes" />
+    <MESSAGE value="updated packages to use packagist dependencies instead of local" />
+    <MESSAGE value="removed useless psrnext local packages" />
+    <MESSAGE value="added hasher library with bcrypt and argon hashing" />
+    <MESSAGE value="improved views / added polyfills support" />
+    <MESSAGE value="added robots.txt / added basic configuration in base layout" />
+    <MESSAGE value="updated package.json / renamed css definitions to resources" />
+    <MESSAGE value="added more postcss plugins" />
+    <MESSAGE value="added server.php file which allow to use built-in PHP web server" />
+    <MESSAGE value="improved motion component and added curve visualiser" />
+    <MESSAGE value="improved motion visualiser component" />
+    <MESSAGE value="changed namespace of admin routes" />
+    <MESSAGE value="added basic carousel component" />
+    <MESSAGE value="improved backend views" />
+    <MESSAGE value="added handler dispatcher and view middlewares" />
+    <MESSAGE value="improved route collector and removed middleware factory dependency" />
+    <MESSAGE value="changed client structure to vue cli and added drafts of future features" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed client structure to vue cli and added drafts of future features" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="229" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>BINDING_BASE_PARAMS</expression-string>
+        <language-id>PHP</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/client/dist/index.html" />
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/site/view/layouts/TheMainLayout.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/site/view/partials/TheHeader.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="35" column="28" lean-forward="false" selection-start-line="35" selection-start-column="28" selection-end-line="35" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client_old/.babelrc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="3" column="6" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client_old/package-lock.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="14">
+          <caret line="2849" column="5" lean-forward="false" selection-start-line="2849" selection-start-column="5" selection-end-line="2849" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/site/view/partials/TheLogo.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/admin/view/partials/TheLogo.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="17" column="34" lean-forward="false" selection-start-line="17" selection-start-column="34" selection-end-line="17" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client_old/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="22" column="4" lean-forward="false" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/css/style.pcss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webservice/app/Rosem/App/App.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="176" column="0" lean-forward="false" selection-start-line="176" selection-start-column="0" selection-end-line="176" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/node_modules/@vue/cli-service/lib/Service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="296">
+          <caret line="138" column="2" lean-forward="false" selection-start-line="138" selection-start-column="2" selection-end-line="138" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/css/resources/breakpoints.pcss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="70">
+          <caret line="5" column="39" lean-forward="false" selection-start-line="5" selection-start-column="39" selection-end-line="5" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/admin/view/partials/test.pcss" />
+    <entry file="file://$PROJECT_DIR$/client/.editorconfig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/admin/view/pages/TheCarouselPage.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="30" column="55" lean-forward="false" selection-start-line="30" selection-start-column="55" selection-end-line="30" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/kernel/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="53" column="18" lean-forward="false" selection-start-line="53" selection-start-column="18" selection-end-line="53" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/ui/components/Carousel/SlideCarousel.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="19" column="36" lean-forward="true" selection-start-line="19" selection-start-column="36" selection-end-line="19" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/circle.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/ui/components/Motion/timingFunction/easeInElastic.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="14">
+          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/ui/components/Motion/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="9" column="6" lean-forward="false" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/ui/plugins/Popup/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="29" column="25" lean-forward="true" selection-start-line="29" selection-start-column="25" selection-end-line="29" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/registerServiceWorker.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/site/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="21" column="13" lean-forward="false" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/dist/css/admin.5f4c9b6a.css" />
+    <entry file="file://$PROJECT_DIR$/client/dist/css/rosem.b3f2dbeb.css" />
+    <entry file="file://$PROJECT_DIR$/client/dist/css/app.2b67f3d2.css" />
+    <entry file="file://$PROJECT_DIR$/client/dist/js/admin.5666b676.js" />
+    <entry file="file://$PROJECT_DIR$/client/dist/js/app.089107bf.js" />
+    <entry file="file://$PROJECT_DIR$/client/dist/js/rosem.ec8a3b45.js" />
+    <entry file="file://$PROJECT_DIR$/client/dist/js/vendor.9f730e02.js" />
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/css/reset.pcss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="490">
+          <caret line="35" column="4" lean-forward="false" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/admin/view/layouts/TheAdminLayout.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="17" column="25" lean-forward="false" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/node_modules/@vue/cli-service/webpack.config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client_old/.postcssrc.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="14">
+          <caret line="1" column="13" lean-forward="false" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/.postcssrc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="25" column="26" lean-forward="false" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client_old/webpack.config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="854">
+          <caret line="61" column="28" lean-forward="false" selection-start-line="61" selection-start-column="28" selection-end-line="61" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/admin/routes/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="490">
+          <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/admin/view/partials/TheHeader.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="546">
+          <caret line="39" column="18" lean-forward="false" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/.babelrc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="98">
+          <caret line="7" column="47" lean-forward="false" selection-start-line="7" selection-start-column="47" selection-end-line="7" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/public/favicon.ico">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webservice/public/favicon.ico">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webservice/bootstrap.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webservice/public/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webservice/app/Rosem/Kernel/resources/views/layouts/base.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/rosem/admin/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="20" column="12" lean-forward="false" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
+          <folding>
+            <marker date="1521500910761" expanded="true" signature="691:694" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="8" column="18" lean-forward="false" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/public/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/public/manifest.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/vue.config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="12" column="6" lean-forward="true" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
+          <folding>
+            <marker date="1521466328483" expanded="true" signature="2451:2454" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

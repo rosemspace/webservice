@@ -1,0 +1,1 @@
+{"errors":[{"message":"Syntax Error GraphQL (1:1) Unexpected <EOF>\n\n1: \n   ^\n","category":"graphql","locations":[{"line":1,"column":1}]}]}
