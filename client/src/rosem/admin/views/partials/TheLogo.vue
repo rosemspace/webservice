@@ -1,7 +1,7 @@
 <template>
     <div :class="$options.name">
         <router-link :to="{name: 'admin'}">
-            <img src="../../images/logo.png" alt="The logo" />
+            <img src="require('@rosem/admin/asstes/logo.png')" alt="The logo" />
             <!--<span>Rosem</span>-->
         </router-link>
     </div>

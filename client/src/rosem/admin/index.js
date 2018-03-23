@@ -1,3 +1,4 @@
+// import "rosem-css";
 import VueRouter from "vue-router";
 import App, { resolveViews } from "@rosem/kernel";
 // import store from '../../store';
@@ -11,7 +12,7 @@ export default new App({
   // store,
   router: new VueRouter({
     mode: "history",
-    routes: resolveViews(routes, path => import(`./view/${path}`)),
+    routes: resolveViews(routes, path => import(`./views/${path}`)),
     linkActiveClass: "active",
     scrollBehavior(to, from, savedPosition) {
       return savedPosition || { x: 0, y: 0 };

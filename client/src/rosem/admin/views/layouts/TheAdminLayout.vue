@@ -24,6 +24,8 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
+@import "../../../../rosem-css/style.pcss";
+
 .TheAdminLayout {
   display: grid;
   grid-template:
@@ -112,7 +114,7 @@ export default {
 }
 
 .TheAdminLayout-bg-image {
-  background: #f1f1f1 url("../../images/bg-clouds.jpg");
+  background: #f1f1f1 url("~@rosem/admin/assets/bg-clouds.jpg");
   background-size: cover;
   filter: blur(30px);
   position: fixed;
