@@ -39,7 +39,7 @@ class MiddlewareRequestHandler implements RequestHandlerInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \ReflectionException
      */
-    public function handle(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (is_string($this->middleware)) {
             $this->middleware = $this->container->defineNow($this->middleware)->make();

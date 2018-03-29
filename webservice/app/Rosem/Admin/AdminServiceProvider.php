@@ -16,7 +16,7 @@ class AdminServiceProvider implements ServiceProviderInterface
      *
      * @return callable[]
      */
-    public function getFactories() : array
+    public function getFactories(): array
     {
         return [];
     }
@@ -26,7 +26,7 @@ class AdminServiceProvider implements ServiceProviderInterface
      *
      * @return callable[]
      */
-    public function getExtensions() : array
+    public function getExtensions(): array
     {
         return [
             RouteCollectorInterface::class => function (
@@ -38,7 +38,7 @@ class AdminServiceProvider implements ServiceProviderInterface
                     [AdminController::class, 'index']
                 );
             },
-            ViewRendererInterface::class => function (
+            ViewRendererInterface::class   => function (
                 ContainerInterface $container,
                 ViewRendererInterface $view
             ) {

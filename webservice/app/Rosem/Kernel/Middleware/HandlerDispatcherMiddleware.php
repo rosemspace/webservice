@@ -32,7 +32,7 @@ class HandlerDispatcherMiddleware implements MiddlewareInterface
      *
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         //TODO: handler from callable, etc
         return $this->container->call($request->getAttribute('request-handler'), [], [$request, $handler]);

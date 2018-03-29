@@ -16,7 +16,7 @@ class AccessServiceProvider implements ServiceProviderInterface
      *
      * @return callable[]
      */
-    public function getFactories() : array
+    public function getFactories(): array
     {
         return [];
     }
@@ -26,7 +26,7 @@ class AccessServiceProvider implements ServiceProviderInterface
      *
      * @return callable[]
      */
-    public function getExtensions() : array
+    public function getExtensions(): array
     {
         return [
             GraphInterface::class => function (ContainerInterface $container, GraphInterface $graph) {

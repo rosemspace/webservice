@@ -46,7 +46,7 @@ class ViewMiddleware implements MiddlewareInterface
      *
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $viewData = $request->getAttribute('view-data');
         $response = $this->responseFactory->createResponse();

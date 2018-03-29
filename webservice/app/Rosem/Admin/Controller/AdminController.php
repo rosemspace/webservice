@@ -41,7 +41,7 @@ class AdminController
         $this->appConfig = $appConfig;
     }
 
-    public function index() : ResponseInterface
+    public function index(): ResponseInterface
     {
         $response = $this->responseFactory->createResponse();
         $response->getBody()->write($this->view->render(

@@ -37,7 +37,7 @@ class RouteMiddleware implements MiddlewareInterface
      *
      * @return RouteMiddleware
      */
-    public function attribute(string $attribute) : self
+    public function attribute(string $attribute): self
     {
         $this->attribute = $attribute;
 
@@ -50,7 +50,7 @@ class RouteMiddleware implements MiddlewareInterface
      *
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $nextHandler) : ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $nextHandler): ResponseInterface
     {
         $route = $this->router->dispatch($request->getMethod(), $request->getUri()->getPath());
 
@@ -78,12 +78,12 @@ class RouteMiddleware implements MiddlewareInterface
      *
      * @return ServerRequestInterface
      */
-    protected function setHandler(ServerRequestInterface $request, $handler) : ServerRequestInterface
+    protected function setHandler(ServerRequestInterface $request, $handler): ServerRequestInterface
     {
         return $request->withAttribute($this->attribute, $handler);
     }
 
-    public function createNotFoundResponse() : ResponseInterface
+    public function createNotFoundResponse(): ResponseInterface
     {
         $response = $this->responseFactory->createResponse(404);
         $response->getBody()->write('Not found :(');
@@ -91,7 +91,7 @@ class RouteMiddleware implements MiddlewareInterface
         return $response;
     }
 
-    public function createMethodNotAllowedResponse() : ResponseInterface
+    public function createMethodNotAllowedResponse(): ResponseInterface
     {
         $response = $this->responseFactory->createResponse(405);
         $response->getBody()->write('Method not allowed :(');

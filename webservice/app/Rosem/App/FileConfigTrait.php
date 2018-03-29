@@ -12,7 +12,7 @@ trait FileConfigTrait
      * @return mixed
      * @throws Exception
      */
-    protected static function getConfiguration(string $filePath) : array
+    protected static function getConfiguration(string $filePath): array
     {
         if (file_exists($filePath)) {
             if (is_readable($filePath)) {

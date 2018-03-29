@@ -2,14 +2,16 @@
 
 namespace Rosem\App;
 
-use Psrnext\App\{AppFactoryInterface, AppInterface};
+use Psrnext\App\{
+    AppFactoryInterface, AppInterface
+};
 
 class AppFactory implements AppFactoryInterface
 {
     /**
      * @return AppInterface
      */
-    public static function create() : AppInterface
+    public static function create(): AppInterface
     {
         $app = new App;
 

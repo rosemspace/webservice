@@ -124,7 +124,7 @@ class App extends ReflectionContainer implements AppInterface
              * @throws \Psr\Container\ContainerExceptionInterface
              * @throws \Psr\Container\NotFoundExceptionInterface
              */
-            public function handle(ServerRequestInterface $request) : ResponseInterface
+            public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 $response = $this->container->get(ResponseFactoryInterface::class)->createResponse(500);
                 $response->getBody()->write('Internal server error');
@@ -240,7 +240,7 @@ class App extends ReflectionContainer implements AppInterface
         try {
             $input = $request->getQueryParams(); // GET
 
-            if (! isset($input['query'])) { // POST
+            if (!isset($input['query'])) { // POST
                 $input = json_decode($request->getBody()->getContents(), true);
             }
 

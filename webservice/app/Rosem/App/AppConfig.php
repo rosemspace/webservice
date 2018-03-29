@@ -115,7 +115,7 @@ class AppConfig implements AppConfigInterface, ArrayAccess, Countable
      * @param string $query
      * @param mixed  $value
      */
-    public function set(string $query, $value) : void
+    public function set(string $query, $value): void
     {
         $path = explode($this->delimiter, $query);
         $lastIndex = count($path) - 1;

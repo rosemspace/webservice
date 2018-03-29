@@ -3,9 +3,11 @@
 namespace Rosem\Kernel;
 
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\{
+    Message\ResponseInterface,
+    Message\ServerRequestInterface,
+    Server\RequestHandlerInterface
+};
 use Psrnext\{
     App\AppConfigInterface,
     Container\ServiceProviderInterface,
@@ -24,7 +26,7 @@ class KernelServiceProvider implements ServiceProviderInterface
      *
      * @return callable[]
      */
-    public function getFactories() : array
+    public function getFactories(): array
     {
         return [
             ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
@@ -50,7 +52,7 @@ class KernelServiceProvider implements ServiceProviderInterface
      * @return callable[]
      * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function getExtensions() : array
+    public function getExtensions(): array
     {
         return [
             RouteCollectorInterface::class => function (
@@ -65,8 +67,8 @@ class KernelServiceProvider implements ServiceProviderInterface
                     ) use ($container) : ResponseInterface {
                         $appConfig = $container->get(AppConfigInterface::class);
                         $request = $request->withAttribute('view-data', [
-                            '__template__'  => 'Rosem\Kernel::templates/main',
-                            'metaTitle' => $appConfig->get(
+                            '__template__' => 'Rosem\Kernel::templates/main',
+                            'metaTitle'    => $appConfig->get(
                                 'app.meta.title',
                                 $appConfig->get('app.name', 'Rosem')
                             ),
@@ -158,17 +160,17 @@ class KernelServiceProvider implements ServiceProviderInterface
              *
              * @return string
              */
-            public function render(string $templateName, array $data = [], array $attributes = []) : string
+            public function render(string $templateName, array $data = [], array $attributes = []): string
             {
                 return $this->engine->render($templateName, $data, $attributes);
             }
 
-            public function addPathAlias(string $path, string $alias) : void
+            public function addPathAlias(string $path, string $alias): void
             {
                 $this->engine->addFolder($alias, $path);
             }
 
-            public function addData(array $data) : void
+            public function addData(array $data): void
             {
                 $this->engine->addData($data);
             }

@@ -10,7 +10,7 @@ class App extends AbstractFacade
     /**
      * @return string Facade accessor
      */
-    protected static function getFacadeAccessor() : string
+    protected static function getFacadeAccessor(): string
     {
         return AppInterface::class;
     }
