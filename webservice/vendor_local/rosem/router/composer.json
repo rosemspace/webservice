@@ -1,0 +1,25 @@
+{
+    "name": "rosem/router",
+    "description": "Dependency injection container library",
+    "license": "MIT",
+    "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "ma1oy",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://rosemlab.github.io/router",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0",
+        "psrnext/router": "^0.0.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Router\\": "src"
+        }
+    }
+}

@@ -38,7 +38,7 @@
         "rosem/hasher": "*",
         "rosem/http-factory": "*",
         "rosem/installer": "*",
-        "rosem/route-collector": "*",
+        "rosem/router": "*",
         "symfony/finder": "^4.0",
         "tedivm/stash": "0.14.*",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
@@ -46,6 +46,7 @@
         "zendframework/zend-diactoros": "^1.7"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-master",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "^6.5",
@@ -71,6 +72,6 @@
         {"type": "path", "url": "vendor_local/rosem/graphql"},
         {"type": "path", "url": "vendor_local/rosem/graphql-standards"},
         {"type": "path", "url": "vendor_local/rosem/installer"},
-        {"type": "path", "url": "vendor_local/rosem/route-collector"}
+        {"type": "path", "url": "vendor_local/rosem/router"}
     ]
 }

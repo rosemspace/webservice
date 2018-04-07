@@ -16,15 +16,15 @@ class EventManager implements EventManagerInterface
     /**
      * Attaches a listener to an event
      *
-     * @param string   $event    the event to attach too
+     * @param string $event the event to attach too
      * @param callable $callback a callable function
-     * @param int      $priority the priority at which the $callback executed
+     * @param int $priority the priority at which the $callback executed
      *
      * @return EventListenerInterface
      */
-    public function attach(string $event, callable $callback, int $priority = 0)
+    public function attach(string $event, callable $callback, int $priority = 0): EventListenerInterface
     {
-        if (! isset($this->listeners[$event])) {
+        if (!isset($this->listeners[$event])) {
             $this->listeners[$event] = new EventListenerCollection;
         }
 
@@ -34,12 +34,12 @@ class EventManager implements EventManagerInterface
     /**
      * Detaches a listener from an event
      *
-     * @param string   $event    the event to attach too
+     * @param string $event the event to attach too
      * @param callable $callback a callable function
      *
      * @return bool true on success false on failure
      */
-    public function detach(string $event, callable $callback)
+    public function detach(string $event, callable $callback): bool
     {
         if (isset($this->listeners[$event])) {
             foreach ($this->listeners[$event]->getList() as $index => $listener) {
@@ -65,7 +65,7 @@ class EventManager implements EventManagerInterface
      *
      * @return void
      */
-    public function clearListeners(?string $event = null) : void
+    public function clearListeners(?string $event = null): void
     {
         if (null === $event) {
             $this->listeners = [];
@@ -79,8 +79,8 @@ class EventManager implements EventManagerInterface
      * Can accept an EventInterface or will create one if not passed
      *
      * @param  string|EventInterface $event
-     * @param  object|string         $target
-     * @param  array|object          $argv
+     * @param  object|string $target
+     * @param  array|object $argv
      *
      * @return mixed
      * @throws \InvalidArgumentException
@@ -89,13 +89,13 @@ class EventManager implements EventManagerInterface
     {
         $result = true;
 
-        if (is_string($event)) {
+        if (\is_string($event)) {
             $name = $event;
             $event = new Event;
             $event->setName($name);
             $event->setTarget($target);
             $event->setParams($argv);
-        } elseif (! $event instanceof EventInterface) {
+        } elseif (!$event instanceof EventInterface) {
             throw new \InvalidArgumentException('Event should be a string or should implement ' .
                 EventInterface::class);
         }

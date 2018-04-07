@@ -27,7 +27,7 @@ class AppConfig implements AppConfigInterface, ArrayAccess, Countable
     /**
      * ArraySeparatorQuery constructor.
      *
-     * @param array  $data
+     * @param array $data
      * @param string $delimiter
      */
     public function __construct(array $data = [], string $delimiter = '.')
@@ -43,7 +43,7 @@ class AppConfig implements AppConfigInterface, ArrayAccess, Countable
 
     protected function replaceVars($value)
     {
-        if (is_string($value) && strpos($value, '$') !== false) {
+        if (\is_string($value) && strpos($value, '$') !== false) {
             $value = preg_replace_callback(self::REGEX_VAR, function ($matches) {
                 return $this->get($matches[1], $matches[0]);
             }, $value);
@@ -57,9 +57,9 @@ class AppConfig implements AppConfigInterface, ArrayAccess, Countable
      *
      * @param array $array
      * @param mixed $default
-     * @param int   $offset
+     * @param int $offset
      * @param array $path
-     * @param int   $lastIndex
+     * @param int $lastIndex
      *
      * @return mixed
      */
@@ -67,15 +67,17 @@ class AppConfig implements AppConfigInterface, ArrayAccess, Countable
     {
         $next = &$array[$path[$offset]];
 
-        return $next && $offset < $lastIndex
-            ? $this->getVal($next, $default, $path, ++$offset, $lastIndex)
-            : $this->replaceVars(null === $next ? $default : $next);
+        if ($next && $offset < $lastIndex) {
+            return $this->getVal($next, $default, $path, ++$offset, $lastIndex);
+        }
+
+        return $next ? $this->replaceVars($next) : $default;
     }
 
     /**
      * Recursively getting array item reference by query
      *
-     * @param array   $array
+     * @param array $array
      * @param integer $offset
      * @param         $path
      * @param         $lastIndex
@@ -97,14 +99,14 @@ class AppConfig implements AppConfigInterface, ArrayAccess, Countable
      * Select value by query
      *
      * @param string $query
-     * @param mixed  $default
+     * @param mixed $default
      *
      * @return mixed
      */
     public function get(string $query, $default = null)
     {
         $path = explode($this->delimiter, $query);
-        $lastIndex = count($path) - 1;
+        $lastIndex = \count($path) - 1;
 
         return $this->getVal($this->data, $default, $path, 0, $lastIndex);
     }
@@ -113,12 +115,12 @@ class AppConfig implements AppConfigInterface, ArrayAccess, Countable
      * Set value by query
      *
      * @param string $query
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function set(string $query, $value): void
     {
         $path = explode($this->delimiter, $query);
-        $lastIndex = count($path) - 1;
+        $lastIndex = \count($path) - 1;
         $placeholder = &$this->getRef($this->data, $path, 0, $lastIndex);
         $placeholder = $value;
     }
@@ -176,6 +178,6 @@ class AppConfig implements AppConfigInterface, ArrayAccess, Countable
      */
     public function count()
     {
-        return count($this->data);
+        return \count($this->data);
     }
 }

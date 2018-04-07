@@ -28,14 +28,14 @@ return [
     ],
     'webservice' => [
         'paths' => [
-            'root'   => getenv('WEBSERVICE_DIR'),
-            'public' => getenv('WEBSERVICE_PUBLIC_DIR'),
+            'root'   => getenv('WEBSERVICE_ROOT_PATH'),
+            'public' => getenv('WEBSERVICE_PUBLIC_PATH'),
         ],
     ],
     'client'     => [
         'paths' => [
-            'root'   => getenv('CLIENT_DIR'),
-            'public' => getenv('CLIENT_PUBLIC_DIR'),
+            'root'   => getenv('CLIENT_ROOT_PATH'),
+            'public' => getenv('CLIENT_PUBLIC_PATH'),
         ],
     ],
     'kernel'     => [
@@ -63,10 +63,10 @@ return [
             'version_order' => 'creation',
         ],
     ],
-    'admin'      => [
-        'uri'              => 'admin',
+    'backOffice'      => [
+        'uri'              => 'bo',
         'meta'             => [
-            'titlePrefix' => '${app.name} admin | ',
+            'titlePrefix' => '${app.name} back-office | ',
             'title'       => 'Dashboard',
             'titleSuffix' => '',
         ],

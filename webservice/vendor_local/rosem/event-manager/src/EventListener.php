@@ -32,17 +32,17 @@ class EventListener implements EventListenerInterface
         $this->priority = $priority;
     }
 
-    public function getPriority() : int
+    public function getPriority(): int
     {
         return $this->priority;
     }
 
-    public function getCallable() : callable
+    public function getCallable(): callable
     {
         return $this->listener;
     }
 
-    public function setLimit(int $limit) : void
+    public function setLimit(int $limit): void
     {
         $this->limit = $limit;
     }
@@ -52,7 +52,7 @@ class EventListener implements EventListenerInterface
         if ($this->limit) {
             --$this->limit;
 
-            return call_user_func($this->listener, $event);
+            return \call_user_func($this->listener, $event);
         }
 
         return null;

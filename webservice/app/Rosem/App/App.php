@@ -81,7 +81,7 @@ class App extends ReflectionContainer implements AppInterface
         // 1. In the first pass, the container calls the getFactories method of all service providers.
         foreach (self::getConfiguration($serviceProvidersConfigFilePath) as $serviceProviderClass) {
             if (
-                is_string($serviceProviderClass) &&
+                \is_string($serviceProviderClass) &&
                 class_exists($serviceProviderClass)
             ) {
                 $this->addServiceProvider($serviceProviders[] = $this->defineNow($serviceProviderClass)->make());
@@ -152,7 +152,7 @@ class App extends ReflectionContainer implements AppInterface
 
         foreach (self::getConfiguration($middlewaresConfigFilePath) as $middlewareClass) {
             if (
-                is_string($middlewareClass) &&
+                \is_string($middlewareClass) &&
                 class_exists($middlewareClass)
             ) {
                 $this->addMiddleware($middlewareClass);
@@ -174,7 +174,7 @@ class App extends ReflectionContainer implements AppInterface
      */
     public function boot(string $appConfigFilePath)
     {
-        $dotenv = new Dotenv(realpath(getcwd() . '/..'));
+        $dotenv = new Dotenv(\dirname(getcwd()) . '');
         $dotenv->load();
         $dotenv->required('APP_ENV')->allowedValues([
             AppEnvironment::DEVELOPMENT,

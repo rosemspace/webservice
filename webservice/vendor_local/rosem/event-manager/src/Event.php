@@ -39,7 +39,7 @@ class Event implements EventInterface
      *
      * @return string
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -59,7 +59,7 @@ class Event implements EventInterface
      *
      * @return array
      */
-    public function getParams() : array
+    public function getParams(): array
     {
         return $this->params;
     }
@@ -83,7 +83,7 @@ class Event implements EventInterface
      *
      * @return void
      */
-    public function setName(string $name) : void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -95,7 +95,7 @@ class Event implements EventInterface
      *
      * @return void
      */
-    public function setTarget($target) : void
+    public function setTarget($target): void
     {
         $this->target = $target;
     }
@@ -107,7 +107,7 @@ class Event implements EventInterface
      *
      * @return void
      */
-    public function setParams(array $params) : void
+    public function setParams(array $params): void
     {
         $this->params = $params;
     }
@@ -119,7 +119,7 @@ class Event implements EventInterface
      *
      * @return void
      */
-    public function stopPropagation(bool $flag) : void
+    public function stopPropagation(bool $flag): void
     {
         $this->propagationStopped = $flag;
     }
@@ -129,7 +129,7 @@ class Event implements EventInterface
      *
      * @return bool
      */
-    public function isPropagationStopped() : bool
+    public function isPropagationStopped(): bool
     {
         return $this->propagationStopped;
     }

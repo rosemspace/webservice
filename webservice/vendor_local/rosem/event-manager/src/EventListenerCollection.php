@@ -22,7 +22,7 @@ class EventListenerCollection implements ArrayAccess, Countable
      */
     public function getList()
     {
-        if (! $this->ordered) {
+        if (!$this->ordered) {
             usort(
                 $this->listeners,
                 function (
@@ -69,7 +69,7 @@ class EventListenerCollection implements ArrayAccess, Countable
      * Offset to set.
      *
      * @param mixed $offset The offset to assign the value to.
-     * @param mixed $value  The value to set.
+     * @param mixed $value The value to set.
      *
      * @return void
      */
@@ -106,6 +106,6 @@ class EventListenerCollection implements ArrayAccess, Countable
      */
     public function count()
     {
-        return count($this->listeners);
+        return \count($this->listeners);
     }
 }
