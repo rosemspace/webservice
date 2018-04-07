@@ -5,7 +5,7 @@ namespace Rosem\BackOffice\Provider;
 use Psr\Container\ContainerInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\ViewRenderer\ViewRendererInterface;
-use Rosem\BackOffice\Controller\BackOfficeController;
+use Rosem\BackOffice\Http\Controller\BackOfficeController;
 use Psrnext\App\AppConfigInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Router\RouteCollectorInterface;

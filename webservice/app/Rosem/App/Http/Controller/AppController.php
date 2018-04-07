@@ -1,13 +1,13 @@
 <?php
 
-namespace Rosem\BackOffice\Controller;
+namespace Rosem\App\Http\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psrnext\App\AppConfigInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\ViewRenderer\ViewRendererInterface;
 
-class BackOfficeController
+class AppController
 {
     /**
      * @var ResponseFactoryInterface
@@ -48,14 +48,14 @@ class BackOfficeController
 
         if ($body->isWritable()) {
             $viewString = $this->view->render(
-                'back-office',
+                'index',
                 [
-                    'metaTitlePrefix' => $this->config->get('backOffice.meta.titlePrefix', ''),
+                    'metaTitlePrefix' => $this->config->get('app.meta.titlePrefix', ''),
                     'metaTitle'       => $this->config->get(
-                        'backOffice.meta.title',
+                        'app.meta.title',
                         $this->config->get('app.name', 'Rosem')
                     ),
-                    'metaTitleSuffix' => $this->config->get('backOffice.meta.titleSuffix', ''),
+                    'metaTitleSuffix' => $this->config->get('app.meta.titleSuffix', ''),
                 ]
             );
 

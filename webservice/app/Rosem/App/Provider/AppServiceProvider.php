@@ -13,7 +13,7 @@ use Psrnext\{
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
-use Rosem\App\Controller\AppController;
+use Rosem\App\Http\Controller\AppController;
 
 class AppServiceProvider implements ServiceProviderInterface
 {

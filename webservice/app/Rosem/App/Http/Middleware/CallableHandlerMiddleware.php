@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\App\Middleware;
+namespace Rosem\App\Http\Middleware;
 
 use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
@@ -8,7 +8,7 @@ use Psr\Http\Message\{
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
-use Rosem\App\Handler\CallableHandler;
+use Rosem\App\Http\Handler\CallableHandler;
 
 class CallableHandlerMiddleware extends CallableHandler implements MiddlewareInterface
 {

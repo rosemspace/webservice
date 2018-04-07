@@ -1,7 +1,7 @@
 <?php
 
 return [ //TODO: reverse
-    \Rosem\App\Middleware\RequestHandlerMiddleware::class,
-    \Rosem\App\Middleware\RouteMiddleware::class,
+    \Rosem\App\Http\Middleware\RequestHandlerMiddleware::class,
+    \Rosem\App\Http\Middleware\RouteMiddleware::class,
     //auth
 ];
