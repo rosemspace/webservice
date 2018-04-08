@@ -36,6 +36,12 @@
     $app->loadServiceProviders(__DIR__ . '/config/service_providers.php');
     $app->loadMiddlewares(__DIR__ . '/config/middlewares.php');
     $app->boot(__DIR__ . '/config/app.php');
+
+    $entityManager = $app->get('db');
+    $newUser = new \Rosem\Access\Entity\User;
+    $newUser->setEmail('roshe@smile.fr');
+//    $entityManager->persist($newUser);
+//    $entityManager->flush();
 //} catch (\Exception $e) {
 //    echo $e->getMessage();
 //}

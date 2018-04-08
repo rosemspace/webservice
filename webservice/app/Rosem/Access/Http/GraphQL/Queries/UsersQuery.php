@@ -28,19 +28,24 @@ class UsersQuery extends AbstractQuery
         ];
     }
 
-    public function resolve($source, $args, $context, ResolveInfo $info)
+    public function resolve($source, $args, $container, ResolveInfo $info)
     {
-        return [
-            [
-                'id' => 1,
-                'firstName' => 'Roman',
-                'email' => 'roshe@smile.fr',
-            ],
-            [
-                'id' => 2,
-                'firstName' => 'Romanna',
-                'email' => 'rosem@smile.fr',
-            ],
-        ];
+//        var_dump($container->get('db')->getRepository(\Rosem\Access\Entity\User::class)); die;
+        $users = $container->get('db')->getRepository(\Rosem\Access\Entity\User::class)->findAll();
+
+        return $users;
+
+//        return [
+//            [
+//                'id' => 1,
+//                'firstName' => 'Roman',
+//                'email' => 'roshe@smile.fr',
+//            ],
+//            [
+//                'id' => 2,
+//                'firstName' => 'Romanna',
+//                'email' => 'rosem@smile.fr',
+//            ],
+//        ];
     }
 }

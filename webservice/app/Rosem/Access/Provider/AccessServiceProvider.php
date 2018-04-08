@@ -13,17 +13,36 @@ class AccessServiceProvider implements ServiceProviderInterface
     {
         return [
             'db'       => function () {
+                $applicationMode = 'development';
+                $config = new \Doctrine\ORM\Configuration;
+
+                if ($applicationMode === 'development') {
+                    $cache = new \Doctrine\Common\Cache\ArrayCache;
+                } else {
+                    $cache = new \Doctrine\Common\Cache\ApcuCache;
+                }
+
+                $config->setMetadataCacheImpl($cache);
                 $metadataDriver = new \Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver(
-                    'webservice/app/Rosem/Access/Entity'
+                    getcwd() . '/../app/Rosem/Access/Entity'
                 );
+                $config->setMetadataDriverImpl($metadataDriver);
+                $config->setQueryCacheImpl($cache);
+                $config->setProxyDir(getcwd() . '/../var/db/proxies');
+                $config->setProxyNamespace('Rosem\Database\GeneratedProxies');
+                $config->setAutoGenerateProxyClasses($applicationMode === 'development');
+
+                if ('development' === $applicationMode) {
+                    $config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_EVAL);
+                }
+
                 $entityManager = \Doctrine\ORM\EntityManager::create([
                     'dbname' => 'rosem',
                     'user' => 'root',
                     'password' => '',
                     'host' => 'localhost',
                     'driver' => 'pdo_mysql',
-                ], new \Doctrine\ORM\Configuration);
-                $entityManager->getConfiguration()->setMetadataDriverImpl($metadataDriver);
+                ], $config);
 
                 return $entityManager;
             },

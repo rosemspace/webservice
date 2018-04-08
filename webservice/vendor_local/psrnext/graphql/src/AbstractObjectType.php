@@ -16,11 +16,9 @@ abstract class AbstractObjectType implements ObjectTypeInterface
 
     public function resolveField($value, $args, $context, ResolveInfo $info)
     {
-//        $method = 'get' . ucfirst($info->fieldName);
-//
-//        return $value->$method;
+        $method = 'get' . ucfirst($info->fieldName);
 
-        return $value[$info->fieldName];
+        return $value->$method();
     }
 
     public function create(ContainerInterface $container, string $name): ObjectType
