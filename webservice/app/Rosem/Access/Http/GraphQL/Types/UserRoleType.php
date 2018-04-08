@@ -1,13 +1,19 @@
 <?php
 
-namespace Rosem\Access\GraphQL\Types;
+namespace Rosem\Access\Http\GraphQL\Types;
 
 use GraphQL\Type\Definition\Type;
-use True\GraphQL\AbstractObjectType;
+use Psr\Container\ContainerInterface;
+use Psrnext\GraphQL\AbstractObjectType;
 
 class UserRoleType extends AbstractObjectType
 {
-    public function fields() : array
+    public function description(): string
+    {
+        return 'The role of the user';
+    }
+
+    public function fields(ContainerInterface $container): array
     {
         return [
             'id' => [

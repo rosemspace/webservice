@@ -49,7 +49,7 @@ class App extends ReflectionContainer implements AppInterface
     protected function addServiceProvider(ServiceProviderInterface $serviceProvider)
     {
         foreach ($serviceProvider->getFactories() as $key => $factory) {
-            if (is_array($factory)) {
+            if (\is_array($factory)) {
                 $app = $this;
                 $serviceProvider = reset($factory);
                 $method = next($factory);
@@ -197,21 +197,10 @@ class App extends ReflectionContainer implements AppInterface
         $response = $this->nextHandler->handle($request);
         $server = new Server(function () {
         }, $request, $response);
+
+        $this->testGraph($request, $response);
+
         $server->listen();
-    }
-
-
-    public function start()
-    {
-        try {
-            $this->testGraph();
-            $this->make(Server::class, [
-                function () {
-                },
-            ])->listen();
-        } catch (ContainerException $e) {
-            echo $e->getMessage();
-        }
     }
 
     public function testListeners()
@@ -230,12 +219,9 @@ class App extends ReflectionContainer implements AppInterface
         $em->trigger('user.login', $em, ['test']);
     }
 
-    public function testGraph()
+    public function testGraph(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response)
     {
-        $graph = $this->get(\TrueStandards\GraphQL\GraphInterface::class);
-        /** @var \Psr\Http\Message\ServerRequestInterface $request */
-        $request = $this->get(\Psr\Http\Message\ServerRequestInterface::class);
-
+        $graph = $this->get(\Psrnext\GraphQL\GraphInterface::class);
 
         try {
             $input = $request->getQueryParams(); // GET
@@ -245,7 +231,7 @@ class App extends ReflectionContainer implements AppInterface
             }
 
             $result = GraphQL::executeQuery(
-                $graph->getSchema(),
+                $graph->schema()->create(),
                 $input['query'] ?? null,
                 null,
                 $this,
@@ -261,7 +247,6 @@ class App extends ReflectionContainer implements AppInterface
             ];
         }
 
-        $response = $this->get(\Psr\Http\Message\ResponseInterface::class);
 //        $response = new \Zend\Diactoros\Response\JsonResponse(json_encode($output));
         $response->getBody()->write(json_encode($output));
 //        header('Content-Type: application/json; charset=UTF-8');

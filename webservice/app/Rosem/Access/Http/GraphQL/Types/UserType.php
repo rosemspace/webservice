@@ -1,13 +1,19 @@
 <?php
 
-namespace Rosem\Access\GraphQL\Types;
+namespace Rosem\Access\Http\GraphQL\Types;
 
 use GraphQL\Type\Definition\Type;
-use True\GraphQL\AbstractObjectType;
+use Psr\Container\ContainerInterface;
+use Psrnext\GraphQL\AbstractObjectType;
 
 class UserType extends AbstractObjectType
 {
-    public function fields() : array
+    public function description(): string
+    {
+        return 'The user';
+    }
+
+    public function fields(ContainerInterface $container) : array
     {
         return [
             'id'        => [
@@ -27,7 +33,7 @@ class UserType extends AbstractObjectType
                 'description' => 'The email of the user',
             ],
             'role'      => [
-                'type'        => Type::nonNull($this->graph->getType('UserRole')),
+                'type'        => Type::nonNull($container->get('UserRole')),
                 'description' => 'The role of the user',
             ],
             'created_at' => [

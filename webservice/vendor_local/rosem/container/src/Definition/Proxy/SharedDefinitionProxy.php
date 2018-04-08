@@ -32,7 +32,7 @@ class SharedDefinitionProxy extends DefinitionProxy implements SharedDefinitionI
     {
         $instance = $this->resolve()->make(...$args);
 
-        if (! $this->committed) {
+        if ($this->committed) {
             $this->container->instance($this->getAbstract(), $instance)->commit();
         }
 

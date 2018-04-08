@@ -4,11 +4,8 @@ namespace Rosem\App\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    App\AppConfigInterface,
-    Container\ServiceProviderInterface,
-    Router\RouteCollectorInterface,
-    Router\RouteDispatcherInterface,
-    ViewRenderer\ViewRendererInterface
+    App\AppConfigInterface, Container\ServiceProviderInterface, GraphQL\GraphInterface,
+    Router\RouteCollectorInterface, Router\RouteDispatcherInterface, ViewRenderer\ViewRendererInterface
 };
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
@@ -30,6 +27,7 @@ class AppServiceProvider implements ServiceProviderInterface
             RouteCollectorInterface::class       => [static::class, 'createRouteCollector'],
             RouteDispatcherInterface::class      => [static::class, 'createRouteDispatcher'],
             ViewRendererInterface::class         => [static::class, 'createViewRenderer'],
+            GraphInterface::class                => [static::class, 'createHttpGraph'],
             AppController::class                 => function (ContainerInterface $container) {
                 return new AppController(
                     $container->get(ResponseFactoryInterface::class),
@@ -115,6 +113,14 @@ class AppServiceProvider implements ServiceProviderInterface
         return new \Rosem\Router\RouteDispatcher(
             new \FastRoute\Dispatcher\GroupCountBased($container->get(RouteCollectorInterface::class)->getData())
         );
+    }
+
+    public function createHttpGraph(ContainerInterface $container)
+    {
+        $graph = new \Rosem\GraphQL\Graph;
+        $graph->addSchema('default', new \Rosem\GraphQL\Schema($container));
+
+        return $graph;
     }
 
     public function createViewRenderer(ContainerInterface $container)

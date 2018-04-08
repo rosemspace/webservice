@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "90e060a83203fe6126731fb4451a7c68",
+    "content-hash": "c6ee80d3611e921eae3aebc58db3645b",
     "packages": [
         {
             "name": "analogue/orm",
@@ -510,16 +510,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.7.0",
+            "version": "v2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "f76bf5ef631cec551a86c2291fc749534febebf1"
+                "reference": "11037b4352c008373561dc6fc836834eed80c3b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/f76bf5ef631cec551a86c2291fc749534febebf1",
-                "reference": "f76bf5ef631cec551a86c2291fc749534febebf1",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/11037b4352c008373561dc6fc836834eed80c3b5",
+                "reference": "11037b4352c008373561dc6fc836834eed80c3b5",
                 "shasum": ""
             },
             "require": {
@@ -581,7 +581,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2018-04-01T23:33:17+00:00"
+            "time": "2018-04-07T18:44:18+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -2464,6 +2464,39 @@
             "time": "2018-02-07T19:25:55+00:00"
         },
         {
+            "name": "psrnext/graphql",
+            "version": "9999999-dev",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/psrnext/graphql",
+                "reference": "929004119f7f692d0a6f0d202e53fca71e890348",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "psr/container": "~1.0",
+                "webonyx/graphql-php": "^0.11"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psrnext\\GraphQL\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "https://psrnext.github.io/graphql",
+                    "role": "Developer"
+                }
+            ],
+            "description": "GraphQL standards"
+        },
+        {
             "name": "psrnext/hasher",
             "version": "v0.0.1",
             "source": {
@@ -2957,18 +2990,18 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/graphql",
-                "reference": "f7cf5eea5e9aa1cfb5c389764e7275a28feaef40",
+                "reference": "b884e845d5bd0ff0abdfaf9435d69f485b5b791a",
                 "shasum": null
             },
             "require": {
                 "php": ">=7.2.0",
-                "rosem/graphql-standards": "*",
+                "psrnext/graphql": "*",
                 "webonyx/graphql-php": "^0.11"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "True\\GraphQL\\": "src"
+                    "Rosem\\GraphQL\\": "src"
                 }
             },
             "license": [
@@ -2983,38 +3016,6 @@
                 }
             ],
             "description": "GraphQL connection library"
-        },
-        {
-            "name": "rosem/graphql-standards",
-            "version": "9999999-dev",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/rosem/graphql-standards",
-                "reference": "db1ab25f51eafc8f2b1109e5146e14d9d5047328",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "webonyx/graphql-php": "^0.11"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "TrueStandards\\GraphQL\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "GraphQL standards"
         },
         {
             "name": "rosem/hasher",

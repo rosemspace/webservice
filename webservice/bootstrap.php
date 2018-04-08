@@ -39,3 +39,4 @@
 //} catch (\Exception $e) {
 //    echo $e->getMessage();
 //}
+//$g = $app->get(\Psrnext\GraphQL\GraphInterface::class);

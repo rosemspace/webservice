@@ -1,5 +1,5 @@
 {
-    "name": "rosem/graphql-standards",
+    "name": "psrnext/graphql",
     "description": "GraphQL standards",
     "license": "MIT",
     "type": "library",
@@ -9,17 +9,18 @@
         {
             "name": "ma1oy",
             "email": "iroman.via@gmail.com",
-            "homepage": "https://rosem.io",
+            "homepage": "https://psrnext.github.io/graphql",
             "role": "Developer"
         }
     ],
     "require": {
         "php": ">=7.2.0",
+        "psr/container": "~1.0",
         "webonyx/graphql-php": "^0.11"
     },
     "autoload": {
         "psr-4": {
-            "TrueStandards\\GraphQL\\": "src"
+            "Psrnext\\GraphQL\\": "src"
         }
     }
 }

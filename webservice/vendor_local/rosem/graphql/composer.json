@@ -15,12 +15,12 @@
     ],
     "require": {
         "php": ">=7.2.0",
-        "rosem/graphql-standards": "*",
+        "psrnext/graphql": "*",
         "webonyx/graphql-php": "^0.11"
     },
     "autoload": {
         "psr-4": {
-            "True\\GraphQL\\": "src"
+            "Rosem\\GraphQL\\": "src"
         }
     }
 }
