@@ -15,6 +15,8 @@ class AccessServiceProvider implements ServiceProviderInterface
             'db'       => function () {
                 $applicationMode = 'development';
                 $config = new \Doctrine\ORM\Configuration;
+                $namingStrategy = new \Doctrine\ORM\Mapping\UnderscoreNamingStrategy(CASE_LOWER);
+                $config->setNamingStrategy($namingStrategy);
 
                 if ($applicationMode === 'development') {
                     $cache = new \Doctrine\Common\Cache\ArrayCache;
