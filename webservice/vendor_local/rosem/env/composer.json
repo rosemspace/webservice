@@ -1,0 +1,26 @@
+{
+    "name": "rosem/env",
+    "description": "Environment library",
+    "license": "MIT",
+    "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "ma1oy",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://rosemlab.github.io/env",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0",
+        "psrnext/env": "*",
+        "vlucas/phpdotenv": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Env\\": "src"
+        }
+    }
+}

@@ -3,7 +3,6 @@
 namespace Rosem\App;
 
 use Closure;
-use Dotenv\Dotenv;
 use Exception;
 use GraphQL\GraphQL;
 use Psr\Container\ContainerInterface;
@@ -13,11 +12,9 @@ use Psr\Http\Message\{
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
-use Rosem\Access\Database\Models\{
-    User, UserRole
-};
 use Rosem\Container\Exception\ContainerException;
 use Rosem\Container\ReflectionContainer;
+use Rosem\Env\Env;
 use Rosem\EventManager\EventManager;
 use Psrnext\App\{
     AppConfigInterface, AppInterface
@@ -174,16 +171,8 @@ class App extends ReflectionContainer implements AppInterface
      */
     public function boot(string $appConfigFilePath)
     {
-        $dotenv = new Dotenv(\dirname(getcwd()) . '');
-        $dotenv->load();
-        $dotenv->required('APP_ENV')->allowedValues([
-            AppEnvironment::DEVELOPMENT,
-            AppEnvironment::MAINTENANCE,
-            AppEnvironment::PRODUCTION,
-            AppEnvironment::STAGING,
-            AppEnvironment::TESTING,
-        ]);
-        $this->instance(Dotenv::class, $dotenv)->commit();
+        $env = new Env(\dirname(getcwd()));
+        $env->load();
         $this->instance(
             AppConfigInterface::class,
             new AppConfig(self::getConfiguration($appConfigFilePath))
@@ -251,33 +240,5 @@ class App extends ReflectionContainer implements AppInterface
         $response->getBody()->write(json_encode($output));
 //        header('Content-Type: application/json; charset=UTF-8');
 //        echo json_encode($output);
-    }
-
-    public function testDB()
-    {
-        /** @var \Analogue\ORM\System\Mapper $roleMapper */
-        /** @var \Analogue\ORM\System\Mapper $userMapper */
-        $db = $this->get(\Analogue\ORM\Analogue::class);
-
-        $roleMapper = $db->mapper(UserRole::class);
-
-//        $adminRole = new UserRole('admin');
-//        $userRole = new UserRole('user');
-//        $roleMapper->store([$adminRole, $userRole]);
-
-        $adminRole = $roleMapper->where('name', 'admin')->first();
-        $userMapper = $db->mapper(User::class);
-//        $roman = new User('Roman', 'Shevchenko', 'roshe@smile.fr', '123456', $adminRole);
-//        $userMapper->store($roman);
-
-        echo $userMapper->where('first_name', 'Roman')->first()->role->name;
-
-        $response = $this->get(\Psr\Http\Message\ResponseInterface::class);
-        /**
-         * @var \Psr\Http\Message\ResponseInterface $response
-         */
-        $response->getBody()->write('<h1>' .
-            $roleMapper->where('name', 'admin')->first()->name .
-            '</h1>');
     }
 }

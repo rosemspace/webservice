@@ -33,6 +33,7 @@
         "psrnext/view-renderer": "^0.0.1",
         "robmorgan/phinx": "^0.9",
         "rosem/container": "*",
+        "rosem/env": "*",
         "rosem/event-manager": "*",
         "rosem/graphql": "*",
         "rosem/hasher": "*",
@@ -42,7 +43,6 @@
         "symfony/finder": "^4.0",
         "tedivm/stash": "0.14.*",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
-        "vlucas/phpdotenv": "^2.4",
         "zendframework/zend-diactoros": "^1.7"
     },
     "require-dev": {
@@ -66,7 +66,9 @@
     },
     "repositories": [
         {"type": "path", "url": "vendor_local/psrnext/graphql"},
+        {"type": "path", "url": "vendor_local/psrnext/env"},
         {"type": "path", "url": "vendor_local/rosem/container"},
+        {"type": "path", "url": "vendor_local/rosem/env"},
         {"type": "path", "url": "vendor_local/rosem/event-manager"},
         {"type": "path", "url": "vendor_local/rosem/hasher"},
         {"type": "path", "url": "vendor_local/rosem/http-factory"},
