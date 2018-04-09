@@ -3,9 +3,9 @@
 namespace Rosem\Env;
 
 use Dotenv\Dotenv;
-use Psrnext\Env\EnvInterface;
+use Psrnext\Env\AbstractEnv;
 
-class Env implements EnvInterface
+class Env extends AbstractEnv
 {
     /**
      * @var Dotenv

@@ -12,6 +12,7 @@ use Psr\Http\Message\{
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
+use Psrnext\Env\EnvInterface;
 use Rosem\Container\Exception\ContainerException;
 use Rosem\Container\ReflectionContainer;
 use Rosem\Env\Env;
@@ -173,6 +174,7 @@ class App extends ReflectionContainer implements AppInterface
     {
         $env = new Env(\dirname(getcwd()));
         $env->load();
+        $this->instance(EnvInterface::class, $env)->commit();
         $this->instance(
             AppConfigInterface::class,
             new AppConfig(self::getConfiguration($appConfigFilePath))
