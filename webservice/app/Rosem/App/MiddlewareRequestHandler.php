@@ -42,7 +42,9 @@ class MiddlewareRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (is_string($this->middleware)) {
-            $this->middleware = $this->container->defineNow($this->middleware)->make();
+            $this->middleware = $this->container->has($this->middleware)
+                ? $this->container->get($this->middleware)
+                : $this->container->defineNow($this->middleware)->make();
         }
 
         return $this->middleware->process($request, $this->nextHandler);

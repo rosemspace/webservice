@@ -188,9 +188,6 @@ class App extends ReflectionContainer implements AppInterface
         $response = $this->nextHandler->handle($request);
         $server = new Server(function () {
         }, $request, $response);
-
-        $this->testGraph($request, $response);
-
         $server->listen();
     }
 
@@ -208,39 +205,5 @@ class App extends ReflectionContainer implements AppInterface
         });
 
         $em->trigger('user.login', $em, ['test']);
-    }
-
-    public function testGraph(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response)
-    {
-        $graph = $this->get(\Psrnext\GraphQL\GraphInterface::class);
-
-        try {
-            $input = $request->getQueryParams(); // GET
-
-            if (!isset($input['query'])) { // POST
-                $input = json_decode($request->getBody()->getContents(), true);
-            }
-
-            $result = GraphQL::executeQuery(
-                $graph->schema()->create(),
-                $input['query'] ?? null,
-                null,
-                $this,
-                $input['variables'] ?? null,
-                $input['operationName'] ?? null
-            );
-            $output = $result->toArray();
-        } catch (Exception $e) {
-            $output = [
-                'error' => [
-                    'message' => $e->getMessage(),
-                ],
-            ];
-        }
-
-//        $response = new \Zend\Diactoros\Response\JsonResponse(json_encode($output));
-        $response->getBody()->write(json_encode($output));
-//        header('Content-Type: application/json; charset=UTF-8');
-//        echo json_encode($output);
     }
 }
