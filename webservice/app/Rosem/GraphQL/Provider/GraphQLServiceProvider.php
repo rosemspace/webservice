@@ -1,13 +1,13 @@
 <?php
 
-namespace Rosem\Http\Provider;
+namespace Rosem\GraphQL\Provider;
 
 use GraphQL\Server\StandardServer;
 use Psr\Container\ContainerInterface;
 use Psrnext\{
     App\AppConfigInterface, Container\ServiceProviderInterface, Env\EnvInterface, GraphQL\GraphInterface
 };
-use Rosem\Http\Middleware\GraphQLMiddleware;
+use Rosem\GraphQL\Middleware\GraphQLMiddleware;
 
 class GraphQLServiceProvider implements ServiceProviderInterface
 {

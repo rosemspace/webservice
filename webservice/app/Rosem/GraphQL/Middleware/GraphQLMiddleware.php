@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\Http\Middleware;
+namespace Rosem\GraphQL\Middleware;
 
 use GraphQL\{
     Error\Debug, Server\StandardServer

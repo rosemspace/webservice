@@ -36,9 +36,17 @@ class App extends ReflectionContainer implements AppInterface
      */
     protected $nextHandler;
 
+    /**
+     * @var RequestHandlerInterface
+     */
+    protected $defaultHandler;
+
     public function __construct()
     {
         parent::__construct();
+
+        $this->defaultHandler = $this->getDefaultHandler();
+        $this->nextHandler = $this->defaultHandler;
 
         $this->instance(ContainerInterface::class, $this)->commit();
         $this->alias(ContainerInterface::class, AppInterface::class);
@@ -101,40 +109,30 @@ class App extends ReflectionContainer implements AppInterface
         }
     }
 
-    /**
-     * @return RequestHandlerInterface
-     */
     protected function getDefaultHandler()
     {
-        return new class ($this) implements RequestHandlerInterface
-        {
-            private $container;
+        $nextHandler = &$this->defaultHandler;
 
-            public function __construct(ContainerInterface $container)
+        return new class ($nextHandler)
+        {
+            private $nextHandler;
+
+            public function __construct(&$nextHandler)
             {
-                $this->container = $container;
+                $this->nextHandler = &$nextHandler;
             }
 
-            /**
-             * @param ServerRequestInterface $request
-             *
-             * @return ResponseInterface
-             * @throws \Psr\Container\ContainerExceptionInterface
-             * @throws \Psr\Container\NotFoundExceptionInterface
-             */
-            public function handle(ServerRequestInterface $request): ResponseInterface
+            public function &getNextHandlerPointer()
             {
-                $response = $this->container->get(ResponseFactoryInterface::class)->createResponse(500);
-                $response->getBody()->write('Internal server error');
-
-                return $response;
+                return $this->nextHandler;
             }
         };
     }
 
     protected function addMiddleware(string $middleware)
     {
-        $this->nextHandler = new MiddlewareRequestHandler($this, $middleware, $this->nextHandler);
+        $this->nextHandler = &$this->nextHandler->getNextHandlerPointer();
+        $this->nextHandler = new MiddlewareRequestHandler($this, $middleware);
     }
 
     /**
@@ -146,8 +144,6 @@ class App extends ReflectionContainer implements AppInterface
      */
     public function loadMiddlewares(string $middlewaresConfigFilePath)
     {
-        $this->nextHandler = $this->getDefaultHandler();
-
         foreach (self::getConfiguration($middlewaresConfigFilePath) as $middlewareClass) {
             if (
                 \is_string($middlewareClass) &&
@@ -185,7 +181,7 @@ class App extends ReflectionContainer implements AppInterface
             ->withParsedBody($_POST)
             ->withCookieParams($_COOKIE)
             ->withUploadedFiles($_FILES);
-        $response = $this->nextHandler->handle($request);
+        $response = $this->defaultHandler->handle($request);
         $server = new Server(function () {
         }, $request, $response);
         $server->listen();
