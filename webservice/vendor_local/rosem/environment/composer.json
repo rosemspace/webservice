@@ -1,6 +1,6 @@
 {
-    "name": "psrnext/env",
-    "description": "Environment standards",
+    "name": "rosem/environment",
+    "description": "Environment library",
     "license": "MIT",
     "type": "library",
     "minimum-stability": "dev",
@@ -9,16 +9,18 @@
         {
             "name": "ma1oy",
             "email": "iroman.via@gmail.com",
-            "homepage": "https://psrnext.github.io/env",
+            "homepage": "https://rosemlab.github.io/environment",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.0",
+        "psrnext/environment": "*",
+        "vlucas/phpdotenv": "^2.4"
     },
     "autoload": {
         "psr-4": {
-            "Psrnext\\Env\\": "src"
+            "Rosem\\Environment\\": "src"
         }
     }
 }

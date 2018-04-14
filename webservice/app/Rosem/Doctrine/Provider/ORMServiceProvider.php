@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Psr\Container\ContainerInterface;
 use Psrnext\App\AppConfigInterface;
 use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\Env\EnvInterface;
+use Psrnext\Environment\EnvironmentInterface;
 
 class ORMServiceProvider implements ServiceProviderInterface
 {
@@ -27,7 +27,7 @@ class ORMServiceProvider implements ServiceProviderInterface
                 ];
             },
             EntityManager::class => function (ContainerInterface $container) {
-                $isDevelopmentMode = $container->get(EnvInterface::class)->isDevelopmentMode();
+                $isDevelopmentMode = $container->get(EnvironmentInterface::class)->isDevelopmentMode();
                 $dbConfig = $container->get(AppConfigInterface::class)->get('db');
                 $ormConfig = new Configuration;
                 $ormConfig->setNamingStrategy(new UnderscoreNamingStrategy(CASE_LOWER));

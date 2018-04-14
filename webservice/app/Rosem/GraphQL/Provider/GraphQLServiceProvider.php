@@ -5,7 +5,7 @@ namespace Rosem\GraphQL\Provider;
 use GraphQL\Server\StandardServer;
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    App\AppConfigInterface, Container\ServiceProviderInterface, Env\EnvInterface, GraphQL\GraphInterface
+    App\AppConfigInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface
 };
 use Rosem\GraphQL\Middleware\GraphQLMiddleware;
 
@@ -29,7 +29,7 @@ class GraphQLServiceProvider implements ServiceProviderInterface
                         'context' => $container,
                     ]),
                     $container->get(AppConfigInterface::class)->get('api.uri'),
-                    $container->get(EnvInterface::class)->isDevelopmentMode()
+                    $container->get(EnvironmentInterface::class)->isDevelopmentMode()
                 );
             },
         ];

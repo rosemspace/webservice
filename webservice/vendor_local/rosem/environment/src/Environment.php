@@ -1,11 +1,11 @@
 <?php
 
-namespace Rosem\Env;
+namespace Rosem\Environment;
 
 use Dotenv\Dotenv;
-use Psrnext\Env\AbstractEnv;
+use Psrnext\Environment\AbstractEnvironment;
 
-class Env extends AbstractEnv
+class Environment extends AbstractEnvironment
 {
     /**
      * @var Dotenv

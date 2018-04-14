@@ -1,8 +1,8 @@
 <?php
 
-namespace Psrnext\Env;
+namespace Psrnext\Environment;
 
-interface EnvInterface
+interface EnvironmentInterface
 {
     public const KEY_MODE         = 'APP_ENV';
 

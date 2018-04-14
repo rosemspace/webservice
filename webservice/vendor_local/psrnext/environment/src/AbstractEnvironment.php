@@ -1,8 +1,8 @@
 <?php
 
-namespace Psrnext\Env;
+namespace Psrnext\Environment;
 
-abstract class AbstractEnv implements EnvInterface
+abstract class AbstractEnvironment implements EnvironmentInterface
 {
     public function isDevelopmentMode(): bool
     {

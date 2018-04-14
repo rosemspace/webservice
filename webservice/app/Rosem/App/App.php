@@ -13,12 +13,12 @@ use Psrnext\App\{
     AppConfigInterface, AppInterface
 };
 use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\Env\EnvInterface;
+use Psrnext\Environment\EnvironmentInterface;
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
 use Rosem\Container\Container;
-use Rosem\Env\Env;
+use Rosem\Environment\Environment;
 use Zend\Diactoros\Server;
 
 class App extends Container implements AppInterface
@@ -175,8 +175,8 @@ class App extends Container implements AppInterface
      */
     public function boot(string $appConfigFilePath)
     {
-        $this->set(EnvInterface::class, function () {
-            $env = new Env(getcwd() . '/..');
+        $this->set(EnvironmentInterface::class, function () {
+            $env = new Environment(getcwd() . '/..');
             $env->load();
 
             return $env;
@@ -184,7 +184,7 @@ class App extends Container implements AppInterface
         $this->set(
             AppConfigInterface::class,
             function (ContainerInterface $container) use (&$appConfigFilePath) {
-                $container->get(EnvInterface::class)->load();
+                $container->get(EnvironmentInterface::class)->load();
 
                 return new AppConfig(self::getConfiguration($appConfigFilePath));
             }
