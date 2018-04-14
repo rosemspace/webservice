@@ -9,21 +9,17 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
-use Psrnext\App\{
-    AppConfigInterface, AppInterface
-};
+use Psrnext\App\AppInterface;
 use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\Environment\EnvironmentInterface;
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
 use Rosem\Container\Container;
-use Rosem\Environment\Environment;
 use Zend\Diactoros\Server;
 
 class App extends Container implements AppInterface
 {
-    use FileConfigTrait;
+    use ConfigFileTrait;
 
     /**
      * @var RequestHandlerInterface
@@ -41,11 +37,9 @@ class App extends Container implements AppInterface
 
         $this->defaultHandler = $this->getDefaultHandler();
         $this->nextHandler = $this->defaultHandler;
-
         $this->set(AppInterface::class, function () {
             return $this;
         });
-//        $this->alias(ContainerInterface::class, AppInterface::class);
     }
 
     protected function addServiceProvider(ServiceProviderInterface $serviceProvider)
@@ -175,20 +169,6 @@ class App extends Container implements AppInterface
      */
     public function boot(string $appConfigFilePath)
     {
-        $this->set(EnvironmentInterface::class, function () {
-            $env = new Environment(getcwd() . '/..');
-            $env->load();
-
-            return $env;
-        });
-        $this->set(
-            AppConfigInterface::class,
-            function (ContainerInterface $container) use (&$appConfigFilePath) {
-                $container->get(EnvironmentInterface::class)->load();
-
-                return new AppConfig(self::getConfiguration($appConfigFilePath));
-            }
-        );
         $request = $this->get(ServerRequestFactoryInterface::class)
             ->createServerRequestFromArray($_SERVER)
             ->withQueryParams($_GET)

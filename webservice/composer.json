@@ -32,6 +32,7 @@
         "psrnext/service-provider": "^0.0.1",
         "psrnext/view-renderer": "^0.0.1",
         "robmorgan/phinx": "^0.9",
+        "rosem/config": "*",
         "rosem/container": "*",
         "rosem/environment": "*",
         "rosem/event-manager": "*",
@@ -65,8 +66,10 @@
         }
     },
     "repositories": [
+        {"type": "path", "url": "vendor_local/psrnext/config"},
         {"type": "path", "url": "vendor_local/psrnext/graphql"},
         {"type": "path", "url": "vendor_local/psrnext/environment"},
+        {"type": "path", "url": "vendor_local/rosem/config"},
         {"type": "path", "url": "vendor_local/rosem/container"},
         {"type": "path", "url": "vendor_local/rosem/environment"},
         {"type": "path", "url": "vendor_local/rosem/event-manager"},

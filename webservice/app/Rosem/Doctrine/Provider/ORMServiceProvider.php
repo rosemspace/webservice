@@ -10,7 +10,7 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Psr\Container\ContainerInterface;
-use Psrnext\App\AppConfigInterface;
+use Psrnext\Config\ConfigInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Environment\EnvironmentInterface;
 
@@ -28,7 +28,7 @@ class ORMServiceProvider implements ServiceProviderInterface
             },
             EntityManager::class => function (ContainerInterface $container) {
                 $isDevelopmentMode = $container->get(EnvironmentInterface::class)->isDevelopmentMode();
-                $dbConfig = $container->get(AppConfigInterface::class)->get('db');
+                $dbConfig = $container->get(ConfigInterface::class)->get('db');
                 $ormConfig = new Configuration;
                 $ormConfig->setNamingStrategy(new UnderscoreNamingStrategy(CASE_LOWER));
                 $ormConfig->setMetadataDriverImpl(new StaticPHPDriver($container->get('ormEntityPaths')));

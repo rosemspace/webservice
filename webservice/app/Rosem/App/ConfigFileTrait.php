@@ -4,7 +4,7 @@ namespace Rosem\App;
 
 use Exception;
 
-trait FileConfigTrait
+trait ConfigFileTrait
 {
     /**
      * @param string $filePath

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "64a1451a4303b715425befd63f665b12",
+    "content-hash": "42b07f45ccec1dc5ce739c5b2e9e4bf2",
     "packages": [
         {
             "name": "analogue/orm",
@@ -2426,6 +2426,37 @@
             "time": "2018-02-28T21:18:40+00:00"
         },
         {
+            "name": "psrnext/config",
+            "version": "9999999-dev",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/psrnext/config",
+                "reference": "2418b4c1e1a00876d0c731ac2d584751177d228d",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psrnext\\Config\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "https://psrnext.github.io/config",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Configuration standards"
+        },
+        {
             "name": "psrnext/environment",
             "version": "9999999-dev",
             "dist": {
@@ -2954,12 +2985,44 @@
             "time": "2017-12-23T06:48:51+00:00"
         },
         {
+            "name": "rosem/config",
+            "version": "9999999-dev",
+            "dist": {
+                "type": "path",
+                "url": "vendor_local/rosem/config",
+                "reference": "958789153f43ffcbe08b621d27336d9936d82a5d",
+                "shasum": null
+            },
+            "require": {
+                "php": ">=7.2.0",
+                "psrnext/config": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rosem\\Config\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ma1oy",
+                    "email": "iroman.via@gmail.com",
+                    "homepage": "https://rosemlab.github.io/config",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Configuration library"
+        },
+        {
             "name": "rosem/container",
             "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/container",
-                "reference": "a5f37db3243c1f463cc288f7b8995958c7632320",
+                "reference": "aae1bdbb35938f7cbff1f8d7973e71d203d0945a",
                 "shasum": null
             },
             "require": {
@@ -2980,7 +3043,7 @@
                 {
                     "name": "ma1oy",
                     "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
+                    "homepage": "https://rosemlab.github.io/container",
                     "role": "Developer"
                 }
             ],

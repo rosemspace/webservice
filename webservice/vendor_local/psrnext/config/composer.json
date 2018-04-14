@@ -1,6 +1,6 @@
 {
-    "name": "rosem/container",
-    "description": "Dependency injection container library",
+    "name": "psrnext/config",
+    "description": "Configuration standards",
     "license": "MIT",
     "type": "library",
     "minimum-stability": "dev",
@@ -9,18 +9,16 @@
         {
             "name": "ma1oy",
             "email": "iroman.via@gmail.com",
-            "homepage": "https://rosemlab.github.io/container",
+            "homepage": "https://psrnext.github.io/config",
             "role": "Developer"
         }
     ],
     "require": {
-        "container-interop/service-provider": "^0.4.0",
-        "php": ">=7.2.0",
-        "psr/container": "^1.0"
+        "php": ">=7.2.0"
     },
     "autoload": {
         "psr-4": {
-            "Rosem\\Container\\": "src"
+            "Psrnext\\Config\\": "src"
         }
     }
 }

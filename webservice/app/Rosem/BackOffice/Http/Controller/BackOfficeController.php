@@ -3,7 +3,7 @@
 namespace Rosem\BackOffice\Http\Controller;
 
 use Psr\Http\Message\ResponseInterface;
-use Psrnext\App\AppConfigInterface;
+use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\ViewRenderer\ViewRendererInterface;
 
@@ -20,7 +20,7 @@ class BackOfficeController
     protected $view;
 
     /**
-     * @var AppConfigInterface
+     * @var ConfigInterface
      */
     protected $config;
 
@@ -29,12 +29,12 @@ class BackOfficeController
      *
      * @param ResponseFactoryInterface $responseFactory
      * @param ViewRendererInterface    $view
-     * @param AppConfigInterface       $config
+     * @param ConfigInterface       $config
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
         ViewRendererInterface $view,
-        AppConfigInterface $config
+        ConfigInterface $config
     ) {
         $this->responseFactory = $responseFactory;
         $this->view = $view;

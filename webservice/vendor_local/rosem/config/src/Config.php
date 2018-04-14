@@ -1,12 +1,12 @@
 <?php
 
-namespace Rosem\App;
+namespace Rosem\Config;
 
 use ArrayAccess;
 use Countable;
-use Psrnext\App\AppConfigInterface;
+use Psrnext\Config\ConfigInterface;
 
-class AppConfig implements AppConfigInterface, ArrayAccess, Countable
+class Config implements ConfigInterface, ArrayAccess, Countable
 {
     protected const REGEX_VAR = '/\${([a-zA-Z0-9_.-]+)}/';
 

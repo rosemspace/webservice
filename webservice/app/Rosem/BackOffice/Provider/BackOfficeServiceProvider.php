@@ -6,7 +6,7 @@ use Psr\Container\ContainerInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\ViewRenderer\ViewRendererInterface;
 use Rosem\BackOffice\Http\Controller\BackOfficeController;
-use Psrnext\App\AppConfigInterface;
+use Psrnext\Config\ConfigInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Router\RouteCollectorInterface;
 
@@ -24,7 +24,7 @@ class BackOfficeServiceProvider implements ServiceProviderInterface
                 return new BackOfficeController(
                     $container->get(ResponseFactoryInterface::class),
                     $container->get(ViewRendererInterface::class),
-                    $container->get(AppConfigInterface::class)
+                    $container->get(ConfigInterface::class)
                 );
             },
         ];
@@ -43,7 +43,7 @@ class BackOfficeServiceProvider implements ServiceProviderInterface
                 RouteCollectorInterface $routeCollector
             ) {
                 $routeCollector->get(
-                    "/{$container->get(AppConfigInterface::class)->get('backOffice.uri')}[/{relativePath:.*}]",
+                    "/{$container->get(ConfigInterface::class)->get('backOffice.uri')}[/{relativePath:.*}]",
                     [BackOfficeController::class, 'index']
                 );
             },

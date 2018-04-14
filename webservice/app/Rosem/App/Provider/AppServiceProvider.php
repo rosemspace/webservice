@@ -4,16 +4,20 @@ namespace Rosem\App\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    App\AppConfigInterface, Container\ServiceProviderInterface, GraphQL\GraphInterface,
-    Router\RouteCollectorInterface, Router\RouteDispatcherInterface, ViewRenderer\ViewRendererInterface
+    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, Router\RouteCollectorInterface, Router\RouteDispatcherInterface, ViewRenderer\ViewRendererInterface
 };
+use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
+use Rosem\App\ConfigFileTrait;
 use Rosem\App\Http\Controller\AppController;
+use Rosem\Environment\Environment;
 
 class AppServiceProvider implements ServiceProviderInterface
 {
+    use ConfigFileTrait;
+
     /**
      * Returns a list of all container entries registered by this service provider.
      *
@@ -22,6 +26,17 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
+            EnvironmentInterface::class => function () {
+                $env = new Environment(getcwd() . '/..');
+                $env->load();
+
+                return $env;
+            },
+            ConfigInterface::class => function (ContainerInterface $container) {
+                $container->get(EnvironmentInterface::class)->load();
+
+                return new \Rosem\Config\Config(self::getConfiguration(getcwd() . '/../config/app.php'));
+            },
             \Rosem\App\Http\Middleware\RouteMiddleware::class => function (ContainerInterface $container) {
                 return new \Rosem\App\Http\Middleware\RouteMiddleware(
                     $container->get(RouteDispatcherInterface::class),
@@ -41,7 +56,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 return new AppController(
                     $container->get(ResponseFactoryInterface::class),
                     $container->get(ViewRendererInterface::class),
-                    $container->get(AppConfigInterface::class)
+                    $container->get(ConfigInterface::class)
                 );
             },
 
@@ -73,7 +88,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 ViewRendererInterface $view
             ) {
-                $config = $container->get(AppConfigInterface::class);
+                $config = $container->get(ConfigInterface::class);
                 $view->addData([
                     'lang'            => $config->get('app.lang'),
                     'charset'         => $config->get('app.meta.charset'),
@@ -135,7 +150,7 @@ class AppServiceProvider implements ServiceProviderInterface
     public function createViewRenderer(ContainerInterface $container)
     {
         return new class (\League\Plates\Engine::create(
-            $container->get(AppConfigInterface::class)->get('app.paths.public'),
+            $container->get(ConfigInterface::class)->get('app.paths.public'),
             'html'
         )) implements ViewRendererInterface
         {
