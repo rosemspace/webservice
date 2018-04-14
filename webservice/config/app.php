@@ -6,7 +6,8 @@ return [
         'env'       => getenv('APP_ENV', 'development'),
         'lang'      => 'en-US',
         'paths'     => [
-            'root' => getenv('APP_DIR'),
+            'root' => getenv('APP_ROOT_PATH'),
+            'public' => getenv('APP_PUBLIC_PATH')
         ],
         'meta'      => [
             'charset'     => 'utf-8',
@@ -30,12 +31,6 @@ return [
         'paths' => [
             'root'   => getenv('WEBSERVICE_ROOT_PATH'),
             'public' => getenv('WEBSERVICE_PUBLIC_PATH'),
-        ],
-    ],
-    'client'     => [
-        'paths' => [
-            'root'   => getenv('CLIENT_ROOT_PATH'),
-            'public' => getenv('CLIENT_PUBLIC_PATH'),
         ],
     ],
     'db'     => [

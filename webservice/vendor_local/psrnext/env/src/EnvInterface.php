@@ -16,6 +16,10 @@ interface EnvInterface
 
     public const MODE_TESTING     = 'testing';
 
+    public function load(): array;
+
+    public function get(string $key): string;
+
     public function getMode(): string;
 
     public function isDevelopmentMode(): bool;

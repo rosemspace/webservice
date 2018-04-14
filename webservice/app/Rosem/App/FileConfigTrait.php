@@ -18,11 +18,7 @@ trait FileConfigTrait
             if (is_readable($filePath)) {
                 $config = include $filePath;
 
-                if (is_array($config)) {
-                    if (empty($config)) {
-                        throw new Exception("$filePath configuration file shouldn't be empty");
-                    }
-
+                if (\is_array($config)) {
                     return $config;
                 }
 

@@ -12,6 +12,11 @@ class Env extends AbstractEnv
      */
     private $env;
 
+    /**
+     * @var bool|array
+     */
+    private $loaded = false;
+
     public function __construct($path, $file = '.env')
     {
         $this->env = new Dotenv($path, $file);
@@ -28,10 +33,14 @@ class Env extends AbstractEnv
         ]);
     }
 
-    public function load(): void
+    public function load(): array
     {
-        $this->env->load();
-        $this->validate();
+        if (!$this->loaded) {
+            $this->loaded = $this->env->load();
+            $this->validate();
+        }
+
+        return $this->loaded;
     }
 
     public function overload(): void
@@ -40,8 +49,13 @@ class Env extends AbstractEnv
         $this->validate();
     }
 
+    public function get(string $key, $localOnly = false): string
+    {
+        return getenv($key, $localOnly);
+    }
+
     public function getMode(): string
     {
-        return getenv(self::KEY_MODE);
+        return $this->get(self::KEY_MODE);
     }
 }

@@ -21,7 +21,7 @@ class ORMServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            'entitiesPaths'      => function (): array {
+            'ormEntityPaths'   => function (): array {
                 return [
                     getcwd() . '/../app/Rosem/Access/Entity' //TODO: move into Access lib
                 ];
@@ -29,14 +29,30 @@ class ORMServiceProvider implements ServiceProviderInterface
             EntityManager::class => function (ContainerInterface $container) {
                 $isDevelopmentMode = $container->get(EnvInterface::class)->isDevelopmentMode();
                 $dbConfig = $container->get(AppConfigInterface::class)->get('db');
-                $ormConfig            = new Configuration;
+                $ormConfig = new Configuration;
                 $ormConfig->setNamingStrategy(new UnderscoreNamingStrategy(CASE_LOWER));
-                $ormConfig->setMetadataDriverImpl(new StaticPHPDriver($container->get('entitiesPaths')));
+                $ormConfig->setMetadataDriverImpl(new StaticPHPDriver($container->get('ormEntityPaths')));
                 $ormConfig->setProxyDir(getcwd() . '/../var/db/proxies');
                 $ormConfig->setProxyNamespace(self::PROXY_NAMESPACE);
                 $ormConfig->setAutoGenerateProxyClasses($isDevelopmentMode);
 
                 if ($isDevelopmentMode) {
+                    if (!isset($dbConfig['username'])) {
+                        $dbConfig['username'] = 'root';
+                    }
+
+                    if (!isset($dbConfig['password'])) {
+                        $dbConfig['password'] = '';
+                    }
+
+                    if (!isset($dbConfig['host'])) {
+                        $dbConfig['host'] = 'localhost';
+                    }
+
+                    if (!isset($dbConfig['driver'])) {
+                        $dbConfig['driver'] = 'pdo_mysql';
+                    }
+
                     $ormConfig->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_EVAL);
                     $cache = new ArrayCache;
                 } else {
@@ -45,13 +61,12 @@ class ORMServiceProvider implements ServiceProviderInterface
 
                 $ormConfig->setMetadataCacheImpl($cache);
                 $ormConfig->setQueryCacheImpl($cache);
-
                 $entityManager = EntityManager::create([
                     'dbname'   => $dbConfig['dbname'],
-                    'user'     => $dbConfig['username'] ?? 'root',
-                    'password' => $dbConfig['password'] ?? '',
-                    'host'     => $dbConfig['host'] ?? 'localhost',
-                    'driver'   => $dbConfig['driver'] ?? 'pdo_mysql',
+                    'user'     => $dbConfig['username'],
+                    'password' => $dbConfig['password'],
+                    'host'     => $dbConfig['host'],
+                    'driver'   => $dbConfig['driver'],
                 ], $ormConfig);
 
                 return $entityManager;

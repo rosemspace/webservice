@@ -2,32 +2,26 @@
 
 namespace Rosem\App;
 
-use Closure;
 use Exception;
-use GraphQL\GraphQL;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\{
-    ResponseInterface, ServerRequestInterface
-};
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
-use Psrnext\Env\EnvInterface;
-use Rosem\Container\Exception\ContainerException;
-use Rosem\Container\ReflectionContainer;
-use Rosem\Env\Env;
-use Rosem\EventManager\EventManager;
 use Psrnext\App\{
     AppConfigInterface, AppInterface
 };
 use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\EventManager\EventInterface;
+use Psrnext\Env\EnvInterface;
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
+use Rosem\Container\Container;
+use Rosem\Env\Env;
 use Zend\Diactoros\Server;
 
-class App extends ReflectionContainer implements AppInterface
+class App extends Container implements AppInterface
 {
     use FileConfigTrait;
 
@@ -48,26 +42,16 @@ class App extends ReflectionContainer implements AppInterface
         $this->defaultHandler = $this->getDefaultHandler();
         $this->nextHandler = $this->defaultHandler;
 
-        $this->instance(ContainerInterface::class, $this)->commit();
-        $this->alias(ContainerInterface::class, AppInterface::class);
+        $this->set(AppInterface::class, function () {
+            return $this;
+        });
+//        $this->alias(ContainerInterface::class, AppInterface::class);
     }
 
     protected function addServiceProvider(ServiceProviderInterface $serviceProvider)
     {
         foreach ($serviceProvider->getFactories() as $key => $factory) {
-            if (\is_array($factory)) {
-                $app = $this;
-                $serviceProvider = reset($factory);
-                $method = next($factory);
-                $this->share(
-                    $key,
-                    function () use ($app, $serviceProvider, $method) {
-                        return $app->make($serviceProvider)->$method($app);
-                    }
-                )->commit();
-            } else {
-                $this->share($key, $factory)->commit();
-            }
+            $this->set($key, $factory);
         }
     }
 
@@ -90,7 +74,11 @@ class App extends ReflectionContainer implements AppInterface
                 \is_string($serviceProviderClass) &&
                 class_exists($serviceProviderClass)
             ) {
-                $this->addServiceProvider($serviceProviders[] = $this->defineNow($serviceProviderClass)->make());
+                $serviceProviders[] = $serviceProvider = new $serviceProviderClass; //TODO: exception
+                $this->set($serviceProviderClass, function () use ($serviceProvider) {
+                    return $serviceProvider;
+                });
+                $this->addServiceProvider($serviceProvider);
             } else {
                 throw new Exception(
                     'An item of service providers configuration should be a string ' .
@@ -102,9 +90,7 @@ class App extends ReflectionContainer implements AppInterface
         // 2. In the second pass, the container calls the getExtensions method of all service providers.
         foreach ($serviceProviders as $serviceProvider) {
             foreach ($serviceProvider->getExtensions() as $key => $factory) {
-                $this->find($key)->withFunctionCall(
-                    is_array($factory) ? Closure::fromCallable($factory) : $factory
-                )->commit();
+                $this->extend($key, $factory);
             }
         }
     }
@@ -113,18 +99,39 @@ class App extends ReflectionContainer implements AppInterface
     {
         $nextHandler = &$this->defaultHandler;
 
-        return new class ($nextHandler)
+        return new class ($this, $nextHandler) implements RequestHandlerInterface
         {
+            /**
+             * @var ContainerInterface
+             */
+            private $container;
+
             private $nextHandler;
 
-            public function __construct(&$nextHandler)
+            public function __construct(ContainerInterface $container, &$nextHandler)
             {
+                $this->container = $container;
                 $this->nextHandler = &$nextHandler;
             }
 
             public function &getNextHandlerPointer()
             {
                 return $this->nextHandler;
+            }
+
+            /**
+             * Handle the request and return a response.
+             *
+             * @param ServerRequestInterface $request
+             *
+             * @return ResponseInterface
+             */
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                $response = $this->container->get(ResponseFactoryInterface::class)->createResponse(500);
+                $response->getBody()->write('<h1>Internal server error</h1>');
+
+                return $response;
             }
         };
     }
@@ -168,38 +175,31 @@ class App extends ReflectionContainer implements AppInterface
      */
     public function boot(string $appConfigFilePath)
     {
-        $env = new Env(\dirname(getcwd()));
-        $env->load();
-        $this->instance(EnvInterface::class, $env)->commit();
-        $this->instance(
+        $this->set(EnvInterface::class, function () {
+            $env = new Env(getcwd() . '/..');
+            $env->load();
+
+            return $env;
+        });
+        $this->set(
             AppConfigInterface::class,
-            new AppConfig(self::getConfiguration($appConfigFilePath))
-        )->commit();
+            function (ContainerInterface $container) use (&$appConfigFilePath) {
+                $container->get(EnvInterface::class)->load();
+
+                return new AppConfig(self::getConfiguration($appConfigFilePath));
+            }
+        );
         $request = $this->get(ServerRequestFactoryInterface::class)
             ->createServerRequestFromArray($_SERVER)
             ->withQueryParams($_GET)
             ->withParsedBody($_POST)
             ->withCookieParams($_COOKIE)
             ->withUploadedFiles($_FILES);
+        $this->nextHandler = &$this->nextHandler->getNextHandlerPointer();
+        $this->nextHandler = $this->getDefaultHandler();
         $response = $this->defaultHandler->handle($request);
         $server = new Server(function () {
         }, $request, $response);
         $server->listen();
-    }
-
-    public function testListeners()
-    {
-        $em = new EventManager();
-        $em->attach('user.login', function (EventInterface $event) {
-            var_dump($event);
-        });
-        $em->attach('user.login', function (EventInterface $event) {
-            var_dump($event->getTarget());
-        });
-        $em->attach('user.login', function (EventInterface $event) {
-            var_dump($event->getTarget());
-        });
-
-        $em->trigger('user.login', $em, ['test']);
     }
 }

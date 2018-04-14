@@ -22,6 +22,15 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
+            \Rosem\App\Http\Middleware\RouteMiddleware::class => function (ContainerInterface $container) {
+                return new \Rosem\App\Http\Middleware\RouteMiddleware(
+                    $container->get(RouteDispatcherInterface::class),
+                    $container->get(ResponseFactoryInterface::class)
+                );
+            },
+            \Rosem\App\Http\Middleware\RequestHandlerMiddleware::class => function (ContainerInterface $container) {
+                return new \Rosem\App\Http\Middleware\RequestHandlerMiddleware($container);
+            },
             ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
             ResponseFactoryInterface::class      => [static::class, 'createResponseFactory'],
             RouteCollectorInterface::class       => [static::class, 'createRouteCollector'],
@@ -126,12 +135,14 @@ class AppServiceProvider implements ServiceProviderInterface
     public function createViewRenderer(ContainerInterface $container)
     {
         return new class (\League\Plates\Engine::create(
-            $container->get(AppConfigInterface::class)->get('client.paths.public'),
+            $container->get(AppConfigInterface::class)->get('app.paths.public'),
             'html'
         )) implements ViewRendererInterface
         {
             /**
              * @var \League\Plates\Engine
+             * @uses \League\Plates\Engine::addFolder(string $path, string $alias)
+             * @method addData(array $data)
              */
             private $engine;
 
