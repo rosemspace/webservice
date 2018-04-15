@@ -3,49 +3,55 @@
 namespace Rosem\Access\Http\GraphQL\Types;
 
 use GraphQL\Type\Definition\Type;
-use Psr\Container\ContainerInterface;
-use Psrnext\GraphQL\AbstractObjectType;
+use Psrnext\GraphQL\{
+    ObjectTypeInterface, TypeRegistryInterface
+};
 
-class UserType extends AbstractObjectType
+class UserType implements ObjectTypeInterface
 {
-    public function description(): string
+    public function getName(): string
+    {
+        return 'User';
+    }
+
+    public function getDescription(): string
     {
         return 'The user';
     }
 
-    public function fields(ContainerInterface $container) : array
+    public function getFields(TypeRegistryInterface $typeRegistry): array
     {
         return [
-            'id'        => [
+            'id'         => [
                 'type'        => Type::id(),
                 'description' => 'The id of the user',
             ],
-            'firstName' => [
+            'firstName'  => [
                 'type'        => Type::string(),
                 'description' => 'The first name of the user',
             ],
-            'lastName'  => [
+            'lastName'   => [
                 'type'        => Type::string(),
                 'description' => 'The last name of the user',
             ],
-            'email'     => [
+            'email'      => [
                 'type'        => Type::nonNull(Type::string()),
                 'description' => 'The email of the user',
             ],
-            'role'      => [
-                'type'        => Type::nonNull($container->get('UserRole')),
+            'role'       => [
+                'type'        => Type::nonNull($typeRegistry->get(UserRoleType::class)),
                 'description' => 'The role of the user',
             ],
             'created_at' => [
-                'type' => Type::string(),
+                'type'        => Type::string(),
                 'description' => 'The time when the user was created',
             ],
             'updated_at' => [
-                'type' => Type::string(),
+                'type'        => Type::string(),
                 'description' => 'The time when the user was updated',
             ],
             'deleted_at' => [
-                'type' => Type::string(),
+                'type'        => Type::string(),
                 'description' => 'The time when the user was deleted',
             ],
         ];

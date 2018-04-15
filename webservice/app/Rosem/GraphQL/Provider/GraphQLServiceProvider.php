@@ -3,6 +3,10 @@
 namespace Rosem\GraphQL\Provider;
 
 use GraphQL\Server\StandardServer;
+use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Schema;
+use GraphQL\Type\SchemaConfig;
 use Psr\Container\ContainerInterface;
 use Psrnext\{
     Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface
@@ -23,13 +27,43 @@ class GraphQLServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
+            'graphQLFieldResolver'   => function () {
+                return function ($value, $args, $context, ResolveInfo $info) {
+                    $method = 'get' . ucfirst($info->fieldName);
+
+                    return $value->$method();
+                };
+            },
             GraphQLMiddleware::class => function (ContainerInterface $container) {
+                $config = $container->get(ConfigInterface::class);
+                $schema = $container->get(GraphInterface::class)
+                    ->schema($config->get('api.schema', 'default'));
+                $schemaConfig = SchemaConfig::create();
+
+                if ($query = $schema->getQueryData()) {
+                    $schemaConfig->setQuery(new ObjectType($query));
+                }
+
+                if ($mutation = $schema->getMutationData()) {
+                    $schemaConfig->setMutation(new ObjectType($mutation));
+                }
+
+                if ($subscription = $schema->getSubscriptionData()) {
+                    $schemaConfig->setSubscription(new ObjectType($subscription));
+                }
+
+                $serverConfig = [
+                    'schema'  => new Schema($schemaConfig),
+                    'context' => $container,
+                ];
+
+                if ($container->has('graphQLFieldResolver')) {
+                    $serverConfig['fieldResolver'] = $container->get('graphQLFieldResolver');
+                }
+
                 return new GraphQLMiddleware(
-                    new StandardServer([
-                        'schema'  => $container->get(GraphInterface::class)->schema()->create(),
-                        'context' => $container,
-                    ]),
-                    $container->get(ConfigInterface::class)->get('api.uri'),
+                    new StandardServer($serverConfig),
+                    $config->get('api.uri', '/graphql'),
                     $container->get(EnvironmentInterface::class)->isDevelopmentMode()
                 );
             },

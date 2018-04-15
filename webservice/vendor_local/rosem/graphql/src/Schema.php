@@ -2,32 +2,34 @@
 
 namespace Rosem\GraphQL;
 
-use GraphQL\Type\Definition\ObjectType;
-use GraphQL\Type\SchemaConfig;
 use Psr\Container\ContainerInterface;
-use Psrnext\GraphQL\AbstractSchema;
-use Psrnext\GraphQL\NodeInterface;
-use GraphQL\Type\Schema as GraphQLSchema;
+use Psrnext\GraphQL\{
+    AbstractSchema, NodeInterface, QueryInterface, TypeRegistryInterface
+};
 
 class Schema extends AbstractSchema
 {
     /**
      * The container with types.
-     *
      * @var ContainerInterface
      */
     protected $container;
 
     /**
+     * @var TypeRegistryInterface
+     */
+    protected $typeRegistry;
+
+    /**
      * Entries of the schema.
-     *
      * @var array
      */
     protected $entries;
 
     public function __construct(ContainerInterface $container)
     {
-        $this->container = new TypeRegistry($container);
+        $this->container = $container;
+        $this->typeRegistry = new TypeRegistry($container);
     }
 
     public function addNode(string $type, string $name, callable $nodeFactory): void
@@ -41,10 +43,16 @@ class Schema extends AbstractSchema
                 $nodeFactory[key($nodeFactory)] = $this->container->get(reset($nodeFactory));
             }
 
-            $node = \call_user_func($nodeFactory, $this->container);
+            $node = \call_user_func($nodeFactory, $this->typeRegistry);
 
-            if ($node instanceof NodeInterface) {
-                $nodeArray = $node->create($this->container, $name);
+            if ($node instanceof QueryInterface) {
+                $nodeArray = [
+                    'name'        => $name,
+                    'description' => $node->getDescription(),
+                    'type'        => $node->getType($this->typeRegistry),
+                    'args'        => $node->getArguments(),
+                    'resolve'     => [$node, 'resolve'],
+                ];
 
                 if (!isset($this->entries[$type])) {
                     $this->entries[$type] = [$name => $nodeArray];
@@ -61,34 +69,30 @@ class Schema extends AbstractSchema
         }
     }
 
-    protected function getRootType(string $type): ?ObjectType
+    protected function getRootType(string $type): ?array
     {
         if (isset($this->entries[$type])) {
-            return new ObjectType([
+            return [
                 'name'   => $type,
                 'fields' => $this->entries[$type],
-            ]);
+            ];
         }
 
         return null;
     }
 
-    public function create(): GraphQLSchema
+    public function getQueryData(): ?array
     {
-        $schemaConfig = SchemaConfig::create();
+        return $this->getRootType(self::NODE_TYPE_QUERY);
+    }
 
-        if ($query = $this->getRootType(self::NODE_TYPE_QUERY)) {
-            $schemaConfig->setQuery($query);
-        }
+    public function getMutationData(): ?array
+    {
+        return $this->getRootType(self::NODE_TYPE_MUTATION);
+    }
 
-        if ($mutation = $this->getRootType(self::NODE_TYPE_MUTATION)) {
-            $schemaConfig->setMutation($mutation);
-        }
-
-        if ($subscription = $this->getRootType(self::NODE_TYPE_SUBSCRIPTION)) {
-            $schemaConfig->setSubscription($subscription);
-        }
-
-        return new GraphQLSchema($schemaConfig);
+    public function getSubscriptionData(): ?array
+    {
+        return $this->getRootType(self::NODE_TYPE_SUBSCRIPTION);
     }
 }

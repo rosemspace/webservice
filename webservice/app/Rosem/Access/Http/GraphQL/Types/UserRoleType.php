@@ -3,26 +3,32 @@
 namespace Rosem\Access\Http\GraphQL\Types;
 
 use GraphQL\Type\Definition\Type;
-use Psr\Container\ContainerInterface;
-use Psrnext\GraphQL\AbstractObjectType;
+use Psrnext\GraphQL\{
+    ObjectTypeInterface, TypeRegistryInterface
+};
 
-class UserRoleType extends AbstractObjectType
+class UserRoleType implements ObjectTypeInterface
 {
-    public function description(): string
+    public function getName(): string
+    {
+        return 'UserRole';
+    }
+
+    public function getDescription(): string
     {
         return 'The role of the user';
     }
 
-    public function fields(ContainerInterface $container): array
+    public function getFields(TypeRegistryInterface $typeRegistry): array
     {
         return [
-            'id' => [
-                'type' => Type::id(),
-                'description' => 'The id of the user role'
+            'id'   => [
+                'type'        => Type::id(),
+                'description' => 'The id of the user role',
             ],
             'name' => [
-                'type' => Type::nonNull(Type::string()),
-                'description' => 'The name of the user role'
+                'type'        => Type::nonNull(Type::string()),
+                'description' => 'The name of the user role',
             ],
         ];
     }

@@ -4,18 +4,22 @@ namespace Rosem\Access\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\GraphQL\GraphInterface;
-use Psrnext\GraphQL\NodeInterface;
+use Psrnext\GraphQL\{
+    GraphInterface, ObjectTypeInterface, QueryInterface
+};
+use Rosem\Access\Http\GraphQL\Types\{
+    UserRoleType, UserType
+};
 
 class AccessServiceProvider implements ServiceProviderInterface
 {
     public function getFactories(): array
     {
         return [
-            'User'     => function (): NodeInterface {
+            UserType::class     => function (): ObjectTypeInterface {
                 return new \Rosem\Access\Http\GraphQL\Types\UserType;
             },
-            'UserRole' => function (): NodeInterface {
+            UserRoleType::class => function (): ObjectTypeInterface {
                 return new \Rosem\Access\Http\GraphQL\Types\UserRoleType;
             },
         ];
@@ -25,10 +29,10 @@ class AccessServiceProvider implements ServiceProviderInterface
     {
         return [
             GraphInterface::class => function (ContainerInterface $container, GraphInterface $graph) {
-                $graph->schema()->query('users', function (): NodeInterface {
+                $graph->schema()->query('users', function (): QueryInterface {
                     return new \Rosem\Access\Http\GraphQL\Queries\UsersQuery;
                 });
-                $graph->schema()->mutation('updateUser', function (): NodeInterface {
+                $graph->schema()->mutation('updateUser', function (): QueryInterface {
                     return new \Rosem\Access\Http\GraphQL\Mutations\UpdateUserMutation;
                 });
             },

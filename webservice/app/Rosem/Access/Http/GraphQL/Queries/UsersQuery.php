@@ -6,25 +6,27 @@ use Doctrine\ORM\EntityManager;
 use GraphQL\Type\Definition\{
     ResolveInfo, Type
 };
-use Psr\Container\ContainerInterface;
-use Psrnext\GraphQL\AbstractQuery;
+use Psrnext\GraphQL\{
+    QueryInterface, TypeRegistryInterface
+};
+use Rosem\Access\Http\GraphQL\Types\UserType;
 
-class UsersQuery extends AbstractQuery
+class UsersQuery implements QueryInterface
 {
-    public function description(): string
+    public function getDescription(): string
     {
         return 'Fetch user collection';
     }
 
-    public function type(ContainerInterface $container)
+    public function getType(TypeRegistryInterface $typeRegistry)
     {
-        return Type::nonNull(Type::listOf(Type::nonNull($container->get('User'))));
+        return Type::nonNull(Type::listOf(Type::nonNull($typeRegistry->get(UserType::class))));
     }
 
-    public function args(): array
+    public function getArguments(): array
     {
         return [
-            'id' => Type::id(),
+            'id'    => Type::id(),
             'email' => Type::string(),
         ];
     }
@@ -34,18 +36,5 @@ class UsersQuery extends AbstractQuery
         $users = $container->get(EntityManager::class)->getRepository(\Rosem\Access\Entity\User::class)->findAll();
 
         return $users;
-
-//        return [
-//            [
-//                'id' => 1,
-//                'firstName' => 'Roman',
-//                'email' => 'roshe@smile.fr',
-//            ],
-//            [
-//                'id' => 2,
-//                'firstName' => 'Romanna',
-//                'email' => 'rosem@smile.fr',
-//            ],
-//        ];
     }
 }

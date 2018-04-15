@@ -4,22 +4,24 @@ namespace Rosem\Access\Http\GraphQL\Mutations;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
-use Psr\Container\ContainerInterface;
-use Psrnext\GraphQL\AbstractQuery;
+use Psrnext\GraphQL\{
+    QueryInterface, TypeRegistryInterface
+};
+use Rosem\Access\Http\GraphQL\Types\UserType;
 
-class UpdateUserMutation extends AbstractQuery
+class UpdateUserMutation implements QueryInterface
 {
-    public function description(): string
+    public function getDescription(): string
     {
         return 'Update the user';
     }
 
-    public function type(ContainerInterface $container)
+    public function getType(TypeRegistryInterface $typeRegistry)
     {
-        return Type::nonNull($container->get('User'));
+        return Type::nonNull($typeRegistry->get(UserType::class));
     }
 
-    public function args() : array
+    public function getArguments(): array
     {
         return [
             'id'        => Type::id(),
@@ -45,7 +47,7 @@ class UpdateUserMutation extends AbstractQuery
 //        return $user;
 
         return [
-            'id' => 0,
+            'id'        => 0,
             'firstName' => 'SUCCESS',
         ];
     }

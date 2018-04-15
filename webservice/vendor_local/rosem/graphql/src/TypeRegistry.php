@@ -2,16 +2,17 @@
 
 namespace Rosem\GraphQL;
 
+use GraphQL\Type\Definition\ObjectType;
 use Psr\Container\{
     ContainerExceptionInterface, ContainerInterface, NotFoundExceptionInterface
 };
 use Psrnext\GraphQL\ObjectTypeInterface;
+use Psrnext\GraphQL\TypeRegistryInterface;
 
-final class TypeRegistry implements ContainerInterface
+final class TypeRegistry implements TypeRegistryInterface
 {
     /**
      * App container
-     *
      * @var ContainerInterface
      */
     private $container;
@@ -33,14 +34,25 @@ final class TypeRegistry implements ContainerInterface
      *
      * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
      * @throws ContainerExceptionInterface Error while retrieving the entry.
-     *
      * @return mixed Entry.
      */
     public function get($id)
     {
-        if (! isset($this->types[$id])) {
+        if (!isset($this->types[$id])) {
             // TODO: improve and add exception when not a type
-            $this->types[$id] = $this->container->get($id)->create($this, $id);
+            $type = $this->container->get($id);
+
+            if (!$type instanceof ObjectTypeInterface) {
+                throw new \Exception('Invalid type');
+            }
+
+            $this->types[$id] = new ObjectType([
+                'name'        => $type->getName(),
+                'description' => $type->getDescription(),
+                'fields'      => function () use (&$type) {
+                    return $type->getFields($this);
+                },
+            ]);
         }
 
         return $this->types[$id];
@@ -49,7 +61,6 @@ final class TypeRegistry implements ContainerInterface
     /**
      * Returns true if the container can return an entry for the given identifier.
      * Returns false otherwise.
-     *
      * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
      * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
      *

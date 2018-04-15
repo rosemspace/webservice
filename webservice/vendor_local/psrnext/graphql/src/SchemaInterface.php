@@ -2,8 +2,6 @@
 
 namespace Psrnext\GraphQL;
 
-use GraphQL\Type\Schema;
-
 interface SchemaInterface
 {
     public const NODE_TYPE_QUERY = 'Query';
@@ -20,5 +18,9 @@ interface SchemaInterface
 
     public function subscription(string $name, callable $subscriptionFactory): void;
 
-    public function create(): Schema;
+    public function getQueryData(): ?array;
+
+    public function getMutationData(): ?array;
+
+    public function getSubscriptionData(): ?array;
 }
