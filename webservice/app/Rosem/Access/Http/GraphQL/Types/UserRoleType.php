@@ -4,10 +4,10 @@ namespace Rosem\Access\Http\GraphQL\Types;
 
 use GraphQL\Type\Definition\Type;
 use Psrnext\GraphQL\{
-    ObjectTypeInterface, TypeRegistryInterface
+    AbstractObjectType, TypeRegistryInterface
 };
 
-class UserRoleType implements ObjectTypeInterface
+class UserRoleType extends AbstractObjectType
 {
     public function getName(): string
     {
@@ -30,6 +30,6 @@ class UserRoleType implements ObjectTypeInterface
                 'type'        => Type::nonNull(Type::string()),
                 'description' => 'The name of the user role',
             ],
-        ];
+        ] + $this->fields;
     }
 }

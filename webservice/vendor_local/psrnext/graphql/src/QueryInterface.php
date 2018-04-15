@@ -10,5 +10,7 @@ interface QueryInterface extends NodeInterface
 
     public function getArguments(): array;
 
+    public function addArguments(array $arguments): void;
+
     public function resolve($source, $args, $context, ResolveInfo $resolveInfo);
 }

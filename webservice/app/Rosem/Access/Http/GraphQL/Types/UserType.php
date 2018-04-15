@@ -4,10 +4,10 @@ namespace Rosem\Access\Http\GraphQL\Types;
 
 use GraphQL\Type\Definition\Type;
 use Psrnext\GraphQL\{
-    ObjectTypeInterface, TypeRegistryInterface
+    AbstractObjectType, TypeRegistryInterface
 };
 
-class UserType implements ObjectTypeInterface
+class UserType extends AbstractObjectType
 {
     public function getName(): string
     {
@@ -54,6 +54,6 @@ class UserType implements ObjectTypeInterface
                 'type'        => Type::string(),
                 'description' => 'The time when the user was deleted',
             ],
-        ];
+        ] + $this->fields;
     }
 }

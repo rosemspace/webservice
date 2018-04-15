@@ -7,11 +7,11 @@ use GraphQL\Type\Definition\{
     ResolveInfo, Type
 };
 use Psrnext\GraphQL\{
-    QueryInterface, TypeRegistryInterface
+    AbstractQuery, TypeRegistryInterface
 };
 use Rosem\Access\Http\GraphQL\Types\UserType;
 
-class UsersQuery implements QueryInterface
+class UsersQuery extends AbstractQuery
 {
     public function getDescription(): string
     {
@@ -28,7 +28,7 @@ class UsersQuery implements QueryInterface
         return [
             'id'    => Type::id(),
             'email' => Type::string(),
-        ];
+        ] + $this->arguments;
     }
 
     public function resolve($source, $args, $container, ResolveInfo $info)

@@ -2,28 +2,16 @@
 
 namespace Psrnext\GraphQL;
 
-use Psr\Container\ContainerInterface;
-
-abstract class AbstractQuery implements QueryInterface
+abstract class AbstractQuery extends AbstractNode implements QueryInterface
 {
-    public function description(): string
-    {
-        return '';
-    }
+    /**
+     * @var array
+     */
+    protected $arguments = [];
 
-    public function args(): array
+    public function addArguments(array $arguments): void
     {
-        return [];
-    }
-
-    public function create(ContainerInterface $container, string $name): array
-    {
-        return [
-            'name' => $name,
-            'description' => $this->description(),
-            'type' => $this->type($container),
-            'args' => $this->args(),
-            'resolve' => \Closure::fromCallable([$this, 'resolve']),
-        ];
+        /** @noinspection AdditionOperationOnArraysInspection */
+        $this->arguments += $arguments;
     }
 }

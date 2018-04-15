@@ -5,11 +5,11 @@ namespace Rosem\Access\Http\GraphQL\Mutations;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use Psrnext\GraphQL\{
-    QueryInterface, TypeRegistryInterface
+    AbstractQuery, TypeRegistryInterface
 };
 use Rosem\Access\Http\GraphQL\Types\UserType;
 
-class UpdateUserMutation implements QueryInterface
+class UpdateUserMutation extends AbstractQuery
 {
     public function getDescription(): string
     {
@@ -29,7 +29,7 @@ class UpdateUserMutation implements QueryInterface
             'firstName' => Type::string(),
             'lastName'  => Type::string(),
             'password'  => Type::string(),
-        ];
+        ] + $this->arguments;
     }
 
     public function resolve($source, $args, $context, ResolveInfo $info)
