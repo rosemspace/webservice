@@ -89,7 +89,6 @@ class GraphQLMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $delegate): ResponseInterface
     {
         //TODO: move json_decode into separated middleware
-//        $request = $request->withHeader('Content-Type', 'application/json');
 
         if (!$this->isGraphQLRequest($request)) {
             return $delegate->handle($request);

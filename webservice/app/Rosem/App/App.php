@@ -4,18 +4,21 @@ namespace Rosem\App;
 
 use Exception;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\{
+    ResponseInterface, ServerRequestInterface
+};
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
 use Psrnext\App\AppInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\{
-    ResponseFactoryInterface, ServerRequestFactoryInterface
+    ResponseFactoryInterface
 };
 use Rosem\Container\Container;
-use Zend\Diactoros\Server;
+use Zend\Diactoros\{
+    Server, ServerRequestFactory
+};
 
 class App extends Container implements AppInterface
 {
@@ -122,7 +125,7 @@ class App extends Container implements AppInterface
              *
              * @return ResponseInterface
              */
-            public function handle(ServerRequestInterface $request): ResponseInterface
+            public function handle(ServerRequestInterface $request) : ResponseInterface
             {
                 $response = $this->container->get(ResponseFactoryInterface::class)->createResponse(500);
                 $response->getBody()->write('<h1>Internal server error</h1>');
@@ -171,12 +174,7 @@ class App extends Container implements AppInterface
      */
     public function boot(string $appConfigFilePath)
     {
-        $request = $this->get(ServerRequestFactoryInterface::class)
-            ->createServerRequestFromArray($_SERVER)
-            ->withQueryParams($_GET)
-            ->withParsedBody($_POST)
-            ->withCookieParams($_COOKIE)
-            ->withUploadedFiles($_FILES);
+        $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
         $this->nextHandler = &$this->nextHandler->getNextHandlerPointer();
         $this->nextHandler = $this->getDefaultHandler();
         $response = $this->defaultHandler->handle($request);
