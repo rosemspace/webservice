@@ -4,7 +4,8 @@ namespace Rosem\App\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, Router\RouteCollectorInterface, Router\RouteDispatcherInterface, ViewRenderer\ViewRendererInterface
+    Container\ServiceProviderInterface, Environment\EnvironmentInterface, Router\RouteCollectorInterface,
+    Router\RouteDispatcherInterface, ViewRenderer\ViewRendererInterface
 };
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\{
@@ -51,7 +52,6 @@ class AppServiceProvider implements ServiceProviderInterface
             RouteCollectorInterface::class       => [static::class, 'createRouteCollector'],
             RouteDispatcherInterface::class      => [static::class, 'createRouteDispatcher'],
             ViewRendererInterface::class         => [static::class, 'createViewRenderer'],
-            GraphInterface::class                => [static::class, 'createHttpGraph'],
             AppController::class                 => function (ContainerInterface $container) {
                 return new AppController(
                     $container->get(ResponseFactoryInterface::class),
@@ -59,10 +59,6 @@ class AppServiceProvider implements ServiceProviderInterface
                     $container->get(ConfigInterface::class)
                 );
             },
-
-//            \TrueStandards\GraphQL\GraphInterface::class => function (ContainerInterface $container) {
-//                return new \True\GraphQL\Graph($container);
-//            },
         ];
     }
 
@@ -137,14 +133,6 @@ class AppServiceProvider implements ServiceProviderInterface
         return new \Rosem\Router\RouteDispatcher(
             new \FastRoute\Dispatcher\GroupCountBased($container->get(RouteCollectorInterface::class)->getData())
         );
-    }
-
-    public function createHttpGraph(ContainerInterface $container)
-    {
-        $graph = new \Rosem\GraphQL\Graph;
-        $graph->addSchema('default', new \Rosem\GraphQL\Schema($container));
-
-        return $graph;
     }
 
     public function createViewRenderer(ContainerInterface $container)

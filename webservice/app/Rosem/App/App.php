@@ -84,7 +84,9 @@ class App extends Container implements AppInterface
         // 2. In the second pass, the container calls the getExtensions method of all service providers.
         foreach ($serviceProviders as $serviceProvider) {
             foreach ($serviceProvider->getExtensions() as $key => $factory) {
-                $this->extend($key, $factory);
+                if ($this->has($key)) {
+                    $this->extend($key, $factory);
+                }
             }
         }
     }

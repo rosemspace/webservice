@@ -23,12 +23,12 @@ class UsersQuery extends AbstractQuery
         return Type::nonNull(Type::listOf(Type::nonNull($typeRegistry->get(UserType::class))));
     }
 
-    public function getArguments(): array
+    public function getDefaultArguments(TypeRegistryInterface $typeRegistry): array
     {
         return [
             'id'    => Type::id(),
             'email' => Type::string(),
-        ] + $this->arguments;
+        ];
     }
 
     public function resolve($source, $args, $container, ResolveInfo $info)

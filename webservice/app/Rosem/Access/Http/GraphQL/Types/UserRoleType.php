@@ -19,7 +19,7 @@ class UserRoleType extends AbstractObjectType
         return 'The role of the user';
     }
 
-    public function getFields(TypeRegistryInterface $typeRegistry): array
+    public function getDefaultFields(TypeRegistryInterface $typeRegistry): array
     {
         return [
             'id'   => [
@@ -30,6 +30,6 @@ class UserRoleType extends AbstractObjectType
                 'type'        => Type::nonNull(Type::string()),
                 'description' => 'The name of the user role',
             ],
-        ] + $this->fields;
+        ];
     }
 }

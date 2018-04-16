@@ -4,14 +4,20 @@ namespace Psrnext\GraphQL;
 
 abstract class AbstractObjectType extends AbstractNode implements ObjectTypeInterface
 {
-    /**
-     * @var array
-     */
-    protected $fields = [];
+    abstract public function getDefaultFields(TypeRegistryInterface $typeRegistry);
 
-    public function addFields(array $fields): void
+    public function addFields(\Closure $fieldFactory): void
     {
-        /** @noinspection AdditionOperationOnArraysInspection */
-        $this->fields += $fields;
+        $this->factories[] = $fieldFactory;
+    }
+
+    public function getFields(TypeRegistryInterface $typeRegistry): array {
+        $fields = $this->getDefaultFields($typeRegistry);
+
+        foreach ($this->factories as $factory) {
+            $fields += $factory($typeRegistry);
+        }
+
+        return $fields;
     }
 }

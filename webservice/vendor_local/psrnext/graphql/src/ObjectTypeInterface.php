@@ -8,5 +8,5 @@ interface ObjectTypeInterface extends NodeInterface
 
     public function getFields(TypeRegistryInterface $typeRegistry): array;
 
-    public function addFields(array $fields): void;
+    public function addFields(\Closure $factory): void;
 }

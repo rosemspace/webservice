@@ -18,10 +18,11 @@ class UpdateUserMutation extends AbstractQuery
 
     public function getType(TypeRegistryInterface $typeRegistry)
     {
+//        return $typeRegistry->notNull($typeRegistry->get(UserType::class));
         return Type::nonNull($typeRegistry->get(UserType::class));
     }
 
-    public function getArguments(): array
+    public function getDefaultArguments(TypeRegistryInterface $typeRegistry): array
     {
         return [
             'id'        => Type::id(),
@@ -29,7 +30,7 @@ class UpdateUserMutation extends AbstractQuery
             'firstName' => Type::string(),
             'lastName'  => Type::string(),
             'password'  => Type::string(),
-        ] + $this->arguments;
+        ];
     }
 
     public function resolve($source, $args, $context, ResolveInfo $info)

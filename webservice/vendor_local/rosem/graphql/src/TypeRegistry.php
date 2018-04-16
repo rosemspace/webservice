@@ -38,7 +38,9 @@ final class TypeRegistry implements TypeRegistryInterface
      */
     public function get($id)
     {
-        if (!isset($this->types[$id])) {
+        $placeholder = &$this->types[$id];
+
+        if (null === $placeholder) {
             // TODO: improve and add exception when not a type
             $type = $this->container->get($id);
 
@@ -46,16 +48,17 @@ final class TypeRegistry implements TypeRegistryInterface
                 throw new \Exception('Invalid type');
             }
 
-            $this->types[$id] = new ObjectType([
+            $placeholder = new ObjectType([
                 'name'        => $type->getName(),
                 'description' => $type->getDescription(),
                 'fields'      => function () use (&$type) {
                     return $type->getFields($this);
                 },
             ]);
+            $this->types[$type->getName()] = &$placeholder; // alias
         }
 
-        return $this->types[$id];
+        return $placeholder;
     }
 
     /**

@@ -19,7 +19,7 @@ class UserType extends AbstractObjectType
         return 'The user';
     }
 
-    public function getFields(TypeRegistryInterface $typeRegistry): array
+    public function getDefaultFields(TypeRegistryInterface $typeRegistry): array
     {
         return [
             'id'         => [
@@ -54,6 +54,6 @@ class UserType extends AbstractObjectType
                 'type'        => Type::string(),
                 'description' => 'The time when the user was deleted',
             ],
-        ] + $this->fields;
+        ];
     }
 }

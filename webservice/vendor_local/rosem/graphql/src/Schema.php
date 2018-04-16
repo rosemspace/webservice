@@ -26,10 +26,10 @@ class Schema extends AbstractSchema
      */
     protected $entries;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, TypeRegistryInterface $typeRegistry)
     {
         $this->container = $container;
-        $this->typeRegistry = new TypeRegistry($container);
+        $this->typeRegistry = $typeRegistry;
     }
 
     public function addNode(string $type, string $name, callable $nodeFactory): void
@@ -50,7 +50,7 @@ class Schema extends AbstractSchema
                     'name'        => $name,
                     'description' => $node->getDescription(),
                     'type'        => $node->getType($this->typeRegistry),
-                    'args'        => $node->getArguments(),
+                    'args'        => $node->getArguments($this->typeRegistry),
                     'resolve'     => [$node, 'resolve'],
                 ];
 
