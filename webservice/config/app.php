@@ -45,8 +45,9 @@ return [
         'collation' => getenv('DATABASE_COLLATION', 'utf8_unicode_ci'),
         'prefix'    => getenv('DATABASE_PREFIX', ''),
     ],
-    'api' => [
+    'graphql' => [
         'uri' => '/graphql',
+        'schema' => 'default'
     ],
     'backOffice'      => [
         'uri'              => 'bo',

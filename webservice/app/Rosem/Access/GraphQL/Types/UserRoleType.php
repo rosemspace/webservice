@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\Access\Http\GraphQL\Types;
+namespace Rosem\Access\GraphQL\Types;
 
 use GraphQL\Type\Definition\Type;
 use Psrnext\GraphQL\{

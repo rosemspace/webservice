@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\Access\Http\GraphQL\Queries;
+namespace Rosem\Access\GraphQL\Queries;
 
 use Doctrine\ORM\EntityManager;
 use GraphQL\Type\Definition\{
@@ -9,7 +9,7 @@ use GraphQL\Type\Definition\{
 use Psrnext\GraphQL\{
     AbstractQuery, TypeRegistryInterface
 };
-use Rosem\Access\Http\GraphQL\Types\UserType;
+use Rosem\Access\GraphQL\Types\UserType;
 
 class UsersQuery extends AbstractQuery
 {

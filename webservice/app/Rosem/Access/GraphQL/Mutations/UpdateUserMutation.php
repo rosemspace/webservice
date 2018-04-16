@@ -1,13 +1,13 @@
 <?php
 
-namespace Rosem\Access\Http\GraphQL\Mutations;
+namespace Rosem\Access\GraphQL\Mutations;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use Psrnext\GraphQL\{
     AbstractQuery, TypeRegistryInterface
 };
-use Rosem\Access\Http\GraphQL\Types\UserType;
+use Rosem\Access\GraphQL\Types\UserType;
 
 class UpdateUserMutation extends AbstractQuery
 {

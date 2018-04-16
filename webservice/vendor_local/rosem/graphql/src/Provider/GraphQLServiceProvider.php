@@ -20,6 +20,16 @@ use Rosem\GraphQL\TypeRegistry;
 class GraphQLServiceProvider implements ServiceProviderInterface
 {
     /**
+     * GraphQL schema config key.
+     */
+    public const CONFIG_SCHEMA = 'graphql.schema';
+
+    /**
+     * GraphQL uri config key.
+     */
+    public const CONFIG_URI = 'graphql.uri';
+
+    /**
      * Returns a list of all container entries registered by this service provider.
      * - the key is the entry name
      * - the value is a callable that will return the entry, aka the **factory**
@@ -55,7 +65,7 @@ class GraphQLServiceProvider implements ServiceProviderInterface
         return [];
     }
 
-    public function createGraphQLTypeRegistry(ContainerInterface $container) : TypeRegistry
+    public function createGraphQLTypeRegistry(ContainerInterface $container): TypeRegistry
     {
         return new TypeRegistry($container);
     }
@@ -71,7 +81,8 @@ class GraphQLServiceProvider implements ServiceProviderInterface
     public function createGraphQLMiddleware(ContainerInterface $container): GraphQLMiddleware
     {
         $config = $container->get(ConfigInterface::class);
-        $schema = $container->get(GraphInterface::class)->schema($config->get('api.schema', 'default'));
+        $schema = $container->get(GraphInterface::class)
+            ->schema($config->get(static::CONFIG_SCHEMA, 'default'));
         $schemaConfig = SchemaConfig::create();
         $typeRegistry = $container->get(TypeRegistryInterface::class);
         $schemaConfig->setTypeLoader(function ($name) use (&$typeRegistry) {
@@ -117,7 +128,7 @@ class GraphQLServiceProvider implements ServiceProviderInterface
                     return $property instanceof \Closure ? $property($source, $args, $context) : $property;
                 }
             ]),
-            $config->get('api.uri', '/graphql'),
+            $config->get(static::CONFIG_URI, '/graphql'),
             $container->get(EnvironmentInterface::class)->isDevelopmentMode()
         );
     }
