@@ -16,7 +16,7 @@ abstract class AbstractHasher implements HasherInterface
      */
     public function verify(string $value, string $hashedValue) : bool
     {
-        return strlen($hashedValue) === 0 ? false : password_verify($value, $hashedValue);
+        return '' === $hashedValue ? false : password_verify($value, $hashedValue);
     }
 
     /**

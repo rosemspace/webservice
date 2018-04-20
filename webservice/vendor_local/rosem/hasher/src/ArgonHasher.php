@@ -51,8 +51,8 @@ class ArgonHasher extends AbstractHasher
     {
         return [
             'memory_cost' => $options['memory_cost'] ?? $this->memoryCost,
-            'time_cost' => $options['time_cost'] ?? $this->timeCost,
-            'threads' => $options['threads'] ?? $this->threads,
+            'time_cost'   => $options['time_cost'] ?? $this->timeCost,
+            'threads'     => $options['threads'] ?? $this->threads,
         ];
     }
 
@@ -63,6 +63,7 @@ class ArgonHasher extends AbstractHasher
      * @param  array  $options
      *
      * @return string
+     * @throws \RuntimeException
      */
     public function hash(string $value, array $options = []) : string
     {
