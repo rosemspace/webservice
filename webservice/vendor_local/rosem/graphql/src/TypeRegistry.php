@@ -2,12 +2,15 @@
 
 namespace Rosem\GraphQL;
 
-use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\{
+    ObjectType, Type
+};
 use Psr\Container\{
     ContainerExceptionInterface, ContainerInterface, NotFoundExceptionInterface
 };
-use Psrnext\GraphQL\ObjectTypeInterface;
-use Psrnext\GraphQL\TypeRegistryInterface;
+use Psrnext\GraphQL\{
+    ObjectTypeInterface, TypeRegistryInterface
+};
 
 final class TypeRegistry implements TypeRegistryInterface
 {
@@ -32,33 +35,47 @@ final class TypeRegistry implements TypeRegistryInterface
      *
      * @param string $id Identifier of the entry to look for.
      *
+     * @throws \InvalidArgumentException
      * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
      * @throws ContainerExceptionInterface Error while retrieving the entry.
      * @return mixed Entry.
      */
     public function get($id)
     {
-        $placeholder = &$this->types[$id];
+        switch ($id) {
+            case Type::INT:
+                return Type::int();
+            case Type::STRING:
+                return Type::string();
+            case Type::BOOLEAN:
+                return Type::boolean();
+            case Type::FLOAT:
+                return Type::float();
+            case Type::ID:
+                return Type::id();
+            default:
+                $placeholder = &$this->types[$id];
 
-        if (null === $placeholder) {
-            // TODO: improve and add exception when not a type
-            $type = $this->container->get($id);
+                if (null === $placeholder) {
+                    // TODO: improve and add exception when not a type
+                    $type = $this->container->get($id);
 
-            if (!$type instanceof ObjectTypeInterface) {
-                throw new \Exception('Invalid type');
-            }
+                    if (!$type instanceof ObjectTypeInterface) {
+                        throw new \InvalidArgumentException("Type \"$id\" is not defined.");
+                    }
 
-            $placeholder = new ObjectType([
-                'name'        => $type->getName(),
-                'description' => $type->getDescription(),
-                'fields'      => function () use (&$type) {
-                    return $type->getFields($this);
-                },
-            ]);
-            $this->types[$type->getName()] = &$placeholder; // alias
+                    $placeholder = new ObjectType([
+                        'name'        => $type->getName(),
+                        'description' => $type->getDescription(),
+                        'fields'      => function () use (&$type) {
+                            return $type->getFields($this);
+                        },
+                    ]);
+                    $this->types[$type->getName()] = &$placeholder; // alias
+                }
+
+                return $placeholder;
         }
-
-        return $placeholder;
     }
 
     /**
@@ -71,8 +88,18 @@ final class TypeRegistry implements TypeRegistryInterface
      *
      * @return bool
      */
-    public function has($id)
+    public function has($id): bool
     {
         return $this->container->has($id);
+    }
+
+    public function nonNull($typeInstance): Type
+    {
+        return Type::nonNull($typeInstance);
+    }
+
+    public function listOf($typeInstance): Type
+    {
+        return Type::listOf($typeInstance);
     }
 }

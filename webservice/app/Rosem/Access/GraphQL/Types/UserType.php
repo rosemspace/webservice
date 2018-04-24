@@ -2,7 +2,6 @@
 
 namespace Rosem\Access\GraphQL\Types;
 
-use GraphQL\Type\Definition\Type;
 use Psrnext\GraphQL\{
     AbstractObjectType, TypeRegistryInterface
 };
@@ -23,35 +22,35 @@ class UserType extends AbstractObjectType
     {
         return [
             'id'         => [
-                'type'        => Type::id(),
+                'type'        => $typeRegistry->get('ID'),
                 'description' => 'The id of the user',
             ],
             'firstName'  => [
-                'type'        => Type::string(),
+                'type'        => $typeRegistry->get('String'),
                 'description' => 'The first name of the user',
             ],
             'lastName'   => [
-                'type'        => Type::string(),
+                'type'        => $typeRegistry->get('String'),
                 'description' => 'The last name of the user',
             ],
             'email'      => [
-                'type'        => Type::nonNull(Type::string()),
+                'type'        => $typeRegistry->nonNull($typeRegistry->get('String')),
                 'description' => 'The email of the user',
             ],
             'role'       => [
-                'type'        => Type::nonNull($typeRegistry->get(UserRoleType::class)),
+                'type'        => $typeRegistry->nonNull($typeRegistry->get(UserRoleType::class)),
                 'description' => 'The role of the user',
             ],
-            'created_at' => [
-                'type'        => Type::string(),
+            'createdAt' => [
+                'type'        => $typeRegistry->get('String'),
                 'description' => 'The time when the user was created',
             ],
-            'updated_at' => [
-                'type'        => Type::string(),
+            'updatedAt' => [
+                'type'        => $typeRegistry->get('String'),
                 'description' => 'The time when the user was updated',
             ],
-            'deleted_at' => [
-                'type'        => Type::string(),
+            'deletedAt' => [
+                'type'        => $typeRegistry->get('String'),
                 'description' => 'The time when the user was deleted',
             ],
         ];

@@ -31,6 +31,13 @@
 //echo '</pre>';
 //die;
 
+////conception
+//$container = new \Rosem\Container\Container;
+//\Psrnext\Container\AbstractFacade::registerContainer($container);
+//$container->registerServiceProviders([/*...*/]);
+//$container->set(\Psrnext\App\AppInterface::class, [\Psrnext\App\AppFactoryInterface::class, 'create']);
+//$container->get(\Psrnext\App\AppInterface::class)->boot([/*config*/]);
+
 //try {
     $app = Rosem\App\AppFactory::create();
     $app->loadServiceProviders(__DIR__ . '/config/service_providers.php');

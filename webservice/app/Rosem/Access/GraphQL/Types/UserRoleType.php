@@ -2,7 +2,6 @@
 
 namespace Rosem\Access\GraphQL\Types;
 
-use GraphQL\Type\Definition\Type;
 use Psrnext\GraphQL\{
     AbstractObjectType, TypeRegistryInterface
 };
@@ -23,11 +22,11 @@ class UserRoleType extends AbstractObjectType
     {
         return [
             'id'   => [
-                'type'        => Type::id(),
+                'type'        => $typeRegistry->get('ID'),
                 'description' => 'The id of the user role',
             ],
             'name' => [
-                'type'        => Type::nonNull(Type::string()),
+                'type'        => $typeRegistry->nonNull($typeRegistry->get('String')),
                 'description' => 'The name of the user role',
             ],
         ];
