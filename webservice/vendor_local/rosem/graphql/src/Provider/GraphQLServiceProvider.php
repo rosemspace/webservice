@@ -9,7 +9,7 @@ use GraphQL\Type\Schema as GraphQLSchema;
 use GraphQL\Type\SchemaConfig;
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, GraphQL\TypeRegistryInterface
+    App\AppInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, GraphQL\TypeRegistryInterface
 };
 use Psrnext\Config\ConfigInterface;
 use Rosem\GraphQL\Graph;
@@ -35,10 +35,9 @@ class GraphQLServiceProvider implements ServiceProviderInterface
      * - the value is a callable that will return the entry, aka the **factory**
      * Factories have the following signature:
      *        function(\Psr\Container\ContainerInterface $container)
-     *
      * @return callable[]
      */
-    public function getFactories() : array
+    public function getFactories(): array
     {
         return [
             TypeRegistryInterface::class => [static::class, 'createGraphQLTypeRegistry'],
@@ -57,12 +56,15 @@ class GraphQLServiceProvider implements ServiceProviderInterface
      * About factories parameters:
      * - the container (instance of `Psr\Container\ContainerInterface`)
      * - the entry to be extended. If the entry to be extended does not exist and the parameter is nullable, `null` will be passed.
-     *
      * @return callable[]
      */
-    public function getExtensions() : array
+    public function getExtensions(): array
     {
-        return [];
+        return [
+            AppInterface::class => function (ContainerInterface $container, AppInterface $app) {
+                $app->use(GraphQLMiddleware::class);
+            },
+        ];
     }
 
     public function createGraphQLTypeRegistry(ContainerInterface $container): TypeRegistry
@@ -103,8 +105,8 @@ class GraphQLServiceProvider implements ServiceProviderInterface
 
         return new GraphQLMiddleware(
             new StandardServer([
-                'schema'  => new GraphQLSchema($schemaConfig),
-                'context' => $container,
+                'schema'        => new GraphQLSchema($schemaConfig),
+                'context'       => $container,
                 'fieldResolver' => function ($source, $args, $context, ResolveInfo $info) {
                     $fieldName = $info->fieldName;
                     $property = null;
@@ -113,7 +115,7 @@ class GraphQLServiceProvider implements ServiceProviderInterface
                         if (isset($source[$fieldName])) {
                             $property = $source[$fieldName];
                         }
-                    } else if (\is_object($source)) {
+                    } elseif (\is_object($source)) {
                         if (isset($source->{$fieldName})) {
                             $property = $source->{$fieldName};
                         } else {
@@ -126,7 +128,7 @@ class GraphQLServiceProvider implements ServiceProviderInterface
                     }
 
                     return $property instanceof \Closure ? $property($source, $args, $context) : $property;
-                }
+                },
             ]),
             $config->get(static::CONFIG_URI, '/graphql'),
             $container->get(EnvironmentInterface::class)->isDevelopmentMode()

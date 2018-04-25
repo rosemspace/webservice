@@ -10,11 +10,10 @@ class AppFactory implements AppFactoryInterface
 {
     /**
      * @return AppInterface
+     * @throws \Rosem\Container\Exception\ContainerException
      */
     public static function create(): AppInterface
     {
-        $app = new App;
-
-        return $app;
+        return new App;
     }
 }

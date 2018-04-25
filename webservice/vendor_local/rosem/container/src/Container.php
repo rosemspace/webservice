@@ -5,6 +5,7 @@ namespace Rosem\Container;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Psrnext\Container\ServiceProviderInterface;
 
 class Container implements ContainerInterface
 {
@@ -13,14 +14,59 @@ class Container implements ContainerInterface
      */
     protected $definitions;
 
+    /**
+     * @var ContainerInterface
+     */
     protected $delegate;
 
     /**
      * Container constructor.
+     *
+     * @param iterable $serviceProviders
+     *
+     * @throws \InvalidArgumentException
+     * @throws Exception\ContainerException
      */
-    public function __construct()
+    public function __construct(iterable $serviceProviders)
     {
         AbstractFacade::registerContainer($this);
+
+        /** @var ServiceProviderInterface[] $serviceProviderInstances */
+        $serviceProviderInstances = [];
+
+        // 1. In the first pass, the container calls the getFactories method of all service providers.
+        foreach ($serviceProviders as $serviceProvider) {
+            if (\is_string($serviceProvider)) {
+                if (class_exists($serviceProvider)) {
+                    $serviceProviderInstances[] = $serviceProviderInstance = new $serviceProvider; //TODO: exception
+
+                    if ($serviceProviderInstance instanceof ServiceProviderInterface) {
+                        $this->set($serviceProvider, function () use ($serviceProviderInstance) {
+                            return $serviceProviderInstance;
+                        });
+
+                        foreach ($serviceProviderInstance->getFactories() as $key => $factory) {
+                            $this->set($key, $factory);
+                        }
+                    } else {
+                        Exception\ServiceProviderException::invalidInterface($serviceProvider);
+                    }
+                } else {
+                    Exception\ServiceProviderException::doesNotExist($serviceProvider);
+                }
+            } else {
+                Exception\ServiceProviderException::invalidType($serviceProvider);
+            }
+        }
+
+        // 2. In the second pass, the container calls the getExtensions method of all service providers.
+        foreach ($serviceProviderInstances as $serviceProviderInstance) {
+            foreach ($serviceProviderInstance->getExtensions() as $key => $factory) {
+                if ($this->has($key)) {
+                    $this->extend($key, $factory);
+                }
+            }
+        }
     }
 
     public function set(string $id, $factory): void
@@ -69,5 +115,10 @@ class Container implements ContainerInterface
     public function has($id)
     {
         return isset($this->definitions[$id]);
+    }
+
+    public function delegate(ContainerInterface $delegate): void
+    {
+        $this->delegate = $delegate;
     }
 }

@@ -11,18 +11,21 @@ use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
 use Psrnext\App\AppInterface;
-use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface
 };
-use Rosem\Container\Container;
 use Zend\Diactoros\{
     Server, ServerRequestFactory
 };
 
-class App extends Container implements AppInterface
+class App implements AppInterface
 {
     use ConfigFileTrait;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     /**
      * @var RequestHandlerInterface
@@ -34,71 +37,19 @@ class App extends Container implements AppInterface
      */
     protected $defaultHandler;
 
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
-        parent::__construct();
-
+        $this->container = $container;
         $this->defaultHandler = $this->getDefaultHandler();
         $this->nextHandler = $this->defaultHandler;
-        $this->set(AppInterface::class, function () {
-            return $this;
-        });
-    }
-
-    protected function addServiceProvider(ServiceProviderInterface $serviceProvider)
-    {
-        foreach ($serviceProvider->getFactories() as $key => $factory) {
-            $this->set($key, $factory);
-        }
-    }
-
-    /**
-     * @param string $serviceProvidersConfigFilePath
-     *
-     * @throws Exception
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \ReflectionException
-     */
-    public function loadServiceProviders(string $serviceProvidersConfigFilePath)
-    {
-        /** @var ServiceProviderInterface[] $serviceProviders */
-        $serviceProviders = [];
-
-        // 1. In the first pass, the container calls the getFactories method of all service providers.
-        foreach (self::getConfiguration($serviceProvidersConfigFilePath) as $serviceProviderClass) {
-            if (
-                \is_string($serviceProviderClass) &&
-                class_exists($serviceProviderClass)
-            ) {
-                $serviceProviders[] = $serviceProvider = new $serviceProviderClass; //TODO: exception
-                $this->set($serviceProviderClass, function () use ($serviceProvider) {
-                    return $serviceProvider;
-                });
-                $this->addServiceProvider($serviceProvider);
-            } else {
-                throw new Exception(
-                    'An item of service providers configuration should be a string ' .
-                    'that represents service provider class which implements ' .
-                    ServiceProviderInterface::class . ", got $serviceProviderClass");
-            }
-        }
-
-        // 2. In the second pass, the container calls the getExtensions method of all service providers.
-        foreach ($serviceProviders as $serviceProvider) {
-            foreach ($serviceProvider->getExtensions() as $key => $factory) {
-                if ($this->has($key)) {
-                    $this->extend($key, $factory);
-                }
-            }
-        }
     }
 
     protected function getDefaultHandler()
     {
         $nextHandler = &$this->defaultHandler;
+        $container = &$this->container;
 
-        return new class ($this, $nextHandler) implements RequestHandlerInterface
+        return new class ($container, $nextHandler) implements RequestHandlerInterface
         {
             /**
              * @var ContainerInterface
@@ -135,44 +86,37 @@ class App extends Container implements AppInterface
         };
     }
 
-    protected function addMiddleware(string $middleware)
-    {
-        $this->nextHandler = &$this->nextHandler->getNextHandlerPointer();
-        $this->nextHandler = new MiddlewareRequestHandler($this, $middleware);
-    }
-
     /**
-     * @param string $middlewaresConfigFilePath
+     * @param string $middleware
+     * @param float  $priority
      *
      * @throws Exception
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function loadMiddlewares(string $middlewaresConfigFilePath)
+    public function use(string $middleware, float $priority = 0): void
     {
-        foreach (self::getConfiguration($middlewaresConfigFilePath) as $middlewareClass) {
-            if (
-                \is_string($middlewareClass) &&
-                class_exists($middlewareClass)
-            ) {
-                $this->addMiddleware($middlewareClass);
-            } else {
-                throw new Exception(
-                    'An item of middlewares configuration should be a string ' .
-                    'that represents middleware class which implements ' .
-                    MiddlewareInterface::class . ", got $middlewareClass");
-            }
+        //TODO: priority functionality
+        if (
+            \is_string($middleware) &&
+            class_exists($middleware)
+        ) {
+            $this->nextHandler = &$this->nextHandler->getNextHandlerPointer();
+            $this->nextHandler = new MiddlewareRequestHandler($this->container, $middleware);
+        } else { // TODO: improve exceptions like in the container (service providers)
+            throw new Exception(
+                'An item of middlewares configuration should be a string ' .
+                'that represents middleware class which implements ' .
+                MiddlewareInterface::class . ", got $middleware");
         }
     }
 
     /**
-     * @param string $appConfigFilePath
+     * @param array $config
      *
      * @throws Exception
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function boot(string $appConfigFilePath)
+    public function boot(array $config): void
     {
         $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
         $this->nextHandler = &$this->nextHandler->getNextHandlerPointer();
@@ -181,5 +125,14 @@ class App extends Container implements AppInterface
         $server = new Server(function () {
         }, $request, $response);
         $server->listen();
+    }
+
+    public function get($id)
+    {
+        // TODO: Implement get() method.
+    }
+    public function has($id)
+    {
+        // TODO: Implement has() method.
     }
 }

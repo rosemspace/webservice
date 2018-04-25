@@ -4,13 +4,14 @@ namespace Rosem\App\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    Container\ServiceProviderInterface, Environment\EnvironmentInterface, Router\RouteCollectorInterface,
-    Router\RouteDispatcherInterface, ViewRenderer\ViewRendererInterface
+    App\AppFactoryInterface, App\AppInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, Router\RouteCollectorInterface, Router\RouteDispatcherInterface, ViewRenderer\ViewRendererInterface
 };
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
+use Rosem\App\App;
+use Rosem\App\AppFactory;
 use Rosem\App\ConfigFileTrait;
 use Rosem\App\Http\Controller\AppController;
 use Rosem\Environment\Environment;
@@ -27,6 +28,13 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
+            AppFactoryInterface::class => function () {
+                return new AppFactory;
+            },
+            AppInterface::class => function (ContainerInterface $container) {
+//                $container->get(AppFactoryInterface::class)->create();
+                return new App($container);
+            },
             EnvironmentInterface::class => function () {
                 $env = new Environment(getcwd() . '/..');
                 $env->load();
@@ -71,6 +79,10 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
+            AppInterface::class => function (ContainerInterface $container, AppInterface $app) {
+                $app->use(\Rosem\App\Http\Middleware\RouteMiddleware::class);
+                $app->use(\Rosem\App\Http\Middleware\RequestHandlerMiddleware::class);
+            },
             RouteCollectorInterface::class => function (
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector

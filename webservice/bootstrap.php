@@ -31,20 +31,18 @@
 //echo '</pre>';
 //die;
 
-////conception
-//$container = new \Rosem\Container\Container;
-//\Psrnext\Container\AbstractFacade::registerContainer($container);
-//$container->registerServiceProviders([/*...*/]);
+//conception
+$container = new \Rosem\Container\Container(include __DIR__ . '/config/service_providers.php'); //TODO: file exception
 //$container->set(\Psrnext\App\AppInterface::class, [\Psrnext\App\AppFactoryInterface::class, 'create']);
-//$container->get(\Psrnext\App\AppInterface::class)->boot([/*config*/]);
+$container->get(\Psrnext\App\AppInterface::class)->boot(include __DIR__ . '/config/app.php'); //TODO: file exception
 
 //try {
-    $app = Rosem\App\AppFactory::create();
-    $app->loadServiceProviders(__DIR__ . '/config/service_providers.php');
-    $app->loadMiddlewares(__DIR__ . '/config/middlewares.php');
-    $app->boot(__DIR__ . '/config/app.php');
+//    $app = Rosem\App\AppFactory::create();
+//    $app->loadServiceProviders(__DIR__ . '/config/service_providers.php');
+//    $app->loadMiddlewares(__DIR__ . '/config/middlewares.php');
+//    $app->boot(__DIR__ . '/config/app.php');
 
-$atlas = $app->get(\Atlas\Orm\Atlas::class);
+$atlas = $container->get(\Atlas\Orm\Atlas::class);
 var_dump($atlas->select(\Rosem\DataSource\User\UserMapper::class)->fetchRecordSet()->getArrayCopy());
 
 //    $entityManager = $app->get(\Doctrine\ORM\EntityManager::class);

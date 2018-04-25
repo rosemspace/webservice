@@ -36,7 +36,7 @@ abstract class AbstractFacade
      *
      * @return void
      */
-    final public static function registerContainer(ContainerInterface $container)
+    final public static function registerContainer(ContainerInterface $container): void
     {
         static::$container = $container;
     }

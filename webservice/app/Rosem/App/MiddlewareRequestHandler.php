@@ -12,13 +12,19 @@ use Psr\Http\Server\{
 
 class MiddlewareRequestHandler implements RequestHandlerInterface
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
     /**
-     * @var MiddlewareInterface
+     * @var string
      */
     private $middleware;
 
+    /**
+     * @var RequestHandlerInterface
+     */
     private $nextHandler;
 
     public function __construct(
@@ -33,12 +39,20 @@ class MiddlewareRequestHandler implements RequestHandlerInterface
      * @param ServerRequestInterface $request
      *
      * @return ResponseInterface
+     * @throws \InvalidArgumentException
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->container->get($this->middleware)->process($request, $this->nextHandler);
+        $middlewareInstance = $this->container->get($this->middleware);
+
+        if ($middlewareInstance instanceof MiddlewareInterface) {
+            return $middlewareInstance->process($request, $this->nextHandler);
+        }
+
+        throw new \InvalidArgumentException("The middleware \"$this->middleware\" should implement \"" .
+            MiddlewareInterface::class . '" interface'); //TODO: middleware exception
     }
 
     public function &getNextHandlerPointer()

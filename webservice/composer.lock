@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f9a5ea511f8bfaca153dcdf86f67817",
+    "content-hash": "371d561e8fe467a6b50d6feee62956df",
     "packages": [
         {
             "name": "analogue/orm",
@@ -2647,16 +2647,16 @@
         },
         {
             "name": "psrnext/app",
-            "version": "v0.0.2",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psrnext/app.git",
-                "reference": "7a1f5285c4c65680a21939e2777c3f240f84d0c8"
+                "reference": "630e18535b3b5c8240dabc5e588cbb4d623d77c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/app/zipball/7a1f5285c4c65680a21939e2777c3f240f84d0c8",
-                "reference": "7a1f5285c4c65680a21939e2777c3f240f84d0c8",
+                "url": "https://api.github.com/repos/psrnext/app/zipball/630e18535b3b5c8240dabc5e588cbb4d623d77c9",
+                "reference": "630e18535b3b5c8240dabc5e588cbb4d623d77c9",
                 "shasum": ""
             },
             "require": {
@@ -2682,7 +2682,7 @@
                 }
             ],
             "description": "Application standard",
-            "time": "2018-02-28T21:18:40+00:00"
+            "time": "2018-04-25T19:45:17+00:00"
         },
         {
             "name": "psrnext/config",
@@ -4309,16 +4309,16 @@
         },
         {
             "name": "zendframework/zend-eventmanager",
-            "version": "3.2.0",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-eventmanager.git",
-                "reference": "9d72db10ceb6e42fb92350c0cb54460da61bd79c"
+                "reference": "a5e2583a211f73604691586b8406ff7296a946dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/9d72db10ceb6e42fb92350c0cb54460da61bd79c",
-                "reference": "9d72db10ceb6e42fb92350c0cb54460da61bd79c",
+                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/a5e2583a211f73604691586b8406ff7296a946dd",
+                "reference": "a5e2583a211f73604691586b8406ff7296a946dd",
                 "shasum": ""
             },
             "require": {
@@ -4327,7 +4327,7 @@
             "require-dev": {
                 "athletic/athletic": "^0.1",
                 "container-interop/container-interop": "^1.1.0",
-                "phpunit/phpunit": "^6.0.7 || ^5.7.14",
+                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2",
                 "zendframework/zend-coding-standard": "~1.0.0",
                 "zendframework/zend-stdlib": "^2.7.3 || ^3.0"
             },
@@ -4359,7 +4359,7 @@
                 "events",
                 "zf2"
             ],
-            "time": "2017-07-11T19:17:22+00:00"
+            "time": "2018-04-25T15:33:34+00:00"
         },
         {
             "name": "zendframework/zend-hydrator",

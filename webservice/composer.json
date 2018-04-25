@@ -29,7 +29,7 @@
         "nikic/fast-route": "^1.3",
         "php": ">=7.1.0",
         "psr7-sessions/storageless": "^4.0",
-        "psrnext/app": "^0.0.2",
+        "psrnext/app": "^0.0.3",
         "psrnext/service-provider": "^0.0.1",
         "psrnext/view-renderer": "^0.0.1",
         "robmorgan/phinx": "^0.9",
