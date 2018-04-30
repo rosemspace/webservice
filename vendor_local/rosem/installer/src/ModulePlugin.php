@@ -1,6 +1,6 @@
 <?php
 
-namespace True\Installer;
+namespace Rosem\Installer;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;

@@ -1,1 +1,8 @@
+/.env
+/.vagrant
 /bkp
+/public/js
+/public/css
+/tmp
+/var
+/vendor

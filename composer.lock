@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "371d561e8fe467a6b50d6feee62956df",
+    "content-hash": "acf9b5f0ffd2b4cb384f0f11a17e04b3",
     "packages": [
         {
             "name": "analogue/orm",
@@ -1167,7 +1167,7 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v5.6.17",
+            "version": "v5.6.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -1211,7 +1211,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.6.17",
+            "version": "v5.6.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -1255,16 +1255,16 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v5.6.17",
+            "version": "v5.6.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "a949e082dbb520fdcb2798e0a5408669724aa197"
+                "reference": "1d0eebfe6cf18a8e2f7e392dec829559f7c0cc17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/a949e082dbb520fdcb2798e0a5408669724aa197",
-                "reference": "a949e082dbb520fdcb2798e0a5408669724aa197",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/1d0eebfe6cf18a8e2f7e392dec829559f7c0cc17",
+                "reference": "1d0eebfe6cf18a8e2f7e392dec829559f7c0cc17",
                 "shasum": ""
             },
             "require": {
@@ -1310,11 +1310,11 @@
                 "orm",
                 "sql"
             ],
-            "time": "2018-04-17T12:36:27+00:00"
+            "time": "2018-04-29T12:57:53+00:00"
         },
         {
             "name": "illuminate/events",
-            "version": "v5.6.17",
+            "version": "v5.6.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
@@ -1359,16 +1359,16 @@
         },
         {
             "name": "illuminate/pagination",
-            "version": "v5.6.17",
+            "version": "v5.6.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
-                "reference": "77e9cfd4daf526aab9bf9c75ee1676f3ba6dff51"
+                "reference": "030f10b9adf986bbf028c46ca3c4eca8f910dc6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/pagination/zipball/77e9cfd4daf526aab9bf9c75ee1676f3ba6dff51",
-                "reference": "77e9cfd4daf526aab9bf9c75ee1676f3ba6dff51",
+                "url": "https://api.github.com/repos/illuminate/pagination/zipball/030f10b9adf986bbf028c46ca3c4eca8f910dc6e",
+                "reference": "030f10b9adf986bbf028c46ca3c4eca8f910dc6e",
                 "shasum": ""
             },
             "require": {
@@ -1399,20 +1399,20 @@
             ],
             "description": "The Illuminate Pagination package.",
             "homepage": "https://laravel.com",
-            "time": "2018-03-26T13:17:45+00:00"
+            "time": "2018-04-25T14:32:32+00:00"
         },
         {
             "name": "illuminate/support",
-            "version": "v5.6.17",
+            "version": "v5.6.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "cc8d6f5cef3a901de6bb7d1b362102a6db001085"
+                "reference": "4ecadcab0816eae4a2aeca5ec402c681ee62b191"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/cc8d6f5cef3a901de6bb7d1b362102a6db001085",
-                "reference": "cc8d6f5cef3a901de6bb7d1b362102a6db001085",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/4ecadcab0816eae4a2aeca5ec402c681ee62b191",
+                "reference": "4ecadcab0816eae4a2aeca5ec402c681ee62b191",
                 "shasum": ""
             },
             "require": {
@@ -1456,7 +1456,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2018-04-17T12:26:47+00:00"
+            "time": "2018-04-29T13:02:42+00:00"
         },
         {
             "name": "kint-php/kint",
@@ -1608,7 +1608,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "Developer"
+                    "role": "developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -2628,7 +2628,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "Developer"
+                    "role": "developer"
                 },
                 {
                     "name": "Marco Pivetta",
@@ -2822,12 +2822,12 @@
             "version": "v0.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/psrnext/hasher.git",
+                "url": "https://github.com/psrnext/hash.git",
                 "reference": "8894da8cc97308ef3d23bd62b4ac953f953b524d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/hasher/zipball/8894da8cc97308ef3d23bd62b4ac953f953b524d",
+                "url": "https://api.github.com/repos/psrnext/hash/zipball/8894da8cc97308ef3d23bd62b4ac953f953b524d",
                 "reference": "8894da8cc97308ef3d23bd62b4ac953f953b524d",
                 "shasum": ""
             },
@@ -2976,12 +2976,12 @@
             "version": "v0.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/psrnext/view-renderer.git",
+                "url": "https://github.com/psrnext/view.git",
                 "reference": "bfa5f676b7acdfb244f80c5aa56160296bbb38f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/view-renderer/zipball/bfa5f676b7acdfb244f80c5aa56160296bbb38f7",
+                "url": "https://api.github.com/repos/psrnext/view/zipball/bfa5f676b7acdfb244f80c5aa56160296bbb38f7",
                 "reference": "bfa5f676b7acdfb244f80c5aa56160296bbb38f7",
                 "shasum": ""
             },
@@ -3015,17 +3015,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "9deddd9fc64853356d688a1514318abb2d9f3d4b"
+                "reference": "d3268ea60c79284f9a8db7b78eb48cc99cc5d471"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9deddd9fc64853356d688a1514318abb2d9f3d4b",
-                "reference": "9deddd9fc64853356d688a1514318abb2d9f3d4b",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/d3268ea60c79284f9a8db7b78eb48cc99cc5d471",
+                "reference": "d3268ea60c79284f9a8db7b78eb48cc99cc5d471",
                 "shasum": ""
             },
             "conflict": {
                 "3f/pygmentize": "<1.2",
-                "adodb/adodb-php": "<5.20.6",
+                "adodb/adodb-php": "<5.20.12",
                 "amphp/artax": "<1.0.6|>=2,<2.0.6",
                 "amphp/http": "<1.0.1",
                 "asymmetricrypt/asymmetricrypt": ">=0,<9.9.99",
@@ -3118,7 +3118,7 @@
                 "symfony/web-profiler-bundle": ">=2,<2.3.19|>=2.4,<2.4.9|>=2.5,<2.5.4",
                 "symfony/yaml": ">=2,<2.0.22|>=2.1,<2.1.7",
                 "thelia/backoffice-default-template": ">=2.1,<2.1.2",
-                "thelia/thelia": ">=2.1,<2.1.2|>=2.1.0-beta1,<2.1.3",
+                "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
                 "titon/framework": ">=0,<9.9.99",
                 "twig/twig": "<1.20",
                 "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.22|>=8,<8.7.5",
@@ -3170,7 +3170,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-04-22T05:30:14+00:00"
+            "time": "2018-04-30T07:23:33+00:00"
         },
         {
             "name": "robmorgan/phinx",
@@ -3478,7 +3478,7 @@
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/installer",
-                "reference": "0bf9fe2e09564bab70b8891161ec5e5101c1a8c7",
+                "reference": "519d7664c0b6a6a9ee1d420933a6fdd78d1d60eb",
                 "shasum": null
             },
             "require": {
@@ -3489,11 +3489,11 @@
             },
             "type": "composer-plugin",
             "extra": {
-                "class": "True\\Installer\\ModulePlugin"
+                "class": "Rosem\\Installer\\ModulePlugin"
             },
             "autoload": {
                 "psr-4": {
-                    "True\\Installer\\": "src/"
+                    "Rosem\\Installer\\": "src/"
                 }
             },
             "license": [
@@ -4425,31 +4425,31 @@
         },
         {
             "name": "zendframework/zend-stdlib",
-            "version": "3.1.1",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "10ef03144902d1955f935fff5346ed52f7d99bcc"
+                "reference": "cd164b4a18b5d1aeb69be2c26db035b5ed6925ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/10ef03144902d1955f935fff5346ed52f7d99bcc",
-                "reference": "10ef03144902d1955f935fff5346ed52f7d99bcc",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/cd164b4a18b5d1aeb69be2c26db035b5ed6925ae",
+                "reference": "cd164b4a18b5d1aeb69be2c26db035b5ed6925ae",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.6 || ^7.0"
             },
             "require-dev": {
-                "athletic/athletic": "~0.1",
-                "phpunit/phpunit": "~4.0",
+                "phpbench/phpbench": "^0.13",
+                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2",
                 "zendframework/zend-coding-standard": "~1.0.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1-dev",
-                    "dev-develop": "3.2-dev"
+                    "dev-master": "3.2.x-dev",
+                    "dev-develop": "3.3.x-dev"
                 }
             },
             "autoload": {
@@ -4461,12 +4461,13 @@
             "license": [
                 "BSD-3-Clause"
             ],
-            "homepage": "https://github.com/zendframework/zend-stdlib",
+            "description": "SPL extensions, array utilities, error handlers, and more",
             "keywords": [
+                "ZendFramework",
                 "stdlib",
-                "zf2"
+                "zf"
             ],
-            "time": "2018-04-12T16:05:42+00:00"
+            "time": "2018-04-30T13:50:40+00:00"
         }
     ],
     "packages-dev": [

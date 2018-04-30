@@ -4,11 +4,11 @@
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "True\\Installer\\": "src/"
+      "Rosem\\Installer\\": "src/"
   }
   },
   "extra": {
-    "class": "True\\Installer\\ModulePlugin"
+    "class": "Rosem\\Installer\\ModulePlugin"
   },
   "require": {
     "composer-plugin-api": "^1.0"

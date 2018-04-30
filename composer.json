@@ -1,5 +1,5 @@
 {
-    "name": "rosem/rosem",
+    "name": "rosem/webservice",
     "description": "Yet another Web Framework",
     "keywords": ["framework"],
     "license": "MIT",
@@ -10,7 +10,7 @@
         {
             "name": "ma1oy",
             "email": "iroman.via@gmail.com",
-            "homepage": "http://truecode.info",
+            "homepage": "https://ma1oy.github.io",
             "role": "lead"
         }
     ],
@@ -64,7 +64,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Rosem\\": "app/Rosem"
+            "Rosem\\": "src/Rosem"
         }
     },
     "repositories": [
