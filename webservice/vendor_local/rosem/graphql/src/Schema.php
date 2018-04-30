@@ -2,9 +2,10 @@
 
 namespace Rosem\GraphQL;
 
+use GraphQL\Type\Definition\ObjectType;
 use Psr\Container\ContainerInterface;
 use Psrnext\GraphQL\{
-    AbstractSchema, NodeInterface, QueryInterface, TypeRegistryInterface
+    AbstractSchema, NodeType, QueryInterface, TypeRegistryInterface
 };
 
 class Schema extends AbstractSchema
@@ -36,14 +37,14 @@ class Schema extends AbstractSchema
     {
         if (\in_array(
             $type,
-            [self::NODE_TYPE_QUERY, self::NODE_TYPE_MUTATION, self::NODE_TYPE_SUBSCRIPTION],
+            [NodeType::QUERY, NodeType::MUTATION, NodeType::SUBSCRIPTION],
             true)
         ) {
             if (\is_array($nodeFactory) && \is_string(reset($nodeFactory))) {
                 $nodeFactory[key($nodeFactory)] = $this->container->get(reset($nodeFactory));
             }
 
-            $node = \call_user_func($nodeFactory, $this->typeRegistry);
+            $node = $nodeFactory($this->typeRegistry);
 
             if ($node instanceof QueryInterface) {
                 $nodeArray = [
@@ -62,7 +63,7 @@ class Schema extends AbstractSchema
                     throw new \LogicException("The node \"$name\" of the type \"$type\" already exists");
                 }
             } else {
-                throw new \LogicException('Factory return type should be ' . NodeInterface::class);
+                throw new \LogicException('Factory return type should be ' . QueryInterface::class);
             }
         } else {
             throw new \InvalidArgumentException('Invalid entry type of the graph');
@@ -81,18 +82,22 @@ class Schema extends AbstractSchema
         return null;
     }
 
-    public function getQueryData(): ?array
+    public function getTree(): array
     {
-        return $this->getRootType(self::NODE_TYPE_QUERY);
-    }
+        $tree = [];
 
-    public function getMutationData(): ?array
-    {
-        return $this->getRootType(self::NODE_TYPE_MUTATION);
-    }
+        if ($query = $this->getRootType(NodeType::QUERY)) {
+            $tree['query'] = new ObjectType($query);
+        }
 
-    public function getSubscriptionData(): ?array
-    {
-        return $this->getRootType(self::NODE_TYPE_SUBSCRIPTION);
+        if ($mutation = $this->getRootType(NodeType::MUTATION)) {
+            $tree['mutation'] = new ObjectType($mutation);
+        }
+
+        if ($subscription = $this->getRootType(NodeType::SUBSCRIPTION)) {
+            $tree['subscription'] = new ObjectType($subscription);
+        }
+
+        return $tree;
     }
 }

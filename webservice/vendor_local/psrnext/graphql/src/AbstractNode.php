@@ -2,7 +2,7 @@
 
 namespace Psrnext\GraphQL;
 
-abstract class AbstractNode implements NodeInterface
+abstract class AbstractNode implements DescribableInterface
 {
     /**
      * @var \Closure[]

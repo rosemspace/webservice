@@ -2,7 +2,7 @@
 
 namespace Psrnext\GraphQL;
 
-interface ObjectTypeInterface extends NodeInterface
+interface ObjectTypeInterface extends DescribableInterface
 {
     public function getName(): string;
 

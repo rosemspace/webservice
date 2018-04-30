@@ -4,7 +4,7 @@ namespace Psrnext\GraphQL;
 
 use GraphQL\Type\Definition\ResolveInfo;
 
-interface QueryInterface extends NodeInterface
+interface QueryInterface extends DescribableInterface
 {
     public function getType(TypeRegistryInterface $typeRegistry);
 

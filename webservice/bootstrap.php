@@ -43,7 +43,7 @@ $container->get(\Psrnext\App\AppInterface::class)->boot(include __DIR__ . '/conf
 //    $app->boot(__DIR__ . '/config/app.php');
 
 $atlas = $container->get(\Atlas\Orm\Atlas::class);
-var_dump($atlas->select(\Rosem\DataSource\User\UserMapper::class)->fetchRecordSet()->getArrayCopy());
+//var_dump($atlas->select(\Rosem\DataSource\User\UserMapper::class)->fetchRecordSet()->getArrayCopy());
 
 //    $entityManager = $app->get(\Doctrine\ORM\EntityManager::class);
 //    $newUser = new \Rosem\Access\Entity\User;

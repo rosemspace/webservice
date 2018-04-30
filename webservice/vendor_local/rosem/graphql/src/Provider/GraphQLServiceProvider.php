@@ -85,23 +85,11 @@ class GraphQLServiceProvider implements ServiceProviderInterface
         $config = $container->get(ConfigInterface::class);
         $schema = $container->get(GraphInterface::class)
             ->schema($config->get(static::CONFIG_SCHEMA, 'default'));
-        $schemaConfig = SchemaConfig::create();
+        $schemaConfig = SchemaConfig::create($schema->getTree());
         $typeRegistry = $container->get(TypeRegistryInterface::class);
         $schemaConfig->setTypeLoader(function ($name) use (&$typeRegistry) {
             return $typeRegistry->get($name);
         });
-
-        if ($query = $schema->getQueryData()) {
-            $schemaConfig->setQuery(new ObjectType($query));
-        }
-
-        if ($mutation = $schema->getMutationData()) {
-            $schemaConfig->setMutation(new ObjectType($mutation));
-        }
-
-        if ($subscription = $schema->getSubscriptionData()) {
-            $schemaConfig->setSubscription(new ObjectType($subscription));
-        }
 
         return new GraphQLMiddleware(
             new StandardServer([

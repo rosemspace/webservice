@@ -23,11 +23,18 @@ final class TypeRegistry implements TypeRegistryInterface
     /**
      * @var ObjectTypeInterface[]
      */
-    private $types = [];
+    private $types;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->types = [
+            Type::BOOLEAN => $this->boolean(),
+            Type::ID      => $this->id(),
+            Type::INT     => $this->int(),
+            Type::FLOAT   => $this->float(),
+            Type::STRING  => $this->string(),
+        ];
     }
 
     /**
@@ -42,40 +49,27 @@ final class TypeRegistry implements TypeRegistryInterface
      */
     public function get($id)
     {
-        switch ($id) {
-            case Type::INT:
-                return Type::int();
-            case Type::STRING:
-                return Type::string();
-            case Type::BOOLEAN:
-                return Type::boolean();
-            case Type::FLOAT:
-                return Type::float();
-            case Type::ID:
-                return Type::id();
-            default:
-                $placeholder = &$this->types[$id];
+        $placeholder = &$this->types[$id];
 
-                if (null === $placeholder) {
-                    // TODO: improve and add exception when not a type
-                    $type = $this->container->get($id);
+        if (null === $placeholder) {
+            // TODO: improve and add exception when not a type
+            $type = $this->container->get($id);
 
-                    if (!$type instanceof ObjectTypeInterface) {
-                        throw new \InvalidArgumentException("Type \"$id\" is not defined.");
-                    }
+            if (!$type instanceof ObjectTypeInterface) {
+                throw new \InvalidArgumentException("Type \"$id\" is not defined.");
+            }
 
-                    $placeholder = new ObjectType([
-                        'name'        => $type->getName(),
-                        'description' => $type->getDescription(),
-                        'fields'      => function () use (&$type) {
-                            return $type->getFields($this);
-                        },
-                    ]);
-                    $this->types[$type->getName()] = &$placeholder; // alias
-                }
-
-                return $placeholder;
+            $placeholder = new ObjectType([
+                'name'        => $type->getName(),
+                'description' => $type->getDescription(),
+                'fields'      => function () use (&$type) {
+                    return $type->getFields($this);
+                },
+            ]);
+            $this->types[$type->getName()] = &$placeholder; // alias
         }
+
+        return $placeholder;
     }
 
     /**
@@ -91,6 +85,31 @@ final class TypeRegistry implements TypeRegistryInterface
     public function has($id): bool
     {
         return $this->container->has($id);
+    }
+
+    public function boolean()
+    {
+        return Type::boolean();
+    }
+
+    public function id()
+    {
+        return Type::id();
+    }
+
+    public function int()
+    {
+        return Type::int();
+    }
+
+    public function float()
+    {
+        return Type::float();
+    }
+
+    public function string()
+    {
+        return Type::string();
     }
 
     public function nonNull($typeInstance): Type

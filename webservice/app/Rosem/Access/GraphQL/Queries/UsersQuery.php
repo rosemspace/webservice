@@ -3,9 +3,7 @@
 namespace Rosem\Access\GraphQL\Queries;
 
 use Doctrine\ORM\EntityManager;
-use GraphQL\Type\Definition\{
-    ResolveInfo, Type
-};
+use GraphQL\Type\Definition\ResolveInfo;
 use Psrnext\GraphQL\{
     AbstractQuery, TypeRegistryInterface
 };
@@ -20,14 +18,16 @@ class UsersQuery extends AbstractQuery
 
     public function getType(TypeRegistryInterface $typeRegistry)
     {
-        return Type::nonNull(Type::listOf(Type::nonNull($typeRegistry->get(UserType::class))));
+        return $typeRegistry->nonNull(
+            $typeRegistry->listOf($typeRegistry->nonNull($typeRegistry->get(UserType::class)))
+        );
     }
 
-    public function getDefaultArguments(TypeRegistryInterface $typeRegistry): array
+    public function getBaseArguments(TypeRegistryInterface $typeRegistry): array
     {
         return [
-            'id'    => Type::id(),
-            'email' => Type::string(),
+            'id'    => $typeRegistry->id(),
+            'email' => $typeRegistry->string(),
         ];
     }
 

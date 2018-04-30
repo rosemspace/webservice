@@ -2,7 +2,7 @@
 
 namespace Psrnext\GraphQL;
 
-interface NodeInterface
+interface DescribableInterface
 {
     public function getDescription(): string;
 }

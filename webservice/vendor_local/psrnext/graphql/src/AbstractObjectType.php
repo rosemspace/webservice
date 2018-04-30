@@ -4,7 +4,14 @@ namespace Psrnext\GraphQL;
 
 abstract class AbstractObjectType extends AbstractNode implements ObjectTypeInterface
 {
-    abstract public function getDefaultFields(TypeRegistryInterface $typeRegistry);
+    protected const TYPE_REGEX = '~^.*\\\|Type$~';
+
+    abstract public function getBaseFields(TypeRegistryInterface $typeRegistry);
+
+    public function getName(): string
+    {
+        return preg_replace(self::TYPE_REGEX, '', static::class);
+    }
 
     public function addFields(\Closure $fieldFactory): void
     {
@@ -12,7 +19,7 @@ abstract class AbstractObjectType extends AbstractNode implements ObjectTypeInte
     }
 
     public function getFields(TypeRegistryInterface $typeRegistry): array {
-        $fields = $this->getDefaultFields($typeRegistry);
+        $fields = $this->getBaseFields($typeRegistry);
 
         foreach ($this->factories as $factory) {
             $fields += $factory($typeRegistry);
