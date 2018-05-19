@@ -7,23 +7,20 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Rosem\Http\Authentication\AbstractHttpAuthentication;
+use function call_user_func;
+use function count;
+use function strlen;
 
 class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implements MiddlewareInterface
 {
+    private const AUTHORIZATION_HEADER_PREFIX = 'Digest';
+
+    private const AUTHORIZATION_HEADER_PARTS = ['nonce', 'nc', 'cnonce', 'qop', 'username', 'uri', 'response'];
+
     /**
      * @var string|null The nonce value
      */
     private $nonce;
-
-    /**
-     * Set the nonce value.
-     *
-     * @param string $nonce
-     */
-    public function setNonce(string $nonce): void
-    {
-        $this->nonce = $nonce;
-    }
 
     /**
      * Process a server request and return a response.
@@ -38,12 +35,16 @@ class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implemen
         ServerRequestInterface $request,
         RequestHandlerInterface $requestHandler
     ): ResponseInterface {
-        return $this->createResponse($request, $requestHandler, sprintf(
-            'Digest realm="%s",qop="auth",nonce="%s",opaque="%s"',
-            $this->realm,
-            $this->nonce ?: uniqid(),
-            md5($this->realm)
-        ));
+        return $this->createResponse(
+            $request,
+            $requestHandler,
+            sprintf(
+                self::AUTHORIZATION_HEADER_PREFIX . ' realm="%s",qop="auth",nonce="%s",opaque="%s"',
+                $this->realm,
+                $this->nonce ?: uniqid('', true),
+                md5($this->realm)
+            )
+        );
     }
 
     /**
@@ -51,34 +52,25 @@ class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implemen
      *
      * @param ServerRequestInterface $request
      *
-     * @return mixed
+     * @return string|null
      */
-    public function authenticate(ServerRequestInterface $request)
+    public function authenticate(ServerRequestInterface $request): ?string
     {
         $authHeader = $request->getHeader('Authorization');
 
-        if (empty($authHeader) || strpos(reset($authHeader), 'Digest ') !== 0) {
-            return null;
-        }
-
-        $neededParts = [
-            'nonce'    => 1,
-            'nc'       => 1,
-            'cnonce'   => 1,
-            'qop'      => 1,
-            'username' => 1,
-            'uri'      => 1,
-            'response' => 1,
-        ];
-
-        if (!preg_match_all(
-            '/('
-            . implode('|', array_keys($neededParts))
-            . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))/',
-            substr(reset($authHeader), 7),
-            $matches,
-            PREG_SET_ORDER
-        )) {
+        /** @noinspection NotOptimalIfConditionsInspection */
+        if (empty($authHeader)
+            || strpos(reset($authHeader), self::AUTHORIZATION_HEADER_PREFIX . ' ') !== 0
+            || !preg_match_all(
+                '/('
+                . implode('|', self::AUTHORIZATION_HEADER_PARTS)
+                . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))/',
+                substr(reset($authHeader), strlen(self::AUTHORIZATION_HEADER_PREFIX) + 1),
+                $matches,
+                PREG_SET_ORDER
+            )
+            || count($matches) !== count(self::AUTHORIZATION_HEADER_PARTS)
+        ) {
             return null;
         }
 
@@ -87,19 +79,21 @@ class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implemen
         /** @var array[] $matches */
         foreach ($matches as $match) {
             $authorization[$match[1]] = $match[3] ?: $match[4];
-            unset($neededParts[$match[1]]);
         }
 
-        if (!empty($neededParts)) {
-            return null;
-        }
+        $password = call_user_func($this->getPassword, $authorization['username']);
 
-        //Check whether user exists
-        if (!isset($this->users[$authorization['username']])) {
-            return null;
-        }
-
-        if (!$this->isValid($authorization, $request->getMethod(), $this->users[$authorization['username']])) {
+        if (!$password
+            || $authorization['response'] !== md5(sprintf(
+                '%s:%s:%s:%s:%s:%s',
+                md5("{$authorization['username']}:$this->realm:$password"),
+                $authorization['nonce'],
+                $authorization['nc'],
+                $authorization['cnonce'],
+                $authorization['qop'],
+                md5($request->getMethod() . ':' . $authorization['uri'])
+            ))
+        ) {
             return null;
         }
 
@@ -107,26 +101,12 @@ class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implemen
     }
 
     /**
-     * Validates the authorization.
+     * Set the nonce value.
      *
-     * @param array  $authorization
-     * @param string $method
-     * @param string $password
-     *
-     * @return bool
+     * @param string $nonce
      */
-    private function isValid(array $authorization, string $method, string $password): bool
+    public function setNonce(string $nonce): void
     {
-        $validResponse = md5(sprintf(
-            '%s:%s:%s:%s:%s:%s',
-            md5(sprintf('%s:%s:%s', $authorization['username'], $this->realm, $password)),
-            $authorization['nonce'],
-            $authorization['nc'],
-            $authorization['cnonce'],
-            $authorization['qop'],
-            md5(sprintf('%s:%s', $method, $authorization['uri']))
-        ));
-
-        return $authorization['response'] === $validResponse;
+        $this->nonce = $nonce;
     }
 }

@@ -73,17 +73,21 @@ class AppServiceProvider implements ServiceProviderInterface
             BasicAuthenticationMiddleware::class => function (ContainerInterface $container) {
                 return new BasicAuthenticationMiddleware(
                     $container->get(ResponseFactoryInterface::class),
-                    [
-                        'roshe' => '1111',
-                    ]
+                    function ($username): ?string {
+                        return [
+                            'roshe' => '1111',
+                        ][$username] ?? null;
+                    }
                 );
             },
             DigestAuthenticationMiddleware::class => function (ContainerInterface $container) {
                 return new DigestAuthenticationMiddleware(
                     $container->get(ResponseFactoryInterface::class),
-                    [
-                        'roshe' => '1111',
-                    ]
+                    function ($username): ?string {
+                        return [
+                            'roshe' => '1111',
+                        ][$username] ?? null;
+                    }
                 );
             },
         ];

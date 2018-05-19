@@ -7,9 +7,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Rosem\Http\Authentication\AbstractHttpAuthentication;
+use function call_user_func;
 
 class BasicAuthenticationMiddleware extends AbstractHttpAuthentication implements MiddlewareInterface
 {
+    private const AUTHORIZATION_HEADER_PREFIX = 'Basic';
+
     /**
      * Process a server request and return a response.
      *
@@ -23,7 +26,11 @@ class BasicAuthenticationMiddleware extends AbstractHttpAuthentication implement
         ServerRequestInterface $request,
         RequestHandlerInterface $requestHandler
     ): ResponseInterface {
-        return $this->createResponse($request, $requestHandler, sprintf('Basic realm="%s"', $this->realm));
+        return $this->createResponse(
+            $request,
+            $requestHandler,
+            self::AUTHORIZATION_HEADER_PREFIX . ' realm="' . $this->realm . '"'
+        );
     }
 
     /**
@@ -31,9 +38,9 @@ class BasicAuthenticationMiddleware extends AbstractHttpAuthentication implement
      *
      * @param ServerRequestInterface $request
      *
-     * @return mixed
+     * @return string|null
      */
-    public function authenticate(ServerRequestInterface $request)
+    public function authenticate(ServerRequestInterface $request): ?string
     {
         $authHeader = $request->getHeader('Authorization');
 
@@ -42,21 +49,17 @@ class BasicAuthenticationMiddleware extends AbstractHttpAuthentication implement
         }
 
         if (!preg_match(
-            '/Basic (?<credentials>[a-zA-Z0-9\+\/\=]+)/',
+            '/' . self::AUTHORIZATION_HEADER_PREFIX . ' (?<credentials>[a-zA-Z0-9\+\/\=]+)/',
             reset($authHeader),
             $match)
         ) {
             return null;
         }
 
-        [$username, $password] = explode(':', base64_decode($match['credentials']), 2);
+        [$username, $enteredPassword] = explode(':', base64_decode($match['credentials']), 2);
+        $password = call_user_func($this->getPassword, $username);
 
-        //Check the user
-        if (!isset($this->users[$username])) {
-            return null;
-        }
-
-        if ($this->users[$username] !== $password) {
+        if (!$password || $password !== $enteredPassword) {
             return null;
         }
 
