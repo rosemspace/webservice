@@ -1,16 +1,16 @@
 <?php
 
-namespace Rosem\BackOffice\Provider;
+namespace Rosem\Admin\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\ViewRenderer\ViewRendererInterface;
-use Rosem\BackOffice\Http\Controller\BackOfficeController;
+use Rosem\Admin\Http\Controller\AdminController;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Router\RouteCollectorInterface;
 
-class BackOfficeServiceProvider implements ServiceProviderInterface
+class AdminServiceProvider implements ServiceProviderInterface
 {
     /**
      * Returns a list of all container entries registered by this service provider.
@@ -20,8 +20,8 @@ class BackOfficeServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            BackOfficeController::class => function (ContainerInterface $container) {
-                return new BackOfficeController(
+            AdminController::class => function (ContainerInterface $container) {
+                return new AdminController(
                     $container->get(ResponseFactoryInterface::class),
                     $container->get(ViewRendererInterface::class),
                     $container->get(ConfigInterface::class)
@@ -43,8 +43,8 @@ class BackOfficeServiceProvider implements ServiceProviderInterface
                 RouteCollectorInterface $routeCollector
             ) {
                 $routeCollector->get(
-                    "/{$container->get(ConfigInterface::class)->get('backOffice.uri')}[/{relativePath:.*}]",
-                    [BackOfficeController::class, 'index']
+                    "/{$container->get(ConfigInterface::class)->get('admin.uri')}[/{any:.*}]",
+                    [AdminController::class, 'index']
                 );
             },
         ];

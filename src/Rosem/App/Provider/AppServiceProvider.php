@@ -126,8 +126,9 @@ class AppServiceProvider implements ServiceProviderInterface
                     'charset'         => $config->get('app.meta.charset'),
                     'appName'         => $config->get('app.name'),
                     'appEnv'          => $config->get('app.env'),
-                    'metaTitlePrefix' => $config->get('app.meta.titlePrefix'),
-                    'metaTitleSuffix' => $config->get('app.meta.titleSuffix'),
+                    'metaTitlePrefix' => $config->get('app.meta.title_prefix'),
+                    'metaTitleSuffix' => $config->get('app.meta.title_suffix'),
+                    'csrfToken'       => '4sWPhTlJAmt1IcyNq1FCyivsAVhHqjiDCKRXOgOQock=',
                     'polyfills'       => $config->get('app.polyfills'),
                 ]);
             },
@@ -175,7 +176,7 @@ class AppServiceProvider implements ServiceProviderInterface
     {
         return new class (\League\Plates\Engine::create(
             $container->get(ConfigInterface::class)->get('app.paths.public'),
-            'html'
+            'phtml'
         )) implements ViewRendererInterface
         {
             /**

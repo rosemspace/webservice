@@ -15,7 +15,9 @@ class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implemen
 {
     private const AUTHORIZATION_HEADER_PREFIX = 'Digest';
 
-    private const AUTHORIZATION_HEADER_PARTS = ['nonce', 'nc', 'cnonce', 'qop', 'username', 'uri', 'response'];
+    private const AUTHORIZATION_HEADER_NEEDED_PARTS = [
+        'username', 'nonce', 'uri', 'response', 'qop', 'nc', 'cnonce'
+    ];
 
     /**
      * @var string|null The nonce value
@@ -63,13 +65,13 @@ class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implemen
             || strpos(reset($authHeader), self::AUTHORIZATION_HEADER_PREFIX . ' ') !== 0
             || !preg_match_all(
                 '/('
-                . implode('|', self::AUTHORIZATION_HEADER_PARTS)
-                . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))/',
+                . implode('|', self::AUTHORIZATION_HEADER_NEEDED_PARTS)
+                . ')=(?|\'([^\']+?)\'|"([^"]+?)"|([^\s,]+))/',
                 substr(reset($authHeader), strlen(self::AUTHORIZATION_HEADER_PREFIX) + 1),
                 $matches,
                 PREG_SET_ORDER
             )
-            || count($matches) !== count(self::AUTHORIZATION_HEADER_PARTS)
+            || count($matches) !== count(self::AUTHORIZATION_HEADER_NEEDED_PARTS)
         ) {
             return null;
         }
@@ -78,7 +80,7 @@ class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implemen
 
         /** @var array[] $matches */
         foreach ($matches as $match) {
-            $authorization[$match[1]] = $match[3] ?: $match[4];
+            $authorization[$match[1]] = $match[2];
         }
 
         $password = call_user_func($this->getPassword, $authorization['username']);

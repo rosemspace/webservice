@@ -48,14 +48,14 @@ class AppController
 
         if ($body->isWritable()) {
             $viewString = $this->view->render(
-                'login',
+                'index',
                 [
-                    'metaTitlePrefix' => $this->config->get('app.meta.titlePrefix', ''),
+                    'metaTitlePrefix' => $this->config->get('app.meta.title_prefix', ''),
                     'metaTitle'       => $this->config->get(
                         'app.meta.title',
                         $this->config->get('app.name', 'Rosem')
                     ),
-                    'metaTitleSuffix' => $this->config->get('app.meta.titleSuffix', ''),
+                    'metaTitleSuffix' => $this->config->get('app.meta.title_suffix', ''),
                 ]
             );
 
