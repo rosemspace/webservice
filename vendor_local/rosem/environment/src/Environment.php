@@ -3,10 +3,17 @@
 namespace Rosem\Environment;
 
 use Dotenv\Dotenv;
-use Psrnext\Environment\AbstractEnvironment;
+use Psrnext\Environment\{
+    AbstractEnvironment, EnvironmentMode
+};
 
 class Environment extends AbstractEnvironment
 {
+    /**
+     * Environment config key.
+     */
+    public const CONFIG_KEY = 'APP_ENV';
+
     /**
      * @var Dotenv
      */
@@ -24,12 +31,12 @@ class Environment extends AbstractEnvironment
 
     private function validate(): void
     {
-        $this->env->required(self::KEY_MODE)->allowedValues([
-            self::MODE_DEVELOPMENT,
-            self::MODE_MAINTENANCE,
-            self::MODE_PRODUCTION,
-            self::MODE_STAGING,
-            self::MODE_TESTING,
+        $this->env->required(self::CONFIG_KEY)->allowedValues([
+            EnvironmentMode::DEVELOPMENT,
+            EnvironmentMode::MAINTENANCE,
+            EnvironmentMode::PRODUCTION,
+            EnvironmentMode::STAGING,
+            EnvironmentMode::TESTING,
         ]);
     }
 
@@ -56,6 +63,6 @@ class Environment extends AbstractEnvironment
 
     public function getMode(): string
     {
-        return $this->get(self::KEY_MODE);
+        return $this->get(self::CONFIG_KEY);
     }
 }
