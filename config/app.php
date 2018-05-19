@@ -49,6 +49,11 @@ return [
         'uri'    => '/graphql',
         'schema' => 'default',
     ],
+    'authentication' => [
+        'http' => [
+            'type' => 'digest',
+        ],
+    ],
     'admin'      => [
         'uri'              => 'admin',
         'meta'             => [

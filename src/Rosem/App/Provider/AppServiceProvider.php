@@ -15,8 +15,6 @@ use Rosem\App\AppFactory;
 use Rosem\App\ConfigFileTrait;
 use Rosem\App\Http\Controller\AppController;
 use Rosem\Environment\Environment;
-use Rosem\Http\Authentication\Middleware\BasicAuthenticationMiddleware;
-use Rosem\Http\Authentication\Middleware\DigestAuthenticationMiddleware;
 
 class AppServiceProvider implements ServiceProviderInterface
 {
@@ -69,27 +67,6 @@ class AppServiceProvider implements ServiceProviderInterface
                     $container->get(ConfigInterface::class)
                 );
             },
-
-            BasicAuthenticationMiddleware::class => function (ContainerInterface $container) {
-                return new BasicAuthenticationMiddleware(
-                    $container->get(ResponseFactoryInterface::class),
-                    function ($username): ?string {
-                        return [
-                            'roshe' => '1111',
-                        ][$username] ?? null;
-                    }
-                );
-            },
-            DigestAuthenticationMiddleware::class => function (ContainerInterface $container) {
-                return new DigestAuthenticationMiddleware(
-                    $container->get(ResponseFactoryInterface::class),
-                    function ($username): ?string {
-                        return [
-                            'roshe' => '1111',
-                        ][$username] ?? null;
-                    }
-                );
-            },
         ];
     }
 
@@ -103,7 +80,6 @@ class AppServiceProvider implements ServiceProviderInterface
     {
         return [
             AppInterface::class => function (ContainerInterface $container, AppInterface $app) {
-                $app->use(\Rosem\Http\Authentication\Middleware\DigestAuthenticationMiddleware::class);
                 $app->use(\Rosem\App\Http\Middleware\RouteMiddleware::class);
                 $app->use(\Rosem\App\Http\Middleware\RequestHandlerMiddleware::class);
             },

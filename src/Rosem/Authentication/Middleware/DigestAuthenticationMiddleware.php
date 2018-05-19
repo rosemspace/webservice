@@ -1,22 +1,26 @@
 <?php
 
-namespace Rosem\Http\Authentication\Middleware;
+namespace Rosem\Authentication\Middleware;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Rosem\Http\Authentication\AbstractHttpAuthentication;
+use Psr\Http\Message\{
+    ResponseInterface, ServerRequestInterface
+};
 use function call_user_func;
 use function count;
 use function strlen;
 
-class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implements MiddlewareInterface
+class DigestAuthenticationMiddleware extends AbstractAuthenticationMiddleware
 {
+    /**
+     * Authorization header prefix.
+     */
     private const AUTHORIZATION_HEADER_PREFIX = 'Digest';
 
+    /**
+     * Authorization header needed parts.
+     */
     private const AUTHORIZATION_HEADER_NEEDED_PARTS = [
-        'username', 'nonce', 'uri', 'response', 'qop', 'nc', 'cnonce'
+        'username', 'nonce', 'uri', 'response', 'qop', 'nc', 'cnonce',
     ];
 
     /**
@@ -25,28 +29,13 @@ class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implemen
     private $nonce;
 
     /**
-     * Process a server request and return a response.
+     * Set the nonce value.
      *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $requestHandler
-     *
-     * @return ResponseInterface
-     * @throws \InvalidArgumentException
+     * @param string $nonce
      */
-    public function process(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $requestHandler
-    ): ResponseInterface {
-        return $this->createResponse(
-            $request,
-            $requestHandler,
-            sprintf(
-                self::AUTHORIZATION_HEADER_PREFIX . ' realm="%s",qop="auth",nonce="%s",opaque="%s"',
-                $this->realm,
-                $this->nonce ?: uniqid('', true),
-                md5($this->realm)
-            )
-        );
+    public function setNonce(string $nonce): void
+    {
+        $this->nonce = $nonce;
     }
 
     /**
@@ -83,7 +72,7 @@ class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implemen
             $authorization[$match[1]] = $match[2];
         }
 
-        $password = call_user_func($this->getPassword, $authorization['username']);
+        $password = call_user_func($this->getPassword, $authorization['username'], $request);
 
         if (!$password
             || $authorization['response'] !== md5(sprintf(
@@ -103,12 +92,22 @@ class DigestAuthenticationMiddleware extends AbstractHttpAuthentication implemen
     }
 
     /**
-     * Set the nonce value.
+     * Create unauthorized response.
      *
-     * @param string $nonce
+     * @return ResponseInterface
+     * @throws \InvalidArgumentException
      */
-    public function setNonce(string $nonce): void
+    public function createUnauthorizedResponse(): ResponseInterface
     {
-        $this->nonce = $nonce;
+        return $this->responseFactory->createResponse(401)
+            ->withHeader(
+                'WWW-Authenticate',
+                sprintf(
+                    self::AUTHORIZATION_HEADER_PREFIX . ' realm="%s",qop="auth",nonce="%s",opaque="%s"',
+                    $this->realm,
+                    $this->nonce ?: uniqid('', true),
+                    md5($this->realm)
+                )
+            );
     }
 }

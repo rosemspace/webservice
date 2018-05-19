@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "acf9b5f0ffd2b4cb384f0f11a17e04b3",
+    "content-hash": "a26716b879cbac3b4be0733ac67bcc0f",
     "packages": [
         {
             "name": "analogue/orm",
@@ -2231,6 +2231,58 @@
                 "service proxies"
             ],
             "time": "2017-11-16T23:22:31+00:00"
+        },
+        {
+            "name": "ocramius/psr7-csrf",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ocramius/PSR7Csrf.git",
+                "reference": "d42152f698842231c903a6cc4aaa915ab7936ff5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ocramius/PSR7Csrf/zipball/d42152f698842231c903a6cc4aaa915ab7936ff5",
+                "reference": "d42152f698842231c903a6cc4aaa915ab7936ff5",
+                "shasum": ""
+            },
+            "require": {
+                "lcobucci/jwt": "^3.2.2",
+                "php": "^7.1.0",
+                "psr/http-message": "^1.0.1",
+                "psr/http-server-handler": "^1.0.0",
+                "psr/http-server-middleware": "^1.0.0",
+                "psr7-sessions/storageless": "^4.0.0"
+            },
+            "require-dev": {
+                "humbug/humbug": "^1.0.0-rc.0",
+                "phpunit/phpunit": "^6.5.5",
+                "squizlabs/php_codesniffer": "^2.6.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PSR7Csrf\\": "src/PSR7Csrf"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com",
+                    "homepage": "http://ocramius.github.io/",
+                    "role": "Developer"
+                }
+            ],
+            "time": "2018-01-28T16:33:57+00:00"
         },
         {
             "name": "psr/cache",

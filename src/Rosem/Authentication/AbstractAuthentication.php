@@ -1,14 +1,11 @@
 <?php
 
-namespace Rosem\Http\Authentication;
+namespace Rosem\Authentication;
 
-use Psr\Http\Message\{
-    ServerRequestInterface, ResponseInterface
-};
-use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 
-abstract class AbstractHttpAuthentication
+abstract class AbstractAuthentication
 {
     /**
      * @var ResponseFactoryInterface
@@ -67,32 +64,5 @@ abstract class AbstractHttpAuthentication
     public function setAttribute(string $attribute): void
     {
         $this->attribute = $attribute;
-    }
-
-    /**
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $requestHandler
-     * @param string                  $authHeader
-     *
-     * @return ResponseInterface
-     * @throws \InvalidArgumentException
-     */
-    protected function createResponse(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $requestHandler,
-        string $authHeader
-    ): ResponseInterface {
-        $userIdentity = $this->authenticate($request);
-
-        if (null === $userIdentity) {
-            return $this->responseFactory->createResponse(401)
-                ->withHeader('WWW-Authenticate', $authHeader);
-        }
-
-        if (null !== $this->attribute) {
-            $request = $request->withAttribute($this->attribute, $userIdentity);
-        }
-
-        return $requestHandler->handle($request);
     }
 }
