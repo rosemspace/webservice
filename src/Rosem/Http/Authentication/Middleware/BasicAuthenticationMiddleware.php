@@ -7,68 +7,59 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Rosem\Http\Authentication\AbstractHttpAuthentication;
-use Rosem\Http\Factory\ResponseFactory;
 
 class BasicAuthenticationMiddleware extends AbstractHttpAuthentication implements MiddlewareInterface
 {
     /**
      * Process a server request and return a response.
+     *
+     * @param ServerRequestInterface  $request
+     * @param RequestHandlerInterface $requestHandler
+     *
+     * @return ResponseInterface
+     * @throws \InvalidArgumentException
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-    {
-        $username = $this->login($request);
-
-        if ($username === false) {
-            return (new ResponseFactory)->createResponse(401) //TODO
-                ->withHeader('WWW-Authenticate', sprintf('Basic realm="%s"', $this->realm));
-        }
-
-        if ($this->attribute !== null) {
-            $request = $request->withAttribute($this->attribute, $username);
-        }
-
-        return $handler->handle($request);
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $requestHandler
+    ): ResponseInterface {
+        return $this->createResponse($request, $requestHandler, sprintf('Basic realm="%s"', $this->realm));
     }
 
     /**
      * Check the user credentials and return the username or false.
-     * @return false|string
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return mixed
      */
-    private function login(ServerRequestInterface $request)
+    public function authenticate(ServerRequestInterface $request)
     {
-        //Check header
-        $authorization = $this->parseHeader($request->getHeaderLine('Authorization'));
+        $authHeader = $request->getHeader('Authorization');
 
-        if (!$authorization) {
-            return false;
+        if (empty($authHeader)) {
+            return null;
         }
+
+        if (!preg_match(
+            '/Basic (?<credentials>[a-zA-Z0-9\+\/\=]+)/',
+            reset($authHeader),
+            $match)
+        ) {
+            return null;
+        }
+
+        [$username, $password] = explode(':', base64_decode($match['credentials']), 2);
 
         //Check the user
-        if (!isset($this->users[$authorization['username']])) {
-            return false;
+        if (!isset($this->users[$username])) {
+            return null;
         }
 
-        if ($this->users[$authorization['username']] !== $authorization['password']) {
-            return false;
+        if ($this->users[$username] !== $password) {
+            return null;
         }
 
-        return $authorization['username'];
-    }
-
-    /**
-     * Parses the authorization header for a basic authentication.
-     * @return false|array
-     */
-    private function parseHeader(string $header)
-    {
-        if (strpos($header, 'Basic') !== 0) {
-            return false;
-        }
-        $header = explode(':', base64_decode(substr($header, 6)), 2);
-
-        return [
-            'username' => $header[0],
-            'password' => isset($header[1]) ? $header[1] : null,
-        ];
+        return $username;
     }
 }

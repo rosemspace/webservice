@@ -24,8 +24,8 @@ class AppServiceProvider implements ServiceProviderInterface
 
     /**
      * Returns a list of all container entries registered by this service provider.
-     *
      * @return callable[]
+     * @throws \InvalidArgumentException
      */
     public function getFactories(): array
     {
@@ -70,15 +70,21 @@ class AppServiceProvider implements ServiceProviderInterface
                 );
             },
 
-            BasicAuthenticationMiddleware::class => function () {
-                return new BasicAuthenticationMiddleware([
-                    'roshe' => '1111',
-                ]);
+            BasicAuthenticationMiddleware::class => function (ContainerInterface $container) {
+                return new BasicAuthenticationMiddleware(
+                    $container->get(ResponseFactoryInterface::class),
+                    [
+                        'roshe' => '1111',
+                    ]
+                );
             },
-            DigestAuthenticationMiddleware::class => function () {
-                return new DigestAuthenticationMiddleware([
-                    'roshe' => '1111',
-                ]);
+            DigestAuthenticationMiddleware::class => function (ContainerInterface $container) {
+                return new DigestAuthenticationMiddleware(
+                    $container->get(ResponseFactoryInterface::class),
+                    [
+                        'roshe' => '1111',
+                    ]
+                );
             },
         ];
     }

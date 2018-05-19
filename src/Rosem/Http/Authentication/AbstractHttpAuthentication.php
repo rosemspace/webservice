@@ -4,9 +4,21 @@ namespace Rosem\Http\Authentication;
 
 use ArrayAccess;
 use InvalidArgumentException;
+use Psr\Http\Message\{
+    ServerRequestInterface, ResponseInterface
+};
+use Psr\Http\Server\RequestHandlerInterface;
+use Psrnext\Http\Factory\ResponseFactoryInterface;
+
+use function is_array;
 
 abstract class AbstractHttpAuthentication
 {
+    /**
+     * @var ResponseFactoryInterface
+     */
+    protected $responseFactory;
+
     /**
      * @var array|ArrayAccess The available users
      */
@@ -20,15 +32,20 @@ abstract class AbstractHttpAuthentication
     /**
      * @var string|null
      */
-    protected $attribute;
+    protected $attribute = 'User';
 
     /**
      * Define de users.
      *
-     * @param array|ArrayAccess $users [username => password]
+     * @param ResponseFactoryInterface $responseFactory
+     * @param array|ArrayAccess        $users [username => password]
+     *
+     * @throws \InvalidArgumentException
      */
-    public function __construct($users)
+    public function __construct(ResponseFactoryInterface $responseFactory, $users)
     {
+        $this->responseFactory = $responseFactory;
+
         if (!is_array($users) && !($users instanceof ArrayAccess)) {
             throw new InvalidArgumentException(
                 'The users argument must be an array or implement the ArrayAccess interface'
@@ -38,22 +55,55 @@ abstract class AbstractHttpAuthentication
     }
 
     /**
-     * Set the realm value.
+     * @param ServerRequestInterface $request
+     *
+     * @return mixed
      */
-    public function realm(string $realm): self
+    abstract public function authenticate(ServerRequestInterface $request);
+
+    /**
+     * Set the realm value.
+     *
+     * @param string $realm
+     */
+    public function setRealm(string $realm): void
     {
         $this->realm = $realm;
-
-        return $this;
     }
 
     /**
      * Set the attribute name to store the user name.
+     *
+     * @param string $attribute
      */
-    public function attribute(string $attribute): self
+    public function setAttribute(string $attribute): void
     {
         $this->attribute = $attribute;
+    }
 
-        return $this;
+    /**
+     * @param ServerRequestInterface  $request
+     * @param RequestHandlerInterface $requestHandler
+     * @param string                  $authHeader
+     *
+     * @return ResponseInterface
+     */
+    protected function createResponse(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $requestHandler,
+        string $authHeader
+    ): ResponseInterface {
+        $user = $this->authenticate($request);
+
+        if (null === $user) {
+            return $this->responseFactory->createResponse(401)
+                ->withHeader('WWW-Authenticate', $authHeader);
+        }
+
+        if (null !== $this->attribute) {
+            $request = $request->withAttribute($this->attribute, $user);
+        }
+
+        return $requestHandler->handle($request);
     }
 }
