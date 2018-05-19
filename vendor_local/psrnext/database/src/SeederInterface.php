@@ -4,5 +4,5 @@ namespace Psrnext\Database;
 
 interface SeederInterface
 {
-    public function run(): void;
+    public function run(SchemaInterface $schema): void;
 }

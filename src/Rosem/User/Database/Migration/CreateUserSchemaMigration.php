@@ -2,15 +2,20 @@
 
 namespace Rosem\User\Database\Migration;
 
-use Psrnext\Database\AbstractMigration;
+use Psrnext\Database\MigrationInterface;
 use Psrnext\Database\SchemaInterface;
 
-final class CreateUserSchemaMigration extends AbstractMigration
+final class CreateUserSchemaMigration implements MigrationInterface
 {
-    public function change(SchemaInterface $schema): void
+    public function up(SchemaInterface $schema): void
     {
         $schema->table('users')
             ->addColumn('id', 'integer', ['autoincrement' => true])
             ->create();
+    }
+
+    public function down(SchemaInterface $schema): void
+    {
+        $schema->table('users')->drop();
     }
 }
