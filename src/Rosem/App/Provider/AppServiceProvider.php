@@ -46,19 +46,8 @@ class AppServiceProvider implements ServiceProviderInterface
 
                 return new \Rosem\Config\Config(self::getConfiguration(getcwd() . '/../config/app.php'));
             },
-            \Rosem\App\Http\Middleware\RouteMiddleware::class => function (ContainerInterface $container) {
-                return new \Rosem\App\Http\Middleware\RouteMiddleware(
-                    $container->get(RouteDispatcherInterface::class),
-                    $container->get(ResponseFactoryInterface::class)
-                );
-            },
-            \Rosem\App\Http\Middleware\RequestHandlerMiddleware::class => function (ContainerInterface $container) {
-                return new \Rosem\App\Http\Middleware\RequestHandlerMiddleware($container);
-            },
             ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
             ResponseFactoryInterface::class      => [static::class, 'createResponseFactory'],
-            RouteCollectorInterface::class       => [static::class, 'createRouteCollector'],
-            RouteDispatcherInterface::class      => [static::class, 'createRouteDispatcher'],
             ViewRendererInterface::class         => [static::class, 'createViewRenderer'],
             AppController::class                 => function (ContainerInterface $container) {
                 return new AppController(
@@ -79,10 +68,6 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            AppInterface::class => function (ContainerInterface $container, AppInterface $app) {
-                $app->use(\Rosem\App\Http\Middleware\RouteMiddleware::class);
-                $app->use(\Rosem\App\Http\Middleware\RequestHandlerMiddleware::class);
-            },
             RouteCollectorInterface::class => function (
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector
@@ -119,33 +104,6 @@ class AppServiceProvider implements ServiceProviderInterface
     public function createResponseFactory()
     {
         return new \Rosem\Http\Factory\ResponseFactory;
-    }
-
-    /**
-     * @return \Rosem\Router\RouteCollector
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    public function createRouteCollector()
-    {
-        return new \Rosem\Router\RouteCollector(
-            new \FastRoute\RouteParser\Std,
-            new \FastRoute\DataGenerator\GroupCountBased
-        );
-    }
-
-    /**
-     * @param ContainerInterface $container
-     *
-     * @return mixed
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    public function createRouteDispatcher(ContainerInterface $container)
-    {
-        return new \Rosem\Router\RouteDispatcher(
-            new \FastRoute\Dispatcher\GroupCountBased($container->get(RouteCollectorInterface::class)->getData())
-        );
     }
 
     public function createViewRenderer(ContainerInterface $container)

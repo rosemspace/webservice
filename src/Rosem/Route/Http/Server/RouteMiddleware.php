@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\App\Http\Middleware;
+namespace Rosem\Route\Http\Server;
 
 use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface

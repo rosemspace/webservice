@@ -81,7 +81,7 @@ class RouteCollector implements RouteCollectorInterface
      */
     public function post(string $route, $handler): void
     {
-        $this->addRoute(self::METHOD_POST, $route, ...$handler);
+        $this->addRoute(self::METHOD_POST, $route, $handler);
     }
 
     /**

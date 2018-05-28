@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\App\Http\Middleware;
+namespace Rosem\Http\Server;
 
 use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
@@ -8,9 +8,8 @@ use Psr\Http\Message\{
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
-use Rosem\App\Http\Handler\CallableHandler;
 
-class CallableHandlerMiddleware extends CallableHandler implements MiddlewareInterface
+class CallableBasedMiddleware extends CallableBasedRequestHandler implements MiddlewareInterface
 {
     /**
      * Process an incoming server request and return a response, optionally delegating
@@ -22,6 +21,6 @@ class CallableHandlerMiddleware extends CallableHandler implements MiddlewareInt
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return $this->execute($this->callable, [$request, $handler]);
+        return $this->execute($this->callable, $request, $handler);
     }
 }

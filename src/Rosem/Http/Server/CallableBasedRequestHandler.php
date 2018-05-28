@@ -1,17 +1,21 @@
 <?php
 
-namespace Rosem\App\Http\Handler;
+namespace Rosem\Http\Server;
 
+use Exception;
 use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
 };
 use Psr\Http\Server\RequestHandlerInterface;
 use Rosem\Http\Factory\ResponseFactory;
+use UnexpectedValueException;
+use function call_user_func_array;
+use function is_object;
 
 /**
  * Simple class to execute callables as request handlers.
  */
-class CallableHandler implements RequestHandlerInterface
+class CallableBasedRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactory
@@ -33,27 +37,27 @@ class CallableHandler implements RequestHandlerInterface
      * Handle the request and return a response.
      * @param ServerRequestInterface $request
      * @return ResponseInterface
-     * @throws \Exception
+     * @throws Exception
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->execute($this->callable, [$request]);
+        return $this->execute($this->callable, $request);
     }
 
     /**
      * Execute the callable.
      * @param callable $callable
-     * @param array $arguments
+     * @param object   ...$arguments
      * @return ResponseInterface
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function execute(callable $callable, array $arguments = []): ResponseInterface
+    protected function execute(callable $callable, ...$arguments): ResponseInterface
     {
         ob_start();
         $level = ob_get_level();
 
         try {
-            $return = \call_user_func_array($callable, $arguments);
+            $return = call_user_func_array($callable, $arguments);
 
             if ($return instanceof ResponseInterface) {
                 $response = $return;
@@ -61,11 +65,11 @@ class CallableHandler implements RequestHandlerInterface
             } elseif (
                 null === $return
                 || is_scalar($return)
-                || (\is_object($return) && method_exists($return, '__toString'))
+                || (is_object($return) && method_exists($return, '__toString'))
             ) {
                 $response = $this->responseFactory->createResponse();
             } else {
-                throw new \UnexpectedValueException(
+                throw new UnexpectedValueException(
                     'The value returned must be scalar or an object with __toString method'
                 );
             }
@@ -81,7 +85,7 @@ class CallableHandler implements RequestHandlerInterface
             }
 
             return $response;
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             while (ob_get_level() >= $level) {
                 ob_end_clean();
             }

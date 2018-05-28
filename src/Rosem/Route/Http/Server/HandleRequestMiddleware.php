@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\App\Http\Middleware;
+namespace Rosem\Route\Http\Server;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\{
@@ -10,8 +10,9 @@ use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
 use Psrnext\Http\Factory\ResponseFactoryInterface;
+use Rosem\Http\Server\CallableBasedMiddleware;
 
-class RequestHandlerMiddleware implements MiddlewareInterface
+class HandleRequestMiddleware implements MiddlewareInterface
 {
     /**
      * @var ContainerInterface used to resolve the handlers
@@ -35,11 +36,12 @@ class RequestHandlerMiddleware implements MiddlewareInterface
     /**
      * Set the attribute name to store handler reference.
      * @param string $handlerAttribute
-     * @return RequestHandlerMiddleware
+     * @return self
      */
     public function handlerAttribute(string $handlerAttribute): self
     {
         $this->handlerAttribute = $handlerAttribute;
+
         return $this;
     }
 
@@ -71,7 +73,7 @@ class RequestHandlerMiddleware implements MiddlewareInterface
                 $requestHandler[key($requestHandler)] = $this->container->get(reset($requestHandler));
             }
 
-            return (new CallableHandlerMiddleware(
+            return (new CallableBasedMiddleware(
                 $this->container->get(ResponseFactoryInterface::class),
                 $requestHandler)
             )->process($request, $handler);
