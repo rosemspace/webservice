@@ -34,7 +34,7 @@
 //conception
 $container = new \Rosem\Container\Container(include __DIR__ . '/config/service_providers.php'); //TODO: file exception
 //$container->set(\Psrnext\App\AppInterface::class, [\Psrnext\App\AppFactoryInterface::class, 'create']);
-$container->get(\Psrnext\Http\Server\MiddlewareDispatcherInterface::class)->boot(include __DIR__ . '/config/app.php');
+$container->get(\Psrnext\Http\Server\MiddlewareDispatcherInterface::class)->dispatch();
 
 //try {
 //    $app = Rosem\App\AppFactory::create();
