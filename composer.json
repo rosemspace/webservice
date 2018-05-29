@@ -65,7 +65,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Rosem\\": "src/Rosem"
+            "Rosem\\": "src/Rosem",
+            "Psrnext\\": "src/Psrnext"
         }
     },
     "repositories": [

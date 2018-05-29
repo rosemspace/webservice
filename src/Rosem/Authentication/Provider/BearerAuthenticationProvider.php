@@ -4,9 +4,9 @@ namespace Rosem\Authentication\Provider;
 
 use Psr\Container\ContainerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
-use Psrnext\App\AppInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
+use Psrnext\Http\Server\MiddlewareDispatcherInterface;
 use Rosem\Authentication\Middleware\BearerAuthenticationMiddleware;
 
 class BearerAuthenticationProvider implements ServiceProviderInterface
@@ -64,8 +64,11 @@ class BearerAuthenticationProvider implements ServiceProviderInterface
 //                    [BearerAuthenticationMiddleware::class, 'process']
 //                );
 //            },
-            AppInterface::class => function (ContainerInterface $container, AppInterface $app) {
-                $app->use(SessionMiddleware::class);
+            MiddlewareDispatcherInterface::class => function (
+                ContainerInterface $container,
+                MiddlewareDispatcherInterface $middlewareDispatcher
+            ) {
+                $middlewareDispatcher->use(SessionMiddleware::class);
             },
         ];
     }

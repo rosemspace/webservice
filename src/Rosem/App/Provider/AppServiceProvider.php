@@ -4,7 +4,7 @@ namespace Rosem\App\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    App\AppFactoryInterface, App\AppInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, Router\RouteCollectorInterface, Router\RouteDispatcherInterface, ViewRenderer\ViewRendererInterface
+    App\AppFactoryInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, Http\Server\MiddlewareDispatcherInterface, Router\RouteCollectorInterface, ViewRenderer\ViewRendererInterface
 };
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\{
@@ -31,7 +31,7 @@ class AppServiceProvider implements ServiceProviderInterface
             AppFactoryInterface::class => function () {
                 return new AppFactory;
             },
-            AppInterface::class => function (ContainerInterface $container) {
+            MiddlewareDispatcherInterface::class => function (ContainerInterface $container) {
 //                $container->get(AppFactoryInterface::class)->create();
                 return new App($container);
             },
@@ -73,7 +73,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 RouteCollectorInterface $routeCollector
             ) {
                 $routeCollector->get(
-                    '/{uri-path:.*}',
+                    '/{uri:.*}',
                     [AppController::class, 'index']
                 );
             },

@@ -3,13 +3,13 @@
 namespace Rosem\App;
 
 use Exception;
-use Psrnext\App\AppInterface;
+use Psrnext\Http\Server\MiddlewareDispatcherInterface;
 use Rosem\Http\Server\MiddlewareDispatcher;
 use Zend\Diactoros\{
     Server, ServerRequestFactory
 };
 
-class App extends MiddlewareDispatcher implements AppInterface
+class App extends MiddlewareDispatcher implements MiddlewareDispatcherInterface
 {
     use ConfigFileTrait;
 

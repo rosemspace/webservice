@@ -3,10 +3,10 @@
 namespace Rosem\Authentication\Provider;
 
 use Psr\Container\ContainerInterface;
-use Psrnext\App\AppInterface;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
+use Psrnext\Http\Server\MiddlewareDispatcherInterface;
 use Rosem\Authentication\Middleware\{
     BasicAuthenticationMiddleware, DigestAuthenticationMiddleware
 };
@@ -59,7 +59,10 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            AppInterface::class => function (ContainerInterface $container, AppInterface $app) {
+            MiddlewareDispatcherInterface::class => function (
+                ContainerInterface $container,
+                MiddlewareDispatcherInterface $app
+            ) {
                 if ($container->get(ConfigInterface::class)->get('authentication.http.type', 'digest') ===
                     'basic'
                 ) {
