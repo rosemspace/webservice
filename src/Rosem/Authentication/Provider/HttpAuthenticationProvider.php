@@ -6,7 +6,7 @@ use Psr\Container\ContainerInterface;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\Http\Server\MiddlewareDispatcherInterface;
+use Psrnext\Http\Server\MiddlewareProcessorInterface;
 use Rosem\Authentication\Middleware\{
     BasicAuthenticationMiddleware, DigestAuthenticationMiddleware
 };
@@ -59,9 +59,9 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareDispatcherInterface::class => function (
+            MiddlewareProcessorInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareDispatcherInterface $app
+                MiddlewareProcessorInterface $app
             ) {
                 if ($container->get(ConfigInterface::class)->get('authentication.http.type', 'digest') ===
                     'basic'

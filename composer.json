@@ -31,6 +31,7 @@
         "php": ">=7.1.0",
         "psr7-sessions/storageless": "^4.0",
         "psrnext/app": "^0.0.3",
+        "psrnext/route": "^0.1",
         "psrnext/service-provider": "^0.0.1",
         "psrnext/view-renderer": "^0.0.1",
         "robmorgan/phinx": "^0.9",

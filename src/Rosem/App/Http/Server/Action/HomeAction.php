@@ -1,13 +1,15 @@
 <?php
 
-namespace Rosem\App\Http\Controller;
+namespace Rosem\App\Http\Server\Action;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\ViewRenderer\ViewRendererInterface;
 
-class AppController
+class HomeAction implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface
@@ -41,7 +43,7 @@ class AppController
         $this->config = $config;
     }
 
-    public function index(): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = $this->responseFactory->createResponse();
         $body = $response->getBody();

@@ -8,10 +8,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psrnext\Http\Server\MiddlewareProcessorInterface;
 use function in_array;
 use function call_user_func;
 
-class MiddlewareDispatcher
+class MiddlewareProcessor implements MiddlewareProcessorInterface
 {
     /**
      * @var ContainerInterface
@@ -88,5 +89,15 @@ class MiddlewareDispatcher
             throw new InvalidArgumentException('The middleware "' . $middlewareClass . '" should implement "' .
                 MiddlewareInterface::class . '" interface');
         }
+    }
+
+    public function delegate()
+    {
+        // TODO: Implement delegate() method.
+    }
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        // TODO: Implement dispatch() method.
     }
 }

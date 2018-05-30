@@ -9,7 +9,7 @@ use GraphQL\Type\Schema as GraphQLSchema;
 use GraphQL\Type\SchemaConfig;
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, GraphQL\TypeRegistryInterface, Http\Server\MiddlewareDispatcherInterface
+    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, GraphQL\TypeRegistryInterface, Http\Server\MiddlewareProcessorInterface
 };
 use Psrnext\Config\ConfigInterface;
 use Rosem\GraphQL\Graph;
@@ -61,9 +61,9 @@ class GraphQLServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareDispatcherInterface::class => function (
+            MiddlewareProcessorInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareDispatcherInterface $middlewareDispatcher
+                MiddlewareProcessorInterface $middlewareDispatcher
             ) {
                 $middlewareDispatcher->use(GraphQLMiddleware::class);
             },

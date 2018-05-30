@@ -2,26 +2,30 @@
 
 namespace Rosem\App;
 
-use Exception;
-use Psrnext\Http\Server\MiddlewareDispatcherInterface;
-use Rosem\Http\Server\MiddlewareDispatcher;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psrnext\Http\Server\MiddlewareProcessorInterface;
+use Rosem\Http\Server\MiddlewareProcessor;
 use Zend\Diactoros\{
     Server, ServerRequestFactory
 };
 
-class App extends MiddlewareDispatcher implements MiddlewareDispatcherInterface
+class App extends MiddlewareProcessor implements MiddlewareProcessorInterface
 {
-    use ConfigFileTrait;
-
     /**
-     * @throws Exception
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @param ServerRequestInterface $request
+     *
+     * @return ResponseInterface
      */
-    public function dispatch(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->defaultHandler->handle($request);
+    }
+
+    public function boot(): void
     {
         $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
-        $response = $this->defaultHandler->handle($request);
+        $response = $this->handle($request);
         $server = Server::createServerFromRequest(function () {}, $request, $response);
         $server->listen();
     }
