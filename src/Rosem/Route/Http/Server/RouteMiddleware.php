@@ -2,6 +2,7 @@
 
 namespace Rosem\Route\Http\Server;
 
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
 };
@@ -9,7 +10,7 @@ use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
 use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\Router\RouteDispatcherInterface;
+use Psrnext\Route\RouteDispatcherInterface;
 
 class RouteMiddleware implements MiddlewareInterface
 {
@@ -54,15 +55,15 @@ class RouteMiddleware implements MiddlewareInterface
     {
         $route = $this->router->dispatch($request->getMethod(), $request->getUri()->getPath());
 
-        if ($route[0] === RouteDispatcherInterface::ROUTE_NOT_FOUND) {
+        if ($route[0] === StatusCodeInterface::STATUS_NOT_FOUND) {
             return $this->createNotFoundResponse();
         }
 
-        if ($route[0] === RouteDispatcherInterface::METHOD_NOT_ALLOWED) {
+        if ($route[0] === StatusCodeInterface::STATUS_METHOD_NOT_ALLOWED) {
             return $this->createMethodNotAllowedResponse();
         }
 
-        foreach ($route[2] as $name => $value) {
+        foreach ($route[3] as $name => $value) {
             $request = $request->withAttribute($name, $value);
         }
 

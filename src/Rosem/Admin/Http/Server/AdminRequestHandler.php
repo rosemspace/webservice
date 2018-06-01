@@ -1,13 +1,15 @@
 <?php
 
-namespace Rosem\Admin\Http\Controller;
+namespace Rosem\Admin\Http\Server;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\ViewRenderer\ViewRendererInterface;
 
-class AdminController
+class AdminRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface
@@ -41,7 +43,7 @@ class AdminController
         $this->config = $config;
     }
 
-    public function index(): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = $this->responseFactory->createResponse();
         $body = $response->getBody();

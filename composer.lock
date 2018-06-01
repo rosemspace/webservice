@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bbe22f9c4778e9c112d511eac8c07df",
+    "content-hash": "d1b0e9fddc750464a23bc651ac11f136",
     "packages": [
         {
             "name": "analogue/orm",
@@ -2999,16 +2999,16 @@
         },
         {
             "name": "psrnext/route",
-            "version": "v0.1.0",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psrnext/route.git",
-                "reference": "e6b9628932f1bab2591a27274bd339a1e4b78d50"
+                "reference": "fc342d35387f13c3ca2ee2ea56d72746e40a16d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/route/zipball/e6b9628932f1bab2591a27274bd339a1e4b78d50",
-                "reference": "e6b9628932f1bab2591a27274bd339a1e4b78d50",
+                "url": "https://api.github.com/repos/psrnext/route/zipball/fc342d35387f13c3ca2ee2ea56d72746e40a16d6",
+                "reference": "fc342d35387f13c3ca2ee2ea56d72746e40a16d6",
                 "shasum": ""
             },
             "require": {
@@ -3039,45 +3039,7 @@
                 }
             ],
             "description": "Route management standard",
-            "time": "2018-05-30T20:50:18+00:00"
-        },
-        {
-            "name": "psrnext/router",
-            "version": "v0.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/psrnext/router.git",
-                "reference": "336b5e41613f2e38da1515fd961d4864d0dedd3f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/router/zipball/336b5e41613f2e38da1515fd961d4864d0dedd3f",
-                "reference": "336b5e41613f2e38da1515fd961d4864d0dedd3f",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psrnext\\Router\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://psrnext.github.io/router",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Router standard",
-            "time": "2018-04-07T20:47:46+00:00"
+            "time": "2018-05-31T21:38:08+00:00"
         },
         {
             "name": "psrnext/service-provider",
@@ -3651,36 +3613,61 @@
             ]
         },
         {
-            "name": "rosem/router",
-            "version": "9999999-dev",
+            "name": "rosem/route",
+            "version": "v0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rosemlab/route.git",
+                "reference": "5d8a641645877dac9a44c11c8646dce274e15ab4"
+            },
             "dist": {
-                "type": "path",
-                "url": "vendor_local/rosem/router",
-                "reference": "b79c9413d6fbba81fb35ef8a40a29aca3c0026b2",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/rosemlab/route/zipball/5d8a641645877dac9a44c11c8646dce274e15ab4",
+                "reference": "5d8a641645877dac9a44c11c8646dce274e15ab4",
+                "shasum": ""
             },
             "require": {
-                "php": ">=7.2.0",
-                "psrnext/router": "^0.0.3"
+                "php": "~7.2",
+                "psrnext/route": "~0.2"
+            },
+            "require-dev": {
+                "kint-php/kint": "^2.2",
+                "nikic/fast-route": "^1.3",
+                "phpunit/phpunit": ">=5.4.3",
+                "squizlabs/php_codesniffer": "^2.3",
+                "symfony/routing": "^4.1"
             },
             "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rosem\\Router\\": "src"
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
                 }
             },
+            "autoload": {
+                "psr-4": {
+                    "Rosem\\Route\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "ma1oy",
+                    "name": "Roman Shevchenko",
                     "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosemlab.github.io/router",
+                    "homepage": "https://roshecode.github.io",
                     "role": "Developer"
                 }
             ],
-            "description": "Dependency injection container library"
+            "description": "The route package",
+            "homepage": "https://rosemlab.github.io/route",
+            "keywords": [
+                "rosem",
+                "route",
+                "router"
+            ],
+            "time": "2018-06-01T20:06:50+00:00"
         },
         {
             "name": "symfony/config",

@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\App\Http\Server\Action;
+namespace Rosem\App\Http\Server;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -9,7 +9,7 @@ use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\ViewRenderer\ViewRendererInterface;
 
-class HomeAction implements RequestHandlerInterface
+class SiteRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface

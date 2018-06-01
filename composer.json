@@ -31,7 +31,7 @@
         "php": ">=7.1.0",
         "psr7-sessions/storageless": "^4.0",
         "psrnext/app": "^0.0.3",
-        "psrnext/route": "^0.1",
+        "psrnext/route": "^0.2",
         "psrnext/service-provider": "^0.0.1",
         "psrnext/view-renderer": "^0.0.1",
         "robmorgan/phinx": "^0.9",
@@ -43,7 +43,7 @@
         "rosem/hasher": "*",
         "rosem/http-factory": "*",
         "rosem/installer": "*",
-        "rosem/router": "*",
+        "rosem/route": "~0.0.1",
         "symfony/finder": "^4.0",
         "tedivm/stash": "0.14.*",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
@@ -82,7 +82,6 @@
         {"type": "path", "url": "vendor_local/rosem/http-factory"},
         {"type": "path", "url": "vendor_local/rosem/graphql"},
         {"type": "path", "url": "vendor_local/rosem/graphql-standards"},
-        {"type": "path", "url": "vendor_local/rosem/installer"},
-        {"type": "path", "url": "vendor_local/rosem/router"}
+        {"type": "path", "url": "vendor_local/rosem/installer"}
     ]
 }

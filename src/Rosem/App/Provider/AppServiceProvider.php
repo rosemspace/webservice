@@ -4,7 +4,7 @@ namespace Rosem\App\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    App\AppFactoryInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, Http\Server\MiddlewareProcessorInterface, Router\RouteCollectorInterface, ViewRenderer\ViewRendererInterface
+    App\AppFactoryInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, Http\Server\MiddlewareProcessorInterface, Route\RouteCollectorInterface, ViewRenderer\ViewRendererInterface
 };
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\{
@@ -13,7 +13,7 @@ use Psrnext\Http\Factory\{
 use Rosem\App\App;
 use Rosem\App\AppFactory;
 use Rosem\App\ConfigFileTrait;
-use Rosem\App\Http\Server\Action\HomeAction;
+use Rosem\App\Http\Server\SiteRequestHandler;
 use Rosem\Environment\Environment;
 
 class AppServiceProvider implements ServiceProviderInterface
@@ -49,8 +49,8 @@ class AppServiceProvider implements ServiceProviderInterface
             ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
             ResponseFactoryInterface::class      => [static::class, 'createResponseFactory'],
             ViewRendererInterface::class         => [static::class, 'createViewRenderer'],
-            HomeAction::class                    => function (ContainerInterface $container) {
-                return new HomeAction(
+            SiteRequestHandler::class            => function (ContainerInterface $container) {
+                return new SiteRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
                     $container->get(ViewRendererInterface::class),
                     $container->get(ConfigInterface::class)
@@ -72,7 +72,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector
             ) {
-                $routeCollector->get('/{uri:.*}', HomeAction::class);
+                $routeCollector->get('/{path.*}', SiteRequestHandler::class);
             },
             ViewRendererInterface::class   => function (
                 ContainerInterface $container,

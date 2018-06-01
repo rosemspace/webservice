@@ -6,13 +6,20 @@ use Psr\Container\ContainerInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\Http\Server\MiddlewareProcessorInterface;
-use Psrnext\Router\RouteCollectorInterface;
-use Psrnext\Router\RouteDispatcherInterface;
+use Psrnext\Route\RouteCollectorInterface;
+use Psrnext\Route\RouteDispatcherInterface;
 use Rosem\Route\Http\Server\HandleRequestMiddleware;
 use Rosem\Route\Http\Server\RouteMiddleware;
 
 class RouteServiceProvider implements ServiceProviderInterface
 {
+    protected $router;
+
+    public function __construct()
+    {
+        $this->router = new Router();
+    }
+
     /**
      * Returns a list of all container entries registered by this service provider.
      * @return callable[]
@@ -48,30 +55,38 @@ class RouteServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @return \Rosem\Router\RouteCollector
+     * @param ContainerInterface $container
+     *
+     * @return RouteCollectorInterface
      * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function createRouteCollector()
+    public function createRouteCollector(ContainerInterface $container): RouteCollectorInterface
     {
-        return new \Rosem\Router\RouteCollector(
-            new \FastRoute\RouteParser\Std,
-            new \FastRoute\DataGenerator\GroupCountBased
-        );
+//        if ($container->has(RouteDispatcherInterface::class)) {
+//            return $container->get(RouteDispatcherInterface::class);
+//        }
+//
+//        return new Router();
+        return $this->router;
     }
 
     /**
      * @param ContainerInterface $container
      *
-     * @return mixed
+     * @return RouteDispatcherInterface
      * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function createRouteDispatcher(ContainerInterface $container)
+    public function createRouteDispatcher(ContainerInterface $container): RouteDispatcherInterface
     {
-        return new \Rosem\Router\RouteDispatcher(
-            new \FastRoute\Dispatcher\GroupCountBased($container->get(RouteCollectorInterface::class)->getData())
-        );
+        $container->get(RouteCollectorInterface::class); // TODO: add it in the constructor of the route dispatcher
+
+//        if ($container->has(RouteCollectorInterface::class)) {
+//            return $container->get(RouteCollectorInterface::class);
+//        }
+//
+//        return new Router();
+
+        return $this->router;
     }
 
     public function createRouteMiddleware(ContainerInterface $container) {
