@@ -62,11 +62,6 @@ class RouteServiceProvider implements ServiceProviderInterface
      */
     public function createRouteCollector(ContainerInterface $container): RouteCollectorInterface
     {
-//        if ($container->has(RouteDispatcherInterface::class)) {
-//            return $container->get(RouteDispatcherInterface::class);
-//        }
-//
-//        return new Router();
         return $this->router;
     }
 
@@ -78,13 +73,7 @@ class RouteServiceProvider implements ServiceProviderInterface
      */
     public function createRouteDispatcher(ContainerInterface $container): RouteDispatcherInterface
     {
-        $container->get(RouteCollectorInterface::class); // TODO: add it in the constructor of the route dispatcher
-
-//        if ($container->has(RouteCollectorInterface::class)) {
-//            return $container->get(RouteCollectorInterface::class);
-//        }
-//
-//        return new Router();
+        $container->get(RouteCollectorInterface::class); // FIXME: remove when possible
 
         return $this->router;
     }

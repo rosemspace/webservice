@@ -58,64 +58,11 @@ class AdminServiceProvider implements ServiceProviderInterface
                 RouteCollectorInterface $routeCollector
             ) {
                 $adminUri = '/' . $container->get(ConfigInterface::class)->get('admin.uri', 'admin');
+                $routeCollector->get($adminUri . '/login', LoginRequestHandler::class);
+                $routeCollector->post($adminUri . '/login', LoginRequestHandler::class)
+                    ->setMiddleware(BearerAuthenticationMiddleware::class);
                 $routeCollector->get($adminUri . '{path:.*}', AdminRequestHandler::class)
                     ->setMiddleware(BearerAuthenticationMiddleware::class);
-                $routeCollector->get($adminUri . '/login', LoginRequestHandler::class);
-//                $routeCollector->post(
-//                    '/admin/login',
-//                    function (ServerRequestInterface $request, RequestHandlerInterface $next) use ($container) {
-//                        $controller = new LoginAction(
-//                            $container->get(ResponseFactoryInterface::class),
-//                            $container->get(ViewRendererInterface::class),
-//                            $container->get(ConfigInterface::class)
-//                        );
-//
-//                        $requestHandler = new class ($controller) implements RequestHandlerInterface
-//                        {
-//                            protected $controller;
-//                            public function __construct(LoginAction $controller)
-//                            {
-//                                $this->controller = $controller;
-//                            }
-//
-//                            public function handle(ServerRequestInterface $request): ResponseInterface
-//                            {
-//                                return $this->controller->index()->withStatus(302)->withHeader(
-//                                    'Location',
-//                                    '/admin'
-//                                );
-//                            }
-//                        };
-//
-//                        return $container->get(BearerAuthenticationMiddleware::class)->process($request, $requestHandler);
-//                    }
-//                );
-//                $routeCollector->get(
-//                    "/{$container->get(ConfigInterface::class)->get('admin.uri', 'admin')}[/{any:.*}]",
-//                    function (ServerRequestInterface $request, RequestHandlerInterface $next) use ($container) {
-//                        $controller = new AdminController(
-//                            $container->get(ResponseFactoryInterface::class),
-//                            $container->get(ViewRendererInterface::class),
-//                            $container->get(ConfigInterface::class)
-//                        );
-//
-//                        $requestHandler = new class ($controller) implements RequestHandlerInterface
-//                        {
-//                            protected $controller;
-//                            public function __construct($controller)
-//                            {
-//                                $this->controller = $controller;
-//                            }
-//
-//                            public function handle(ServerRequestInterface $request): ResponseInterface
-//                            {
-//                                return $this->controller->index();
-//                            }
-//                        };
-//
-//                        return $container->get(BearerAuthenticationMiddleware::class)->process($request, $requestHandler);
-//                    }
-//                );
             },
         ];
     }

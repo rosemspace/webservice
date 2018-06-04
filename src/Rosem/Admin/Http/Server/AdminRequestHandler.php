@@ -58,6 +58,7 @@ class AdminRequestHandler implements RequestHandlerInterface
                         $this->config->get('app.name', 'Rosem')
                     ),
                     'metaTitleSuffix' => $this->config->get('admin.meta.title_suffix', ''),
+                    'username' => $request->getAttribute('user_id'),
                 ]
             );
 

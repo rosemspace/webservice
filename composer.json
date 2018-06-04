@@ -43,7 +43,7 @@
         "rosem/hasher": "*",
         "rosem/http-factory": "*",
         "rosem/installer": "*",
-        "rosem/route": "~0.0.1",
+        "rosem/route": "dev-master",
         "symfony/finder": "^4.0",
         "tedivm/stash": "0.14.*",
         "tijsverkoyen/css-to-inline-styles": "^2.2",

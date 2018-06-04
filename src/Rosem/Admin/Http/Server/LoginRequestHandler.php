@@ -5,6 +5,7 @@ namespace Rosem\Admin\Http\Server;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\ViewRenderer\ViewRendererInterface;
@@ -45,6 +46,11 @@ class LoginRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        if ($request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE)->get('userId')) {
+            return $this->responseFactory->createResponse(302)
+                ->withHeader('Location', '/admin');
+        }
+
         $response = $this->responseFactory->createResponse();
         $body = $response->getBody();
 

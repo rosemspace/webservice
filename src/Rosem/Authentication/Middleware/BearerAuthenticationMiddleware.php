@@ -13,6 +13,8 @@ class BearerAuthenticationMiddleware extends AbstractAuthenticationMiddleware
      */
     private const AUTHORIZATION_HEADER_PREFIX = 'Bearer';
 
+    protected $attribute = 'user_id';
+
     /**
      * @param ServerRequestInterface $request
      *
@@ -35,7 +37,7 @@ class BearerAuthenticationMiddleware extends AbstractAuthenticationMiddleware
 
         $body = $request->getParsedBody();
 
-        if (!$body['username'] || !$body['password']) {
+        if (empty($body['username']) || empty($body['password'])) {
             return null;
         }
 
