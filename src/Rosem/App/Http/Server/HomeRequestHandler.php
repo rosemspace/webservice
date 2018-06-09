@@ -9,7 +9,7 @@ use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\ViewRenderer\ViewRendererInterface;
 
-class SiteRequestHandler implements RequestHandlerInterface
+class HomeRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface

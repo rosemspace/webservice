@@ -13,7 +13,7 @@ use Psrnext\Http\Factory\{
 use Rosem\App\App;
 use Rosem\App\AppFactory;
 use Rosem\App\ConfigFileTrait;
-use Rosem\App\Http\Server\SiteRequestHandler;
+use Rosem\App\Http\Server\HomeRequestHandler;
 use Rosem\Environment\Environment;
 
 class AppServiceProvider implements ServiceProviderInterface
@@ -28,20 +28,20 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            AppFactoryInterface::class          => function () {
+            AppFactoryInterface::class           => function () {
                 return new AppFactory;
             },
-            MiddlewareProcessorInterface::class => function (ContainerInterface $container) {
+            MiddlewareProcessorInterface::class  => function (ContainerInterface $container) {
 //                $container->get(AppFactoryInterface::class)->create();
                 return new App($container);
             },
-            EnvironmentInterface::class         => function () {
+            EnvironmentInterface::class          => function () {
                 $env = new Environment(getcwd() . '/..');
                 $env->load();
 
                 return $env;
             },
-            ConfigInterface::class              => function (ContainerInterface $container) {
+            ConfigInterface::class               => function (ContainerInterface $container) {
                 $container->get(EnvironmentInterface::class)->load();
 
                 return new \Rosem\Config\Config(self::getConfiguration(getcwd() . '/../config/app.php'));
@@ -49,8 +49,8 @@ class AppServiceProvider implements ServiceProviderInterface
             ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
             ResponseFactoryInterface::class      => [static::class, 'createResponseFactory'],
             ViewRendererInterface::class         => [static::class, 'createViewRenderer'],
-            SiteRequestHandler::class            => function (ContainerInterface $container) {
-                return new SiteRequestHandler(
+            HomeRequestHandler::class            => function (ContainerInterface $container) {
+                return new HomeRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
                     $container->get(ViewRendererInterface::class),
                     $container->get(ConfigInterface::class)
@@ -72,7 +72,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector
             ) {
-                $routeCollector->get('/{path.*}', SiteRequestHandler::class);
+                $routeCollector->get('/{path.*}', HomeRequestHandler::class);
             },
             ViewRendererInterface::class   => function (
                 ContainerInterface $container,
@@ -87,7 +87,6 @@ class AppServiceProvider implements ServiceProviderInterface
                     'metaTitlePrefix' => $config->get('app.meta.title_prefix'),
                     'metaTitleSuffix' => $config->get('app.meta.title_suffix'),
                     'csrfToken'       => '4sWPhTlJAmt1IcyNq1FCyivsAVhHqjiDCKRXOgOQock=',
-                    'polyfills'       => $config->get('app.polyfills'),
                 ]);
             },
         ];
