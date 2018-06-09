@@ -5,7 +5,7 @@ namespace Rosem\Route;
 use Psr\Container\ContainerInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\Http\Server\MiddlewareProcessorInterface;
+use Psrnext\Http\Server\MiddlewareQueueInterface;
 use Psrnext\Route\RouteCollectorInterface;
 use Psrnext\Route\RouteDispatcherInterface;
 use Rosem\Route\Http\Server\HandleRequestMiddleware;
@@ -44,10 +44,14 @@ class RouteServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareProcessorInterface::class => function (
+            MiddlewareQueueInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareProcessorInterface $middlewareDispatcher
+                MiddlewareQueueInterface $middlewareDispatcher
             ) {
+                // TODO: concept
+//                $middlewareDispatcher->use(new LazyMiddleware(function () use (&$container) {
+//                    return $container->get(RouteMiddleware::class);
+//                }));
                 $middlewareDispatcher->use(RouteMiddleware::class);
                 $middlewareDispatcher->use(HandleRequestMiddleware::class);
             },

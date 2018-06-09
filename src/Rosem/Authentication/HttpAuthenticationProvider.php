@@ -1,15 +1,16 @@
 <?php
 
-namespace Rosem\Authentication\Provider;
+namespace Rosem\Authentication;
 
 use Psr\Container\ContainerInterface;
-use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\Http\Server\MiddlewareProcessorInterface;
-use Rosem\Authentication\Middleware\BearerAuthenticationMiddleware;
+use Psrnext\Http\Server\MiddlewareQueueInterface;
+use Rosem\Authentication\Http\Server\{
+    BasicAuthenticationMiddleware, DigestAuthenticationMiddleware
+};
 
-class BearerAuthenticationProvider implements ServiceProviderInterface
+class HttpAuthenticationProvider implements ServiceProviderInterface
 {
     /**
      * Returns a list of all container entries registered by this service provider.
@@ -22,20 +23,25 @@ class BearerAuthenticationProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            SessionMiddleware::class => function () {
-                return SessionMiddleware::fromSymmetricKeyDefaults(
-                    'mBC5v1sOKVvbdEitdSBenu59nfNfhwkedkJVNabosTw=',
-                    20 * 60 // 20 minutes
-                );
-            },
-            BearerAuthenticationMiddleware::class => function (ContainerInterface $container) {
-                return new BearerAuthenticationMiddleware(
+            BasicAuthenticationMiddleware::class => function (ContainerInterface $container) {
+                return new BasicAuthenticationMiddleware(
                     $container->get(ResponseFactoryInterface::class),
                     function (string $username): ?string {
-                        return ['roshe' => '1234'][$username] ?? null;
+                        return ['roshe' => '1111'][$username] ?? null;
                     }
                 );
             },
+            DigestAuthenticationMiddleware::class => function (ContainerInterface $container) {
+                return new DigestAuthenticationMiddleware(
+                    $container->get(ResponseFactoryInterface::class),
+                    function (string $username): ?string {
+                        return ['roshe' => '1111'][$username] ?? null;
+                    }
+                );
+            },
+            'authentication.http.type' => function () {
+                return 'digest';
+            }
         ];
     }
 
@@ -55,11 +61,15 @@ class BearerAuthenticationProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareProcessorInterface::class => function (
+            MiddlewareQueueInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareProcessorInterface $middlewareDispatcher
+                MiddlewareQueueInterface $app
             ) {
-                $middlewareDispatcher->use(SessionMiddleware::class);
+                if ($container->get('authentication.http.type') === 'basic') {
+                    $app->use(BasicAuthenticationMiddleware::class);
+                } else {
+                    $app->use(DigestAuthenticationMiddleware::class);
+                }
             },
         ];
     }

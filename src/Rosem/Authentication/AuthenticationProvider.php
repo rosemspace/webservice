@@ -1,17 +1,15 @@
 <?php
 
-namespace Rosem\Authentication\Provider;
+namespace Rosem\Authentication;
 
 use Psr\Container\ContainerInterface;
-use Psrnext\Config\ConfigInterface;
+use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\Http\Server\MiddlewareProcessorInterface;
-use Rosem\Authentication\Middleware\{
-    BasicAuthenticationMiddleware, DigestAuthenticationMiddleware
-};
+use Psrnext\Http\Server\MiddlewareQueueInterface;
+use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
 
-class HttpAuthenticationProvider implements ServiceProviderInterface
+class AuthenticationProvider implements ServiceProviderInterface
 {
     /**
      * Returns a list of all container entries registered by this service provider.
@@ -24,19 +22,17 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            BasicAuthenticationMiddleware::class => function (ContainerInterface $container) {
-                return new BasicAuthenticationMiddleware(
-                    $container->get(ResponseFactoryInterface::class),
-                    function (string $username): ?string {
-                        return ['roshe' => '1111'][$username] ?? null;
-                    }
+            SessionMiddleware::class        => function () {
+                return SessionMiddleware::fromSymmetricKeyDefaults(
+                    'mBC5v1sOKVvbdEitdSBenu59nfNfhwkedkJVNabosTw=',
+                    20 * 60 // 20 minutes
                 );
             },
-            DigestAuthenticationMiddleware::class => function (ContainerInterface $container) {
-                return new DigestAuthenticationMiddleware(
+            AuthenticationMiddleware::class => function (ContainerInterface $container) {
+                return new AuthenticationMiddleware(
                     $container->get(ResponseFactoryInterface::class),
                     function (string $username): ?string {
-                        return ['roshe' => '1111'][$username] ?? null;
+                        return ['roshe' => '1234'][$username] ?? null;
                     }
                 );
             },
@@ -59,17 +55,11 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareProcessorInterface::class => function (
+            MiddlewareQueueInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareProcessorInterface $app
+                MiddlewareQueueInterface $middlewareDispatcher
             ) {
-                if ($container->get(ConfigInterface::class)->get('authentication.http.type', 'digest') ===
-                    'basic'
-                ) {
-                    $app->use(BasicAuthenticationMiddleware::class);
-                } else {
-                    $app->use(DigestAuthenticationMiddleware::class);
-                }
+                $middlewareDispatcher->use(SessionMiddleware::class);
             },
         ];
     }

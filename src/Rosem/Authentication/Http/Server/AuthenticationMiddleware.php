@@ -1,19 +1,18 @@
 <?php
 
-namespace Rosem\Authentication\Middleware;
+namespace Rosem\Authentication\Http\Server;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
+use function call_user_func;
 
-class BearerAuthenticationMiddleware extends AbstractAuthenticationMiddleware
+class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
 {
     /**
      * Authorization header prefix.
      */
     private const AUTHORIZATION_HEADER_PREFIX = 'Bearer';
-
-    protected $attribute = 'user_id';
 
     /**
      * @param ServerRequestInterface $request
@@ -23,9 +22,7 @@ class BearerAuthenticationMiddleware extends AbstractAuthenticationMiddleware
     public function authenticate(ServerRequestInterface $request): ?string
     {
         $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
-//        $session->set('counter', $session->get('counter', 0) + 1);
-
-        $username = $session->get('userId');
+        $username = $session->get($this->attribute);
 
         if ($username) {
             return $username;
@@ -47,7 +44,7 @@ class BearerAuthenticationMiddleware extends AbstractAuthenticationMiddleware
             return null;
         }
 
-        $session->set('userId', $body['username']);
+        $session->set($this->attribute, $body['username']);
 
         return $body['username'];
     }

@@ -9,7 +9,7 @@ use GraphQL\Type\Schema as GraphQLSchema;
 use GraphQL\Type\SchemaConfig;
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, GraphQL\TypeRegistryInterface, Http\Server\MiddlewareProcessorInterface, Route\RouteCollectorInterface
+    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, GraphQL\TypeRegistryInterface, Http\Server\MiddlewareQueueInterface, Route\RouteCollectorInterface
 };
 use Psrnext\Config\ConfigInterface;
 

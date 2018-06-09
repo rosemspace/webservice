@@ -10,7 +10,7 @@ use Rosem\Admin\Http\Server\LoginRequestHandler;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Route\RouteCollectorInterface;
-use Rosem\Authentication\Middleware\BearerAuthenticationMiddleware;
+use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
 
 class AdminServiceProvider implements ServiceProviderInterface
 {
@@ -54,9 +54,9 @@ class AdminServiceProvider implements ServiceProviderInterface
                 $adminUri = '/' . $container->get(ConfigInterface::class)->get('admin.uri', 'admin');
                 $routeCollector->get($adminUri . '/login', LoginRequestHandler::class);
                 $routeCollector->post($adminUri . '/login', LoginRequestHandler::class)
-                    ->setMiddleware(BearerAuthenticationMiddleware::class);
+                    ->setMiddleware(AuthenticationMiddleware::class);
                 $routeCollector->get($adminUri . '{path:.*}', AdminRequestHandler::class)
-                    ->setMiddleware(BearerAuthenticationMiddleware::class);
+                    ->setMiddleware(AuthenticationMiddleware::class);
             },
         ];
     }

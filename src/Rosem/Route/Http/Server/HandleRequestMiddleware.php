@@ -11,7 +11,7 @@ use Psr\Http\Server\{
 };
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Rosem\Http\Server\CallableBasedMiddleware;
-use Rosem\Http\Server\MiddlewareProcessor;
+use Rosem\Http\Server\MiddlewareQueue;
 
 class HandleRequestMiddleware implements MiddlewareInterface
 {
@@ -58,7 +58,7 @@ class HandleRequestMiddleware implements MiddlewareInterface
         $requestData = $request->getAttribute($this->handlerAttribute);
 
         if (!empty($requestData[0])) { // TODO: add constants
-            $requestHandler = new MiddlewareProcessor($this->container, $this->container->get($requestData[1]));
+            $requestHandler = new MiddlewareQueue($this->container, $this->container->get($requestData[1]));
 
             foreach ($requestData[0] as $middleware) {
                 $requestHandler->use($middleware);

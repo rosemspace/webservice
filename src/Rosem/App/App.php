@@ -2,12 +2,12 @@
 
 namespace Rosem\App;
 
-use Rosem\Http\Server\MiddlewareProcessor;
+use Rosem\Http\Server\MiddlewareQueue;
 use Zend\Diactoros\{
     Server, ServerRequestFactory
 };
 
-class App extends MiddlewareProcessor
+class App extends MiddlewareQueue
 {
     public function boot(): void
     {

@@ -4,7 +4,7 @@ namespace Rosem\App;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    App\AppFactoryInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, Http\Server\MiddlewareProcessorInterface, Route\RouteCollectorInterface, ViewRenderer\ViewRendererInterface
+    App\AppFactoryInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, Http\Server\MiddlewareQueueInterface, Route\RouteCollectorInterface, ViewRenderer\ViewRendererInterface
 };
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\{
@@ -26,20 +26,20 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            AppFactoryInterface::class           => function () {
+            AppFactoryInterface::class      => function () {
                 return new AppFactory;
             },
-            MiddlewareProcessorInterface::class  => function (ContainerInterface $container) {
+            MiddlewareQueueInterface::class => function (ContainerInterface $container) {
 //                $container->get(AppFactoryInterface::class)->create();
                 return new App($container, $container->get(InternalServerErrorRequestHandler::class));
             },
-            EnvironmentInterface::class          => function () {
+            EnvironmentInterface::class     => function () {
                 $env = new Environment(getcwd() . '/..');
                 $env->load();
 
                 return $env;
             },
-            ConfigInterface::class               => function (ContainerInterface $container) {
+            ConfigInterface::class          => function (ContainerInterface $container) {
                 $container->get(EnvironmentInterface::class)->load();
 
                 return new \Rosem\Config\Config(self::getConfiguration(getcwd() . '/../config/app.php'));

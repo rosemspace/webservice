@@ -8,11 +8,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psrnext\Http\Server\MiddlewareProcessorInterface;
+use Psrnext\Http\Server\MiddlewareQueueInterface;
 use function in_array;
 use function call_user_func;
 
-class MiddlewareProcessor implements MiddlewareProcessorInterface
+class MiddlewareQueue implements MiddlewareQueueInterface
 {
     /**
      * @var ContainerInterface

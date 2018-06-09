@@ -46,7 +46,7 @@ class LoginRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if ($request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE)->get('userId')) {
+        if ($request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE)->get('userIdentity')) {
             return $this->responseFactory->createResponse(302)
                 ->withHeader('Location', '/admin');
         }

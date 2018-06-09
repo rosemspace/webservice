@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\Authentication\Middleware;
+namespace Rosem\Authentication\Http\Server;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
