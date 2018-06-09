@@ -10,13 +10,13 @@ interface EnvironmentInterface
 
     public function getMode(): string;
 
-    public function isDevelopmentMode(): bool;
+    public function isMaintenanceMode(): bool; // show maintenance page
 
-    public function isMaintenanceMode(): bool;
+    public function isDemoMode(): bool; // allow only partial functionality
 
-    public function isProductionMode(): bool;
+    public function isDevelopmentMode(): bool; // show errors, no caches, show debug info
 
-    public function isStagingMode(): bool;
+    public function isStagingMode(): bool; // show errors, use caches, no debug info
 
-    public function isTestingMode(): bool;
+    public function isProductionMode(): bool; // hide errors, use caches, no debug info
 }

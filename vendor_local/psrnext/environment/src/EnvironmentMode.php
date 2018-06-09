@@ -4,13 +4,13 @@ namespace Psrnext\Environment;
 
 class EnvironmentMode
 {
-    public const DEVELOPMENT = 'development';
-
     public const MAINTENANCE = 'maintenance';
 
-    public const PRODUCTION = 'production';
+    public const DEMO = 'demo';
+
+    public const DEVELOPMENT = 'development';
 
     public const STAGING = 'staging';
 
-    public const TESTING = 'testing';
+    public const PRODUCTION = 'production';
 }

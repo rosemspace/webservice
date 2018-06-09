@@ -32,11 +32,11 @@ class Environment extends AbstractEnvironment
     private function validate(): void
     {
         $this->env->required(self::CONFIG_KEY)->allowedValues([
-            EnvironmentMode::DEVELOPMENT,
             EnvironmentMode::MAINTENANCE,
-            EnvironmentMode::PRODUCTION,
+            EnvironmentMode::DEMO,
+            EnvironmentMode::DEVELOPMENT,
             EnvironmentMode::STAGING,
-            EnvironmentMode::TESTING,
+            EnvironmentMode::PRODUCTION,
         ]);
     }
 

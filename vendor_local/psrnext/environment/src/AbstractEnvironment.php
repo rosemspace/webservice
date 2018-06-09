@@ -4,19 +4,19 @@ namespace Psrnext\Environment;
 
 abstract class AbstractEnvironment implements EnvironmentInterface
 {
-    public function isDevelopmentMode(): bool
-    {
-        return $this->getMode() === EnvironmentMode::DEVELOPMENT;
-    }
-
     public function isMaintenanceMode(): bool
     {
         return $this->getMode() === EnvironmentMode::MAINTENANCE;
     }
 
-    public function isProductionMode(): bool
+    public function isDemoMode(): bool
     {
-        return $this->getMode() === EnvironmentMode::PRODUCTION;
+        return $this->getMode() === EnvironmentMode::DEMO;
+    }
+
+    public function isDevelopmentMode(): bool
+    {
+        return $this->getMode() === EnvironmentMode::DEVELOPMENT;
     }
 
     public function isStagingMode(): bool
@@ -24,8 +24,8 @@ abstract class AbstractEnvironment implements EnvironmentInterface
         return $this->getMode() === EnvironmentMode::STAGING;
     }
 
-    public function isTestingMode(): bool
+    public function isProductionMode(): bool
     {
-        return $this->getMode() === EnvironmentMode::TESTING;
+        return $this->getMode() === EnvironmentMode::PRODUCTION;
     }
 }
