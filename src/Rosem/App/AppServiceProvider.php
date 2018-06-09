@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\App\Provider;
+namespace Rosem\App;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\{
@@ -10,9 +10,6 @@ use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
-use Rosem\App\App;
-use Rosem\App\AppFactory;
-use Rosem\App\ConfigFileTrait;
 use Rosem\App\Http\Server\HomeRequestHandler;
 use Rosem\Environment\Environment;
 

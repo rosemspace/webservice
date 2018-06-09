@@ -1,21 +1,17 @@
 <?php
 
-namespace Rosem\GraphQL\Provider;
+namespace Rosem\GraphQL;
 
+use Fig\Http\Message\RequestMethodInterface;
 use GraphQL\Server\StandardServer;
-use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Schema as GraphQLSchema;
 use GraphQL\Type\SchemaConfig;
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, GraphQL\TypeRegistryInterface, Http\Server\MiddlewareProcessorInterface
+    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, GraphQL\TypeRegistryInterface, Http\Server\MiddlewareProcessorInterface, Route\RouteCollectorInterface
 };
 use Psrnext\Config\ConfigInterface;
-use Rosem\GraphQL\Graph;
-use Rosem\GraphQL\Middleware\GraphQLMiddleware;
-use Rosem\GraphQL\Schema;
-use Rosem\GraphQL\TypeRegistry;
 
 class GraphQLServiceProvider implements ServiceProviderInterface
 {
@@ -42,7 +38,7 @@ class GraphQLServiceProvider implements ServiceProviderInterface
         return [
             TypeRegistryInterface::class => [static::class, 'createGraphQLTypeRegistry'],
             GraphInterface::class        => [static::class, 'createGraphQLGraph'],
-            GraphQLMiddleware::class     => [static::class, 'createGraphQLMiddleware'],
+            GraphQLRequestHandler::class => [static::class, 'createGraphQLRequestHandler'],
         ];
     }
 
@@ -61,11 +57,15 @@ class GraphQLServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareProcessorInterface::class => function (
+            RouteCollectorInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareProcessorInterface $middlewareDispatcher
+                RouteCollectorInterface $routeCollector
             ) {
-                $middlewareDispatcher->use(GraphQLMiddleware::class);
+                $routeCollector->addRoute(
+                    [RequestMethodInterface::METHOD_GET, RequestMethodInterface::METHOD_POST],
+                    $container->has(static::CONFIG_URI) ? $container->get(static::CONFIG_URI) : '/graphql',
+                    GraphQLRequestHandler::class
+                );
             },
         ];
     }
@@ -77,13 +77,13 @@ class GraphQLServiceProvider implements ServiceProviderInterface
 
     public function createGraphQLGraph(ContainerInterface $container): Graph
     {
-        $graph = new Graph;
+        $graph = new Graph();
         $graph->addSchema('default', new Schema($container, $container->get(TypeRegistryInterface::class)));
 
         return $graph;
     }
 
-    public function createGraphQLMiddleware(ContainerInterface $container): GraphQLMiddleware
+    protected function createGraphQLServer(ContainerInterface $container): StandardServer
     {
         $config = $container->get(ConfigInterface::class);
         $schema = $container->get(GraphInterface::class)
@@ -94,34 +94,38 @@ class GraphQLServiceProvider implements ServiceProviderInterface
             return $typeRegistry->get($name);
         });
 
-        return new GraphQLMiddleware(
-            new StandardServer([
-                'schema'        => new GraphQLSchema($schemaConfig),
-                'context'       => $container,
-                'fieldResolver' => function ($source, $args, $context, ResolveInfo $info) {
-                    $fieldName = $info->fieldName;
-                    $property = null;
+        return new StandardServer([
+            'schema'        => new GraphQLSchema($schemaConfig),
+            'context'       => $container,
+            'fieldResolver' => function ($source, $args, $context, ResolveInfo $info) {
+                $fieldName = $info->fieldName;
+                $property = null;
 
-                    if (\is_array($source) || $source instanceof \ArrayAccess) {
-                        if (isset($source[$fieldName])) {
-                            $property = $source[$fieldName];
-                        }
-                    } elseif (\is_object($source)) {
-                        if (isset($source->{$fieldName})) {
-                            $property = $source->{$fieldName};
-                        } else {
-                            $method = 'get' . ucfirst($fieldName);
+                if (\is_array($source) || $source instanceof \ArrayAccess) {
+                    if (isset($source[$fieldName])) {
+                        $property = $source[$fieldName];
+                    }
+                } elseif (\is_object($source)) {
+                    if (isset($source->{$fieldName})) {
+                        $property = $source->{$fieldName};
+                    } else {
+                        $method = 'get' . ucfirst($fieldName);
 
-                            if (method_exists($source, $method)) {
-                                $property = $source->$method();
-                            }
+                        if (method_exists($source, $method)) {
+                            $property = $source->$method();
                         }
                     }
+                }
 
-                    return $property instanceof \Closure ? $property($source, $args, $context) : $property;
-                },
-            ]),
-            $config->get(static::CONFIG_URI, '/graphql'),
+                return $property instanceof \Closure ? $property($source, $args, $context) : $property;
+            },
+        ]);
+    }
+
+    public function createGraphQLRequestHandler(ContainerInterface $container): GraphQLRequestHandler
+    {
+        return new GraphQLRequestHandler(
+            $this->createGraphQLServer($container),
             $container->get(EnvironmentInterface::class)->isDevelopmentMode()
         );
     }
