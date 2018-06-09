@@ -50,7 +50,7 @@ class HomeRequestHandler implements RequestHandlerInterface
 
         if ($body->isWritable()) {
             $viewString = $this->view->render(
-                'index',
+                'app::index',
                 [
                     'metaTitlePrefix' => $this->config->get('app.meta.title_prefix', ''),
                     'metaTitle'       => $this->config->get(

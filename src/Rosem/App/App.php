@@ -3,17 +3,13 @@
 namespace Rosem\App;
 
 use Rosem\Http\Server\MiddlewareQueue;
-use Zend\Diactoros\{
-    Server, ServerRequestFactory
-};
+use Zend\Diactoros\Server;
 
 class App extends MiddlewareQueue
 {
     public function boot(): void
     {
-        $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
-        $response = $this->handle($request);
-        $server = Server::createServerFromRequest(function () {}, $request, $response);
+        $server = Server::createServer([$this, 'handle'], $_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
         $server->listen();
     }
 }

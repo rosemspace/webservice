@@ -56,11 +56,11 @@ class LoginRequestHandler implements RequestHandlerInterface
 
         if ($body->isWritable()) {
             $viewString = $this->view->render(
-                'login',
+                'admin::login',
                 [
-                    'metaTitlePrefix' => $this->config->get('admin.meta.title_prefix', ''),
+                    'metaTitlePrefix' => $this->config->get('app.meta.title_prefix', ''),
                     'metaTitle'       => 'Login',
-                    'metaTitleSuffix' => $this->config->get('admin.meta.title_suffix', ''),
+                    'metaTitleSuffix' => $this->config->get('app.meta.title_suffix', ''),
                 ]
             );
 

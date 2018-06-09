@@ -2,10 +2,13 @@
 
 namespace Rosem\Authentication\Http\Server;
 
+use Fig\Http\Message\RequestMethodInterface;
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use function call_user_func;
+use Psrnext\Http\Factory\ResponseFactoryInterface;
 
 class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
 {
@@ -13,6 +16,18 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
      * Authorization header prefix.
      */
     private const AUTHORIZATION_HEADER_PREFIX = 'Bearer';
+
+    protected $redirectUri;
+
+    public function __construct(
+        ResponseFactoryInterface $responseFactory,
+        callable $getPassword,
+        string $redirectUri = '/login'
+    ) {
+        parent::__construct($responseFactory, $getPassword);
+
+        $this->redirectUri = $redirectUri;
+    }
 
     /**
      * @param ServerRequestInterface $request
@@ -28,7 +43,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
             return $username;
         }
 
-        if ($request->getMethod() !== 'POST') {
+        if ($request->getMethod() !== RequestMethodInterface::METHOD_POST) {
             return null;
         }
 
@@ -51,7 +66,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
 
     public function createUnauthorizedResponse(): ResponseInterface
     {
-        return $this->responseFactory->createResponse(302)
-            ->withHeader('Location', '/admin/login');
+        return $this->responseFactory->createResponse(StatusCodeInterface::STATUS_FOUND)
+            ->withHeader('Location', $this->redirectUri);
     }
 }

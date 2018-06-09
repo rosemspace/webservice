@@ -77,7 +77,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector
             ) {
-                $routeCollector->get('/{path.*}', HomeRequestHandler::class);
+                $routeCollector->get('/{appRelativePath.*}', HomeRequestHandler::class);
             },
             ViewRendererInterface::class   => function (
                 ContainerInterface $container,

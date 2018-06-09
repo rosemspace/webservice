@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\Admin\Provider;
+namespace Rosem\Admin;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
@@ -22,6 +22,19 @@ class AdminServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
+            'admin.uri' => function () {
+                return '/admin';
+            },
+            'admin.loginUri' => function (ContainerInterface $container) {
+                return $container->get('admin.uri') . '/login';
+            },
+            'AdminAuthentication' => function (ContainerInterface $container) {
+                return new AuthenticationMiddleware(
+                    $container->get(ResponseFactoryInterface::class),
+                    $container->get('auth.userPasswordGetter'),
+                    $container->get('admin.loginUri')
+                );
+            },
             AdminRequestHandler::class => function (ContainerInterface $container) {
                 return new AdminRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
@@ -51,13 +64,20 @@ class AdminServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector
             ) {
-                $adminUri = '/' . $container->get(ConfigInterface::class)->get('admin.uri', 'admin');
-                $routeCollector->get($adminUri . '/login', LoginRequestHandler::class);
-                $routeCollector->post($adminUri . '/login', LoginRequestHandler::class)
-                    ->setMiddleware(AuthenticationMiddleware::class);
-                $routeCollector->get($adminUri . '{path:.*}', AdminRequestHandler::class)
-                    ->setMiddleware(AuthenticationMiddleware::class);
+                $adminUri = '/' . trim($container->get('admin.uri'), '/');
+                $loginUri = '/' . trim($container->get('admin.loginUri'), '/');
+                $routeCollector->get($loginUri, LoginRequestHandler::class);
+                $routeCollector->post($loginUri, LoginRequestHandler::class)
+                    ->setMiddleware('AdminAuthentication');
+                $routeCollector->get($adminUri . '{adminRelativePath:.*}', AdminRequestHandler::class)
+                    ->setMiddleware('AdminAuthentication');
             },
+            ViewRendererInterface::class => function (
+                ContainerInterface $container,
+                ViewRendererInterface $renderer
+            ) {
+                $renderer->addPathAlias(__DIR__ . '/resources/templates', 'admin');
+            }
         ];
     }
 }

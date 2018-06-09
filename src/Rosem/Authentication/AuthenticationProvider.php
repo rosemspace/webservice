@@ -22,18 +22,30 @@ class AuthenticationProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            SessionMiddleware::class        => function () {
+            'auth.symmetricKey' => function () {
+//                return null;
+                return 'mBC5v1sOKVvbdEitdSBenu59nfNfhwkedkJVNabosTw=';
+            },
+            'auth.userPasswordGetter' => function () {
+//                return null;
+                return function (string $username): ?string {
+                    return ['roshe' => '1234'][$username] ?? null;
+                };
+            },
+            'auth.uri' => function () {
+                return '/login';
+            },
+            SessionMiddleware::class        => function (ContainerInterface $container) {
                 return SessionMiddleware::fromSymmetricKeyDefaults(
-                    'mBC5v1sOKVvbdEitdSBenu59nfNfhwkedkJVNabosTw=',
+                    $container->get('auth.symmetricKey'),
                     20 * 60 // 20 minutes
                 );
             },
             AuthenticationMiddleware::class => function (ContainerInterface $container) {
                 return new AuthenticationMiddleware(
                     $container->get(ResponseFactoryInterface::class),
-                    function (string $username): ?string {
-                        return ['roshe' => '1234'][$username] ?? null;
-                    }
+                    $container->get('auth.userPasswordGetter'),
+                    $container->get('auth.uri')
                 );
             },
         ];
