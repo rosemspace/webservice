@@ -6,7 +6,15 @@ abstract class AbstractObjectType extends AbstractNode implements ObjectTypeInte
 {
     protected const TYPE_REGEX = '~^.*\\\|Type$~';
 
-    abstract public function getBaseFields(TypeRegistryInterface $typeRegistry);
+    abstract public function getBaseFields(TypeRegistryInterface $registry);
+
+    public static function field($type, string $description = ''): array
+    {
+        return [
+            'type' => $type,
+            'description' => $description,
+        ];
+    }
 
     public function getName(): string
     {
@@ -18,11 +26,11 @@ abstract class AbstractObjectType extends AbstractNode implements ObjectTypeInte
         $this->factories[] = $fieldFactory;
     }
 
-    public function getFields(TypeRegistryInterface $typeRegistry): array {
-        $fields = $this->getBaseFields($typeRegistry);
+    public function getFields(TypeRegistryInterface $registry): array {
+        $fields = $this->getBaseFields($registry);
 
         foreach ($this->factories as $factory) {
-            $fields += $factory($typeRegistry);
+            $fields += $factory($registry);
         }
 
         return $fields;

@@ -1,12 +1,12 @@
 <?php
 
-namespace Rosem\Access\GraphQL\Mutations;
+namespace Rosem\Access\GraphQL\Mutation;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use Psrnext\GraphQL\{
     AbstractQuery, TypeRegistryInterface
 };
-use Rosem\Access\GraphQL\Types\UserType;
+use Rosem\Access\GraphQL\Type\UserType;
 
 class UpdateUserMutation extends AbstractQuery
 {
@@ -15,19 +15,19 @@ class UpdateUserMutation extends AbstractQuery
         return 'Update the user';
     }
 
-    public function getType(TypeRegistryInterface $typeRegistry)
+    public function getType(TypeRegistryInterface $registry)
     {
-        return $typeRegistry->nonNull($typeRegistry->get(UserType::class));
+        return $registry->nonNull($registry->get(UserType::class));
     }
 
-    public function getBaseArguments(TypeRegistryInterface $typeRegistry): array
+    public function getBaseArguments(TypeRegistryInterface $registry): array
     {
         return [
-            'id'        => $typeRegistry->id(),
-            'email'     => $typeRegistry->string(),
-            'firstName' => $typeRegistry->string(),
-            'lastName'  => $typeRegistry->string(),
-            'password'  => $typeRegistry->string(),
+            'id'        => $registry->id(),
+            'email'     => $registry->string(),
+            'firstName' => $registry->string(),
+            'lastName'  => $registry->string(),
+            'password'  => $registry->string(),
         ];
     }
 

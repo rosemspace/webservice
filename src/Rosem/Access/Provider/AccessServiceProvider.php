@@ -7,9 +7,9 @@ use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\GraphQL\{
     GraphInterface, ObjectTypeInterface, QueryInterface
 };
-use Rosem\Access\GraphQL\Mutations\UpdateUserMutation;
-use Rosem\Access\GraphQL\Queries\UsersQuery;
-use Rosem\Access\GraphQL\Types\{
+use Rosem\Access\GraphQL\Mutation\UpdateUserMutation;
+use Rosem\Access\GraphQL\Query\UsersQuery;
+use Rosem\Access\GraphQL\Type\{
     UserRoleType, UserType
 };
 

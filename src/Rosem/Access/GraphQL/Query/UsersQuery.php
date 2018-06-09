@@ -1,13 +1,13 @@
 <?php
 
-namespace Rosem\Access\GraphQL\Queries;
+namespace Rosem\Access\GraphQL\Query;
 
 use Doctrine\ORM\EntityManager;
 use GraphQL\Type\Definition\ResolveInfo;
 use Psrnext\GraphQL\{
     AbstractQuery, TypeRegistryInterface
 };
-use Rosem\Access\GraphQL\Types\UserType;
+use Rosem\Access\GraphQL\Type\UserType;
 
 class UsersQuery extends AbstractQuery
 {
@@ -16,18 +16,18 @@ class UsersQuery extends AbstractQuery
         return 'Fetch user collection';
     }
 
-    public function getType(TypeRegistryInterface $typeRegistry)
+    public function getType(TypeRegistryInterface $registry)
     {
-        return $typeRegistry->nonNull(
-            $typeRegistry->listOf($typeRegistry->nonNull($typeRegistry->get(UserType::class)))
+        return $registry->nonNull(
+            $registry->listOf($registry->nonNull($registry->get(UserType::class)))
         );
     }
 
-    public function getBaseArguments(TypeRegistryInterface $typeRegistry): array
+    public function getBaseArguments(TypeRegistryInterface $registry): array
     {
         return [
-            'id'    => $typeRegistry->id(),
-            'email' => $typeRegistry->string(),
+            'id'    => $registry->id(),
+            'email' => $registry->string(),
         ];
     }
 

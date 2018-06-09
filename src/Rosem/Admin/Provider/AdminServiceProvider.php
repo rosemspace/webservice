@@ -3,11 +3,6 @@
 namespace Rosem\Admin\Provider;
 
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\ViewRenderer\ViewRendererInterface;
 use Rosem\Admin\Http\Server\AdminRequestHandler;
@@ -15,7 +10,6 @@ use Rosem\Admin\Http\Server\LoginRequestHandler;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Route\RouteCollectorInterface;
-use Rosem\App\MiddlewareRequestHandler;
 use Rosem\Authentication\Middleware\BearerAuthenticationMiddleware;
 
 class AdminServiceProvider implements ServiceProviderInterface

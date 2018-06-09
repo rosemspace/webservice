@@ -1,26 +1,17 @@
 <?php
 
-namespace Rosem\GraphQL\Middleware;
+namespace Rosem\GraphQL;
 
-use GraphQL\{
-    Error\Debug, Server\StandardServer
-};
+use GraphQL\Server\StandardServer;
 use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
 };
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
-use Psrnext\Router\RouteCollectorInterface;
-use Zend\Diactoros\Response\JsonResponse;
 
-class GraphQLMiddleware implements MiddlewareInterface
+class GraphQLMiddleware extends GraphQLRequestHandler implements MiddlewareInterface
 {
-    /**
-     * @var StandardServer
-     */
-    protected $server;
-
     /**
      * @var string
      */
@@ -41,11 +32,6 @@ class GraphQLMiddleware implements MiddlewareInterface
     ];
 
     /**
-     * @var bool|int
-     */
-    protected $debug;
-
-    /**
      * GraphQLMiddleware constructor.
      *
      * @param StandardServer $server
@@ -54,57 +40,25 @@ class GraphQLMiddleware implements MiddlewareInterface
      */
     public function __construct(StandardServer $server, $graphQLUri = '/graphql', $debug = false)
     {
-        $this->server = $server;
+        parent::__construct($server, $debug);
+
         $this->graphQLUri = $graphQLUri;
-        $this->debug = $debug;
-    }
-
-    /**
-     * @return bool|int
-     */
-    protected function getDebug()
-    {
-        if ($this->debug) {
-            return Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE;
-        }
-
-        return $this->debug;
-    }
-
-    /**
-     * @param bool $debug
-     */
-    public function setDebug(bool $debug): void
-    {
-        $this->debug = $debug;
     }
 
     /**
      * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $delegate
+     * @param RequestHandlerInterface $handler
      *
      * @return ResponseInterface
      * @throws \InvalidArgumentException
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $delegate): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        //TODO: move json_decode into separated middleware
-
-        if (!$this->isGraphQLRequest($request)) {
-            return $delegate->handle($request);
+        if ($this->isGraphQLRequest($request)) {
+            return $this->handle($request);
         }
 
-        if (strtoupper($request->getMethod()) === RouteCollectorInterface::METHOD_GET) {
-            $params = $request->getQueryParams();
-            $params['variables'] = $params['variables'] ?? null;
-            $request = $request->withQueryParams($params);
-        } else {
-            $params = json_decode($request->getBody()->getContents(), true);
-            $params['variables'] = $params['variables'] ?? null;
-            $request = $request->withParsedBody($params);
-        }
-
-        return new JsonResponse($this->server->executePsrRequest($request)->toArray($this->getDebug()));
+        return $handler->handle($request);
     }
 
     /**
