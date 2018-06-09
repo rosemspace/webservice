@@ -10,6 +10,7 @@ use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
+use Rosem\App\Http\Server\InternalServerErrorRequestHandler;
 use Rosem\App\Http\Server\HomeRequestHandler;
 use Rosem\Environment\Environment;
 
@@ -30,7 +31,7 @@ class AppServiceProvider implements ServiceProviderInterface
             },
             MiddlewareProcessorInterface::class  => function (ContainerInterface $container) {
 //                $container->get(AppFactoryInterface::class)->create();
-                return new App($container);
+                return new App($container, $container->get(InternalServerErrorRequestHandler::class));
             },
             EnvironmentInterface::class          => function () {
                 $env = new Environment(getcwd() . '/..');
@@ -53,6 +54,13 @@ class AppServiceProvider implements ServiceProviderInterface
                     $container->get(ConfigInterface::class)
                 );
             },
+            InternalServerErrorRequestHandler::class => function (ContainerInterface $container) {
+                return new InternalServerErrorRequestHandler(
+                    $container->get(ResponseFactoryInterface::class),
+                    $container->get(ViewRendererInterface::class),
+                    $container->get(ConfigInterface::class)
+                );
+            }
         ];
     }
 
@@ -76,6 +84,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 ViewRendererInterface $view
             ) {
                 $config = $container->get(ConfigInterface::class);
+                $view->addPathAlias(realpath(__DIR__ . '/resources/templates'), 'app');
                 $view->addData([
                     'lang'            => $config->get('app.lang'),
                     'charset'         => $config->get('app.meta.charset'),
@@ -102,7 +111,7 @@ class AppServiceProvider implements ServiceProviderInterface
     public function createViewRenderer(ContainerInterface $container)
     {
         return new class (\League\Plates\Engine::create(
-            $container->get(ConfigInterface::class)->get('app.paths.public'),
+            '', //$container->get(ConfigInterface::class)->get('app.paths.public'),
             'phtml'
         )) implements ViewRendererInterface
         {

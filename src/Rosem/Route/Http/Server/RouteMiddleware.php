@@ -21,7 +21,7 @@ class RouteMiddleware implements MiddlewareInterface
     /**
      * @var string Attribute name for handler reference
      */
-    protected $attribute = 'request-handler';
+    protected $attribute = 'requestHandler';
 
     public function __construct(
         RouteDispatcherInterface $router,

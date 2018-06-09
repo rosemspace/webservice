@@ -23,7 +23,7 @@ class HandleRequestMiddleware implements MiddlewareInterface
     /**
      * @var string attribute name for handler reference
      */
-    private $handlerAttribute = 'request-handler';
+    private $handlerAttribute = 'requestHandler';
 
     /**
      * RequestHandlerMiddleware constructor.
@@ -57,20 +57,14 @@ class HandleRequestMiddleware implements MiddlewareInterface
     {
         $requestData = $request->getAttribute($this->handlerAttribute);
 
-        if (!empty($requestData[0])) {
-            $requestHandler = new MiddlewareProcessor($this->container);
+        if (!empty($requestData[0])) { // TODO: add constants
+            $requestHandler = new MiddlewareProcessor($this->container, $this->container->get($requestData[1]));
 
             foreach ($requestData[0] as $middleware) {
                 $requestHandler->use($middleware);
             }
-
-            $handler = $this->container->get($requestData[1]); // TODO: improve
         } else {
             $requestHandler = $this->container->get($requestData[1]);
-        }
-
-        if ($requestHandler instanceof MiddlewareInterface) {
-            return $requestHandler->process($request, $handler);
         }
 
         if ($requestHandler instanceof RequestHandlerInterface) {

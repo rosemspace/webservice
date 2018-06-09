@@ -12,7 +12,7 @@ use Psrnext\Http\Server\MiddlewareProcessorInterface;
 use function in_array;
 use function call_user_func;
 
-class MiddlewareProcessor implements MiddlewareInterface, MiddlewareProcessorInterface
+class MiddlewareProcessor implements MiddlewareProcessorInterface
 {
     /**
      * @var ContainerInterface
@@ -20,18 +20,24 @@ class MiddlewareProcessor implements MiddlewareInterface, MiddlewareProcessorInt
     private $container;
 
     /**
-     * @var RequestHandlerInterface|object
+     * @var RequestHandlerInterface
      */
-    protected $lastHandler;
+    protected $finalHandler;
 
     /**
      * @var RequestHandlerInterface
      */
-    protected $defaultHandler;
+    protected $handlerQueue;
 
-    public function __construct(ContainerInterface $container)
+    /**
+     * @var RequestHandlerInterface|object
+     */
+    protected $lastHandler;
+
+    public function __construct(ContainerInterface $container, RequestHandlerInterface $finalHandler)
     {
         $this->container = $container;
+        $this->handlerQueue = $this->finalHandler = $finalHandler;
     }
 
     protected function createMiddlewareRequestHandler(callable $middlewareFactory)
@@ -65,6 +71,8 @@ class MiddlewareProcessor implements MiddlewareInterface, MiddlewareProcessorInt
      * @param string $middlewareClass
      * @param float  $priority
      *
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \InvalidArgumentException
      */
     public function use(string $middlewareClass, float $priority = 0): void // TODO: priority functionality
@@ -73,12 +81,13 @@ class MiddlewareProcessor implements MiddlewareInterface, MiddlewareProcessorInt
             if ($this->lastHandler) {
                 $this->lastHandler = &$this->lastHandler->nextHandler;
             } else {
-                $this->defaultHandler = &$this->lastHandler;
+                $this->handlerQueue = &$this->lastHandler;
             }
 
             $this->lastHandler = $this->createMiddlewareRequestHandler(function () use (&$middlewareClass) {
                 return $this->container->get($middlewareClass);
             });
+            $this->lastHandler->nextHandler = $this->finalHandler;
         } else {
             throw new InvalidArgumentException('The middleware "' . $middlewareClass . '" should implement "' .
                 MiddlewareInterface::class . '" interface');
@@ -92,18 +101,6 @@ class MiddlewareProcessor implements MiddlewareInterface, MiddlewareProcessorInt
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->defaultHandler->handle($request);
-    }
-
-    /**
-     * Process an incoming server request and return a response, optionally delegating
-     * response creation to a handler.
-     */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-    {
-        $nextHandler = &$this->lastHandler->nextHandler;
-        $nextHandler = $handler;
-
-        return $this->handle($request);
+        return $this->handlerQueue->handle($request);
     }
 }

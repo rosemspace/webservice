@@ -55,15 +55,6 @@ class BearerAuthenticationProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-//            RouteCollectorInterface::class => function (
-//                ContainerInterface $container,
-//                RouteCollectorInterface $routeCollector
-//            ) {
-//                $routeCollector->get(
-//                    "/admin",
-//                    [BearerAuthenticationMiddleware::class, 'process']
-//                );
-//            },
             MiddlewareProcessorInterface::class => function (
                 ContainerInterface $container,
                 MiddlewareProcessorInterface $middlewareDispatcher
