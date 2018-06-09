@@ -38,19 +38,16 @@ class MiddlewareQueue implements MiddlewareQueueInterface
         $this->handlerQueue = $this->finalHandler = $finalHandler;
     }
 
-    protected function createMiddlewareRequestHandler(ContainerInterface $container, string $middleware)
+    protected function createMiddlewareRequestHandler(MiddlewareInterface $middleware)
     {
-        return new class ($container, $middleware) implements RequestHandlerInterface
+        return new class ($middleware) implements RequestHandlerInterface
         {
-            private $container;
-
             private $middleware;
 
             public $nextHandler;
 
-            public function __construct(ContainerInterface $container, string $middleware)
+            public function __construct(MiddlewareInterface $middleware)
             {
-                $this->container = $container;
                 $this->middleware = $middleware;
             }
 
@@ -64,14 +61,7 @@ class MiddlewareQueue implements MiddlewareQueueInterface
              */
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
-                $middleware = $this->container->get($this->middleware);
-
-                if ($middleware instanceof MiddlewareInterface) {
-                    return $middleware->process($request, $this->nextHandler);
-                }
-
-                throw new InvalidArgumentException('The middleware "' . $this->middleware . '" should implement "' .
-                    MiddlewareInterface::class . '" interface');
+                return $this->middleware->process($request, $this->nextHandler);
             }
         };
     }
@@ -91,9 +81,7 @@ class MiddlewareQueue implements MiddlewareQueueInterface
             $this->handlerQueue = &$this->lastHandler;
         }
 
-        $this->lastHandler = $this->createMiddlewareRequestHandler($middleware, function (string $middleware) {
-            return $this->container->get($middleware);
-        });
+        $this->lastHandler = $this->createMiddlewareRequestHandler(new LazyMiddleware($this->container, $middleware));
         $this->lastHandler->nextHandler = $this->finalHandler;
     }
 
