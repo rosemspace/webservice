@@ -28,12 +28,8 @@ class AdminServiceProvider implements ServiceProviderInterface
             'admin.loginUri' => function (ContainerInterface $container) {
                 return $container->get('admin.uri') . '/login';
             },
-            'AdminAuthentication' => function (ContainerInterface $container) {
-                return new AuthenticationMiddleware(
-                    $container->get(ResponseFactoryInterface::class),
-                    $container->get('auth.userPasswordGetter'),
-                    $container->get('admin.loginUri')
-                );
+            'auth.uri' => function (ContainerInterface $container) { // TODO: remove
+                return '/admin/login';
             },
             AdminRequestHandler::class => function (ContainerInterface $container) {
                 return new AdminRequestHandler(
@@ -68,9 +64,10 @@ class AdminServiceProvider implements ServiceProviderInterface
                 $loginUri = '/' . trim($container->get('admin.loginUri'), '/');
                 $routeCollector->get($loginUri, LoginRequestHandler::class);
                 $routeCollector->post($loginUri, LoginRequestHandler::class)
-                    ->setMiddleware('AdminAuthentication');
+                    // TODO: ['setLoginUri' => $container->get('admin.loginUri')]);
+                    ->setMiddleware(AuthenticationMiddleware::class);
                 $routeCollector->get($adminUri . '{adminRelativePath:.*}', AdminRequestHandler::class)
-                    ->setMiddleware('AdminAuthentication');
+                    ->setMiddleware(AuthenticationMiddleware::class);
             },
             ViewRendererInterface::class => function (
                 ContainerInterface $container,

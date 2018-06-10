@@ -8,9 +8,16 @@ use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\Http\Server\MiddlewareQueueInterface;
 use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
+use Rosem\Http\Server\LazyFactoryMiddleware;
 
 class AuthenticationProvider implements ServiceProviderInterface
 {
+    public const CONFIG_SYMMETRIC_KEY = 'auth.symmetricKey';
+
+    public const CONFIG_USER_PASSWORD_GETTER = 'auth.userPasswordGetter';
+
+    public const CONFIG_URI = 'auth.uri';
+
     /**
      * Returns a list of all container entries registered by this service provider.
      * - the key is the entry name
@@ -22,31 +29,27 @@ class AuthenticationProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            'auth.symmetricKey' => function () {
+            static::CONFIG_SYMMETRIC_KEY => function () {
 //                return null;
                 return 'mBC5v1sOKVvbdEitdSBenu59nfNfhwkedkJVNabosTw=';
             },
-            'auth.userPasswordGetter' => function () {
+            static::CONFIG_USER_PASSWORD_GETTER => function () {
 //                return null;
                 return function (string $username): ?string {
                     return ['roshe' => '1234'][$username] ?? null;
                 };
             },
-            'auth.uri' => function () {
+            static::CONFIG_URI => function () {
                 return '/login';
             },
-            SessionMiddleware::class        => function (ContainerInterface $container) {
+            SessionMiddleware::class => function (ContainerInterface $container) {
                 return SessionMiddleware::fromSymmetricKeyDefaults(
-                    $container->get('auth.symmetricKey'),
+                    $container->get(static::CONFIG_SYMMETRIC_KEY),
                     20 * 60 // 20 minutes
                 );
             },
             AuthenticationMiddleware::class => function (ContainerInterface $container) {
-                return new AuthenticationMiddleware(
-                    $container->get(ResponseFactoryInterface::class),
-                    $container->get('auth.userPasswordGetter'),
-                    $container->get('auth.uri')
-                );
+                return new LazyFactoryMiddleware($container, [static::class, 'createAuthenticationMiddleware']);
             },
         ];
     }
@@ -71,8 +74,17 @@ class AuthenticationProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 MiddlewareQueueInterface $middlewareDispatcher
             ) {
-                $middlewareDispatcher->use(SessionMiddleware::class);
+                $middlewareDispatcher->use($container->get(SessionMiddleware::class));
             },
         ];
+    }
+
+    public function createAuthenticationMiddleware(ContainerInterface $container): AuthenticationMiddleware
+    {
+        return new AuthenticationMiddleware(
+            $container->get(ResponseFactoryInterface::class),
+            $container->get(static::CONFIG_USER_PASSWORD_GETTER),
+            $container->get(static::CONFIG_URI)
+        );
     }
 }

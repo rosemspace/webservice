@@ -8,19 +8,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use function is_string;
 
-class LazyMiddleware implements MiddlewareInterface
+class LazyMiddleware extends AbstractLazyMiddleware
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var string
-     */
-    protected $middleware;
-
     /**
      * LazyMiddleware constructor.
      *
@@ -29,8 +20,7 @@ class LazyMiddleware implements MiddlewareInterface
      */
     public function __construct(ContainerInterface $container, string $middleware)
     {
-        $this->container = $container;
-        $this->middleware = $middleware;
+        parent::__construct($container, $middleware);
     }
 
     /**
@@ -42,13 +32,17 @@ class LazyMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $delegate): ResponseInterface
     {
-        $middleware = $this->container->get($this->middleware);
+        if (is_string($this->middleware)) {
+            $this->middleware = $this->container->get($this->middleware);
 
-        if ($middleware instanceof MiddlewareInterface) {
-            return $middleware->process($request, $delegate);
+            if ($this->middleware instanceof MiddlewareInterface) {
+                return $this->middleware->process($request, $delegate);
+            }
+
+            throw new InvalidArgumentException('The middleware "' . $this->middleware . '" should implement "' .
+                MiddlewareInterface::class . '" interface');
         }
 
-        throw new InvalidArgumentException('The middleware "' . $this->middleware . '" should implement "' .
-            MiddlewareInterface::class . '" interface');
+        return $this->middleware->process($request, $delegate);
     }
 }

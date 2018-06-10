@@ -3,6 +3,7 @@
 namespace Rosem\Http\Server;
 
 use Exception;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
 };
@@ -27,9 +28,9 @@ class CallableBasedRequestHandler implements RequestHandlerInterface
      */
     protected $callable;
 
-    public function __construct(ResponseFactory $responseFactory, callable $callable)
+    public function __construct(ContainerInterface $container, callable $callable)
     {
-        $this->responseFactory = $responseFactory;
+        $this->responseFactory = $container->get(ResponseFactory::class);
         $this->callable = $callable;
     }
 

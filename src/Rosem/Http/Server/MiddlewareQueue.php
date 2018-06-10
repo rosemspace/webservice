@@ -67,13 +67,13 @@ class MiddlewareQueue implements MiddlewareQueueInterface
     }
 
     /**
-     * @param string $middleware
-     * @param float  $priority
+     * @param MiddlewareInterface $middleware
+     * @param float               $priority
      *
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function use(string $middleware, float $priority = 0): void // TODO: priority functionality
+    public function use(MiddlewareInterface $middleware, float $priority = 0): void // TODO: priority functionality
     {
         if ($this->lastHandler) {
             $this->lastHandler = &$this->lastHandler->nextHandler;
@@ -81,7 +81,7 @@ class MiddlewareQueue implements MiddlewareQueueInterface
             $this->handlerQueue = &$this->lastHandler;
         }
 
-        $this->lastHandler = $this->createMiddlewareRequestHandler(new LazyMiddleware($this->container, $middleware));
+        $this->lastHandler = $this->createMiddlewareRequestHandler($middleware);
         $this->lastHandler->nextHandler = $this->finalHandler;
     }
 

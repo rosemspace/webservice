@@ -8,18 +8,13 @@ use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\Http\Server\MiddlewareQueueInterface;
 use Psrnext\Route\RouteCollectorInterface;
 use Psrnext\Route\RouteDispatcherInterface;
-use Rosem\Route\Http\Server\HandleRequestMiddleware;
-use Rosem\Route\Http\Server\RouteMiddleware;
+use Rosem\Route\Dispatcher\MarkBasedDispatcher;
+use Rosem\Route\Http\Server\{
+    HandleRequestMiddleware, RouteMiddleware
+};
 
 class RouteServiceProvider implements ServiceProviderInterface
 {
-    protected $router;
-
-    public function __construct()
-    {
-        $this->router = new Router();
-    }
-
     /**
      * Returns a list of all container entries registered by this service provider.
      * @return callable[]
@@ -48,12 +43,8 @@ class RouteServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 MiddlewareQueueInterface $middlewareDispatcher
             ) {
-                // TODO: concept
-//                $middlewareDispatcher->use(new LazyMiddleware(function () use (&$container) {
-//                    return $container->get(RouteMiddleware::class);
-//                }));
-                $middlewareDispatcher->use(RouteMiddleware::class);
-                $middlewareDispatcher->use(HandleRequestMiddleware::class);
+                $middlewareDispatcher->use($container->get(RouteMiddleware::class));
+                $middlewareDispatcher->use($container->get(HandleRequestMiddleware::class));
             },
         ];
     }
@@ -66,7 +57,7 @@ class RouteServiceProvider implements ServiceProviderInterface
      */
     public function createRouteCollector(ContainerInterface $container): RouteCollectorInterface
     {
-        return $this->router;
+        return new RouteCollector();
     }
 
     /**
@@ -77,9 +68,7 @@ class RouteServiceProvider implements ServiceProviderInterface
      */
     public function createRouteDispatcher(ContainerInterface $container): RouteDispatcherInterface
     {
-        $container->get(RouteCollectorInterface::class); // FIXME: remove when possible
-
-        return $this->router;
+        return new RouteDispatcher($container->get(RouteCollectorInterface::class), new MarkBasedDispatcher());
     }
 
     public function createRouteMiddleware(ContainerInterface $container) {

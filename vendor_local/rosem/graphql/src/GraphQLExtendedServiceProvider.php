@@ -6,6 +6,7 @@ use Psr\Container\ContainerInterface;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Environment\EnvironmentInterface;
 use Psrnext\Http\Server\MiddlewareQueueInterface;
+use Rosem\Http\Server\LazyMiddleware;
 
 class GraphQLExtendedServiceProvider extends GraphQLServiceProvider
 {
@@ -23,7 +24,7 @@ class GraphQLExtendedServiceProvider extends GraphQLServiceProvider
                 ContainerInterface $container,
                 MiddlewareQueueInterface $middlewareProcessor
             ) {
-                $middlewareProcessor->use(GraphQLMiddleware::class);
+                $middlewareProcessor->use(new LazyMiddleware($container, GraphQLMiddleware::class));
             },
         ];
     }
