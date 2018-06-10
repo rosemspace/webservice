@@ -51,15 +51,7 @@ class AdminRequestHandler implements RequestHandlerInterface
         if ($body->isWritable()) {
             $viewString = $this->view->render(
                 'admin::index',
-                [
-                    'metaTitlePrefix' => $this->config->get('admin.meta.title_prefix', ''),
-                    'metaTitle'       => $this->config->get(
-                        'admin.meta.title',
-                        $this->config->get('app.name', 'Rosem')
-                    ),
-                    'metaTitleSuffix' => $this->config->get('admin.meta.title_suffix', ''),
-                    'username' => $request->getAttribute('userIdentity'),
-                ]
+                ['userIdentity' => $request->getAttribute('userIdentity')]
             );
 
             if ($viewString) {

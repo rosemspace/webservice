@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var callable|object $v
+ * @var $metaTitlePrefix
+ * @var $metaTitle
+ * @var $metaTitleSuffix
+ * @var $appName
+ * @var $loginUri
+ */
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,12 +15,12 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="<?php echo $v->e($csrfToken); ?>">
-    <title><?php echo $v->e("$metaTitlePrefix$metaTitle$metaTitleSuffix"); ?></title>
+<!--    <meta name="csrf-token" content="--><?php //echo $v->e($csrfToken); ?><!--">-->
+    <title><?php echo $v("$metaTitlePrefix$metaTitle$metaTitleSuffix") ?></title>
 </head>
 <body>
 <h1>Login</h1>
-<form action="/admin/login" method="post">
+<form action="<?php echo $v($loginUri) ?>" method="post">
     <div>
         <label for="username">Enter your name: </label>
         <input type="text" id="username" name="username">

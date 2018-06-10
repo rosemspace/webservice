@@ -22,6 +22,15 @@ class AdminServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
+            'admin.meta.title_prefix' => function (ContainerInterface $container) {
+                return ($container->has('app.name') ? $container->get('app.name') . ' ' : '') . 'Admin | ';
+            },
+            'admin.meta.title' => function () {
+                return 'Welcome';
+            },
+            'admin.meta.title_suffix' => function () {
+                return '';
+            },
             'admin.uri' => function () {
                 return '/admin';
             },
@@ -74,6 +83,13 @@ class AdminServiceProvider implements ServiceProviderInterface
                 TemplateRendererInterface $renderer
             ) {
                 $renderer->addPath(__DIR__ . '/resources/templates', 'admin');
+                $adminData = [
+                    'metaTitlePrefix' => $container->get('admin.meta.title_prefix'),
+                    'metaTitle'       => $container->get('admin.meta.title'),
+                    'metaTitleSuffix' => $container->get('admin.meta.title_suffix'),
+                ];
+                $renderer->addTemplateData('admin::index', $adminData);
+                $renderer->addTemplateData('admin::login', $adminData);
             }
         ];
     }

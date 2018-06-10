@@ -58,9 +58,8 @@ class LoginRequestHandler implements RequestHandlerInterface
             $viewString = $this->view->render(
                 'admin::login',
                 [
-                    'metaTitlePrefix' => $this->config->get('app.meta.title_prefix', ''),
-                    'metaTitle'       => 'Login',
-                    'metaTitleSuffix' => $this->config->get('app.meta.title_suffix', ''),
+                    'metaTitle' => 'Login',
+                    'loginUri' => $request->getUri()->getPath(),
                 ]
             );
 
