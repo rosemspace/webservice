@@ -7,6 +7,7 @@ use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\Http\Server\MiddlewareQueueInterface;
+use Psrnext\Template\TemplateRendererInterface;
 use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
 use Rosem\Http\Server\LazyFactoryMiddleware;
 
@@ -70,6 +71,14 @@ class AuthenticationProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
+            TemplateRendererInterface::class => function (
+                ContainerInterface $container,
+                TemplateRendererInterface $renderer
+            ) {
+                $renderer->addGlobalData([
+                    'csrfToken' => '4sWPhTlJAmt1IcyNq1FCyivsAVhHqjiDCKRXOgOQock=',
+                ]);
+            },
             MiddlewareQueueInterface::class => function (
                 ContainerInterface $container,
                 MiddlewareQueueInterface $middlewareDispatcher

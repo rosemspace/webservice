@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f6a801b2c8a3040ee7ca4128ac64992",
+    "content-hash": "ba2d8793309196d6f4aa5ea1e4fc467f",
     "packages": [
         {
             "name": "analogue/orm",
@@ -1218,16 +1218,16 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v5.6.23",
+            "version": "v5.6.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "1a29b314dd5c7a5a5bce3dd7b9da924cc1ec22ec"
+                "reference": "1f0757cae8749400aeda730f6438a081fc3c082d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/1a29b314dd5c7a5a5bce3dd7b9da924cc1ec22ec",
-                "reference": "1a29b314dd5c7a5a5bce3dd7b9da924cc1ec22ec",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/1f0757cae8749400aeda730f6438a081fc3c082d",
+                "reference": "1f0757cae8749400aeda730f6438a081fc3c082d",
                 "shasum": ""
             },
             "require": {
@@ -1258,11 +1258,11 @@
             ],
             "description": "The Illuminate Container package.",
             "homepage": "https://laravel.com",
-            "time": "2018-05-14T12:49:42+00:00"
+            "time": "2018-05-24T13:16:56+00:00"
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.6.23",
+            "version": "v5.6.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -1306,16 +1306,16 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v5.6.23",
+            "version": "v5.6.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "fe10cc28c1130f7294c5450c428b59a9641b0c20"
+                "reference": "a31e39433a97404d90ea12af4f0d3f6fc1818a9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/fe10cc28c1130f7294c5450c428b59a9641b0c20",
-                "reference": "fe10cc28c1130f7294c5450c428b59a9641b0c20",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/a31e39433a97404d90ea12af4f0d3f6fc1818a9e",
+                "reference": "a31e39433a97404d90ea12af4f0d3f6fc1818a9e",
                 "shasum": ""
             },
             "require": {
@@ -1361,11 +1361,11 @@
                 "orm",
                 "sql"
             ],
-            "time": "2018-05-21T14:36:25+00:00"
+            "time": "2018-06-04T14:50:35+00:00"
         },
         {
             "name": "illuminate/events",
-            "version": "v5.6.23",
+            "version": "v5.6.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
@@ -1410,7 +1410,7 @@
         },
         {
             "name": "illuminate/pagination",
-            "version": "v5.6.23",
+            "version": "v5.6.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pagination.git",
@@ -1454,16 +1454,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v5.6.23",
+            "version": "v5.6.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "7ba15bb00ac57c621e8291ce737ae7ea497ba02b"
+                "reference": "b13296a75443797d6a71d0ccd437ca801b12d300"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/7ba15bb00ac57c621e8291ce737ae7ea497ba02b",
-                "reference": "7ba15bb00ac57c621e8291ce737ae7ea497ba02b",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/b13296a75443797d6a71d0ccd437ca801b12d300",
+                "reference": "b13296a75443797d6a71d0ccd437ca801b12d300",
                 "shasum": ""
             },
             "require": {
@@ -1478,6 +1478,7 @@
             },
             "suggest": {
                 "illuminate/filesystem": "Required to use the composer class (5.6.*).",
+                "ramsey/uuid": "Required to use Str::uuid() (^3.7).",
                 "symfony/process": "Required to use the composer class (~4.0).",
                 "symfony/var-dumper": "Required to use the dd function (~4.0)."
             },
@@ -1507,7 +1508,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2018-05-18T13:51:23+00:00"
+            "time": "2018-06-02T14:30:18+00:00"
         },
         {
             "name": "kint-php/kint",
@@ -3081,26 +3082,26 @@
             "time": "2018-02-05T21:50:56+00:00"
         },
         {
-            "name": "psrnext/view-renderer",
-            "version": "v0.0.1",
+            "name": "psrnext/template",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/psrnext/view.git",
-                "reference": "bfa5f676b7acdfb244f80c5aa56160296bbb38f7"
+                "url": "https://github.com/psrnext/template.git",
+                "reference": "16714ce0bd08bac25c143fe2f29da51ca8ee9a0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/view/zipball/bfa5f676b7acdfb244f80c5aa56160296bbb38f7",
-                "reference": "bfa5f676b7acdfb244f80c5aa56160296bbb38f7",
+                "url": "https://api.github.com/repos/psrnext/template/zipball/16714ce0bd08bac25c143fe2f29da51ca8ee9a0e",
+                "reference": "16714ce0bd08bac25c143fe2f29da51ca8ee9a0e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.0"
+                "php": "~7.2.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Psrnext\\ViewRenderer\\": "src"
+                    "Psrnext\\Template\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3109,14 +3110,15 @@
             ],
             "authors": [
                 {
-                    "name": "ma1oy",
+                    "name": "roshecode",
                     "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
+                    "homepage": "https://rosemlab.github.io",
                     "role": "Developer"
                 }
             ],
-            "description": "View renderer standard",
-            "time": "2018-02-07T19:43:25+00:00"
+            "description": "Template rendering standard",
+            "homepage": "https://psrnext.github.io/template",
+            "time": "2018-06-10T12:34:09+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -3124,12 +3126,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "4d93302eb93402083f5abe72002fe8dc35e12dae"
+                "reference": "0e4ea9f9e1fd3c6a563524f8f399696d98c7c85a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4d93302eb93402083f5abe72002fe8dc35e12dae",
-                "reference": "4d93302eb93402083f5abe72002fe8dc35e12dae",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0e4ea9f9e1fd3c6a563524f8f399696d98c7c85a",
+                "reference": "0e4ea9f9e1fd3c6a563524f8f399696d98c7c85a",
                 "shasum": ""
             },
             "conflict": {
@@ -3197,6 +3199,7 @@
                 "propel/propel1": ">=1,<=1.7.1",
                 "pusher/pusher-php-server": "<2.2.1",
                 "sabre/dav": ">=1.6,<1.6.99|>=1.7,<1.7.11|>=1.8,<1.8.9",
+                "sensiolabs/connect": "<4.2.3",
                 "shopware/shopware": "<5.3.7",
                 "silverstripe/cms": ">=3,<=3.0.11|>=3.1,<3.1.11",
                 "silverstripe/forum": "<=0.6.1|>=0.7,<=0.7.3",
@@ -3219,7 +3222,7 @@
                 "symfony/routing": ">=2,<2.0.19",
                 "symfony/security": ">=2,<2.7.48|>=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
                 "symfony/security-bundle": ">=2,<2.7.48|>=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
-                "symfony/security-core": ">=2.4,<2.6.13|>=2.7,<2.7.9|>=2.7.30,<2.7.32|>=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
+                "symfony/security-core": ">=2.4,<2.6.13|>=2.7,<2.7.9|>=2.7.30,<2.7.32|>=2.8,<2.8.37|>=3,<3.3.17|>=3.4,<3.4.7|>=4,<4.0.7",
                 "symfony/security-csrf": ">=2.4,<2.7.48|>=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
                 "symfony/security-guard": ">=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
                 "symfony/security-http": ">=2.3,<2.3.41|>=2.4,<2.7.48|>=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
@@ -3282,7 +3285,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-05-30T02:58:56+00:00"
+            "time": "2018-06-08T09:55:50+00:00"
         },
         {
             "name": "robmorgan/phinx",

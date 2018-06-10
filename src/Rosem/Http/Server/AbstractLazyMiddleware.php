@@ -21,7 +21,7 @@ abstract class AbstractLazyMiddleware implements MiddlewareInterface
      * LazyMiddleware constructor.
      *
      * @param ContainerInterface $container
-     * @param string             $middleware
+     * @param mixed              $middleware
      */
     public function __construct(ContainerInterface $container, $middleware)
     {

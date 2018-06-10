@@ -4,15 +4,20 @@ namespace Rosem\App;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    App\AppFactoryInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, Http\Server\MiddlewareQueueInterface, Route\RouteCollectorInterface, ViewRenderer\ViewRendererInterface
+    App\AppFactoryInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, Environment\EnvironmentMode, Route\RouteCollectorInterface, Template\TemplateRendererInterface
 };
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
-use Rosem\App\Http\Server\InternalServerErrorRequestHandler;
-use Rosem\App\Http\Server\HomeRequestHandler;
+use Psrnext\Http\Server\MiddlewareQueueInterface;
+use Rosem\App\Http\Server\{
+    HomeRequestHandler, InternalServerErrorRequestHandler
+};
 use Rosem\Environment\Environment;
+use Rosem\Http\Factory\{
+    ResponseFactory, ServerRequestFactory
+};
 
 class AppServiceProvider implements ServiceProviderInterface
 {
@@ -26,6 +31,27 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
+            'app.name' => function () {
+                return 'Rosem';
+            },
+            'app.lang' => function () {
+                return 'en';
+            },
+            'app.meta.charset' => function () {
+                return 'utf-8';
+            },
+            'app.meta.title_prefix' => function () {
+                return 'Rosem | ';
+            },
+            'app.meta.title' => function () {
+                return 'Welcome';
+            },
+            'app.meta.title_suffix' => function () {
+                return '';
+            },
+            'app.environment' => function () {
+                return EnvironmentMode::PRODUCTION;
+            },
             AppFactoryInterface::class      => function () {
                 return new AppFactory;
             },
@@ -46,18 +72,17 @@ class AppServiceProvider implements ServiceProviderInterface
             },
             ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
             ResponseFactoryInterface::class      => [static::class, 'createResponseFactory'],
-            ViewRendererInterface::class         => [static::class, 'createViewRenderer'],
             HomeRequestHandler::class            => function (ContainerInterface $container) {
                 return new HomeRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
-                    $container->get(ViewRendererInterface::class),
+                    $container->get(TemplateRendererInterface::class),
                     $container->get(ConfigInterface::class)
                 );
             },
             InternalServerErrorRequestHandler::class => function (ContainerInterface $container) {
                 return new InternalServerErrorRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
-                    $container->get(ViewRendererInterface::class),
+                    $container->get(TemplateRendererInterface::class),
                     $container->get(ConfigInterface::class)
                 );
             }
@@ -73,84 +98,36 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
+            TemplateRendererInterface::class => function (
+                ContainerInterface $container,
+                TemplateRendererInterface $renderer
+            ) {
+                $renderer->addPath(__DIR__ . '/resources/templates', 'app');
+                $renderer->addGlobalData([
+                    'appName'         => $container->get('app.name'),
+                    'lang'            => strtolower($container->get('app.lang')),
+                    'charset'         => strtolower($container->get('app.meta.charset')),
+                    'appEnvironment'  => $container->get('app.environment'),
+                    'metaTitlePrefix' => $container->get('app.meta.title_prefix'),
+                    'metaTitleSuffix' => $container->get('app.meta.title_suffix'),
+                ]);
+            },
             RouteCollectorInterface::class => function (
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector
             ) {
                 $routeCollector->get('/{appRelativePath.*}', HomeRequestHandler::class);
             },
-            ViewRendererInterface::class   => function (
-                ContainerInterface $container,
-                ViewRendererInterface $view
-            ) {
-                $config = $container->get(ConfigInterface::class);
-                $view->addPathAlias(realpath(__DIR__ . '/resources/templates'), 'app');
-                $view->addData([
-                    'lang'            => $config->get('app.lang'),
-                    'charset'         => $config->get('app.meta.charset'),
-                    'appName'         => $config->get('app.name'),
-                    'appEnv'          => $config->get('app.env'),
-                    'metaTitlePrefix' => $config->get('app.meta.title_prefix'),
-                    'metaTitleSuffix' => $config->get('app.meta.title_suffix'),
-                    'csrfToken'       => '4sWPhTlJAmt1IcyNq1FCyivsAVhHqjiDCKRXOgOQock=',
-                ]);
-            },
         ];
     }
 
     public function createServerRequestFactory()
     {
-        return new \Rosem\Http\Factory\ServerRequestFactory;
+        return new ServerRequestFactory;
     }
 
     public function createResponseFactory()
     {
-        return new \Rosem\Http\Factory\ResponseFactory;
-    }
-
-    public function createViewRenderer(ContainerInterface $container)
-    {
-        return new class (\League\Plates\Engine::create(
-            '', //$container->get(ConfigInterface::class)->get('app.paths.public'),
-            'phtml'
-        )) implements ViewRendererInterface
-        {
-            /**
-             * @var \League\Plates\Engine
-             * @uses \League\Plates\Engine::addFolder(string $path, string $alias)
-             * @method addData(array $data)
-             */
-            private $engine;
-
-            public function __construct(\League\Plates\Engine $engine)
-            {
-                $this->engine = $engine;
-//                $this->engine->register(new \League\Plates\Extension\Asset(BASEDIR . '/public'));
-            }
-
-            /**
-             * Create a new template and render it.
-             *
-             * @param  string $templateName
-             * @param  array  $data
-             * @param array   $attributes
-             *
-             * @return string
-             */
-            public function render(string $templateName, array $data = [], array $attributes = []): string
-            {
-                return $this->engine->render($templateName, $data, $attributes);
-            }
-
-            public function addPathAlias(string $path, string $alias): void
-            {
-                $this->engine->addFolder($alias, $path);
-            }
-
-            public function addData(array $data): void
-            {
-                $this->engine->addData($data);
-            }
-        };
+        return new ResponseFactory;
     }
 }

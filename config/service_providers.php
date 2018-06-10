@@ -6,6 +6,7 @@ return [
     Rosem\Route\RouteServiceProvider::class, // use session on admin route, add route and handler middleware
     // FIXME: auth provider
     Rosem\Admin\AdminServiceProvider::class, // add admin route
+    Rosem\Template\TemplateServiceProvider::class,
     Rosem\App\AppServiceProvider::class, // add any route
     Rosem\GraphQL\GraphQLServiceProvider::class,
     Rosem\Access\Provider\AccessServiceProvider::class,

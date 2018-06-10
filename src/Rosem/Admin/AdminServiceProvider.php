@@ -4,7 +4,7 @@ namespace Rosem\Admin;
 
 use Psr\Container\ContainerInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\ViewRenderer\ViewRendererInterface;
+use Psrnext\Template\TemplateRendererInterface;
 use Rosem\Admin\Http\Server\AdminRequestHandler;
 use Rosem\Admin\Http\Server\LoginRequestHandler;
 use Psrnext\Config\ConfigInterface;
@@ -34,14 +34,14 @@ class AdminServiceProvider implements ServiceProviderInterface
             AdminRequestHandler::class => function (ContainerInterface $container) {
                 return new AdminRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
-                    $container->get(ViewRendererInterface::class),
+                    $container->get(TemplateRendererInterface::class),
                     $container->get(ConfigInterface::class)
                 );
             },
             LoginRequestHandler::class => function (ContainerInterface $container) {
                 return new LoginRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
-                    $container->get(ViewRendererInterface::class),
+                    $container->get(TemplateRendererInterface::class),
                     $container->get(ConfigInterface::class)
                 );
             },
@@ -69,11 +69,11 @@ class AdminServiceProvider implements ServiceProviderInterface
                 $routeCollector->get($adminUri . '{adminRelativePath:.*}', AdminRequestHandler::class)
                     ->setMiddleware(AuthenticationMiddleware::class);
             },
-            ViewRendererInterface::class => function (
+            TemplateRendererInterface::class => function (
                 ContainerInterface $container,
-                ViewRendererInterface $renderer
+                TemplateRendererInterface $renderer
             ) {
-                $renderer->addPathAlias(__DIR__ . '/resources/templates', 'admin');
+                $renderer->addPath(__DIR__ . '/resources/templates', 'admin');
             }
         ];
     }

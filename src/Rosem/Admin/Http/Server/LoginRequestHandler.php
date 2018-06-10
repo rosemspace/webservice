@@ -8,7 +8,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\ViewRenderer\ViewRendererInterface;
+use Psrnext\Template\TemplateRendererInterface;
 
 class LoginRequestHandler implements RequestHandlerInterface
 {
@@ -18,7 +18,7 @@ class LoginRequestHandler implements RequestHandlerInterface
     protected $responseFactory;
 
     /**
-     * @var ViewRendererInterface
+     * @var TemplateRendererInterface
      */
     protected $view;
 
@@ -30,13 +30,13 @@ class LoginRequestHandler implements RequestHandlerInterface
     /**
      * MainController constructor.
      *
-     * @param ResponseFactoryInterface $responseFactory
-     * @param ViewRendererInterface    $view
-     * @param ConfigInterface       $config
+     * @param ResponseFactoryInterface  $responseFactory
+     * @param TemplateRendererInterface $view
+     * @param ConfigInterface           $config
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        ViewRendererInterface $view,
+        TemplateRendererInterface $view,
         ConfigInterface $config
     ) {
         $this->responseFactory = $responseFactory;
