@@ -5,6 +5,10 @@
  * @author   Roman Shevchenko <iroman.via@gmail.com>
  */
 
+if (PHP_SAPI !== 'cli-server') {
+    throw new RuntimeException('This file should not be run as a production server.');
+}
+
 $uri = urldecode(
     parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
 );
