@@ -4,11 +4,7 @@ namespace Rosem\Http\Server;
 
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use function is_string;
 
 class LazyMiddleware extends AbstractLazyMiddleware
 {
@@ -17,32 +13,24 @@ class LazyMiddleware extends AbstractLazyMiddleware
      *
      * @param ContainerInterface $container
      * @param string             $middleware
+     * @param array              $options
      */
-    public function __construct(ContainerInterface $container, string $middleware)
+    public function __construct(ContainerInterface $container, string $middleware, array $options = [])
     {
-        parent::__construct($container, $middleware);
+        parent::__construct($container, $middleware, $options);
     }
 
-    /**
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $delegate
-     *
-     * @return ResponseInterface
-     * @throws \InvalidArgumentException
-     */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $delegate): ResponseInterface
+    protected function initialize(): void
     {
-        if (is_string($this->middleware)) {
-            $this->middleware = $this->container->get($this->middleware);
+        $this->middleware = $this->container->get($this->middleware);
 
-            if ($this->middleware instanceof MiddlewareInterface) {
-                return $this->middleware->process($request, $delegate);
-            }
-
+        if (!($this->middleware instanceof MiddlewareInterface)) {
             throw new InvalidArgumentException('The middleware "' . $this->middleware . '" should implement "' .
                 MiddlewareInterface::class . '" interface');
         }
 
-        return $this->middleware->process($request, $delegate);
+        foreach ($this->options as $method => $arguments) {
+            $this->middleware->$method(...(array)$arguments);
+        }
     }
 }

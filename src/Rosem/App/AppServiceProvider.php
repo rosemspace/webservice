@@ -18,10 +18,18 @@ use Rosem\Environment\Environment;
 use Rosem\Http\Factory\{
     ResponseFactory, ServerRequestFactory
 };
+use function dirname;
 
 class AppServiceProvider implements ServiceProviderInterface
 {
     use ConfigFileTrait;
+
+    protected $baseDirectory;
+
+    public function __construct()
+    {
+        $this->baseDirectory = dirname((PHP_SAPI !== 'cli-server' ? getcwd() : $_SERVER['DOCUMENT_ROOT']));
+    }
 
     /**
      * Returns a list of all container entries registered by this service provider.
@@ -60,7 +68,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 return new App($container, $container->get(InternalServerErrorRequestHandler::class));
             },
             EnvironmentInterface::class     => function () {
-                $env = new Environment(getcwd() . '/..');
+                $env = new Environment($this->baseDirectory);
                 $env->load();
 
                 return $env;
@@ -68,7 +76,7 @@ class AppServiceProvider implements ServiceProviderInterface
             ConfigInterface::class          => function (ContainerInterface $container) {
                 $container->get(EnvironmentInterface::class)->load();
 
-                return new \Rosem\Config\Config(self::getConfiguration(getcwd() . '/../config/app.php'));
+                return new \Rosem\Config\Config(self::getConfiguration($this->baseDirectory . '/config/app.php'));
             },
             ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
             ResponseFactoryInterface::class      => [static::class, 'createResponseFactory'],

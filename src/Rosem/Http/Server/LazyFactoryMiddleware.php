@@ -3,45 +3,42 @@
 namespace Rosem\Http\Server;
 
 use InvalidArgumentException;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 use function is_callable;
 use function is_string;
 
 class LazyFactoryMiddleware extends AbstractLazyMiddleware
 {
     /**
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $delegate
+     * LazyFactoryMiddleware constructor.
      *
-     * @return ResponseInterface
-     * @throws InvalidArgumentException
+     * @param ContainerInterface $container
+     * @param callable           $middleware
+     * @param array              $options
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $delegate): ResponseInterface
+    public function __construct(ContainerInterface $container, $middleware, array $options = [])
     {
-        if (is_callable($this->middleware)) {
-            $middlewareFactory = $this->middleware;
+        if (!is_callable($middleware)) {
+            throw new InvalidArgumentException('Middleware factory should be callable.');
+        }
 
-            if (is_string(reset($middlewareFactory))) {
-                $middlewareFactory[key($middlewareFactory)] = $this->container->get(reset($middlewareFactory));
-            }
+        parent::__construct($container, $middleware, $options);
+    }
 
-            $this->middleware = $middlewareFactory($this->container);
+    protected function initialize() : void
+    {
+        $middlewareFactory = $this->middleware;
 
-            if ($this->middleware instanceof MiddlewareInterface) {
-                return $this->middleware->process($request, $delegate);
-            }
+        if (is_string(reset($middlewareFactory))) {
+            $middlewareFactory[key($middlewareFactory)] = $this->container->get(reset($middlewareFactory));
+        }
 
+        $this->middleware = $middlewareFactory($this->container);
+
+        if (!($this->middleware instanceof MiddlewareInterface)) {
             throw new InvalidArgumentException('The callable should return an object that implement "' .
                 MiddlewareInterface::class . '" interface');
         }
-
-        if ($this->middleware instanceof MiddlewareInterface) {
-            return $this->middleware->process($request, $delegate);
-        }
-
-        throw new InvalidArgumentException('Middleware factory should be callable.');
     }
 }

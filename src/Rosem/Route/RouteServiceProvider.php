@@ -8,6 +8,7 @@ use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\Http\Server\MiddlewareQueueInterface;
 use Psrnext\Route\RouteCollectorInterface;
 use Psrnext\Route\RouteDispatcherInterface;
+use Rosem\Route\DataGenerator\MarkBasedDataGenerator;
 use Rosem\Route\Dispatcher\MarkBasedDispatcher;
 use Rosem\Route\Http\Server\{
     HandleRequestMiddleware, RouteMiddleware
@@ -57,7 +58,7 @@ class RouteServiceProvider implements ServiceProviderInterface
      */
     public function createRouteCollector(ContainerInterface $container): RouteCollectorInterface
     {
-        return new RouteCollector();
+        return new RouteCollector(new RouteCompiler(new RouteParser()), new MarkBasedDataGenerator());
     }
 
     /**

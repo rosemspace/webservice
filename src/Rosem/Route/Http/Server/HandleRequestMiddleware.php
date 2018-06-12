@@ -58,15 +58,15 @@ class HandleRequestMiddleware implements MiddlewareInterface
     {
         $requestData = $request->getAttribute($this->handlerAttribute);
 
-        if (!empty($requestData[0])) { // TODO: add constants
-            $requestHandler = new MiddlewareQueue($this->container, $this->container->get($requestData[1]));
+        if (!empty($requestData[1])) { // TODO: add constants
+            $requestHandler = new MiddlewareQueue($this->container, $this->container->get($requestData[0]));
 
             /** @var array[] $requestData */
-            foreach ($requestData[0] as $middleware) {
-                $requestHandler->use(new LazyMiddleware($this->container, $middleware));
+            foreach ($requestData[1] as $middlewareData) {
+                $requestHandler->use(new LazyMiddleware($this->container, ...$middlewareData));
             }
         } else {
-            $requestHandler = $this->container->get($requestData[1]);
+            $requestHandler = $this->container->get($requestData[0]);
         }
 
         if ($requestHandler instanceof RequestHandlerInterface) {

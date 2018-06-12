@@ -44,9 +44,24 @@ class AuthenticationProvider implements ServiceProviderInterface
                 return '/login';
             },
             SessionMiddleware::class => function (ContainerInterface $container) {
-                return SessionMiddleware::fromSymmetricKeyDefaults(
-                    $container->get(static::CONFIG_SYMMETRIC_KEY),
-                    20 * 60 // 20 minutes
+//                return SessionMiddleware::fromSymmetricKeyDefaults(
+//                    $container->get(static::CONFIG_SYMMETRIC_KEY),
+//                    20 * 60 // 20 minutes
+//                );
+
+                $symmetricKey = $container->get(static::CONFIG_SYMMETRIC_KEY);
+
+                return new SessionMiddleware(
+                    new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                    $symmetricKey,
+                    $symmetricKey,
+                    \Dflydev\FigCookies\SetCookie::create('session')
+                        ->withSecure(PHP_SAPI !== 'cli-server')
+                        ->withHttpOnly(true)
+                        ->withPath('/'),
+                    new \Lcobucci\JWT\Parser(),
+                    20 * 60, // 20 minutes,
+                    new \Lcobucci\Clock\SystemClock()
                 );
             },
             AuthenticationMiddleware::class => function (ContainerInterface $container) {

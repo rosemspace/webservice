@@ -69,9 +69,6 @@ class MiddlewareQueue implements MiddlewareQueueInterface
     /**
      * @param MiddlewareInterface $middleware
      * @param float               $priority
-     *
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function use(MiddlewareInterface $middleware, float $priority = 0): void // TODO: priority functionality
     {

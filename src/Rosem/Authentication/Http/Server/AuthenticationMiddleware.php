@@ -17,16 +17,30 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
      */
     private const AUTHORIZATION_HEADER_PREFIX = 'Bearer';
 
-    protected $redirectUri;
+    protected $loginUri;
+
+    protected $loggedInUri;
 
     public function __construct(
         ResponseFactoryInterface $responseFactory,
         callable $getPassword,
-        string $redirectUri = '/login'
+        string $loginUri = '/login',
+        string $loggedInUri = '/'
     ) {
         parent::__construct($responseFactory, $getPassword);
 
-        $this->redirectUri = $redirectUri;
+        $this->loginUri = $loginUri;
+        $this->loggedInUri = $loggedInUri;
+    }
+
+    public function setLoginUri(string $loginUri): void
+    {
+        $this->loginUri = $loginUri;
+    }
+
+    public function setLoggedInUri(string $loggedInUri): void
+    {
+        $this->loggedInUri = $loggedInUri;
     }
 
     /**
@@ -67,6 +81,6 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
     public function createUnauthorizedResponse(): ResponseInterface
     {
         return $this->responseFactory->createResponse(StatusCodeInterface::STATUS_FOUND)
-            ->withHeader('Location', $this->redirectUri);
+            ->withHeader('Location', $this->loginUri);
     }
 }
