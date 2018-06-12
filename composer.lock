@@ -1,357 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "abf58cc9c91e45d3c8fd1e267d722ee2",
+    "content-hash": "e2ba9a49267abc232fe4b4de2542edce",
     "packages": [
-        {
-            "name": "analogue/orm",
-            "version": "v5.6.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/analogueorm/analogue.git",
-                "reference": "d1548cbf36c5f004b9083d1e1554b92a9bb33b0f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/analogueorm/analogue/zipball/d1548cbf36c5f004b9083d1e1554b92a9bb33b0f",
-                "reference": "d1548cbf36c5f004b9083d1e1554b92a9bb33b0f",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/instantiator": "^1.0.0",
-                "illuminate/database": "5.5.*|5.6.*",
-                "illuminate/events": "5.5.*|5.6.*",
-                "illuminate/pagination": "5.5.*|5.6.*",
-                "ocramius/generated-hydrator": "^2.0.0",
-                "ocramius/proxy-manager": "^2.0.0",
-                "php": ">=7.0.0",
-                "psr/container": "~1.0",
-                "psr/simple-cache": "~1.0"
-            },
-            "require-dev": {
-                "analogue/factory": "1.2.*|1.3.*",
-                "fzaninotto/faker": "~1.4",
-                "laravel/browser-kit-testing": "^1.0",
-                "laravel/laravel": "5.5.*|5.6.*",
-                "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "~6.0",
-                "symfony/css-selector": "2.8.*|3.0.*|4.0.*",
-                "symfony/dom-crawler": "2.8.*|3.0.*|4.0.*"
-            },
-            "suggest": {
-                "analogue/factory": "Create simple dummy entities for your tests",
-                "analogue/laravel-auth": "Analogue's authentication driver for Laravel.",
-                "analogue/mongodb": "MongoDB driver for Analogue ORM"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Analogue\\ORM\\AnalogueServiceProvider"
-                    ],
-                    "aliases": {
-                        "Analogue": "Analogue\\ORM\\AnalogueFacade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Analogue\\ORM\\": "src/"
-                },
-                "files": [
-                    "src/helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rémi Collin",
-                    "email": "remi@code16.fr"
-                }
-            ],
-            "description": "An intuitive Data Mapper ORM for PHP and Laravel",
-            "homepage": "http://github.com/analogueorm/analogue",
-            "keywords": [
-                "datamapper",
-                "entity",
-                "laravel",
-                "mapper",
-                "orm",
-                "repository"
-            ],
-            "time": "2018-05-30T15:17:23+00:00"
-        },
-        {
-            "name": "atlas/mapper",
-            "version": "1.0.0-beta3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/atlasphp/Atlas.Mapper.git",
-                "reference": "3d706226175e48b7456de2adb386415462166036"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/atlasphp/Atlas.Mapper/zipball/3d706226175e48b7456de2adb386415462166036",
-                "reference": "3d706226175e48b7456de2adb386415462166036",
-                "shasum": ""
-            },
-            "require": {
-                "atlas/table": "1.x@beta",
-                "php": ">=7.1.0"
-            },
-            "require-dev": {
-                "atlas/testing": "1.x@beta",
-                "pds/skeleton": "~1.0",
-                "phpunit/phpunit": "~7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Atlas\\Mapper\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Atlas Contributors",
-                    "homepage": "https://github.com/atlasphp/Atlas.Mapper/contributors"
-                }
-            ],
-            "description": "A data mapper for the persistence model.",
-            "homepage": "http://github.com/atlasphp/Atlas.Mapper",
-            "keywords": [
-                "data",
-                "mapper",
-                "mapping",
-                "orm",
-                "sql"
-            ],
-            "time": "2018-06-03T14:44:38+00:00"
-        },
-        {
-            "name": "atlas/orm",
-            "version": "3.0.0-beta1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/atlasphp/Atlas.Orm.git",
-                "reference": "9ef1ee4046b02abe5556d7a20934d4bb7e97b769"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/atlasphp/Atlas.Orm/zipball/9ef1ee4046b02abe5556d7a20934d4bb7e97b769",
-                "reference": "9ef1ee4046b02abe5556d7a20934d4bb7e97b769",
-                "shasum": ""
-            },
-            "require": {
-                "atlas/mapper": "1.x@beta",
-                "php": ">=7.1.0"
-            },
-            "require-dev": {
-                "atlas/testing": "1.x@beta",
-                "pds/skeleton": "~1.0",
-                "phpunit/phpunit": "~7.0"
-            },
-            "suggest": {
-                "atlas/cli": "A command-line tool to build skeleton classes."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Atlas\\Orm\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Atlas Contributors",
-                    "homepage": "https://github.com/atlasphp/Atlas.Orm/contributors"
-                }
-            ],
-            "description": "An ORM for your persistence model (not your domain model).",
-            "homepage": "http://github.com/atlasphp/Atlas.Orm",
-            "keywords": [
-                "data",
-                "mapper",
-                "mapping",
-                "orm",
-                "sql"
-            ],
-            "time": "2018-05-08T15:30:28+00:00"
-        },
-        {
-            "name": "atlas/pdo",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/atlasphp/Atlas.Pdo.git",
-                "reference": "abc27ed9a3f6eae055a1737c03b3fbb86b9763ef"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/atlasphp/Atlas.Pdo/zipball/abc27ed9a3f6eae055a1737c03b3fbb86b9763ef",
-                "reference": "abc27ed9a3f6eae055a1737c03b3fbb86b9763ef",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "pds/skeleton": "~1.0",
-                "phpunit/phpunit": "~7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Atlas\\Pdo\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Atlas.Pdo Contributors",
-                    "homepage": "https://github.com/atlasphp/Atlas.Pdo/contributors"
-                }
-            ],
-            "description": "Provides a PDO instance decorator with convenience methods, and a connection manager.",
-            "homepage": "https://github.com/atlasphp/Atlas.Pdo",
-            "keywords": [
-                "Connection",
-                "database",
-                "pdo",
-                "sql"
-            ],
-            "time": "2018-05-07T12:42:19+00:00"
-        },
-        {
-            "name": "atlas/query",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/atlasphp/Atlas.Query.git",
-                "reference": "5d2cb454fedc6dc25ac44b86f5e2e0358193bbe7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/atlasphp/Atlas.Query/zipball/5d2cb454fedc6dc25ac44b86f5e2e0358193bbe7",
-                "reference": "5d2cb454fedc6dc25ac44b86f5e2e0358193bbe7",
-                "shasum": ""
-            },
-            "require": {
-                "atlas/pdo": "~1.0",
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "pds/skeleton": "~1.0",
-                "phpunit/phpunit": "~7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Atlas\\Query\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Atlas.Query Contributors",
-                    "homepage": "https://github.com/atlasphp/Atlas.Query/contributors"
-                }
-            ],
-            "description": "Object-oriented query builders for MySQL, Postgres, SQLite, and SQLServer.",
-            "homepage": "https://github.com/atlasphp/Atlas.Query",
-            "keywords": [
-                "database",
-                "db",
-                "delete",
-                "dml",
-                "insert",
-                "mysql",
-                "pdo",
-                "pgsql",
-                "postgres",
-                "postgresql",
-                "query",
-                "select",
-                "sql",
-                "sql server",
-                "sqlite",
-                "sqlserver",
-                "update"
-            ],
-            "time": "2018-05-23T20:13:07+00:00"
-        },
-        {
-            "name": "atlas/table",
-            "version": "1.0.0-beta3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/atlasphp/Atlas.Table.git",
-                "reference": "1c350c27c44b3d5ab4492c07322ff227b2ebb1f2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/atlasphp/Atlas.Table/zipball/1c350c27c44b3d5ab4492c07322ff227b2ebb1f2",
-                "reference": "1c350c27c44b3d5ab4492c07322ff227b2ebb1f2",
-                "shasum": ""
-            },
-            "require": {
-                "atlas/pdo": "~1.0",
-                "atlas/query": "~1.0",
-                "php": ">=7.1.0"
-            },
-            "require-dev": {
-                "atlas/testing": "1.x@beta",
-                "pds/skeleton": "~1.0",
-                "phpunit/phpunit": "~7.0"
-            },
-            "suggest": {
-                "atlas/cli": "A command-line tool to build skeleton classes."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Atlas\\Table\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Atlas Contributors",
-                    "homepage": "https://github.com/atlasphp/Atlas.Table/contributors"
-                }
-            ],
-            "description": "Table data gateway implementation for Atlas.",
-            "homepage": "http://github.com/atlasphp/Atlas.Table",
-            "keywords": [
-                "data",
-                "mapper",
-                "mapping",
-                "orm",
-                "sql"
-            ],
-            "time": "2018-06-03T14:16:03+00:00"
-        },
         {
             "name": "container-interop/service-provider",
             "version": "v0.4.0",
@@ -702,16 +356,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "v2.8.1",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "f68c297ce6455e8fd794aa8ffaf9fa458f6ade66"
+                "reference": "7bce00698899aa2c06fe7365c76e4d78ddb15fa3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/f68c297ce6455e8fd794aa8ffaf9fa458f6ade66",
-                "reference": "f68c297ce6455e8fd794aa8ffaf9fa458f6ade66",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/7bce00698899aa2c06fe7365c76e4d78ddb15fa3",
+                "reference": "7bce00698899aa2c06fe7365c76e4d78ddb15fa3",
                 "shasum": ""
             },
             "require": {
@@ -720,15 +374,15 @@
                 "doctrine/collections": "1.*",
                 "doctrine/inflector": "1.*",
                 "doctrine/lexer": "1.*",
-                "php": "~7.1"
+                "php": "~5.5|~7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.7"
+                "phpunit/phpunit": "~4.8|~5.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.8.x-dev"
+                    "dev-master": "2.7.x-dev"
                 }
             },
             "autoload": {
@@ -771,33 +425,29 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2017-08-31T08:43:38+00:00"
+            "time": "2016-11-30T16:50:46+00:00"
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.7.1",
+            "version": "v2.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "11037b4352c008373561dc6fc836834eed80c3b5"
+                "reference": "abbdfd1cff43a7b99d027af3be709bc8fc7d4769"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/11037b4352c008373561dc6fc836834eed80c3b5",
-                "reference": "11037b4352c008373561dc6fc836834eed80c3b5",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/abbdfd1cff43a7b99d027af3be709bc8fc7d4769",
+                "reference": "abbdfd1cff43a7b99d027af3be709bc8fc7d4769",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": "^2.7.1",
-                "ext-pdo": "*",
-                "php": "^7.1"
+                "doctrine/common": ">=2.4,<2.7-dev",
+                "php": ">=5.3.2"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^4.0",
-                "phpunit/phpunit": "^7.0",
-                "phpunit/phpunit-mock-objects": "!=3.2.4,!=3.2.5",
-                "symfony/console": "^2.0.5||^3.0",
-                "symfony/phpunit-bridge": "^3.4.5|^4.0.5"
+                "phpunit/phpunit": "4.*",
+                "symfony/console": "2.*"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
@@ -808,7 +458,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7.x-dev"
+                    "dev-master": "2.5.x-dev"
                 }
             },
             "autoload": {
@@ -846,7 +496,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2018-04-07T18:44:18+00:00"
+            "time": "2016-01-05T22:11:12+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -916,60 +566,6 @@
             "time": "2018-01-09T20:05:19+00:00"
         },
         {
-            "name": "doctrine/instantiator",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
-                "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "athletic/athletic": "~0.1.8",
-                "ext-pdo": "*",
-                "ext-phar": "*",
-                "phpunit/phpunit": "^6.2.3",
-                "squizlabs/php_codesniffer": "^3.0.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com",
-                    "homepage": "http://ocramius.github.com/"
-                }
-            ],
-            "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
-            "homepage": "https://github.com/doctrine/instantiator",
-            "keywords": [
-                "constructor",
-                "instantiate"
-            ],
-            "time": "2017-07-22T11:58:36+00:00"
-        },
-        {
             "name": "doctrine/lexer",
             "version": "v1.0.1",
             "source": {
@@ -1022,88 +618,6 @@
                 "parser"
             ],
             "time": "2014-09-09T13:34:57+00:00"
-        },
-        {
-            "name": "doctrine/orm",
-            "version": "v2.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "87ee409783a4a322b5597ebaae558661404055a7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/87ee409783a4a322b5597ebaae558661404055a7",
-                "reference": "87ee409783a4a322b5597ebaae558661404055a7",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/annotations": "~1.5",
-                "doctrine/cache": "~1.6",
-                "doctrine/collections": "^1.4",
-                "doctrine/common": "^2.7.1",
-                "doctrine/dbal": "^2.6",
-                "doctrine/instantiator": "~1.1",
-                "ext-pdo": "*",
-                "php": "^7.1",
-                "symfony/console": "~3.0|~4.0"
-            },
-            "require-dev": {
-                "doctrine/coding-standard": "^1.0",
-                "phpunit/phpunit": "^6.5",
-                "squizlabs/php_codesniffer": "^3.2",
-                "symfony/yaml": "~3.4|~4.0"
-            },
-            "suggest": {
-                "symfony/yaml": "If you want to use YAML Metadata Mapping Driver"
-            },
-            "bin": [
-                "bin/doctrine"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.6.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Doctrine\\ORM\\": "lib/Doctrine/ORM"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Roman Borschel",
-                    "email": "roman@code-factory.org"
-                },
-                {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de"
-                },
-                {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
-                },
-                {
-                    "name": "Jonathan Wage",
-                    "email": "jonwage@gmail.com"
-                },
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com"
-                }
-            ],
-            "description": "Object-Relational-Mapper for PHP",
-            "homepage": "http://www.doctrine-project.org",
-            "keywords": [
-                "database",
-                "orm"
-            ],
-            "time": "2018-02-27T07:30:56+00:00"
         },
         {
             "name": "fig/http-message-util",
@@ -1215,300 +729,6 @@
                 "whoops"
             ],
             "time": "2018-03-03T17:56:25+00:00"
-        },
-        {
-            "name": "illuminate/container",
-            "version": "v5.6.24",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/container.git",
-                "reference": "1f0757cae8749400aeda730f6438a081fc3c082d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/1f0757cae8749400aeda730f6438a081fc3c082d",
-                "reference": "1f0757cae8749400aeda730f6438a081fc3c082d",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "5.6.*",
-                "php": "^7.1.3",
-                "psr/container": "~1.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Container\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Container package.",
-            "homepage": "https://laravel.com",
-            "time": "2018-05-24T13:16:56+00:00"
-        },
-        {
-            "name": "illuminate/contracts",
-            "version": "v5.6.24",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/contracts.git",
-                "reference": "3dc639feabe0f302f574157a782ede323881a944"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/3dc639feabe0f302f574157a782ede323881a944",
-                "reference": "3dc639feabe0f302f574157a782ede323881a944",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1.3",
-                "psr/container": "~1.0",
-                "psr/simple-cache": "~1.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Contracts\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Contracts package.",
-            "homepage": "https://laravel.com",
-            "time": "2018-05-11T23:38:58+00:00"
-        },
-        {
-            "name": "illuminate/database",
-            "version": "v5.6.24",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/database.git",
-                "reference": "a31e39433a97404d90ea12af4f0d3f6fc1818a9e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/a31e39433a97404d90ea12af4f0d3f6fc1818a9e",
-                "reference": "a31e39433a97404d90ea12af4f0d3f6fc1818a9e",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/container": "5.6.*",
-                "illuminate/contracts": "5.6.*",
-                "illuminate/support": "5.6.*",
-                "php": "^7.1.3"
-            },
-            "suggest": {
-                "doctrine/dbal": "Required to rename columns and drop SQLite columns (~2.6).",
-                "fzaninotto/faker": "Required to use the eloquent factory builder (~1.4).",
-                "illuminate/console": "Required to use the database commands (5.6.*).",
-                "illuminate/events": "Required to use the observers with Eloquent (5.6.*).",
-                "illuminate/filesystem": "Required to use the migrations (5.6.*).",
-                "illuminate/pagination": "Required to paginate the result set (5.6.*)."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Database\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Database package.",
-            "homepage": "https://laravel.com",
-            "keywords": [
-                "database",
-                "laravel",
-                "orm",
-                "sql"
-            ],
-            "time": "2018-06-04T14:50:35+00:00"
-        },
-        {
-            "name": "illuminate/events",
-            "version": "v5.6.24",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/events.git",
-                "reference": "b6e73ed40478cef2ef98d5ddb27f333291606cea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/events/zipball/b6e73ed40478cef2ef98d5ddb27f333291606cea",
-                "reference": "b6e73ed40478cef2ef98d5ddb27f333291606cea",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/container": "5.6.*",
-                "illuminate/contracts": "5.6.*",
-                "illuminate/support": "5.6.*",
-                "php": "^7.1.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Events\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Events package.",
-            "homepage": "https://laravel.com",
-            "time": "2018-02-26T19:00:55+00:00"
-        },
-        {
-            "name": "illuminate/pagination",
-            "version": "v5.6.24",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/pagination.git",
-                "reference": "ee3177bd380ea2be7c0330d8ef8b0ab858be8947"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/pagination/zipball/ee3177bd380ea2be7c0330d8ef8b0ab858be8947",
-                "reference": "ee3177bd380ea2be7c0330d8ef8b0ab858be8947",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "5.6.*",
-                "illuminate/support": "5.6.*",
-                "php": "^7.1.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Pagination\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Pagination package.",
-            "homepage": "https://laravel.com",
-            "time": "2018-05-06T14:22:45+00:00"
-        },
-        {
-            "name": "illuminate/support",
-            "version": "v5.6.24",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/support.git",
-                "reference": "b13296a75443797d6a71d0ccd437ca801b12d300"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/b13296a75443797d6a71d0ccd437ca801b12d300",
-                "reference": "b13296a75443797d6a71d0ccd437ca801b12d300",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/inflector": "~1.1",
-                "ext-mbstring": "*",
-                "illuminate/contracts": "5.6.*",
-                "nesbot/carbon": "^1.24.1",
-                "php": "^7.1.3"
-            },
-            "conflict": {
-                "tightenco/collect": "<5.5.33"
-            },
-            "suggest": {
-                "illuminate/filesystem": "Required to use the composer class (5.6.*).",
-                "ramsey/uuid": "Required to use Str::uuid() (^3.7).",
-                "symfony/process": "Required to use the composer class (~4.0).",
-                "symfony/var-dumper": "Required to use the dd function (~4.0)."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.6-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Support\\": ""
-                },
-                "files": [
-                    "helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Support package.",
-            "homepage": "https://laravel.com",
-            "time": "2018-06-02T14:30:18+00:00"
         },
         {
             "name": "kint-php/kint",
@@ -1999,292 +1219,6 @@
             "time": "2018-02-13T20:26:39+00:00"
         },
         {
-            "name": "nikic/php-parser",
-            "version": "v3.1.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "bb87e28e7d7b8d9a7fda231d37457c9210faf6ce"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/bb87e28e7d7b8d9a7fda231d37457c9210faf6ce",
-                "reference": "bb87e28e7d7b8d9a7fda231d37457c9210faf6ce",
-                "shasum": ""
-            },
-            "require": {
-                "ext-tokenizer": "*",
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0|~5.0"
-            },
-            "bin": [
-                "bin/php-parse"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PhpParser\\": "lib/PhpParser"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Nikita Popov"
-                }
-            ],
-            "description": "A PHP parser written in PHP",
-            "keywords": [
-                "parser",
-                "php"
-            ],
-            "time": "2018-02-28T20:30:58+00:00"
-        },
-        {
-            "name": "ocramius/code-generator-utils",
-            "version": "0.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Ocramius/CodeGenerationUtils.git",
-                "reference": "862c03de42475fe039e7d0f47966c25ac40a58a8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/CodeGenerationUtils/zipball/862c03de42475fe039e7d0f47966c25ac40a58a8",
-                "reference": "862c03de42475fe039e7d0f47966c25ac40a58a8",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "~2.0|~3.0",
-                "php": "~7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~5.0",
-                "squizlabs/php_codesniffer": "~2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CodeGenerationUtils\\": "src/CodeGenerationUtils"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com",
-                    "homepage": "http://ocramius.github.com/"
-                }
-            ],
-            "description": "A set of code generator utilities built on top of PHP-Parsers that ease its use when combined with Reflection",
-            "homepage": "https://github.com/Ocramius/CodeGenerationUtils",
-            "keywords": [
-                "code generation",
-                "compiler",
-                "parser",
-                "php code",
-                "reflection"
-            ],
-            "time": "2017-06-22T02:37:15+00:00"
-        },
-        {
-            "name": "ocramius/generated-hydrator",
-            "version": "2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Ocramius/GeneratedHydrator.git",
-                "reference": "9b6b62db9959bec8fec88111e081e9456e36179f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/GeneratedHydrator/zipball/9b6b62db9959bec8fec88111e081e9456e36179f",
-                "reference": "9b6b62db9959bec8fec88111e081e9456e36179f",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "~2.0|~3.0",
-                "ocramius/code-generator-utils": "~0.4",
-                "php": "~7.0",
-                "zendframework/zend-hydrator": "^2.0"
-            },
-            "require-dev": {
-                "phpbench/phpbench": "^0.13.0",
-                "phpunit/phpunit": "^6.4",
-                "squizlabs/php_codesniffer": "^3.0",
-                "zendframework/zend-filter": "^2.7",
-                "zendframework/zend-servicemanager": "^3.2",
-                "zendframework/zend-stdlib": "^3.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "GeneratedHydrator\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com",
-                    "homepage": "http://ocramius.github.com/"
-                }
-            ],
-            "description": "An Object Hydrator that allows very fast array to object to array conversion",
-            "homepage": "https://github.com/Ocramius/GeneratedHydrator",
-            "keywords": [
-                "array conversion",
-                "hydrator",
-                "object conversion",
-                "performance",
-                "serializer"
-            ],
-            "time": "2017-11-28T20:58:11+00:00"
-        },
-        {
-            "name": "ocramius/package-versions",
-            "version": "1.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Ocramius/PackageVersions.git",
-                "reference": "4489d5002c49d55576fa0ba786f42dbb009be46f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/4489d5002c49d55576fa0ba786f42dbb009be46f",
-                "reference": "4489d5002c49d55576fa0ba786f42dbb009be46f",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.0.0",
-                "php": "^7.1.0"
-            },
-            "require-dev": {
-                "composer/composer": "^1.6.3",
-                "ext-zip": "*",
-                "infection/infection": "^0.7.1",
-                "phpunit/phpunit": "^7.0.0"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "PackageVersions\\Installer",
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PackageVersions\\": "src/PackageVersions"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com"
-                }
-            ],
-            "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "time": "2018-02-05T13:05:30+00:00"
-        },
-        {
-            "name": "ocramius/proxy-manager",
-            "version": "2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Ocramius/ProxyManager.git",
-                "reference": "81d53b2878f1d1c40ad27270e64b51798485dfc5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/ProxyManager/zipball/81d53b2878f1d1c40ad27270e64b51798485dfc5",
-                "reference": "81d53b2878f1d1c40ad27270e64b51798485dfc5",
-                "shasum": ""
-            },
-            "require": {
-                "ocramius/package-versions": "^1.1.3",
-                "php": "^7.2.0",
-                "zendframework/zend-code": "^3.3.0"
-            },
-            "require-dev": {
-                "couscous/couscous": "^1.6.1",
-                "ext-phar": "*",
-                "humbug/humbug": "1.0.0-RC.0@RC",
-                "nikic/php-parser": "^3.1.1",
-                "padraic/phpunit-accelerator": "dev-master@DEV",
-                "phpbench/phpbench": "^0.12.2",
-                "phpstan/phpstan": "dev-master#856eb10a81c1d27c701a83f167dc870fd8f4236a as 0.9.999",
-                "phpstan/phpstan-phpunit": "dev-master#5629c0a1f4a9c417cb1077cf6693ad9753895761",
-                "phpunit/phpunit": "^6.4.3",
-                "squizlabs/php_codesniffer": "^2.9.1"
-            },
-            "suggest": {
-                "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
-                "zendframework/zend-json": "To have the JsonRpc adapter (Remote Object feature)",
-                "zendframework/zend-soap": "To have the Soap adapter (Remote Object feature)",
-                "zendframework/zend-xmlrpc": "To have the XmlRpc adapter (Remote Object feature)"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "ProxyManager\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com",
-                    "homepage": "http://ocramius.github.io/"
-                }
-            ],
-            "description": "A library providing utilities to generate, instantiate and generally operate with Object Proxies",
-            "homepage": "https://github.com/Ocramius/ProxyManager",
-            "keywords": [
-                "aop",
-                "lazy loading",
-                "proxy",
-                "proxy pattern",
-                "service proxies"
-            ],
-            "time": "2017-11-16T23:22:31+00:00"
-        },
-        {
             "name": "ocramius/psr7-csrf",
             "version": "2.0.0",
             "source": {
@@ -2635,54 +1569,6 @@
             "time": "2016-10-10T12:19:37+00:00"
         },
         {
-            "name": "psr/simple-cache",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/simple-cache.git",
-                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
-                "reference": "408d5eafb83c57f6365a3ca330ff23aa4a5fa39b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\SimpleCache\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interfaces for simple caching",
-            "keywords": [
-                "cache",
-                "caching",
-                "psr",
-                "psr-16",
-                "simple-cache"
-            ],
-            "time": "2017-10-23T01:57:42+00:00"
-        },
-        {
             "name": "psr7-sessions/storageless",
             "version": "4.0.0",
             "source": {
@@ -2790,11 +1676,11 @@
         },
         {
             "name": "psrnext/config",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/psrnext/config",
-                "reference": "48b53061fc722cf1a237ce8f90e587904848c504",
+                "reference": "2418b4c1e1a00876d0c731ac2d584751177d228d",
                 "shasum": null
             },
             "require": {
@@ -2821,11 +1707,11 @@
         },
         {
             "name": "psrnext/environment",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/psrnext/environment",
-                "reference": "8e39c317a0a5e610a4cda27613f59458abe92fcc",
+                "reference": "9df0161ca3d3f854b5ad9364d9962193e7fb8702",
                 "shasum": null
             },
             "require": {
@@ -2890,11 +1776,11 @@
         },
         {
             "name": "psrnext/graphql",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/psrnext/graphql",
-                "reference": "11a4e8266ad6d09bd0d6579e997af2f5a5066ddb",
+                "reference": "929004119f7f692d0a6f0d202e53fca71e890348",
                 "shasum": null
             },
             "require": {
@@ -3361,11 +2247,11 @@
         },
         {
             "name": "rosem/config",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/config",
-                "reference": "2b4d1c3c814840a74a1f42cbb0b384267527b63b",
+                "reference": "958789153f43ffcbe08b621d27336d9936d82a5d",
                 "shasum": null
             },
             "require": {
@@ -3393,11 +2279,11 @@
         },
         {
             "name": "rosem/container",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/container",
-                "reference": "570ceedfac3eeb2a2bf7a1c6928bf64798b3f982",
+                "reference": "aae1bdbb35938f7cbff1f8d7973e71d203d0945a",
                 "shasum": null
             },
             "require": {
@@ -3426,11 +2312,11 @@
         },
         {
             "name": "rosem/environment",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/environment",
-                "reference": "a5f217a0f2ad2f23a671997bf86c936ff64f07fd",
+                "reference": "5a3ebe81bf56d39c292ae85d4389c71a6bf8cbd7",
                 "shasum": null
             },
             "require": {
@@ -3459,11 +2345,11 @@
         },
         {
             "name": "rosem/event-manager",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/event-manager",
-                "reference": "69f444d4a388aba21c144d6d999c94d20f754ed2",
+                "reference": "fe9a3b8f0408a14dbed0027496c87d4d53d12153",
                 "shasum": null
             },
             "require": {
@@ -3491,11 +2377,11 @@
         },
         {
             "name": "rosem/graphql",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/graphql",
-                "reference": "9290cace2ddf95bf225b280e4aea5da3b3110d79",
+                "reference": "b884e845d5bd0ff0abdfaf9435d69f485b5b791a",
                 "shasum": null
             },
             "require": {
@@ -3524,11 +2410,11 @@
         },
         {
             "name": "rosem/hasher",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/hasher",
-                "reference": "3d6b5fbcfb53a314dcae07751e8ccb24bcf39dc3",
+                "reference": "d7a6016ff9af4d6fc85d6ff24b2e3fd35db00e83",
                 "shasum": null
             },
             "require": {
@@ -3556,11 +2442,11 @@
         },
         {
             "name": "rosem/http-factory",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/http-factory",
-                "reference": "f26e21f6088e1cf0ecf5adddc3d6afe90705389d",
+                "reference": "941fd2b25cd332159c2b325f30aa8fb378a851b7",
                 "shasum": null
             },
             "require": {
@@ -3590,11 +2476,11 @@
         },
         {
             "name": "rosem/installer",
-            "version": "dev-master",
+            "version": "9999999-dev",
             "dist": {
                 "type": "path",
                 "url": "vendor_local/rosem/installer",
-                "reference": "3fb2c610b06f76e01c43709b7873a39ada4af7af",
+                "reference": "519d7664c0b6a6a9ee1d420933a6fdd78d1d60eb",
                 "shasum": null
             },
             "require": {
@@ -3672,6 +2558,57 @@
                 "router"
             ],
             "time": "2018-06-11T21:57:44+00:00"
+        },
+        {
+            "name": "sabre/event",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sabre-io/event.git",
+                "reference": "337b6f5e10ea6e0b21e22c7e5788dd3883ae73ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sabre-io/event/zipball/337b6f5e10ea6e0b21e22c7e5788dd3883ae73ff",
+                "reference": "337b6f5e10ea6e0b21e22c7e5788dd3883ae73ff",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "sabre/cs": "~0.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sabre\\Event\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Evert Pot",
+                    "email": "me@evertpot.com",
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "sabre/event is a library for lightweight event-based programming",
+            "homepage": "http://sabre.io/event/",
+            "keywords": [
+                "EventEmitter",
+                "events",
+                "hooks",
+                "plugin",
+                "promise",
+                "signal"
+            ],
+            "time": "2015-05-19T10:24:22+00:00"
         },
         {
             "name": "symfony/config",
@@ -4356,6 +3293,110 @@
             "time": "2016-09-01T10:05:43+00:00"
         },
         {
+            "name": "vlucas/spot2",
+            "version": "v2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spotorm/spot2.git",
+                "reference": "94fd8c2ae93a62cdc36782c223dbc6ead7f54839"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spotorm/spot2/zipball/94fd8c2ae93a62cdc36782c223dbc6ead7f54839",
+                "reference": "94fd8c2ae93a62cdc36782c223dbc6ead7f54839",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "2.5.4",
+                "php": ">=5.4.0",
+                "sabre/event": "~2.0",
+                "vlucas/valitron": "~1.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spot\\": "lib/",
+                    "SpotTest\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Vance Lucas",
+                    "email": "vance@vancelucas.com",
+                    "homepage": "http://www.vancelucas.com"
+                }
+            ],
+            "description": "Simple DataMapper built on top of Doctrine DBAL",
+            "homepage": "https://github.com/vlucas/spot2",
+            "keywords": [
+                "database",
+                "datamapper",
+                "dbal",
+                "doctrine",
+                "entity",
+                "mapper",
+                "model",
+                "orm"
+            ],
+            "time": "2016-05-21T04:38:40+00:00"
+        },
+        {
+            "name": "vlucas/valitron",
+            "version": "v1.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vlucas/valitron.git",
+                "reference": "3c5463315bfa23b17f8949b100a960d035234e43"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vlucas/valitron/zipball/3c5463315bfa23b17f8949b100a960d035234e43",
+                "reference": "3c5463315bfa23b17f8949b100a960d035234e43",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35 || ^5.5 || ^6.5"
+            },
+            "suggest": {
+                "ext-mbstring": "It can support the multiple bytes string length."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Valitron\\": "src/Valitron"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Vance Lucas",
+                    "email": "vance@vancelucas.com",
+                    "homepage": "http://www.vancelucas.com"
+                }
+            ],
+            "description": "Simple, elegant, stand-alone validation library with NO dependencies",
+            "homepage": "http://github.com/vlucas/valitron",
+            "keywords": [
+                "valid",
+                "validation",
+                "validator"
+            ],
+            "time": "2018-05-06T10:45:26+00:00"
+        },
+        {
             "name": "webonyx/graphql-php",
             "version": "v0.11.6",
             "source": {
@@ -4401,59 +3442,6 @@
                 "graphql"
             ],
             "time": "2018-04-17T10:34:43+00:00"
-        },
-        {
-            "name": "zendframework/zend-code",
-            "version": "3.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-code.git",
-                "reference": "6b1059db5b368db769e4392c6cb6cc139e56640d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-code/zipball/6b1059db5b368db769e4392c6cb6cc139e56640d",
-                "reference": "6b1059db5b368db769e4392c6cb6cc139e56640d",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1",
-                "zendframework/zend-eventmanager": "^2.6 || ^3.0"
-            },
-            "require-dev": {
-                "doctrine/annotations": "~1.0",
-                "ext-phar": "*",
-                "phpunit/phpunit": "^6.2.3",
-                "zendframework/zend-coding-standard": "^1.0.0",
-                "zendframework/zend-stdlib": "^2.7 || ^3.0"
-            },
-            "suggest": {
-                "doctrine/annotations": "Doctrine\\Common\\Annotations >=1.0 for annotation features",
-                "zendframework/zend-stdlib": "Zend\\Stdlib component"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.2-dev",
-                    "dev-develop": "3.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zend\\Code\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "provides facilities to generate arbitrary code using an object oriented interface",
-            "homepage": "https://github.com/zendframework/zend-code",
-            "keywords": [
-                "code",
-                "zf2"
-            ],
-            "time": "2017-10-20T15:21:32+00:00"
         },
         {
             "name": "zendframework/zend-diactoros",
@@ -4507,169 +3495,6 @@
                 "psr-7"
             ],
             "time": "2018-05-29T16:53:08+00:00"
-        },
-        {
-            "name": "zendframework/zend-eventmanager",
-            "version": "3.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-eventmanager.git",
-                "reference": "a5e2583a211f73604691586b8406ff7296a946dd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-eventmanager/zipball/a5e2583a211f73604691586b8406ff7296a946dd",
-                "reference": "a5e2583a211f73604691586b8406ff7296a946dd",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.6 || ^7.0"
-            },
-            "require-dev": {
-                "athletic/athletic": "^0.1",
-                "container-interop/container-interop": "^1.1.0",
-                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2",
-                "zendframework/zend-coding-standard": "~1.0.0",
-                "zendframework/zend-stdlib": "^2.7.3 || ^3.0"
-            },
-            "suggest": {
-                "container-interop/container-interop": "^1.1.0, to use the lazy listeners feature",
-                "zendframework/zend-stdlib": "^2.7.3 || ^3.0, to use the FilterChain feature"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.2-dev",
-                    "dev-develop": "3.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zend\\EventManager\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Trigger and listen to events within a PHP application",
-            "homepage": "https://github.com/zendframework/zend-eventmanager",
-            "keywords": [
-                "event",
-                "eventmanager",
-                "events",
-                "zf2"
-            ],
-            "time": "2018-04-25T15:33:34+00:00"
-        },
-        {
-            "name": "zendframework/zend-hydrator",
-            "version": "2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-hydrator.git",
-                "reference": "bd48bc3bc046df007a94125f868dd1aa1b73a813"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-hydrator/zipball/bd48bc3bc046df007a94125f868dd1aa1b73a813",
-                "reference": "bd48bc3bc046df007a94125f868dd1aa1b73a813",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.6 || ^7.0",
-                "zendframework/zend-stdlib": "^3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2",
-                "zendframework/zend-coding-standard": "~1.0.0",
-                "zendframework/zend-eventmanager": "^2.6.2 || ^3.0",
-                "zendframework/zend-filter": "^2.6",
-                "zendframework/zend-inputfilter": "^2.6",
-                "zendframework/zend-serializer": "^2.6.1",
-                "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3"
-            },
-            "suggest": {
-                "zendframework/zend-eventmanager": "^2.6.2 || ^3.0, to support aggregate hydrator usage",
-                "zendframework/zend-filter": "^2.6, to support naming strategy hydrator usage",
-                "zendframework/zend-serializer": "^2.6.1, to use the SerializableStrategy",
-                "zendframework/zend-servicemanager": "^2.7.5 || ^3.0.3, to support hydrator plugin manager usage"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-release-1.0": "1.0.x-dev",
-                    "dev-release-1.1": "1.1.x-dev",
-                    "dev-master": "2.4.x-dev",
-                    "dev-develop": "2.5.x-dev"
-                },
-                "zf": {
-                    "component": "Zend\\Hydrator",
-                    "config-provider": "Zend\\Hydrator\\ConfigProvider"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zend\\Hydrator\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Serialize objects to arrays, and vice versa",
-            "keywords": [
-                "ZendFramework",
-                "hydrator",
-                "zf"
-            ],
-            "time": "2018-04-30T21:22:14+00:00"
-        },
-        {
-            "name": "zendframework/zend-stdlib",
-            "version": "3.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-stdlib.git",
-                "reference": "cd164b4a18b5d1aeb69be2c26db035b5ed6925ae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/cd164b4a18b5d1aeb69be2c26db035b5ed6925ae",
-                "reference": "cd164b4a18b5d1aeb69be2c26db035b5ed6925ae",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.6 || ^7.0"
-            },
-            "require-dev": {
-                "phpbench/phpbench": "^0.13",
-                "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1.2",
-                "zendframework/zend-coding-standard": "~1.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.2.x-dev",
-                    "dev-develop": "3.3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zend\\Stdlib\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "SPL extensions, array utilities, error handlers, and more",
-            "keywords": [
-                "ZendFramework",
-                "stdlib",
-                "zf"
-            ],
-            "time": "2018-04-30T13:50:40+00:00"
         }
     ],
     "packages-dev": [
@@ -4769,6 +3594,272 @@
                 "sql"
             ],
             "time": "2018-05-17T21:13:08+00:00"
+        },
+        {
+            "name": "atlas/mapper",
+            "version": "1.0.0-beta3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/atlasphp/Atlas.Mapper.git",
+                "reference": "3d706226175e48b7456de2adb386415462166036"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/atlasphp/Atlas.Mapper/zipball/3d706226175e48b7456de2adb386415462166036",
+                "reference": "3d706226175e48b7456de2adb386415462166036",
+                "shasum": ""
+            },
+            "require": {
+                "atlas/table": "1.x@beta",
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "atlas/testing": "1.x@beta",
+                "pds/skeleton": "~1.0",
+                "phpunit/phpunit": "~7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Atlas\\Mapper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Atlas Contributors",
+                    "homepage": "https://github.com/atlasphp/Atlas.Mapper/contributors"
+                }
+            ],
+            "description": "A data mapper for the persistence model.",
+            "homepage": "http://github.com/atlasphp/Atlas.Mapper",
+            "keywords": [
+                "data",
+                "mapper",
+                "mapping",
+                "orm",
+                "sql"
+            ],
+            "time": "2018-06-03T14:44:38+00:00"
+        },
+        {
+            "name": "atlas/pdo",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/atlasphp/Atlas.Pdo.git",
+                "reference": "abc27ed9a3f6eae055a1737c03b3fbb86b9763ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/atlasphp/Atlas.Pdo/zipball/abc27ed9a3f6eae055a1737c03b3fbb86b9763ef",
+                "reference": "abc27ed9a3f6eae055a1737c03b3fbb86b9763ef",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "pds/skeleton": "~1.0",
+                "phpunit/phpunit": "~7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Atlas\\Pdo\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Atlas.Pdo Contributors",
+                    "homepage": "https://github.com/atlasphp/Atlas.Pdo/contributors"
+                }
+            ],
+            "description": "Provides a PDO instance decorator with convenience methods, and a connection manager.",
+            "homepage": "https://github.com/atlasphp/Atlas.Pdo",
+            "keywords": [
+                "Connection",
+                "database",
+                "pdo",
+                "sql"
+            ],
+            "time": "2018-05-07T12:42:19+00:00"
+        },
+        {
+            "name": "atlas/query",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/atlasphp/Atlas.Query.git",
+                "reference": "5d2cb454fedc6dc25ac44b86f5e2e0358193bbe7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/atlasphp/Atlas.Query/zipball/5d2cb454fedc6dc25ac44b86f5e2e0358193bbe7",
+                "reference": "5d2cb454fedc6dc25ac44b86f5e2e0358193bbe7",
+                "shasum": ""
+            },
+            "require": {
+                "atlas/pdo": "~1.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "pds/skeleton": "~1.0",
+                "phpunit/phpunit": "~7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Atlas\\Query\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Atlas.Query Contributors",
+                    "homepage": "https://github.com/atlasphp/Atlas.Query/contributors"
+                }
+            ],
+            "description": "Object-oriented query builders for MySQL, Postgres, SQLite, and SQLServer.",
+            "homepage": "https://github.com/atlasphp/Atlas.Query",
+            "keywords": [
+                "database",
+                "db",
+                "delete",
+                "dml",
+                "insert",
+                "mysql",
+                "pdo",
+                "pgsql",
+                "postgres",
+                "postgresql",
+                "query",
+                "select",
+                "sql",
+                "sql server",
+                "sqlite",
+                "sqlserver",
+                "update"
+            ],
+            "time": "2018-05-23T20:13:07+00:00"
+        },
+        {
+            "name": "atlas/table",
+            "version": "1.0.0-beta3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/atlasphp/Atlas.Table.git",
+                "reference": "1c350c27c44b3d5ab4492c07322ff227b2ebb1f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/atlasphp/Atlas.Table/zipball/1c350c27c44b3d5ab4492c07322ff227b2ebb1f2",
+                "reference": "1c350c27c44b3d5ab4492c07322ff227b2ebb1f2",
+                "shasum": ""
+            },
+            "require": {
+                "atlas/pdo": "~1.0",
+                "atlas/query": "~1.0",
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "atlas/testing": "1.x@beta",
+                "pds/skeleton": "~1.0",
+                "phpunit/phpunit": "~7.0"
+            },
+            "suggest": {
+                "atlas/cli": "A command-line tool to build skeleton classes."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Atlas\\Table\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Atlas Contributors",
+                    "homepage": "https://github.com/atlasphp/Atlas.Table/contributors"
+                }
+            ],
+            "description": "Table data gateway implementation for Atlas.",
+            "homepage": "http://github.com/atlasphp/Atlas.Table",
+            "keywords": [
+                "data",
+                "mapper",
+                "mapping",
+                "orm",
+                "sql"
+            ],
+            "time": "2018-06-03T14:16:03+00:00"
+        },
+        {
+            "name": "doctrine/instantiator",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/instantiator.git",
+                "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
+                "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "athletic/athletic": "~0.1.8",
+                "ext-pdo": "*",
+                "ext-phar": "*",
+                "phpunit/phpunit": "^6.2.3",
+                "squizlabs/php_codesniffer": "^3.0.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com",
+                    "homepage": "http://ocramius.github.com/"
+                }
+            ],
+            "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
+            "homepage": "https://github.com/doctrine/instantiator",
+            "keywords": [
+                "constructor",
+                "instantiate"
+            ],
+            "time": "2017-07-22T11:58:36+00:00"
         },
         {
             "name": "fzaninotto/faker",

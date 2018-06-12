@@ -2,7 +2,6 @@
 
 namespace Rosem\Access\GraphQL\Query;
 
-use Doctrine\ORM\EntityManager;
 use GraphQL\Type\Definition\ResolveInfo;
 use Psrnext\GraphQL\{
     AbstractQuery, TypeRegistryInterface
@@ -33,7 +32,7 @@ class UsersQuery extends AbstractQuery
 
     public function resolve($source, $args, $container, ResolveInfo $info)
     {
-        $users = $container->get(EntityManager::class)->getRepository(\Rosem\Access\Entity\User::class)->findAll();
+        $users = $container->get(\Spot\Locator::class)->mapper(\Rosem\User\Database\Entity\UserEntity::class)->all();
 
         return $users;
     }
