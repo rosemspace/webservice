@@ -9,9 +9,10 @@ use GraphQL\Type\Schema as GraphQLSchema;
 use GraphQL\Type\SchemaConfig;
 use Psr\Container\ContainerInterface;
 use Psrnext\{
-    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, GraphQL\TypeRegistryInterface, Http\Server\MiddlewareQueueInterface, Route\RouteCollectorInterface
+    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, GraphQL\TypeRegistryInterface, Route\RouteCollectorInterface
 };
 use Psrnext\Config\ConfigInterface;
+use function Rosem\String\snake_case;
 
 class GraphQLServiceProvider implements ServiceProviderInterface
 {
@@ -26,6 +27,11 @@ class GraphQLServiceProvider implements ServiceProviderInterface
     public const CONFIG_URI = 'graphql.uri';
 
     /**
+     * GraphQL debug config key.
+     */
+    public const CONFIG_DEBUG = 'graphql.debug';
+
+    /**
      * Returns a list of all container entries registered by this service provider.
      * - the key is the entry name
      * - the value is a callable that will return the entry, aka the **factory**
@@ -36,6 +42,13 @@ class GraphQLServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
+            self::CONFIG_DEBUG => function (ContainerInterface $container): bool {
+                if ($container->has(EnvironmentInterface::class)) {
+                    return $container->get(EnvironmentInterface::class)->isDevelopmentMode();
+                }
+
+                return false;
+            },
             TypeRegistryInterface::class => [static::class, 'createGraphQLTypeRegistry'],
             GraphInterface::class        => [static::class, 'createGraphQLGraph'],
             GraphQLRequestHandler::class => [static::class, 'createGraphQLRequestHandler'],
@@ -98,7 +111,7 @@ class GraphQLServiceProvider implements ServiceProviderInterface
             'schema'        => new GraphQLSchema($schemaConfig),
             'context'       => $container,
             'fieldResolver' => function ($source, $args, $context, ResolveInfo $info) {
-                $fieldName = $info->fieldName;
+                $fieldName = snake_case($info->fieldName);
                 $property = null;
 
                 if (\is_array($source) || $source instanceof \ArrayAccess) {
@@ -124,9 +137,6 @@ class GraphQLServiceProvider implements ServiceProviderInterface
 
     public function createGraphQLRequestHandler(ContainerInterface $container): GraphQLRequestHandler
     {
-        return new GraphQLRequestHandler(
-            $this->createGraphQLServer($container),
-            $container->get(EnvironmentInterface::class)->isDevelopmentMode()
-        );
+        return new GraphQLRequestHandler($this->createGraphQLServer($container), $container->get(self::CONFIG_DEBUG));
     }
 }

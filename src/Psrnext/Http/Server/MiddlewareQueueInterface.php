@@ -8,5 +8,9 @@ use Psr\Http\Server\{
 
 interface MiddlewareQueueInterface extends RequestHandlerInterface
 {
-    public function use(MiddlewareInterface $middleware, float $priority = 0): void;
+    /**
+     * @param MiddlewareInterface $middleware
+     * @param int|float|string    $priority
+     */
+    public function use(MiddlewareInterface $middleware, $priority = 0): void;
 }

@@ -7,8 +7,8 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
-use function call_user_func;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
+use function call_user_func;
 
 class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
 {

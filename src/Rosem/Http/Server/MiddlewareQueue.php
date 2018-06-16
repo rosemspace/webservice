@@ -68,9 +68,9 @@ class MiddlewareQueue implements MiddlewareQueueInterface
 
     /**
      * @param MiddlewareInterface $middleware
-     * @param float               $priority
+     * @param int|float|string    $priority
      */
-    public function use(MiddlewareInterface $middleware, float $priority = 0): void // TODO: priority functionality
+    public function use(MiddlewareInterface $middleware, $priority = 0): void // TODO: priority functionality
     {
         if ($this->lastHandler) {
             $this->lastHandler = &$this->lastHandler->nextHandler;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2ba9a49267abc232fe4b4de2542edce",
+    "content-hash": "991d349217dc881b65a9fcc6d09f9e96",
     "packages": [
         {
             "name": "container-interop/service-provider",
@@ -980,12 +980,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/plates.git",
-                "reference": "f53f4c1fa4bf307d0f3858a348172ff4faf7669a"
+                "reference": "a4d0be5d98307843baf8cdd91523599dc0b5f053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/plates/zipball/f53f4c1fa4bf307d0f3858a348172ff4faf7669a",
-                "reference": "f53f4c1fa4bf307d0f3858a348172ff4faf7669a",
+                "url": "https://api.github.com/repos/thephpleague/plates/zipball/a4d0be5d98307843baf8cdd91523599dc0b5f053",
+                "reference": "a4d0be5d98307843baf8cdd91523599dc0b5f053",
                 "shasum": ""
             },
             "require": {
@@ -1044,7 +1044,7 @@
                 "templating",
                 "views"
             ],
-            "time": "2018-01-31T07:20:23+00:00"
+            "time": "2018-06-15T00:36:06+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -1126,16 +1126,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.29.2",
+            "version": "1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "ed6aa898982f441ccc9b2acdec51490f2bc5d337"
+                "reference": "863a1a651ea324e1838da3a52753a4239b9d4bea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/ed6aa898982f441ccc9b2acdec51490f2bc5d337",
-                "reference": "ed6aa898982f441ccc9b2acdec51490f2bc5d337",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/863a1a651ea324e1838da3a52753a4239b9d4bea",
+                "reference": "863a1a651ea324e1838da3a52753a4239b9d4bea",
                 "shasum": ""
             },
             "require": {
@@ -1170,7 +1170,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-05-29T15:23:46+00:00"
+            "time": "2018-06-15T11:52:26+00:00"
         },
         {
             "name": "nikic/fast-route",

@@ -47,7 +47,6 @@
         "zendframework/zend-diactoros": "^1.7"
     },
     "require-dev": {
-        "atlas/cli": "^2.0",
         "roave/security-advisories": "dev-master",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
@@ -65,7 +64,8 @@
         "psr-4": {
             "Rosem\\": "src/Rosem",
             "Psrnext\\": "src/Psrnext"
-        }
+        },
+        "files": ["src/Rosem/String/functions.php"]
     },
     "repositories": [
         {"type": "path", "url": "vendor_local/psrnext/config"},
