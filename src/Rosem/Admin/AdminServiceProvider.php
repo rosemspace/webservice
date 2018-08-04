@@ -69,10 +69,10 @@ class AdminServiceProvider implements ServiceProviderInterface
                 $adminUri = '/' . trim($container->get('admin.uri'), '/');
                 $loginUri = '/' . trim($container->get('admin.loginUri'), '/');
                 $authenticationOptions = [
-                    'setLoginUri' => $loginUri,
-                    'setLoggedInUri' => $adminUri,
+                    AuthenticationMiddleware::getLoginUriAttribute() => $loginUri,
                 ];
-                $routeCollector->get($loginUri, LoginRequestHandler::class);
+                $routeCollector->get($loginUri, LoginRequestHandler::class)
+                    ->addMiddleware(AuthenticationMiddleware::class, $authenticationOptions);
                 $routeCollector->post($loginUri, LoginRequestHandler::class)
                     ->addMiddleware(AuthenticationMiddleware::class, $authenticationOptions);
                 $routeCollector->get($adminUri . '{adminRelativePath:.*}', AdminRequestHandler::class)

@@ -1,21 +1,23 @@
 <?php
+declare(strict_types=1);
 
 namespace Rosem\Http\Server;
 
+use Exception;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psrnext\Http\Server\MiddlewareQueueInterface;
+use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
 
-class MiddlewareQueue implements MiddlewareQueueInterface
+class MiddlewareQueue implements MiddlewareQueueInterface, RequestHandlerInterface
 {
     /**
      * @var ContainerInterface
      */
-    private $container;
+    protected $container;
 
     /**
      * @var RequestHandlerInterface
@@ -38,16 +40,19 @@ class MiddlewareQueue implements MiddlewareQueueInterface
         $this->handlerQueue = $this->finalHandler = $finalHandler;
     }
 
-    protected function createMiddlewareRequestHandler(MiddlewareInterface $middleware)
+    protected function createMiddlewareRequestHandler(string $middleware)
     {
-        return new class ($middleware) implements RequestHandlerInterface
+        return new class ($this->container, $middleware) implements RequestHandlerInterface
         {
+            private $container;
+
             private $middleware;
 
             public $nextHandler;
 
-            public function __construct(MiddlewareInterface $middleware)
+            public function __construct(ContainerInterface $container, string $middleware)
             {
+                $this->container = $container;
                 $this->middleware = $middleware;
             }
 
@@ -57,20 +62,33 @@ class MiddlewareQueue implements MiddlewareQueueInterface
              * @param ServerRequestInterface $request
              *
              * @return ResponseInterface
+             * @throws Exception
              * @throws InvalidArgumentException
              */
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
-                return $this->middleware->process($request, $this->nextHandler);
+                if (!$this->container->has($this->middleware)) {
+                    throw new Exception("Middleware \"$this->middleware\" does not exist.");
+                }
+
+                $middlewareInstance = $this->container->get($this->middleware);
+
+                if (!$middlewareInstance instanceof MiddlewareInterface) {
+                    throw new InvalidArgumentException("The middleware \"$this->middleware\" should implement \"" .
+                        MiddlewareInterface::class . '" interface.');
+                }
+
+                return $middlewareInstance->process($request, $this->nextHandler);
             }
         };
     }
 
     /**
-     * @param MiddlewareInterface $middleware
-     * @param int|float|string    $priority
+     * @param string           $middleware
+     * @param array            $requestAttributes
+     * @param int|float|string $priority
      */
-    public function use(MiddlewareInterface $middleware, $priority = 0): void // TODO: priority functionality
+    public function add(string $middleware, array $requestAttributes = [], $priority = 0): void // TODO: priority functionality
     {
         if ($this->lastHandler) {
             $this->lastHandler = &$this->lastHandler->nextHandler;

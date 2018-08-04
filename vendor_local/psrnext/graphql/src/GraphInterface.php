@@ -6,5 +6,5 @@ interface GraphInterface
 {
     public function addSchema(string $name, SchemaInterface $schema): void;
 
-    public function schema(string $name = 'default'): SchemaInterface;
+    public function getSchema(string $name): SchemaInterface;
 }

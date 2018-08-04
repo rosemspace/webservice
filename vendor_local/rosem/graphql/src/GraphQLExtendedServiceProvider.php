@@ -5,8 +5,7 @@ namespace Rosem\GraphQL;
 use Psr\Container\ContainerInterface;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Environment\EnvironmentInterface;
-use Psrnext\Http\Server\MiddlewareQueueInterface;
-use Rosem\Http\Server\LazyMiddleware;
+use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
 
 class GraphQLExtendedServiceProvider extends GraphQLServiceProvider
 {
@@ -22,9 +21,9 @@ class GraphQLExtendedServiceProvider extends GraphQLServiceProvider
         return [
             MiddlewareQueueInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareQueueInterface $middlewareProcessor
+                MiddlewareQueueInterface $middlewareQueue
             ) {
-                $middlewareProcessor->use(new LazyMiddleware($container, GraphQLMiddleware::class));
+                $middlewareQueue->add(GraphQLMiddleware::class);
             },
         ];
     }

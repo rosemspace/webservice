@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Rosem\Http\Server;
 
@@ -8,10 +9,19 @@ use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
 };
 use Psr\Http\Server\RequestHandlerInterface;
-use Rosem\Http\Factory\ResponseFactory;
+use Psrnext\Http\Factory\ResponseFactoryInterface;
 use UnexpectedValueException;
 use function call_user_func_array;
+use function is_array;
 use function is_object;
+use function is_scalar;
+use function is_string;
+use function key;
+use function method_exists;
+use function ob_get_clean;
+use function ob_get_level;
+use function ob_start;
+use function reset;
 
 /**
  * Simple class to execute callables as request handlers.
@@ -19,7 +29,12 @@ use function is_object;
 class CallableBasedRequestHandler implements RequestHandlerInterface
 {
     /**
-     * @var ResponseFactory
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * @var ResponseFactoryInterface
      */
     protected $responseFactory;
 
@@ -30,13 +45,16 @@ class CallableBasedRequestHandler implements RequestHandlerInterface
 
     public function __construct(ContainerInterface $container, callable $callable)
     {
-        $this->responseFactory = $container->get(ResponseFactory::class);
+        $this->container = $container;
+        $this->responseFactory = $container->get(ResponseFactoryInterface::class);
         $this->callable = $callable;
     }
 
     /**
      * Handle the request and return a response.
+     *
      * @param ServerRequestInterface $request
+     *
      * @return ResponseInterface
      * @throws Exception
      */
@@ -47,17 +65,23 @@ class CallableBasedRequestHandler implements RequestHandlerInterface
 
     /**
      * Execute the callable.
-     * @param callable $callable
-     * @param object   ...$arguments
+     *
+     * @param array|callable $callable
+     * @param object         ...$arguments
+     *
      * @return ResponseInterface
      * @throws Exception
      */
-    protected function execute(callable $callable, ...$arguments): ResponseInterface
+    protected function execute($callable, ...$arguments): ResponseInterface
     {
         ob_start();
         $level = ob_get_level();
 
         try {
+            if (is_array($callable) && is_string(reset($callable))) {
+                $callable[key($callable)] = $this->container->get(reset($callable));
+            }
+
             $return = call_user_func_array($callable, $arguments);
 
             if ($return instanceof ResponseInterface) {

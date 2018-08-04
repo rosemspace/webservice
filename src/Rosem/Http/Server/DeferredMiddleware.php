@@ -1,36 +1,35 @@
 <?php
+declare(strict_types=1);
 
 namespace Rosem\Http\Server;
 
-use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use UnexpectedValueException;
 
-class LazyMiddleware extends AbstractLazyMiddleware
+class DeferredMiddleware extends AbstractLazyMiddleware
 {
     /**
      * LazyMiddleware constructor.
      *
      * @param ContainerInterface $container
      * @param string             $middleware
-     * @param array              $options
      */
-    public function __construct(ContainerInterface $container, string $middleware, array $options = [])
+    public function __construct(ContainerInterface $container, string $middleware)
     {
-        parent::__construct($container, $middleware, $options);
+        parent::__construct($container, $middleware);
     }
 
+    /**
+     * @throws UnexpectedValueException
+     */
     protected function initialize(): void
     {
         $this->middleware = $this->container->get($this->middleware);
 
         if (!($this->middleware instanceof MiddlewareInterface)) {
-            throw new InvalidArgumentException('The middleware "' . $this->middleware . '" should implement "' .
+            throw new UnexpectedValueException('The middleware "' . $this->middleware . '" should implement "' .
                 MiddlewareInterface::class . '" interface');
-        }
-
-        foreach ($this->options as $method => $arguments) {
-            $this->middleware->$method(...(array)$arguments);
         }
     }
 }

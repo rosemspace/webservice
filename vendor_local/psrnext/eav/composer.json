@@ -1,7 +1,8 @@
 {
-    "name": "rosem/environment",
-    "description": "Environment library",
+    "name": "psrnext/eav",
+    "description": "Entity attribute value standard",
     "license": "MIT",
+    "homepage": "https://psrnext.github.io/eav",
     "type": "library",
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -9,18 +10,16 @@
         {
             "name": "ma1oy",
             "email": "iroman.via@gmail.com",
-            "homepage": "https://rosemlab.github.io/environment",
+            "homepage": "https://roshecode.github.io",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": ">=7.2.0",
-        "psrnext/environment": "*",
-        "vlucas/phpdotenv": "^2.4"
+        "php": "~7.2.0"
     },
     "autoload": {
         "psr-4": {
-            "Rosem\\Environment\\": "src"
+            "Psrnext\\Eav\\": "src"
         }
     }
 }

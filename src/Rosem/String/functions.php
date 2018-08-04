@@ -13,9 +13,9 @@ use function strtolower;
  *
  * @return string
  */
-function camel_case(string $value): string
+function camelCase(string $value): string
 {
-    return lcfirst(studly_case($value));
+    return lcfirst(studlyCase($value));
 }
 
 /**
@@ -26,7 +26,7 @@ function camel_case(string $value): string
  *
  * @return string
  */
-function snake_case(string $value, string $delimiter = '_'): string
+function snakeCase(string $value, string $delimiter = '_'): string
 {
     if (!ctype_lower($value)) {
         return strtolower(preg_replace('/(.)(?=[A-Z])/', '$1' . $delimiter, $value));
@@ -42,7 +42,7 @@ function snake_case(string $value, string $delimiter = '_'): string
  *
  * @return string
  */
-function studly_case(string $value): string
+function studlyCase(string $value): string
 {
     return str_replace(
         ' ',

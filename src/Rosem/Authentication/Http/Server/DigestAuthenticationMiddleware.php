@@ -7,10 +7,14 @@ use Psr\Http\Message\{
 };
 use function call_user_func;
 use function count;
+use Psrnext\Http\Factory\ResponseFactoryInterface;
 use function strlen;
 
-class DigestAuthenticationMiddleware extends AbstractAuthenticationMiddleware
+/** @noinspection LongInheritanceChainInspection */
+class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
 {
+    public const PARAM_NONCE = 'auth.nonce';
+
     /**
      * Authorization header prefix.
      */
@@ -24,18 +28,58 @@ class DigestAuthenticationMiddleware extends AbstractAuthenticationMiddleware
     ];
 
     /**
-     * @var string|null The nonce value
+     * @var string|null
      */
-    private $nonce;
+    protected static $nonceAttribute = 'auth.nonce';
 
     /**
-     * Set the nonce value.
-     *
-     * @param string $nonce
+     * @var string|null The nonce value
      */
-    public function setNonce(string $nonce): void
+    protected $nonce;
+
+    public function __construct(
+        ResponseFactoryInterface $responseFactory,
+        callable $userPasswordGetter,
+        string $realm = 'Login',
+        string $nonce = ''
+    ) {
+        parent::__construct($responseFactory, $userPasswordGetter, $realm);
+
+        $this->nonce = $nonce ?: uniqid('', true);
+    }
+
+    /**
+     * Set the name of the nonce attribute.
+     *
+     * @param string $attribute
+     *
+     * @throws \LogicException
+     */
+    public static function setNonceAttribute(string $attribute): void
     {
-        $this->nonce = $nonce;
+        self::setAttribute('realmAttribute', $attribute);
+    }
+
+    /**
+     * Get name of the nonce attribute.
+     *
+     * @return string
+     */
+    public static function getNonceAttribute(): string
+    {
+        return static::$realmAttribute;
+    }
+
+    /**
+     * Get the nonce value.
+     *
+     * @param ServerRequestInterface $request
+     *
+     * @return string
+     */
+    public function getNonce(ServerRequestInterface $request): string
+    {
+        return $request->getAttribute(self::PARAM_NONCE) ?: $this->nonce;
     }
 
     /**
@@ -94,19 +138,23 @@ class DigestAuthenticationMiddleware extends AbstractAuthenticationMiddleware
     /**
      * Create unauthorized response.
      *
+     * @param ServerRequestInterface $request
+     *
      * @return ResponseInterface
      * @throws \InvalidArgumentException
      */
-    public function createUnauthorizedResponse(): ResponseInterface
+    public function createUnauthorizedResponse(ServerRequestInterface $request): ResponseInterface
     {
+        $realm = $this->getRealm($request);
+
         return $this->responseFactory->createResponse(401)
             ->withHeader(
                 'WWW-Authenticate',
                 sprintf(
                     self::AUTHORIZATION_HEADER_PREFIX . ' realm="%s",qop="auth",nonce="%s",opaque="%s"',
-                    $this->realm,
-                    $this->nonce ?: uniqid('', true),
-                    md5($this->realm)
+                    $realm,
+                    $this->getNonce($request),
+                    md5($realm)
                 )
             );
     }

@@ -8,6 +8,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
 use Psrnext\Template\TemplateRendererInterface;
+use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
 
 class AdminRequestHandler implements RequestHandlerInterface
 {
@@ -51,7 +52,9 @@ class AdminRequestHandler implements RequestHandlerInterface
         if ($body->isWritable()) {
             $viewString = $this->view->render(
                 'admin::index',
-                ['userIdentity' => $request->getAttribute('userIdentity')]
+                [
+                    'userIdentity' => $request->getAttribute(AuthenticationMiddleware::getUserIdentityAttribute()),
+                ]
             );
 
             if ($viewString) {

@@ -6,16 +6,16 @@ use Psr\Container\ContainerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\Http\Server\MiddlewareQueueInterface;
 use Psrnext\Template\TemplateRendererInterface;
 use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
-use Rosem\Http\Server\LazyFactoryMiddleware;
+use Rosem\Http\Server\DeferredFactoryMiddleware;
+use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
 
 class AuthenticationProvider implements ServiceProviderInterface
 {
     public const CONFIG_SYMMETRIC_KEY = 'auth.symmetricKey';
 
-    public const CONFIG_USER_PASSWORD_GETTER = 'auth.userPasswordGetter';
+    public const CONFIG_USER_PASSWORD_GETTER = 'auth.user.passwordGetter';
 
     public const CONFIG_URI = 'auth.uri';
 
@@ -65,7 +65,7 @@ class AuthenticationProvider implements ServiceProviderInterface
                 );
             },
             AuthenticationMiddleware::class => function (ContainerInterface $container) {
-                return new LazyFactoryMiddleware($container, [static::class, 'createAuthenticationMiddleware']);
+                return new DeferredFactoryMiddleware($container, [static::class, 'createAuthenticationMiddleware']);
             },
         ];
     }
@@ -96,9 +96,9 @@ class AuthenticationProvider implements ServiceProviderInterface
             },
             MiddlewareQueueInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareQueueInterface $middlewareDispatcher
+                MiddlewareQueueInterface $middlewareQueue
             ) {
-                $middlewareDispatcher->use($container->get(SessionMiddleware::class));
+                $middlewareQueue->add(SessionMiddleware::class);
             },
         ];
     }

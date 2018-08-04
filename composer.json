@@ -28,12 +28,12 @@
         "php": ">=7.1.0",
         "psr7-sessions/storageless": "^4.0",
         "psrnext/app": "^0.0.3",
+        "psrnext/environment": "*",
         "psrnext/service-provider": "^0.0.1",
         "psrnext/template": "~0.2",
         "robmorgan/phinx": "^0.9",
         "rosem/config": "*",
         "rosem/container": "*",
-        "rosem/environment": "*",
         "rosem/event-manager": "*",
         "rosem/graphql": "*",
         "rosem/hasher": "*",
@@ -44,7 +44,11 @@
         "tedivm/stash": "0.14.*",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
         "vlucas/spot2": "^2.2",
+        "vlucas/phpdotenv": "^2.5",
         "zendframework/zend-diactoros": "^1.7"
+    },
+    "replace": {
+        "rosem/environment": "self.version"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
@@ -55,17 +59,20 @@
         "symfony/dom-crawler": "3.1.*",
         "squizlabs/php_codesniffer": "~2.3"
     },
-    "autoload-dev": {
-        "classmap": [
-
-        ]
-    },
     "autoload": {
         "psr-4": {
             "Rosem\\": "src/Rosem",
+            "Rosem\\Psr\\": "src/Psr",
             "Psrnext\\": "src/Psrnext"
         },
+        "exclude-from-classmap": [
+            "**/Tests/"
+        ],
         "files": ["src/Rosem/String/functions.php"]
+    },
+    "autoload-dev": {
+        "classmap": [
+        ]
     },
     "repositories": [
         {"type": "path", "url": "vendor_local/psrnext/config"},
@@ -73,7 +80,6 @@
         {"type": "path", "url": "vendor_local/psrnext/environment"},
         {"type": "path", "url": "vendor_local/rosem/config"},
         {"type": "path", "url": "vendor_local/rosem/container"},
-        {"type": "path", "url": "vendor_local/rosem/environment"},
         {"type": "path", "url": "vendor_local/rosem/event-manager"},
         {"type": "path", "url": "vendor_local/rosem/hasher"},
         {"type": "path", "url": "vendor_local/rosem/http-factory"},

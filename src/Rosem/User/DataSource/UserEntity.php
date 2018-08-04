@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\User\Database\Entity;
+namespace Rosem\User\DataSource;
 
 class UserEntity extends \Spot\Entity
 {
@@ -14,5 +14,15 @@ class UserEntity extends \Spot\Entity
             'first_name'   => ['type' => 'string', 'required' => true],
             'last_name'    => ['type' => 'string', 'required' => true],
         ];
+    }
+
+    public function getFirstName(): string
+    {
+        return $this->get('first_name');
+    }
+
+    public function getLastName(): string
+    {
+        return $this->get('last_name');
     }
 }

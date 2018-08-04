@@ -54,7 +54,4 @@ return [
         'password'         => getenv('ADMIN_PASSWORD', 'admin'),
         'session_lifetime' => getenv('ADMIN_SESSION_LIFETIME', 3000),
     ],
-    'blog'       => [
-        'uri' => 'blog',
-    ],
 ];

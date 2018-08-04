@@ -8,6 +8,7 @@ use Psrnext\GraphQL\{
     GraphInterface, ObjectTypeInterface, QueryInterface
 };
 use Rosem\Access\GraphQL\Mutation\UpdateUserMutation;
+use Rosem\Access\GraphQL\Query\LoginQuery;
 use Rosem\Access\GraphQL\Query\UsersQuery;
 use Rosem\Access\GraphQL\Type\{
     UserRoleType, UserType
@@ -15,27 +16,30 @@ use Rosem\Access\GraphQL\Type\{
 
 class AccessServiceProvider implements ServiceProviderInterface
 {
-    public function getFactories() : array
+    public function getFactories(): array
     {
         return [
-            UserType::class     => function (): ObjectTypeInterface {
-                return new UserType;
+            UserType::class => function (): ObjectTypeInterface {
+                return new UserType();
             },
             UserRoleType::class => function (): ObjectTypeInterface {
-                return new UserRoleType;
+                return new UserRoleType();
             },
         ];
     }
 
-    public function getExtensions() : array
+    public function getExtensions(): array
     {
         return [
             GraphInterface::class => function (ContainerInterface $container, GraphInterface $graph) {
-                $graph->schema()->query('users', function (): QueryInterface {
-                    return new UsersQuery;
+                $graph->getSchema('default')->query('login', function (): QueryInterface {
+                    return new LoginQuery();
                 });
-                $graph->schema()->mutation('updateUser', function (): QueryInterface {
-                    return new UpdateUserMutation;
+                $graph->getSchema('default')->query('users', function (): QueryInterface {
+                    return new UsersQuery();
+                });
+                $graph->getSchema('default')->mutation('updateUser', function (): QueryInterface {
+                    return new UpdateUserMutation();
                 });
             },
         ];

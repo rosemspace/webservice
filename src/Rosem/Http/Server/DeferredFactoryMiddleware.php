@@ -1,31 +1,37 @@
 <?php
+declare(strict_types=1);
 
 namespace Rosem\Http\Server;
 
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
+use UnexpectedValueException;
 use function is_callable;
 use function is_string;
 
-class LazyFactoryMiddleware extends AbstractLazyMiddleware
+class DeferredFactoryMiddleware extends AbstractLazyMiddleware
 {
     /**
      * LazyFactoryMiddleware constructor.
      *
      * @param ContainerInterface $container
      * @param callable           $middleware
-     * @param array              $options
+     *
+     * @throws InvalidArgumentException
      */
-    public function __construct(ContainerInterface $container, $middleware, array $options = [])
+    public function __construct(ContainerInterface $container, $middleware)
     {
         if (!is_callable($middleware)) {
             throw new InvalidArgumentException('Middleware factory should be callable.');
         }
 
-        parent::__construct($container, $middleware, $options);
+        parent::__construct($container, $middleware);
     }
 
+    /**
+     * @throws UnexpectedValueException
+     */
     protected function initialize() : void
     {
         $middlewareFactory = $this->middleware;
@@ -37,7 +43,7 @@ class LazyFactoryMiddleware extends AbstractLazyMiddleware
         $this->middleware = $middlewareFactory($this->container);
 
         if (!($this->middleware instanceof MiddlewareInterface)) {
-            throw new InvalidArgumentException('The callable should return an object that implement "' .
+            throw new UnexpectedValueException('The callable should return an object that implement "' .
                 MiddlewareInterface::class . '" interface');
         }
     }

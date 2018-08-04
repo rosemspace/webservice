@@ -18,7 +18,7 @@ class Graph implements GraphInterface
         $this->schemas[$name] = $schema;
     }
 
-    public function schema(string $name = 'default'): SchemaInterface
+    public function getSchema(string $name = 'default'): SchemaInterface
     {
         return $this->schemas[$name];
     }

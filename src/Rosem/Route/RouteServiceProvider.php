@@ -5,7 +5,7 @@ namespace Rosem\Route;
 use Psr\Container\ContainerInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\Http\Server\MiddlewareQueueInterface;
+use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
 use Psrnext\Route\RouteCollectorInterface;
 use Psrnext\Route\RouteDispatcherInterface;
 use Rosem\Route\DataGenerator\MarkBasedDataGenerator;
@@ -42,10 +42,10 @@ class RouteServiceProvider implements ServiceProviderInterface
         return [
             MiddlewareQueueInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareQueueInterface $middlewareDispatcher
+                MiddlewareQueueInterface $middlewareQueue
             ) {
-                $middlewareDispatcher->use($container->get(RouteMiddleware::class));
-                $middlewareDispatcher->use($container->get(HandleRequestMiddleware::class));
+                $middlewareQueue->add(RouteMiddleware::class);
+                $middlewareQueue->add(HandleRequestMiddleware::class);
             },
         ];
     }
@@ -54,11 +54,12 @@ class RouteServiceProvider implements ServiceProviderInterface
      * @param ContainerInterface $container
      *
      * @return RouteCollectorInterface
+     * @throws \InvalidArgumentException
      * @throws \Psr\Container\ContainerExceptionInterface
      */
     public function createRouteCollector(ContainerInterface $container): RouteCollectorInterface
     {
-        return new RouteCollector(new RouteCompiler(new RouteParser()), new MarkBasedDataGenerator());
+        return new Collector(new Compiler(new Parser()), new MarkBasedDataGenerator());
     }
 
     /**
@@ -69,7 +70,14 @@ class RouteServiceProvider implements ServiceProviderInterface
      */
     public function createRouteDispatcher(ContainerInterface $container): RouteDispatcherInterface
     {
-        return new RouteDispatcher($container->get(RouteCollectorInterface::class), new MarkBasedDispatcher());
+        /** @var Collector $collector */
+        $collector = $container->get(RouteCollectorInterface::class);
+
+        return new Dispatcher(
+            $collector->getStaticRouteMap(),
+            $collector->getVariableRouteMap(),
+            new MarkBasedDispatcher()
+        );
     }
 
     public function createRouteMiddleware(ContainerInterface $container) {

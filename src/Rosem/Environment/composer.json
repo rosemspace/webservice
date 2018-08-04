@@ -1,0 +1,30 @@
+{
+  "name": "rosem/environment",
+  "type": "library",
+  "description": "Environment library",
+  "keywords": [],
+  "homepage": "https://rosemlab.github.io/environment",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "roshecode",
+      "email": "iroman.via@gmail.com",
+      "homepage": "https://rosemlab.github.io",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.2.0",
+    "psrnext/environment": "*",
+    "vlucas/phpdotenv": "^2.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Rosem\\Environment\\": ""
+    },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
+  },
+  "minimum-stability": "dev"
+}

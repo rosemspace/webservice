@@ -5,7 +5,7 @@ namespace Rosem\Authentication;
 use Psr\Container\ContainerInterface;
 use Psrnext\Container\ServiceProviderInterface;
 use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\Http\Server\MiddlewareQueueInterface;
+use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
 use Rosem\Authentication\Http\Server\{
     BasicAuthenticationMiddleware, DigestAuthenticationMiddleware
 };
@@ -69,13 +69,13 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
         return [
             MiddlewareQueueInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareQueueInterface $app
+                MiddlewareQueueInterface $middlewareQueue
             ) {
-                $app->use($container->get(
+                $middlewareQueue->add(
                     $container->get(static::CONFIG_TYPE) === 'basic'
                         ? BasicAuthenticationMiddleware::class
                         : DigestAuthenticationMiddleware::class
-                ));
+                );
             },
         ];
     }

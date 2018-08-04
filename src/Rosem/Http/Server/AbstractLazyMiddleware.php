@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Rosem\Http\Server;
 
@@ -23,21 +24,15 @@ abstract class AbstractLazyMiddleware implements MiddlewareInterface
     protected $middleware;
 
     /**
-     * @var array
-     */
-    protected $options;
-
-    /**
      * LazyMiddleware constructor.
      *
      * @param ContainerInterface $container
      * @param mixed              $middleware
      */
-    public function __construct(ContainerInterface $container, $middleware, array $options = [])
+    public function __construct(ContainerInterface $container, $middleware)
     {
         $this->container = $container;
         $this->middleware = $middleware;
-        $this->options = $options;
     }
 
     abstract protected function initialize(): void;
@@ -51,15 +46,10 @@ abstract class AbstractLazyMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $delegate): ResponseInterface
     {
-        return $this->__call('process', [$request, $delegate]);
-    }
-
-    public function __call($name, $arguments)
-    {
         if (!($this->middleware instanceof MiddlewareInterface)) {
             $this->initialize();
         }
 
-        return $this->middleware->$name(...$arguments);
+        return $this->middleware->process($request, $delegate);
     }
 }

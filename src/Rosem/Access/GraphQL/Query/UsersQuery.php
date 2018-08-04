@@ -3,6 +3,7 @@
 namespace Rosem\Access\GraphQL\Query;
 
 use GraphQL\Type\Definition\ResolveInfo;
+use Psr\Container\ContainerInterface;
 use Psrnext\GraphQL\{
     AbstractQuery, TypeRegistryInterface
 };
@@ -32,7 +33,14 @@ class UsersQuery extends AbstractQuery
 
     public function resolve($source, $args, $container, ResolveInfo $info)
     {
+        /** @var ContainerInterface $container $users */
         $users = $container->get(\Spot\Locator::class)->mapper(\Rosem\User\Database\Entity\UserEntity::class)->all();
+
+//        foreach ($users as $user) {
+//            var_dump($user->getFirstName());
+//        }
+
+//        var_dump($users[0]->getFirstName()); die;
 
         return $users;
     }

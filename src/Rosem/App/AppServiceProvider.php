@@ -10,7 +10,7 @@ use Psrnext\Config\ConfigInterface;
 use Psrnext\Http\Factory\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
-use Psrnext\Http\Server\MiddlewareQueueInterface;
+use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
 use Rosem\App\Http\Server\{
     HomeRequestHandler, InternalServerErrorRequestHandler
 };
@@ -58,7 +58,8 @@ class AppServiceProvider implements ServiceProviderInterface
                 return '';
             },
             'app.environment' => function () {
-                return EnvironmentMode::PRODUCTION;
+//                return EnvironmentMode::PRODUCTION;
+                return EnvironmentMode::DEVELOPMENT;
             },
             AppFactoryInterface::class      => function () {
                 return new AppFactory;
