@@ -3,11 +3,11 @@
 namespace Rosem\Route;
 
 use Psr\Container\ContainerInterface;
-use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\Http\Factory\ResponseFactoryInterface;
+use Rosem\Psr\Container\ServiceProviderInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
-use Psrnext\Route\RouteCollectorInterface;
-use Psrnext\Route\RouteDispatcherInterface;
+use Rosem\Psr\Route\RouteCollectorInterface;
+use Rosem\Psr\Route\RouteDispatcherInterface;
 use Rosem\Route\DataGenerator\MarkBasedDataGenerator;
 use Rosem\Route\Dispatcher\MarkBasedDispatcher;
 use Rosem\Route\Http\Server\{

@@ -2,8 +2,8 @@
 
 namespace Rosem\User\Database\Migration;
 
-use Psrnext\Database\MigrationInterface;
-use Psrnext\Database\SchemaInterface;
+use Rosem\Psr\Database\MigrationInterface;
+use Rosem\Psr\Database\SchemaInterface;
 
 final class CreateUserSchemaMigration implements MigrationInterface
 {

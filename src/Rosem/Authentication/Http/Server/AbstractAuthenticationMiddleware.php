@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psrnext\Http\Factory\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Authentication\AuthenticationInterface;
 
 abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, AuthenticationInterface

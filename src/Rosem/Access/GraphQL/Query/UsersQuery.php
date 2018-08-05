@@ -4,7 +4,7 @@ namespace Rosem\Access\GraphQL\Query;
 
 use GraphQL\Type\Definition\ResolveInfo;
 use Psr\Container\ContainerInterface;
-use Psrnext\GraphQL\{
+use Rosem\Psr\GraphQL\{
     AbstractQuery, TypeRegistryInterface
 };
 use Rosem\Access\GraphQL\Type\UserType;

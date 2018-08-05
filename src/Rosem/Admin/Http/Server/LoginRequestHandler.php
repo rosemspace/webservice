@@ -7,9 +7,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
-use Psrnext\Config\ConfigInterface;
-use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\Template\TemplateRendererInterface;
+use Rosem\Psr\Config\ConfigInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Rosem\Psr\Template\TemplateRendererInterface;
 use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
 
 class LoginRequestHandler implements RequestHandlerInterface

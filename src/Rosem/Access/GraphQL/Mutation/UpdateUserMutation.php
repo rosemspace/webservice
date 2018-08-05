@@ -3,7 +3,7 @@
 namespace Rosem\Access\GraphQL\Mutation;
 
 use GraphQL\Type\Definition\ResolveInfo;
-use Psrnext\GraphQL\{
+use Rosem\Psr\GraphQL\{
     AbstractQuery, TypeRegistryInterface
 };
 use Rosem\Access\GraphQL\Type\UserType;

@@ -5,7 +5,7 @@ namespace Rosem\Authentication\Http\Server;
 use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
 };
-use Psrnext\Http\Factory\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use function call_user_func;
 
 class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware

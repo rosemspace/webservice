@@ -2,7 +2,7 @@
 
 namespace Rosem\Access\GraphQL\Type;
 
-use Psrnext\GraphQL\{
+use Rosem\Psr\GraphQL\{
     AbstractObjectType, TypeRegistryInterface
 };
 

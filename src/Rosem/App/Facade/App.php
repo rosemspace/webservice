@@ -2,7 +2,7 @@
 
 namespace Rosem\App\Facade;
 
-use Psrnext\App\AppInterface;
+use Rosem\Psr\App\AppInterface;
 use Rosem\Container\AbstractFacade;
 
 class App extends AbstractFacade

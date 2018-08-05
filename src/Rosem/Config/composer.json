@@ -1,0 +1,25 @@
+{
+    "name": "rosem/config",
+    "description": "Configuration library",
+    "license": "MIT",
+    "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "ma1oy",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://rosemlab.github.io/config",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0",
+        "rosem/psr-config": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Config\\": "src"
+        }
+    }
+}

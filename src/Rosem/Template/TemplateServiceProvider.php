@@ -3,8 +3,8 @@
 namespace Rosem\Template;
 
 use Psr\Container\ContainerInterface;
-use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\Template\TemplateRendererInterface;
+use Rosem\Psr\Container\ServiceProviderInterface;
+use Rosem\Psr\Template\TemplateRendererInterface;
 
 class TemplateServiceProvider implements ServiceProviderInterface
 {

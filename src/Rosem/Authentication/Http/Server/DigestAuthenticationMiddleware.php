@@ -7,7 +7,7 @@ use Psr\Http\Message\{
 };
 use function call_user_func;
 use function count;
-use Psrnext\Http\Factory\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use function strlen;
 
 /** @noinspection LongInheritanceChainInspection */

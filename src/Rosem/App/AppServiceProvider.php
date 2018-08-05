@@ -3,11 +3,11 @@
 namespace Rosem\App;
 
 use Psr\Container\ContainerInterface;
-use Psrnext\{
+use Rosem\Psr\{
     App\AppFactoryInterface, Container\ServiceProviderInterface, Environment\EnvironmentInterface, Environment\EnvironmentMode, Route\RouteCollectorInterface, Template\TemplateRendererInterface
 };
-use Psrnext\Config\ConfigInterface;
-use Psrnext\Http\Factory\{
+use Rosem\Psr\Config\ConfigInterface;
+use Psr\Http\Message\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
 use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
@@ -15,7 +15,7 @@ use Rosem\App\Http\Server\{
     HomeRequestHandler, InternalServerErrorRequestHandler
 };
 use Rosem\Environment\Environment;
-use Rosem\Http\Factory\{
+use Rosem\Http\Message\{
     ResponseFactory, ServerRequestFactory
 };
 use function dirname;

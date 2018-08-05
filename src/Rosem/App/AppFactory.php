@@ -2,7 +2,7 @@
 
 namespace Rosem\App;
 
-use Psrnext\App\{
+use Rosem\Psr\App\{
     AppFactoryInterface, AppInterface
 };
 

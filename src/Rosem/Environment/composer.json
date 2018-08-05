@@ -14,8 +14,8 @@
     }
   ],
   "require": {
-    "php": ">=7.2.0",
-    "psrnext/environment": "*",
+    "php": ">=7.3.0",
+    "rosem/psr-environment": "*",
     "vlucas/phpdotenv": "^2.5"
   },
   "autoload": {

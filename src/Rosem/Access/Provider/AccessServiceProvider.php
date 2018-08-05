@@ -3,8 +3,8 @@
 namespace Rosem\Access\Provider;
 
 use Psr\Container\ContainerInterface;
-use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\GraphQL\{
+use Rosem\Psr\Container\ServiceProviderInterface;
+use Rosem\Psr\GraphQL\{
     GraphInterface, ObjectTypeInterface, QueryInterface
 };
 use Rosem\Access\GraphQL\Mutation\UpdateUserMutation;

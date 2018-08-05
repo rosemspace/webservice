@@ -9,7 +9,7 @@ use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
 };
 use Psr\Http\Server\RequestHandlerInterface;
-use Psrnext\Http\Factory\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use UnexpectedValueException;
 use function call_user_func_array;
 use function is_array;

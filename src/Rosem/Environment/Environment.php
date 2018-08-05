@@ -3,7 +3,7 @@
 namespace Rosem\Environment;
 
 use Dotenv\Dotenv;
-use Psrnext\Environment\{
+use Rosem\Psr\Environment\{
     AbstractEnvironment, EnvironmentMode
 };
 

@@ -3,8 +3,8 @@
 namespace Rosem\Database;
 
 use Psr\Container\ContainerInterface;
-use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\Environment\EnvironmentInterface;
+use Rosem\Psr\Container\ServiceProviderInterface;
+use Rosem\Psr\Environment\EnvironmentInterface;
 
 class DatabaseServiceProvider implements ServiceProviderInterface
 {

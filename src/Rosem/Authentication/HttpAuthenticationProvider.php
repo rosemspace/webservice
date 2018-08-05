@@ -3,8 +3,8 @@
 namespace Rosem\Authentication;
 
 use Psr\Container\ContainerInterface;
-use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\Http\Factory\ResponseFactoryInterface;
+use Rosem\Psr\Container\ServiceProviderInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
 use Rosem\Authentication\Http\Server\{
     BasicAuthenticationMiddleware, DigestAuthenticationMiddleware

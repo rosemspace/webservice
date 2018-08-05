@@ -3,9 +3,9 @@
 namespace Rosem\Template;
 
 use League\Plates\Engine;
-use Psrnext\Template\RenderingExceptionInterface;
-use Psrnext\Template\TemplateExceptionInterface;
-use Psrnext\Template\TemplateRendererInterface;
+use Rosem\Psr\Template\RenderingExceptionInterface;
+use Rosem\Psr\Template\TemplateExceptionInterface;
+use Rosem\Psr\Template\TemplateRendererInterface;
 
 class TemplateRenderer implements TemplateRendererInterface
 {

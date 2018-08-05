@@ -4,9 +4,9 @@ namespace Rosem\Authentication;
 
 use Psr\Container\ContainerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
-use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\Template\TemplateRendererInterface;
+use Rosem\Psr\Container\ServiceProviderInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Rosem\Psr\Template\TemplateRendererInterface;
 use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
 use Rosem\Http\Server\DeferredFactoryMiddleware;
 use Rosem\Psr\Http\Server\MiddlewareQueueInterface;

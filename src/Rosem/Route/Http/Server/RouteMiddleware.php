@@ -9,8 +9,8 @@ use Psr\Http\Message\{
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
-use Psrnext\Http\Factory\ResponseFactoryInterface;
-use Psrnext\Route\RouteDispatcherInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Rosem\Psr\Route\RouteDispatcherInterface;
 
 class RouteMiddleware implements MiddlewareInterface
 {

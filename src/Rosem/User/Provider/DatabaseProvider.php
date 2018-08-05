@@ -2,7 +2,7 @@
 
 namespace Rosem\User\Provider;
 
-use Psrnext\Database\DatabaseProviderInterface;
+use Rosem\Psr\Database\DatabaseProviderInterface;
 use Rosem\User\Database\Migration\CreateUserSchemaMigration;
 
 class DatabaseProvider implements DatabaseProviderInterface

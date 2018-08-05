@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
-use Psrnext\Http\Factory\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use function call_user_func;
 
 class AuthenticationMiddleware extends AbstractAuthenticationMiddleware

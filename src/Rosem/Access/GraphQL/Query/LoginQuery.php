@@ -3,8 +3,8 @@
 namespace Rosem\Access\GraphQL\Query;
 
 use GraphQL\Type\Definition\ResolveInfo;
-use Psrnext\GraphQL\AbstractQuery;
-use Psrnext\GraphQL\TypeRegistryInterface;
+use Rosem\Psr\GraphQL\AbstractQuery;
+use Rosem\Psr\GraphQL\TypeRegistryInterface;
 use Rosem\Access\GraphQL\Type\UserType;
 
 class LoginQuery extends AbstractQuery

@@ -10,9 +10,9 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Psr\Container\ContainerInterface;
-use Psrnext\Config\ConfigInterface;
-use Psrnext\Container\ServiceProviderInterface;
-use Psrnext\Environment\EnvironmentInterface;
+use Rosem\Psr\Config\ConfigInterface;
+use Rosem\Psr\Container\ServiceProviderInterface;
+use Rosem\Psr\Environment\EnvironmentInterface;
 
 class ORMServiceProvider implements ServiceProviderInterface
 {

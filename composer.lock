@@ -4,39 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "185aeafd4530a492dbace9fcf7776da3",
+    "content-hash": "30ef5de1e6e7f8865c3cc47db539e898",
     "packages": [
-        {
-            "name": "container-interop/service-provider",
-            "version": "v0.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/container-interop/service-provider.git",
-                "reference": "4969b9e49460690b7430b3f1a87cab07be61418a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/container-interop/service-provider/zipball/4969b9e49460690b7430b3f1a87cab07be61418a",
-                "reference": "4969b9e49460690b7430b3f1a87cab07be61418a",
-                "shasum": ""
-            },
-            "require": {
-                "psr/container": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Interop\\Container\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Promoting container interoperability through standard service providers",
-            "homepage": "https://github.com/container-interop/service-provider",
-            "time": "2017-09-20T14:13:36+00:00"
-        },
         {
             "name": "danielstjules/stringy",
             "version": "3.1.0",
@@ -1373,6 +1342,58 @@
             "time": "2017-02-14T16:28:37+00:00"
         },
         {
+            "name": "psr/http-factory",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-factory.git",
+                "reference": "378bfe27931ecc54ff824a20d6f6bfc303bbd04c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/378bfe27931ecc54ff824a20d6f6bfc303bbd04c",
+                "reference": "378bfe27931ecc54ff824a20d6f6bfc303bbd04c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0",
+                "psr/http-message": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interfaces for PSR-7 HTTP message factories",
+            "keywords": [
+                "factory",
+                "http",
+                "message",
+                "psr",
+                "psr-17",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "time": "2018-07-30T21:54:04+00:00"
+        },
+        {
             "name": "psr/http-message",
             "version": "1.0.1",
             "source": {
@@ -1643,378 +1664,6 @@
             "time": "2018-01-27T16:01:43+00:00"
         },
         {
-            "name": "psrnext/app",
-            "version": "v0.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/psrnext/app.git",
-                "reference": "630e18535b3b5c8240dabc5e588cbb4d623d77c9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/app/zipball/630e18535b3b5c8240dabc5e588cbb4d623d77c9",
-                "reference": "630e18535b3b5c8240dabc5e588cbb4d623d77c9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psr/container": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psrnext\\App\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Application standard",
-            "time": "2018-04-25T19:45:17+00:00"
-        },
-        {
-            "name": "psrnext/config",
-            "version": "9999999-dev",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/psrnext/config",
-                "reference": "2418b4c1e1a00876d0c731ac2d584751177d228d",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psrnext\\Config\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://psrnext.github.io/config",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Configuration standards"
-        },
-        {
-            "name": "psrnext/environment",
-            "version": "9999999-dev",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/psrnext/environment",
-                "reference": "9df0161ca3d3f854b5ad9364d9962193e7fb8702",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psrnext\\Environment\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://psrnext.github.io/environment",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Environment standards"
-        },
-        {
-            "name": "psrnext/event-manager",
-            "version": "v0.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/psrnext/event-manager.git",
-                "reference": "31869143467b5799df675376719f2850f425f635"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/event-manager/zipball/31869143467b5799df675376719f2850f425f635",
-                "reference": "31869143467b5799df675376719f2850f425f635",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psrnext\\EventManager\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Events management standard",
-            "time": "2018-02-07T19:25:55+00:00"
-        },
-        {
-            "name": "psrnext/graphql",
-            "version": "9999999-dev",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/psrnext/graphql",
-                "reference": "929004119f7f692d0a6f0d202e53fca71e890348",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psr/container": "~1.0",
-                "webonyx/graphql-php": "^0.11"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psrnext\\GraphQL\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://psrnext.github.io/graphql",
-                    "role": "Developer"
-                }
-            ],
-            "description": "GraphQL standards"
-        },
-        {
-            "name": "psrnext/hasher",
-            "version": "v0.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/psrnext/hash.git",
-                "reference": "8894da8cc97308ef3d23bd62b4ac953f953b524d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/hash/zipball/8894da8cc97308ef3d23bd62b4ac953f953b524d",
-                "reference": "8894da8cc97308ef3d23bd62b4ac953f953b524d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psrnext\\Hash\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Hash generation and verification standard",
-            "time": "2018-02-08T21:17:25+00:00"
-        },
-        {
-            "name": "psrnext/http-factory",
-            "version": "v0.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/psrnext/http-factory.git",
-                "reference": "fceef839e96040b18f6b606f5943f537a7192e9e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/http-factory/zipball/fceef839e96040b18f6b606f5943f537a7192e9e",
-                "reference": "fceef839e96040b18f6b606f5943f537a7192e9e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psr/http-message": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psrnext\\Http\\Factory\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "HTTP factories standard",
-            "time": "2018-02-28T20:35:54+00:00"
-        },
-        {
-            "name": "psrnext/route",
-            "version": "v0.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/psrnext/route.git",
-                "reference": "6df6789a940bcf8884991934408a21a9949fe5f5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/route/zipball/6df6789a940bcf8884991934408a21a9949fe5f5",
-                "reference": "6df6789a940bcf8884991934408a21a9949fe5f5",
-                "shasum": ""
-            },
-            "require": {
-                "fig/http-message-util": "~1.1",
-                "php": "~7.2"
-            },
-            "suggest": {
-                "psr/http-message": "~1.0",
-                "psr/http-server-handler": "~1.0",
-                "psr/http-server-middleware": "~1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psrnext\\Route\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Roman Shevchenko",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosemlab.github.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Route management standard",
-            "homepage": "https://psrnext.github.io/route",
-            "time": "2018-06-11T21:19:01+00:00"
-        },
-        {
-            "name": "psrnext/service-provider",
-            "version": "v0.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/psrnext/service-provider.git",
-                "reference": "5bddd6f17130dd869962d0478ea72f7b56871baf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/service-provider/zipball/5bddd6f17130dd869962d0478ea72f7b56871baf",
-                "reference": "5bddd6f17130dd869962d0478ea72f7b56871baf",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psr/container": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psrnext\\Container\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Service provider standard",
-            "time": "2018-02-05T21:50:56+00:00"
-        },
-        {
-            "name": "psrnext/template",
-            "version": "v0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/psrnext/template.git",
-                "reference": "16714ce0bd08bac25c143fe2f29da51ca8ee9a0e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/psrnext/template/zipball/16714ce0bd08bac25c143fe2f29da51ca8ee9a0e",
-                "reference": "16714ce0bd08bac25c143fe2f29da51ca8ee9a0e",
-                "shasum": ""
-            },
-            "require": {
-                "php": "~7.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Psrnext\\Template\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "roshecode",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosemlab.github.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Template rendering standard",
-            "homepage": "https://psrnext.github.io/template",
-            "time": "2018-06-10T12:34:09+00:00"
-        },
-        {
             "name": "roave/security-advisories",
             "version": "dev-master",
             "source": {
@@ -2255,287 +1904,6 @@
                 "phinx"
             ],
             "time": "2017-12-23T06:48:51+00:00"
-        },
-        {
-            "name": "rosem/config",
-            "version": "9999999-dev",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/rosem/config",
-                "reference": "958789153f43ffcbe08b621d27336d9936d82a5d",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psrnext/config": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rosem\\Config\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosemlab.github.io/config",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Configuration library"
-        },
-        {
-            "name": "rosem/container",
-            "version": "9999999-dev",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/rosem/container",
-                "reference": "aae1bdbb35938f7cbff1f8d7973e71d203d0945a",
-                "shasum": null
-            },
-            "require": {
-                "container-interop/service-provider": "^0.4.0",
-                "php": ">=7.2.0",
-                "psr/container": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rosem\\Container\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosemlab.github.io/container",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Dependency injection container library"
-        },
-        {
-            "name": "rosem/event-manager",
-            "version": "9999999-dev",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/rosem/event-manager",
-                "reference": "fe9a3b8f0408a14dbed0027496c87d4d53d12153",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psrnext/event-manager": "^0.0.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rosem\\EventManager\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Event management library"
-        },
-        {
-            "name": "rosem/graphql",
-            "version": "9999999-dev",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/rosem/graphql",
-                "reference": "b884e845d5bd0ff0abdfaf9435d69f485b5b791a",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psrnext/graphql": "*",
-                "webonyx/graphql-php": "^0.11"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rosem\\GraphQL\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "GraphQL connection library"
-        },
-        {
-            "name": "rosem/hasher",
-            "version": "9999999-dev",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/rosem/hasher",
-                "reference": "d7a6016ff9af4d6fc85d6ff24b2e3fd35db00e83",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psrnext/hasher": "^0.0.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rosem\\Hash\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Hash generation and verification library"
-        },
-        {
-            "name": "rosem/http-factory",
-            "version": "9999999-dev",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/rosem/http-factory",
-                "reference": "941fd2b25cd332159c2b325f30aa8fb378a851b7",
-                "shasum": null
-            },
-            "require": {
-                "php": ">=7.2.0",
-                "psr/container": "^1.0",
-                "psrnext/http-factory": "^0.0.2",
-                "rosem/container": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rosem\\Http\\Factory\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ma1oy",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://rosem.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Http factory library"
-        },
-        {
-            "name": "rosem/installer",
-            "version": "9999999-dev",
-            "dist": {
-                "type": "path",
-                "url": "vendor_local/rosem/installer",
-                "reference": "519d7664c0b6a6a9ee1d420933a6fdd78d1d60eb",
-                "shasum": null
-            },
-            "require": {
-                "composer-plugin-api": "^1.0"
-            },
-            "require-dev": {
-                "composer/composer": "^1.3"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "Rosem\\Installer\\ModulePlugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "Rosem\\Installer\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "rosem/route",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rosemlab/route.git",
-                "reference": "9ce0029818eea5df761bc95983f9afd775c234f4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rosemlab/route/zipball/9ce0029818eea5df761bc95983f9afd775c234f4",
-                "reference": "9ce0029818eea5df761bc95983f9afd775c234f4",
-                "shasum": ""
-            },
-            "require": {
-                "php": "~7.2",
-                "psrnext/route": "~0.4"
-            },
-            "require-dev": {
-                "kint-php/kint": "^2.2",
-                "nikic/fast-route": "^1.3",
-                "phpunit/phpunit": ">=5.4.3",
-                "squizlabs/php_codesniffer": "^2.3",
-                "symfony/routing": "^4.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Rosem\\Route\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Roman Shevchenko",
-                    "email": "iroman.via@gmail.com",
-                    "homepage": "https://roshecode.github.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "The route management package",
-            "homepage": "https://rosemlab.github.io/route",
-            "keywords": [
-                "rosem",
-                "route",
-                "router"
-            ],
-            "time": "2018-06-22T19:38:12+00:00"
         },
         {
             "name": "sabre/event",
@@ -5245,8 +4613,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "roave/security-advisories": 20,
-        "league/plates": 20,
-        "rosem/route": 20
+        "league/plates": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
