@@ -2,13 +2,13 @@
 
 namespace Rosem\Admin\Http\Server;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Rosem\Psr\Authentication\UserInterface;
 use Rosem\Psr\Config\ConfigInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Psr\Template\TemplateRendererInterface;
-use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
 
 class AdminRequestHandler implements RequestHandlerInterface
 {
@@ -53,7 +53,7 @@ class AdminRequestHandler implements RequestHandlerInterface
             $viewString = $this->view->render(
                 'admin::index',
                 [
-                    'userIdentity' => $request->getAttribute(AuthenticationMiddleware::getUserIdentityAttribute()),
+                    'user' => $request->getAttribute(UserInterface::class),
                 ]
             );
 

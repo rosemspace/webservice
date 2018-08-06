@@ -3,9 +3,10 @@
 namespace Rosem\Authentication\Http\Server;
 
 use Psr\Http\Message\{
-    ResponseInterface, ServerRequestInterface
+    ResponseFactoryInterface, ResponseInterface, ServerRequestInterface
 };
-use Psr\Http\Message\ResponseFactoryInterface;
+use Rosem\Authentication\User;
+use Rosem\Psr\Authentication\UserInterface;
 use function call_user_func;
 
 class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
@@ -16,11 +17,6 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
     private const AUTHORIZATION_HEADER_PREFIX = 'Basic';
 
     /**
-     * @var string|null
-     */
-    protected static $realmAttribute = 'auth.realm';
-
-    /**
      * @var string
      */
     protected $realm;
@@ -29,51 +25,21 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
      * Define de users.
      *
      * @param ResponseFactoryInterface $responseFactory
-     * @param callable                 $userPasswordGetter function (string $username) {...}
+     * @param callable                 $userPasswordResolver
+     * @param callable|null            $userRolesResolver
+     * @param callable|null            $userDetailsResolver
      * @param string                   $realm
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        callable $userPasswordGetter,
+        callable $userPasswordResolver,
+        ?callable $userRolesResolver = null,
+        ?callable $userDetailsResolver = null,
         string $realm = 'Login'
     ) {
-        parent::__construct($responseFactory, $userPasswordGetter);
+        parent::__construct($responseFactory, $userPasswordResolver, $userRolesResolver, $userDetailsResolver);
 
         $this->realm = $realm;
-    }
-
-    /**
-     * Set the name of the realm attribute.
-     *
-     * @param string $attribute
-     *
-     * @throws \LogicException
-     */
-    public static function setRealmAttribute(string $attribute): void
-    {
-        self::setAttribute('realmAttribute', $attribute);
-    }
-
-    /**
-     * Get name of the realm attribute.
-     *
-     * @return string
-     */
-    public static function getRealmAttribute(): string
-    {
-        return static::$realmAttribute;
-    }
-
-    /**
-     * Get the realm value.
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return string
-     */
-    public function getRealm(ServerRequestInterface $request): string
-    {
-        return $request->getAttribute(static::$realmAttribute) ?: $this->realm;
     }
 
     /**
@@ -81,9 +47,9 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
      *
      * @param ServerRequestInterface $request
      *
-     * @return string|null
+     * @return UserInterface|null
      */
-    public function authenticate(ServerRequestInterface $request): ?string
+    public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
         $authHeader = $request->getHeader('Authorization');
 
@@ -99,30 +65,32 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
             return null;
         }
 
-        [$username, $enteredPassword] = explode(':', base64_decode($match['credentials']), 2);
-        $password = call_user_func($this->getPassword, $username, $request);
+        [$identity, $enteredPassword] = explode(':', base64_decode($match['credentials']), 2);
+        $password = call_user_func($this->userPasswordResolver, $identity, $request);
 
         if (!$password || $password !== $enteredPassword) {
             return null;
         }
 
-        return $username;
+        return new User(
+            $identity,
+            call_user_func($this->userRolesResolver, $identity),
+            call_user_func($this->userDetailsResolver, $identity)
+        );
     }
 
     /**
      * Create unauthorized response.
      *
-     * @param ServerRequestInterface $request
-     *
      * @return ResponseInterface
      * @throws \InvalidArgumentException
      */
-    public function createUnauthorizedResponse(ServerRequestInterface $request): ResponseInterface
+    public function createUnauthorizedResponse(): ResponseInterface
     {
         return $this->responseFactory->createResponse(401)
             ->withHeader(
                 'WWW-Authenticate',
-                self::AUTHORIZATION_HEADER_PREFIX . ' realm="' . $this->getRealm($request) . '"'
+                self::AUTHORIZATION_HEADER_PREFIX . ' realm="' . $this->realm . '"'
             );
     }
 }

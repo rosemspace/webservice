@@ -3,14 +3,13 @@
 namespace Rosem\Admin\Http\Server;
 
 use Fig\Http\Message\StatusCodeInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use PSR7Sessions\Storageless\Http\SessionMiddleware;
+use Rosem\Psr\Authentication\UserInterface;
 use Rosem\Psr\Config\ConfigInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Psr\Template\TemplateRendererInterface;
-use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
 
 class LoginRequestHandler implements RequestHandlerInterface
 {
@@ -48,8 +47,7 @@ class LoginRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-//        if ($request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE)->get('userIdentity')) {
-        if ($request->getAttribute(AuthenticationMiddleware::getUserIdentityAttribute())) {
+        if ($request->getAttribute(UserInterface::class)) {
             return $this->responseFactory->createResponse(StatusCodeInterface::STATUS_FOUND)
                 ->withHeader('Location', '/admin');
         }

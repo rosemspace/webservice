@@ -1,11 +1,11 @@
 <?php
 /**
- * @var callable|object $v
+ * @var callable|object                     $v
  * @var $metaTitlePrefix
  * @var $metaTitle
  * @var $metaTitleSuffix
  * @var $appName
- * @var $userIdentity
+ * @var \Rosem\Psr\Authentication\Interface $user
  */
 ?>
 <!doctype html>
@@ -19,6 +19,6 @@
     <title><?php echo $v("$metaTitlePrefix$metaTitle$metaTitleSuffix") ?></title>
 </head>
 <body>
-<h1>Hello, <?php echo $v($userIdentity) ?>!</h1>
+<h1>Hello, <?php echo $v($user->getIdentity()) ?>!</h1>
 </body>
 </html>

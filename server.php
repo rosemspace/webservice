@@ -1,8 +1,8 @@
 <?php
 /**
- * Rosem - Yet another PHP Framework.
+ * Rosem - Web PHP Framework.
  *
- * @author   Roman Shevchenko <iroman.via@gmail.com>
+ * @author Roman Shevchenko <iroman.via@gmail.com>
  */
 
 if (PHP_SAPI !== 'cli-server') {

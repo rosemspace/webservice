@@ -4,6 +4,7 @@ namespace Rosem\Admin;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Rosem\Authentication\AuthenticationProvider;
 use Rosem\Psr\Template\TemplateRendererInterface;
 use Rosem\Admin\Http\Server\AdminRequestHandler;
 use Rosem\Admin\Http\Server\LoginRequestHandler;
@@ -31,11 +32,20 @@ class AdminServiceProvider implements ServiceProviderInterface
             'admin.meta.title_suffix' => function () {
                 return '';
             },
-            'admin.uri' => function () {
+            'admin.uri.index' => function () {
                 return '/admin';
             },
-            'admin.loginUri' => function (ContainerInterface $container) {
-                return $container->get('admin.uri') . '/login';
+            'admin.uri.login' => function (ContainerInterface $container) {
+                return '/' . trim($container->get('admin.uri.index'), '/') . '/login';
+            },
+            AuthenticationMiddleware::class . '.admin' => function (ContainerInterface $container) {
+                return new AuthenticationMiddleware(
+                    $container->get(ResponseFactoryInterface::class),
+                    $container->get(AuthenticationProvider::CONFIG_USER_RESOLVER_PASSWORD),
+                    $container->get(AuthenticationProvider::CONFIG_USER_RESOLVER_ROLES),
+                    $container->get(AuthenticationProvider::CONFIG_USER_RESOLVER_DETAILS),
+                    '/' . trim($container->get('admin.uri.login'), '/')
+                );
             },
             AdminRequestHandler::class => function (ContainerInterface $container) {
                 return new AdminRequestHandler(
@@ -66,17 +76,14 @@ class AdminServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector
             ) {
-                $adminUri = '/' . trim($container->get('admin.uri'), '/');
-                $loginUri = '/' . trim($container->get('admin.loginUri'), '/');
-                $authenticationOptions = [
-                    AuthenticationMiddleware::getLoginUriAttribute() => $loginUri,
-                ];
+                $adminUri = '/' . trim($container->get('admin.uri.index'), '/');
+                $loginUri = '/' . trim($container->get('admin.uri.login'), '/');
                 $routeCollector->get($loginUri, LoginRequestHandler::class)
-                    ->addMiddleware(AuthenticationMiddleware::class, $authenticationOptions);
+                    ->addMiddleware(AuthenticationMiddleware::class . '.admin');
                 $routeCollector->post($loginUri, LoginRequestHandler::class)
-                    ->addMiddleware(AuthenticationMiddleware::class, $authenticationOptions);
+                    ->addMiddleware(AuthenticationMiddleware::class . '.admin');
                 $routeCollector->get($adminUri . '{adminRelativePath:.*}', AdminRequestHandler::class)
-                    ->addMiddleware(AuthenticationMiddleware::class, $authenticationOptions);
+                    ->addMiddleware(AuthenticationMiddleware::class . '.admin');
             },
             TemplateRendererInterface::class => function (
                 ContainerInterface $container,

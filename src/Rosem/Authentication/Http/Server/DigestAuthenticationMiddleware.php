@@ -5,16 +5,16 @@ namespace Rosem\Authentication\Http\Server;
 use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
 };
+use Psr\Http\Message\ResponseFactoryInterface;
+use Rosem\Authentication\User;
+use Rosem\Psr\Authentication\UserInterface;
 use function call_user_func;
 use function count;
-use Psr\Http\Message\ResponseFactoryInterface;
 use function strlen;
 
 /** @noinspection LongInheritanceChainInspection */
 class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
 {
-    public const PARAM_NONCE = 'auth.nonce';
-
     /**
      * Authorization header prefix.
      */
@@ -28,58 +28,21 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
     ];
 
     /**
-     * @var string|null
-     */
-    protected static $nonceAttribute = 'auth.nonce';
-
-    /**
      * @var string|null The nonce value
      */
     protected $nonce;
 
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        callable $userPasswordGetter,
+        callable $userPasswordResolver,
+        ?callable $userRolesResolver = null,
+        ?callable $userDetailsResolver = null,
         string $realm = 'Login',
         string $nonce = ''
     ) {
-        parent::__construct($responseFactory, $userPasswordGetter, $realm);
+        parent::__construct($responseFactory, $userPasswordResolver, $userRolesResolver, $userDetailsResolver, $realm);
 
         $this->nonce = $nonce ?: uniqid('', true);
-    }
-
-    /**
-     * Set the name of the nonce attribute.
-     *
-     * @param string $attribute
-     *
-     * @throws \LogicException
-     */
-    public static function setNonceAttribute(string $attribute): void
-    {
-        self::setAttribute('realmAttribute', $attribute);
-    }
-
-    /**
-     * Get name of the nonce attribute.
-     *
-     * @return string
-     */
-    public static function getNonceAttribute(): string
-    {
-        return static::$realmAttribute;
-    }
-
-    /**
-     * Get the nonce value.
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return string
-     */
-    public function getNonce(ServerRequestInterface $request): string
-    {
-        return $request->getAttribute(self::PARAM_NONCE) ?: $this->nonce;
     }
 
     /**
@@ -87,9 +50,9 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
      *
      * @param ServerRequestInterface $request
      *
-     * @return string|null
+     * @return UserInterface|null
      */
-    public function authenticate(ServerRequestInterface $request): ?string
+    public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
         $authHeader = $request->getHeader('Authorization');
 
@@ -116,7 +79,8 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
             $authorization[$match[1]] = $match[2];
         }
 
-        $password = call_user_func($this->getPassword, $authorization['username'], $request);
+        $identity = $authorization['username'];
+        $password = call_user_func($this->userPasswordResolver, $identity, $request);
 
         if (!$password
             || $authorization['response'] !== md5(sprintf(
@@ -132,20 +96,22 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
             return null;
         }
 
-        return $authorization['username'];
+        return new User(
+            $identity,
+            call_user_func($this->userRolesResolver, $identity),
+            call_user_func($this->userDetailsResolver, $identity)
+        );
     }
 
     /**
      * Create unauthorized response.
      *
-     * @param ServerRequestInterface $request
-     *
      * @return ResponseInterface
      * @throws \InvalidArgumentException
      */
-    public function createUnauthorizedResponse(ServerRequestInterface $request): ResponseInterface
+    public function createUnauthorizedResponse(): ResponseInterface
     {
-        $realm = $this->getRealm($request);
+        $realm = $this->realm;
 
         return $this->responseFactory->createResponse(401)
             ->withHeader(
@@ -153,7 +119,7 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
                 sprintf(
                     self::AUTHORIZATION_HEADER_PREFIX . ' realm="%s",qop="auth",nonce="%s",opaque="%s"',
                     $realm,
-                    $this->getNonce($request),
+                    $this->nonce,
                     md5($realm)
                 )
             );

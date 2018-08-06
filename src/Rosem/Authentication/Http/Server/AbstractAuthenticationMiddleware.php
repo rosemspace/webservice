@@ -2,55 +2,65 @@
 
 namespace Rosem\Authentication\Http\Server;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Rosem\Authentication\AuthenticationInterface;
+use Psr\Http\Message\{
+    ResponseFactoryInterface, ResponseInterface, ServerRequestInterface
+};
+use Psr\Http\Server\{
+    MiddlewareInterface, RequestHandlerInterface
+};
+use Rosem\Psr\Authentication\AuthenticationInterface;
+use Rosem\Psr\Authentication\UserInterface;
 
 abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, AuthenticationInterface
 {
-    /**
-     * @var string|null
-     */
-    protected static $userIdentityAttribute = 'auth.user.identity';
-
     /**
      * @var ResponseFactoryInterface
      */
     protected $responseFactory;
 
     /**
-     * @var callable The function to get a password by a username.
+     * The function to get a password by a username.
+     *
+     * @var callable
      */
-    protected $getPassword;
+    protected $userPasswordResolver;
+
+    /**
+     * The function to get user roles by a username.
+     *
+     * @var callable
+     */
+    protected $userRolesResolver;
+
+    /**
+     * The function to get user details by a username.
+     *
+     * @var callable
+     */
+    protected $userDetailsResolver;
 
     /**
      * Define de users.
      *
      * @param ResponseFactoryInterface $responseFactory
-     * @param callable                 $userPasswordGetter function (string $username) {...}
-     * @param string                   $userIdentityAttribute
+     * @param callable                 $userPasswordResolver
+     * @param callable|null            $userRolesResolver
+     * @param callable|null            $userDetailsResolver
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        callable $userPasswordGetter,
-        string $userIdentityAttribute = 'auth.user.identity'
+        callable $userPasswordResolver,
+        ?callable $userRolesResolver = null,
+        ?callable $userDetailsResolver = null
     ) {
         $this->responseFactory = $responseFactory;
-        $this->getPassword = $userPasswordGetter;
-        static::$userIdentityAttribute = $userIdentityAttribute;
-    }
-
-    /**
-     * Get the name of the user identity attribute.
-     *
-     * @return string
-     */
-    public static function getUserIdentityAttribute(): string
-    {
-        return static::$userIdentityAttribute;
+        $this->userPasswordResolver = $userPasswordResolver;
+        $this->userRolesResolver = $userRolesResolver ?: function () {
+            return [];
+        };
+        $this->userDetailsResolver = $userDetailsResolver ?: function () {
+            return [];
+        };
     }
 
     /**
@@ -67,16 +77,12 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
         ServerRequestInterface $request,
         RequestHandlerInterface $requestHandler
     ): ResponseInterface {
-        $userIdentity = $this->authenticate($request);
+        $user = $this->authenticate($request);
 
-        if (null === $userIdentity) {
-            return $this->createUnauthorizedResponse($request);
+        if ($user) {
+            return $requestHandler->handle($request->withAttribute(UserInterface::class, $user));
         }
 
-        if (null !== static::$userIdentityAttribute) {
-            $request = $request->withAttribute(static::$userIdentityAttribute, $userIdentity);
-        }
-
-        return $requestHandler->handle($request);
+        return $this->createUnauthorizedResponse();
     }
 }

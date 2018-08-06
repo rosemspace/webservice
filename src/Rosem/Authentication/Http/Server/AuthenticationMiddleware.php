@@ -2,13 +2,17 @@
 
 namespace Rosem\Authentication\Http\Server;
 
-use Fig\Http\Message\RequestMethodInterface;
-use Fig\Http\Message\StatusCodeInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Fig\Http\Message\{
+    RequestMethodInterface, StatusCodeInterface
+};
+use Psr\Http\Message\{
+    ResponseFactoryInterface, ResponseInterface, ServerRequestInterface
+};
 use Psr\Http\Server\RequestHandlerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
-use Psr\Http\Message\ResponseFactoryInterface;
+use Rosem\Authentication\User;
+use Rosem\Psr\Authentication\IdentityInterface;
+use Rosem\Psr\Authentication\UserInterface;
 use function call_user_func;
 
 class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
@@ -18,95 +22,86 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
      */
     private const AUTHORIZATION_HEADER_PREFIX = 'Bearer';
 
-    protected static $loginUriAttribute = 'auth.login.uri';
-
     protected $loginUri;
 
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        callable $userPasswordGetter,
-        string $userIdentityAttribute = 'auth.user.identity',
-        string $loginUri = '/login',
-        string $loginUriAttribute = 'auth.login.uri'
+        callable $userPasswordResolver,
+        ?callable $userRolesResolver = null,
+        ?callable $userDetailsResolver = null,
+        string $loginUri = '/login'
     ) {
-        parent::__construct($responseFactory, $userPasswordGetter, $userIdentityAttribute);
+        parent::__construct($responseFactory, $userPasswordResolver, $userRolesResolver, $userDetailsResolver);
 
         $this->loginUri = $loginUri;
-        static::$loginUriAttribute = $loginUriAttribute;
-    }
-
-    /**
-     * Get name of the realm attribute.
-     *
-     * @return string
-     */
-    public static function getLoginUriAttribute(): string
-    {
-        return static::$loginUriAttribute;
     }
 
     public function process(
         ServerRequestInterface $request,
         RequestHandlerInterface $requestHandler
     ): ResponseInterface {
-        $userIdentityAttribute = static::$userIdentityAttribute;
-        $loginUri = $request->getAttribute(static::$loginUriAttribute) ?: $this->loginUri;
-        $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
-        $username = $session->get($userIdentityAttribute);
+        $user = $this->authenticate($request);
 
-        if (!$username) {
-            if ($request->getMethod() === RequestMethodInterface::METHOD_POST) {
-                $body = $request->getParsedBody();
-
-                if (!empty($body['username']) && !empty($body['password'])) {
-                    $password = call_user_func($this->getPassword, $body['username']);
-
-                    if ($password && $password === $body['password']) {
-                        $session->set($userIdentityAttribute, $body['username']);
-                        $username = $body['username'];
-                    }
-                }
-            }
-
-            if (!$username) {
-                if ($request->getMethod() === RequestMethodInterface::METHOD_GET
-                    && $request->getUri()->getPath() === $loginUri
-                ) {
-                    return $requestHandler->handle($request);
-                }
-
-                return $this->responseFactory
-                    ->createResponse(StatusCodeInterface::STATUS_FOUND)
-                    ->withHeader('Location', $loginUri);
-            }
+        if ($user) {
+            return $requestHandler->handle($request->withAttribute(UserInterface::class, $user));
         }
 
-        $request = $request->withAttribute($userIdentityAttribute, $username);
+        if ($request->getMethod() === RequestMethodInterface::METHOD_GET
+            && $request->getUri()->getPath() === $this->loginUri
+        ) {
+            return $requestHandler->handle($request);
+        }
 
-        return $requestHandler->handle($request);
+        return $this->createUnauthorizedResponse();
     }
 
     /**
      * @param ServerRequestInterface $request
      *
-     * @return string|null
+     * @return UserInterface|null
      */
-    public function authenticate(ServerRequestInterface $request): ?string
+    public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
-        return '';
+        $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
+        $identity = $session->get(IdentityInterface::class);
+
+        if (!$identity) {
+            if ($request->getMethod() !== RequestMethodInterface::METHOD_POST) {
+                return null;
+            }
+
+            $body = $request->getParsedBody();
+
+            if (empty($body['username']) || empty($body['password'])) {
+                return null;
+            }
+
+            $identity = $body['username'];
+            $password = call_user_func($this->userPasswordResolver, $identity);
+
+            if (!$password || $password !== $body['password']) {
+                return null;
+            }
+
+            $session->set(IdentityInterface::class, $identity);
+        }
+
+        return new User(
+            $identity,
+            call_user_func($this->userRolesResolver, $identity),
+            call_user_func($this->userDetailsResolver, $identity)
+        );
     }
 
     /**
      * Create unauthorized response.
      *
-     * @param ServerRequestInterface $request
-     *
      * @return ResponseInterface
      * @throws \InvalidArgumentException
      */
-    public function createUnauthorizedResponse(ServerRequestInterface $request): ResponseInterface
+    public function createUnauthorizedResponse(): ResponseInterface
     {
         return $this->responseFactory->createResponse(StatusCodeInterface::STATUS_FOUND)
-            ->withHeader('Location', $this->loginUri); // TODO: get login uri from request
+            ->withHeader('Location', $this->loginUri);
     }
 }

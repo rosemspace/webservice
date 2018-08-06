@@ -8,16 +8,19 @@ use Rosem\Psr\Container\ServiceProviderInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Psr\Template\TemplateRendererInterface;
 use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
-use Rosem\Http\Server\DeferredFactoryMiddleware;
 use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
 
 class AuthenticationProvider implements ServiceProviderInterface
 {
     public const CONFIG_SYMMETRIC_KEY = 'auth.symmetricKey';
 
-    public const CONFIG_USER_PASSWORD_GETTER = 'auth.user.passwordGetter';
+    public const CONFIG_USER_RESOLVER_PASSWORD = 'auth.user.resolver.password';
 
-    public const CONFIG_URI = 'auth.uri';
+    public const CONFIG_USER_RESOLVER_ROLES = 'auth.user.resolver.roles';
+
+    public const CONFIG_USER_RESOLVER_DETAILS = 'auth.user.resolver.details';
+
+    public const CONFIG_URI_LOGIN = 'auth.uri.login';
 
     /**
      * Returns a list of all container entries registered by this service provider.
@@ -31,16 +34,24 @@ class AuthenticationProvider implements ServiceProviderInterface
     {
         return [
             static::CONFIG_SYMMETRIC_KEY => function () {
-//                return null;
                 return 'mBC5v1sOKVvbdEitdSBenu59nfNfhwkedkJVNabosTw=';
             },
-            static::CONFIG_USER_PASSWORD_GETTER => function () {
-//                return null;
+            static::CONFIG_USER_RESOLVER_PASSWORD => function () {
                 return function (string $username): ?string {
                     return ['roshe' => '1234'][$username] ?? null;
                 };
             },
-            static::CONFIG_URI => function () {
+            static::CONFIG_USER_RESOLVER_ROLES => function () {
+                return function (string $username) {
+                    return ['admin'];
+                };
+            },
+            static::CONFIG_USER_RESOLVER_DETAILS => function () {
+                return function (string $username) {
+                    return ['username' => $username];
+                };
+            },
+            static::CONFIG_URI_LOGIN => function () {
                 return '/login';
             },
             SessionMiddleware::class => function (ContainerInterface $container) {
@@ -64,9 +75,7 @@ class AuthenticationProvider implements ServiceProviderInterface
                     new \Lcobucci\Clock\SystemClock()
                 );
             },
-            AuthenticationMiddleware::class => function (ContainerInterface $container) {
-                return new DeferredFactoryMiddleware($container, [static::class, 'createAuthenticationMiddleware']);
-            },
+            AuthenticationMiddleware::class => [static::class, 'createAuthenticationMiddleware'],
         ];
     }
 
@@ -107,8 +116,10 @@ class AuthenticationProvider implements ServiceProviderInterface
     {
         return new AuthenticationMiddleware(
             $container->get(ResponseFactoryInterface::class),
-            $container->get(static::CONFIG_USER_PASSWORD_GETTER),
-            $container->get(static::CONFIG_URI)
+            $container->get(static::CONFIG_USER_RESOLVER_PASSWORD),
+            $container->get(static::CONFIG_USER_RESOLVER_ROLES),
+            $container->get(static::CONFIG_USER_RESOLVER_DETAILS),
+            $container->get(static::CONFIG_URI_LOGIN)
         );
     }
 }
