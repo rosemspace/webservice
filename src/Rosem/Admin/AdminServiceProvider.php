@@ -4,14 +4,15 @@ namespace Rosem\Admin;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Rosem\Authentication\AuthenticationProvider;
-use Rosem\Psr\Template\TemplateRendererInterface;
 use Rosem\Admin\Http\Server\AdminRequestHandler;
 use Rosem\Admin\Http\Server\LoginRequestHandler;
+use Rosem\Authentication\AuthenticationProvider;
+use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
+use Rosem\Psr\Authentication\UserFactoryInterface;
 use Rosem\Psr\Config\ConfigInterface;
 use Rosem\Psr\Container\ServiceProviderInterface;
 use Rosem\Psr\Route\RouteCollectorInterface;
-use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
+use Rosem\Psr\Template\TemplateRendererInterface;
 
 class AdminServiceProvider implements ServiceProviderInterface
 {
@@ -41,6 +42,7 @@ class AdminServiceProvider implements ServiceProviderInterface
             AuthenticationMiddleware::class . '.admin' => function (ContainerInterface $container) {
                 return new AuthenticationMiddleware(
                     $container->get(ResponseFactoryInterface::class),
+                    $container->get(UserFactoryInterface::class),
                     $container->get(AuthenticationProvider::CONFIG_USER_RESOLVER_PASSWORD),
                     $container->get(AuthenticationProvider::CONFIG_USER_RESOLVER_ROLES),
                     $container->get(AuthenticationProvider::CONFIG_USER_RESOLVER_DETAILS),

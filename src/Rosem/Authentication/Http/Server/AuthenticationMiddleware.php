@@ -10,8 +10,8 @@ use Psr\Http\Message\{
 };
 use Psr\Http\Server\RequestHandlerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
-use Rosem\Authentication\User;
 use Rosem\Psr\Authentication\IdentityInterface;
+use Rosem\Psr\Authentication\UserFactoryInterface;
 use Rosem\Psr\Authentication\UserInterface;
 use function call_user_func;
 
@@ -26,12 +26,14 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
 
     public function __construct(
         ResponseFactoryInterface $responseFactory,
+        UserFactoryInterface $userFactory,
         callable $userPasswordResolver,
         ?callable $userRolesResolver = null,
         ?callable $userDetailsResolver = null,
         string $loginUri = '/login'
     ) {
-        parent::__construct($responseFactory, $userPasswordResolver, $userRolesResolver, $userDetailsResolver);
+        parent::__construct($responseFactory, $userFactory, $userPasswordResolver, $userRolesResolver,
+            $userDetailsResolver);
 
         $this->loginUri = $loginUri;
     }
@@ -86,7 +88,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
             $session->set(IdentityInterface::class, $identity);
         }
 
-        return new User(
+        return $this->userFactory->createUser(
             $identity,
             call_user_func($this->userRolesResolver, $identity),
             call_user_func($this->userDetailsResolver, $identity)

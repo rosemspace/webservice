@@ -3,12 +3,13 @@
 namespace Rosem\Authentication;
 
 use Psr\Container\ContainerInterface;
-use PSR7Sessions\Storageless\Http\SessionMiddleware;
-use Rosem\Psr\Container\ServiceProviderInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Rosem\Psr\Template\TemplateRendererInterface;
+use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
+use Rosem\Psr\Authentication\UserFactoryInterface;
+use Rosem\Psr\Container\ServiceProviderInterface;
 use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
+use Rosem\Psr\Template\TemplateRendererInterface;
 
 class AuthenticationProvider implements ServiceProviderInterface
 {
@@ -53,6 +54,9 @@ class AuthenticationProvider implements ServiceProviderInterface
             },
             static::CONFIG_URI_LOGIN => function () {
                 return '/login';
+            },
+            UserFactoryInterface::class => function () {
+                return new UserFactory();
             },
             SessionMiddleware::class => function (ContainerInterface $container) {
 //                return SessionMiddleware::fromSymmetricKeyDefaults(
@@ -116,6 +120,7 @@ class AuthenticationProvider implements ServiceProviderInterface
     {
         return new AuthenticationMiddleware(
             $container->get(ResponseFactoryInterface::class),
+            $container->get(UserFactoryInterface::class),
             $container->get(static::CONFIG_USER_RESOLVER_PASSWORD),
             $container->get(static::CONFIG_USER_RESOLVER_ROLES),
             $container->get(static::CONFIG_USER_RESOLVER_DETAILS),

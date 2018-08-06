@@ -9,6 +9,7 @@ use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
 use Rosem\Psr\Authentication\AuthenticationInterface;
+use Rosem\Psr\Authentication\UserFactoryInterface;
 use Rosem\Psr\Authentication\UserInterface;
 
 abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, AuthenticationInterface
@@ -17,6 +18,11 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
      * @var ResponseFactoryInterface
      */
     protected $responseFactory;
+
+    /**
+     * @var UserFactoryInterface
+     */
+    protected $userFactory;
 
     /**
      * The function to get a password by a username.
@@ -43,17 +49,20 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
      * Define de users.
      *
      * @param ResponseFactoryInterface $responseFactory
+     * @param UserFactoryInterface     $userFactory
      * @param callable                 $userPasswordResolver
      * @param callable|null            $userRolesResolver
      * @param callable|null            $userDetailsResolver
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
+        UserFactoryInterface $userFactory,
         callable $userPasswordResolver,
         ?callable $userRolesResolver = null,
         ?callable $userDetailsResolver = null
     ) {
         $this->responseFactory = $responseFactory;
+        $this->userFactory = $userFactory;
         $this->userPasswordResolver = $userPasswordResolver;
         $this->userRolesResolver = $userRolesResolver ?: function () {
             return [];

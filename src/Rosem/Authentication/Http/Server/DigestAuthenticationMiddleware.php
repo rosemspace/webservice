@@ -7,6 +7,7 @@ use Psr\Http\Message\{
 };
 use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Authentication\User;
+use Rosem\Psr\Authentication\UserFactoryInterface;
 use Rosem\Psr\Authentication\UserInterface;
 use function call_user_func;
 use function count;
@@ -24,7 +25,13 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
      * Authorization header needed parts.
      */
     private const AUTHORIZATION_HEADER_NEEDED_PARTS = [
-        'username', 'nonce', 'uri', 'response', 'qop', 'nc', 'cnonce',
+        'username',
+        'nonce',
+        'uri',
+        'response',
+        'qop',
+        'nc',
+        'cnonce',
     ];
 
     /**
@@ -32,15 +39,28 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
      */
     protected $nonce;
 
+    /**
+     * DigestAuthenticationMiddleware constructor.
+     *
+     * @param ResponseFactoryInterface $responseFactory
+     * @param UserFactoryInterface     $userFactory
+     * @param callable                 $userPasswordResolver
+     * @param callable|null            $userRolesResolver
+     * @param callable|null            $userDetailsResolver
+     * @param string                   $realm
+     * @param string                   $nonce
+     */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
+        UserFactoryInterface $userFactory,
         callable $userPasswordResolver,
         ?callable $userRolesResolver = null,
         ?callable $userDetailsResolver = null,
         string $realm = 'Login',
         string $nonce = ''
     ) {
-        parent::__construct($responseFactory, $userPasswordResolver, $userRolesResolver, $userDetailsResolver, $realm);
+        parent::__construct($responseFactory, $userFactory, $userPasswordResolver, $userRolesResolver,
+            $userDetailsResolver, $realm);
 
         $this->nonce = $nonce ?: uniqid('', true);
     }
@@ -96,7 +116,7 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
             return null;
         }
 
-        return new User(
+        return $this->userFactory->createUser(
             $identity,
             call_user_func($this->userRolesResolver, $identity),
             call_user_func($this->userDetailsResolver, $identity)
