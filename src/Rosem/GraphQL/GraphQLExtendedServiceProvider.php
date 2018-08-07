@@ -5,7 +5,7 @@ namespace Rosem\GraphQL;
 use Psr\Container\ContainerInterface;
 use Rosem\Psr\Config\ConfigInterface;
 use Rosem\Psr\Environment\EnvironmentInterface;
-use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
+use Rosem\Psr\Http\Server\MiddlewareDispatcherInterface;
 
 class GraphQLExtendedServiceProvider extends GraphQLServiceProvider
 {
@@ -19,11 +19,11 @@ class GraphQLExtendedServiceProvider extends GraphQLServiceProvider
     public function getExtensions(): array
     {
         return [
-            MiddlewareQueueInterface::class => function (
+            MiddlewareDispatcherInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareQueueInterface $middlewareQueue
+                MiddlewareDispatcherInterface $dispatcher
             ) {
-                $middlewareQueue->use(GraphQLMiddleware::class);
+                $dispatcher->use(GraphQLMiddleware::class);
             },
         ];
     }

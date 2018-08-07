@@ -4,16 +4,24 @@ namespace Rosem\Route\Http\Server;
 
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\{
-    ResponseInterface, ServerRequestInterface
-};
-use Psr\Http\Server\{
-    MiddlewareInterface, RequestHandlerInterface
-};
+    ResponseInterface,
+    ServerRequestInterface};
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Server\{
+    MiddlewareInterface,
+    RequestHandlerInterface};
 use Rosem\Psr\Route\RouteDispatcherInterface;
 
 class RouteMiddleware implements MiddlewareInterface
 {
+    protected const KEY_STATUS = 0;
+
+    protected const KEY_HANDLER_OR_ALLOWED_METHODS = 1;
+
+    protected const KEY_MIDDLEWARE = 2;
+
+    protected const KEY_VARIABLES = 3;
+
     protected $router;
 
     protected $responseFactory;
@@ -55,19 +63,22 @@ class RouteMiddleware implements MiddlewareInterface
     {
         $route = $this->router->dispatch($request->getMethod(), $request->getUri()->getPath());
 
-        if ($route[0] === StatusCodeInterface::STATUS_NOT_FOUND) {
+        if ($route[static::KEY_STATUS] === StatusCodeInterface::STATUS_NOT_FOUND) {
             return $this->createNotFoundResponse();
         }
 
-        if ($route[0] === StatusCodeInterface::STATUS_METHOD_NOT_ALLOWED) {
+        if ($route[static::KEY_STATUS] === StatusCodeInterface::STATUS_METHOD_NOT_ALLOWED) {
             return $this->createMethodNotAllowedResponse();
         }
 
-        foreach ($route[3] as $name => $value) {
+        foreach ($route[static::KEY_VARIABLES] as $name => $value) {
             $request = $request->withAttribute($name, $value);
         }
 
-        $request = $this->setHandler($request, [$route[1], $route[2]]);
+        $request = $this->setHandler(
+            $request,
+            [$route[static::KEY_HANDLER_OR_ALLOWED_METHODS], $route[static::KEY_MIDDLEWARE]]
+        );
 
         return $nextHandler->handle($request);
     }
@@ -76,7 +87,7 @@ class RouteMiddleware implements MiddlewareInterface
      * Set the handler reference on the request.
      *
      * @param ServerRequestInterface $request
-     * @param mixed $handler
+     * @param mixed                  $handler
      *
      * @return ServerRequestInterface
      */
@@ -87,7 +98,7 @@ class RouteMiddleware implements MiddlewareInterface
 
     public function createNotFoundResponse(): ResponseInterface
     {
-        $response = $this->responseFactory->createResponse(404);
+        $response = $this->responseFactory->createResponse(StatusCodeInterface::STATUS_NOT_FOUND);
         $response->getBody()->write('Not found :(');
 
         return $response;
@@ -95,7 +106,7 @@ class RouteMiddleware implements MiddlewareInterface
 
     public function createMethodNotAllowedResponse(): ResponseInterface
     {
-        $response = $this->responseFactory->createResponse(405);
+        $response = $this->responseFactory->createResponse(StatusCodeInterface::STATUS_METHOD_NOT_ALLOWED);
         $response->getBody()->write('Method not allowed :(');
 
         return $response;

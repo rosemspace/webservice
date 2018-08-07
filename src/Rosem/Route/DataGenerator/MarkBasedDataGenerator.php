@@ -2,7 +2,7 @@
 
 namespace Rosem\Route\DataGenerator;
 
-use Rosem\Route\RouteInterface;
+use Rosem\Route\RegexRouteInterface;
 use function count;
 
 class MarkBasedDataGenerator extends AbstractRegexBasedDataGenerator
@@ -34,12 +34,12 @@ class MarkBasedDataGenerator extends AbstractRegexBasedDataGenerator
     }
 
     /**
-     * @param RouteInterface $route
+     * @param RegexRouteInterface $route
      *
      * @return void
      * @throws \Rosem\Route\Exception\TooLongRouteException
      */
-    public function addRoute(RouteInterface $route): void
+    public function addRoute(RegexRouteInterface $route): void
     {
         $this->lastInsertId = count($this->routeData);
 
@@ -50,7 +50,7 @@ class MarkBasedDataGenerator extends AbstractRegexBasedDataGenerator
         $this->addRegex($route->getRegex() . '(*:' . $this->lastInsertId . ')');
         $this->routeExpressions[count($this->routeExpressions) - 1] =
             '~^' . $this->regex . '$~sD' . ($this->utf8 ? 'u' : '');
-        $middleware = &$route->getMiddlewareListReference();
+        $middleware = &$route->getMiddlewareExtensions();
         $this->routeData[] = [$route->getHandler(), &$middleware, $route->getVariableNames()];
     }
 }

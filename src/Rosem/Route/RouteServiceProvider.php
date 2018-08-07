@@ -5,7 +5,7 @@ namespace Rosem\Route;
 use Psr\Container\ContainerInterface;
 use Rosem\Psr\Container\ServiceProviderInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
+use Rosem\Psr\Http\Server\MiddlewareDispatcherInterface;
 use Rosem\Psr\Route\RouteCollectorInterface;
 use Rosem\Psr\Route\RouteDispatcherInterface;
 use Rosem\Route\DataGenerator\MarkBasedDataGenerator;
@@ -40,12 +40,12 @@ class RouteServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareQueueInterface::class => function (
+            MiddlewareDispatcherInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareQueueInterface $middlewareQueue
+                MiddlewareDispatcherInterface $dispatcher
             ) {
-                $middlewareQueue->use(RouteMiddleware::class);
-                $middlewareQueue->use(HandleRequestMiddleware::class);
+                $dispatcher->use(RouteMiddleware::class);
+                $dispatcher->use(HandleRequestMiddleware::class);
             },
         ];
     }

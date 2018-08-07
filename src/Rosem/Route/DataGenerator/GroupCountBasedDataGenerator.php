@@ -2,7 +2,7 @@
 
 namespace Rosem\Route\DataGenerator;
 
-use Rosem\Route\RouteInterface;
+use Rosem\Route\RegexRouteInterface;
 use function count;
 
 class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
@@ -48,12 +48,12 @@ class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
     }
 
     /**
-     * @param RouteInterface $route
+     * @param RegexRouteInterface $route
      *
      * @return void
      * @throws \InvalidArgumentException
      */
-    public function addRoute(RouteInterface $route): void
+    public function addRoute(RegexRouteInterface $route): void
     {
         $this->lastInsertId = $this->routeCountPerRegex * $this->chunkCount;
 
@@ -68,7 +68,7 @@ class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
         $this->routeExpressions[count($this->routeExpressions) - 1][self::KEY_REGEX] =
             '~^' . $this->regex . '$~sD' . ($this->utf8 ? 'u' : '');
         ++$this->groupCount; // +1 for first regex matching / next route index
-        $middleware = &$route->getMiddlewareListReference();
+        $middleware = &$route->getMiddlewareExtensions();
         $this->routeData[$this->lastInsertId + $this->groupCount] =
             [$route->getHandler(), &$middleware, $route->getVariableNames()];
     }

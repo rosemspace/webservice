@@ -48,6 +48,24 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
         $this->userPasswordResolver = $userPasswordResolver;
     }
 
+    private function setPasswordResolver(callable $resolver): void
+    {
+        $this->userPasswordResolver = $resolver;
+    }
+
+    /**
+     * @param callable $resolver
+     *
+     * @return static
+     */
+    public function withPasswordResolver(callable $resolver)
+    {
+        $new = clone $this;
+        $new->setPasswordResolver($resolver);
+
+        return $new;
+    }
+
     /**
      * Process an incoming server request and return a response, optionally delegating
      * response creation to a handler.

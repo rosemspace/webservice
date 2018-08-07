@@ -2,12 +2,12 @@
 
 namespace Rosem\Admin\Http\Server;
 
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\{
+    ResponseFactoryInterface,
+    ResponseInterface,
+    ServerRequestInterface};
 use Psr\Http\Server\RequestHandlerInterface;
 use Rosem\Psr\Authentication\UserInterface;
-use Rosem\Psr\Config\ConfigInterface;
 use Rosem\Psr\Template\TemplateRendererInterface;
 
 class AdminRequestHandler implements RequestHandlerInterface
@@ -23,25 +23,17 @@ class AdminRequestHandler implements RequestHandlerInterface
     protected $view;
 
     /**
-     * @var ConfigInterface
-     */
-    protected $config;
-
-    /**
      * MainController constructor.
      *
      * @param ResponseFactoryInterface  $responseFactory
      * @param TemplateRendererInterface $view
-     * @param ConfigInterface           $config
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        TemplateRendererInterface $view,
-        ConfigInterface $config
+        TemplateRendererInterface $view
     ) {
         $this->responseFactory = $responseFactory;
         $this->view = $view;
-        $this->config = $config;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

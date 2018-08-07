@@ -8,7 +8,7 @@ use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
 use Rosem\Psr\Authentication\UserFactoryInterface;
 use Rosem\Psr\Container\ServiceProviderInterface;
-use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
+use Rosem\Psr\Http\Server\MiddlewareDispatcherInterface;
 use Rosem\Psr\Template\TemplateRendererInterface;
 
 class AuthenticationServiceProvider implements ServiceProviderInterface
@@ -90,11 +90,11 @@ class AuthenticationServiceProvider implements ServiceProviderInterface
                     'csrfToken' => '4sWPhTlJAmt1IcyNq1FCyivsAVhHqjiDCKRXOgOQock=',
                 ]);
             },
-            MiddlewareQueueInterface::class => function (
+            MiddlewareDispatcherInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareQueueInterface $middlewareQueue
+                MiddlewareDispatcherInterface $dispatcher
             ) {
-                $middlewareQueue->use(SessionMiddleware::class);
+                $dispatcher->use(SessionMiddleware::class);
             },
         ];
     }

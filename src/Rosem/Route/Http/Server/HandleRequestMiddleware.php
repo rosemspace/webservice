@@ -4,18 +4,22 @@ namespace Rosem\Route\Http\Server;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\{
-    ResponseInterface, ServerRequestInterface
-};
-use Psr\Http\Server\{
-    MiddlewareInterface, RequestHandlerInterface
-};
+    ResponseInterface,
+    ServerRequestInterface};
 use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Server\{
+    MiddlewareInterface,
+    RequestHandlerInterface};
 use Rosem\Http\Server\{
-    CallableBasedMiddleware, DeferredConfigurableMiddleware, MiddlewareQueue
-};
+    CallableBasedMiddleware,
+    MiddlewareDispatcher};
 
 class HandleRequestMiddleware implements MiddlewareInterface
 {
+    protected const KEY_HANDLER_OR_ALLOWED_METHODS = 0;
+
+    protected const KEY_MIDDLEWARE = 1;
+
     /**
      * @var ContainerInterface used to resolve the handlers
      */
@@ -28,6 +32,7 @@ class HandleRequestMiddleware implements MiddlewareInterface
 
     /**
      * RequestHandlerMiddleware constructor.
+     *
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
@@ -37,7 +42,9 @@ class HandleRequestMiddleware implements MiddlewareInterface
 
     /**
      * Set the attribute name to store handler reference.
+     *
      * @param string $handlerAttribute
+     *
      * @return self
      */
     public function handlerAttribute(string $handlerAttribute): self
@@ -49,8 +56,10 @@ class HandleRequestMiddleware implements MiddlewareInterface
 
     /**
      * Process a server request and return a response.
-     * @param ServerRequestInterface $request
+     *
+     * @param ServerRequestInterface  $request
      * @param RequestHandlerInterface $handler
+     *
      * @return ResponseInterface
      * @throws \Exception
      */
@@ -58,19 +67,18 @@ class HandleRequestMiddleware implements MiddlewareInterface
     {
         $requestData = $request->getAttribute($this->handlerAttribute);
 
-        if (!empty($requestData[1])) { // TODO: add constants
-            $requestHandler = new MiddlewareQueue($this->container, $this->container->get($requestData[0]));
+        if (!empty($requestData[static::KEY_MIDDLEWARE])) {
+            $requestHandler = new MiddlewareDispatcher(
+                $this->container,
+                $this->container->get($requestData[static::KEY_HANDLER_OR_ALLOWED_METHODS])
+            );
 
             /** @var array[] $requestData */
-            foreach ($requestData[1] as $middlewareData) {
-                foreach ($middlewareData[1] as $param => $value) { // TODO: make it as middleware params
-                    $request = $request->withAttribute($param, $value);
-                }
-
-                $requestHandler->use($middlewareData[0]);
+            foreach ($requestData[static::KEY_MIDDLEWARE] as $middlewareExtension) {
+                $middlewareExtension($requestHandler, $this->container);
             }
         } else {
-            $requestHandler = $this->container->get($requestData[0]);
+            $requestHandler = $this->container->get($requestData[static::KEY_HANDLER_OR_ALLOWED_METHODS]);
         }
 
         if ($requestHandler instanceof RequestHandlerInterface) {

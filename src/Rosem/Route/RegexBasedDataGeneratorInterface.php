@@ -7,9 +7,9 @@ interface RegexBasedDataGeneratorInterface
     /**
      * Add the route.
      *
-     * @param RouteInterface $route
+     * @param RegexRouteInterface $route
      */
-    public function addRoute(RouteInterface $route): void;
+    public function addRoute(RegexRouteInterface $route): void;
 
     /**
      * Prepare internal data for the new chunk.

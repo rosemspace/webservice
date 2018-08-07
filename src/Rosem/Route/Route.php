@@ -2,9 +2,9 @@
 
 namespace Rosem\Route;
 
-use Rosem\Psr\Route\RouteInterface as GenericRouteInterface;
+use Rosem\Psr\Route\RouteInterface;
 
-class Route implements RouteInterface
+class Route implements RegexRouteInterface
 {
     protected $methods;
 
@@ -16,7 +16,7 @@ class Route implements RouteInterface
 
     protected $schemes;
 
-    protected $middlewareList = [];
+    protected $middlewareExtensions = [];
 
     protected $regex;
 
@@ -93,27 +93,16 @@ class Route implements RouteInterface
     /**
      * Sets the middleware logic to be executed before route will be resolved.
      *
-     * @param string $middleware
-     * @param array  $options
+     * @param callable $middlewareExtension
      *
-     * @return GenericRouteInterface
+     * @return RouteInterface
      * @see \Psr\Http\Server\MiddlewareInterface
      */
-    public function addMiddleware(string $middleware, array $options = []): GenericRouteInterface
+    public function middleware(callable $middlewareExtension): RouteInterface
     {
-        $this->middlewareList[] = [$middleware, $options];
+        $this->middlewareExtensions[] = $middlewareExtension;
 
         return $this;
-    }
-
-    /**
-     * Retrieves middleware list.
-     *
-     * @return array
-     */
-    public function getMiddlewareList(): array
-    {
-        return $this->middlewareList;
     }
 
     /**
@@ -121,8 +110,8 @@ class Route implements RouteInterface
      *
      * @return array
      */
-    public function &getMiddlewareListReference(): array
+    public function &getMiddlewareExtensions(): array
     {
-        return $this->middlewareList;
+        return $this->middlewareExtensions;
     }
 }

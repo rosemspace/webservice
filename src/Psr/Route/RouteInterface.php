@@ -42,7 +42,6 @@ interface RouteInterface
      * Retrieves the server request handler.
      *
      * @return string
-     *
      * @see \Psr\Http\Server\RequestHandlerInterface
      */
     public function getHandler(): string;
@@ -50,19 +49,10 @@ interface RouteInterface
     /**
      * Sets the middleware logic to be executed before the route will be resolved.
      *
-     * @param string $middleware
-     * @param array  $options
+     * @param callable $middlewareExtension
      *
      * @return RouteInterface
-     *
      * @see \Psr\Http\Server\MiddlewareInterface
      */
-    public function addMiddleware(string $middleware, array $options = []): RouteInterface;
-
-    /**
-     * Retrieves middleware list.
-     *
-     * @return array
-     */
-    public function getMiddlewareList(): array;
+    public function middleware(callable $middlewareExtension): RouteInterface;
 }

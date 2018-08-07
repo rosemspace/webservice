@@ -10,7 +10,7 @@ use Rosem\Psr\Config\ConfigInterface;
 use Psr\Http\Message\{
     ResponseFactoryInterface, ServerRequestFactoryInterface
 };
-use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
+use Rosem\Psr\Http\Server\MiddlewareDispatcherInterface;
 use Rosem\App\Http\Server\{
     HomeRequestHandler, InternalServerErrorRequestHandler
 };
@@ -64,7 +64,7 @@ class AppServiceProvider implements ServiceProviderInterface
             AppFactoryInterface::class      => function () {
                 return new AppFactory;
             },
-            MiddlewareQueueInterface::class => function (ContainerInterface $container) {
+            MiddlewareDispatcherInterface::class => function (ContainerInterface $container) {
 //                $container->get(AppFactoryInterface::class)->create();
                 return new App($container, $container->get(InternalServerErrorRequestHandler::class));
             },

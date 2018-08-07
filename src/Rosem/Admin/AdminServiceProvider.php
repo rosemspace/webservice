@@ -4,18 +4,28 @@ namespace Rosem\Admin;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Rosem\Admin\Http\Server\AdminRequestHandler;
-use Rosem\Admin\Http\Server\LoginRequestHandler;
-use Rosem\Authentication\AuthenticationServiceProvider;
+use Rosem\Admin\Http\Server\{
+    AdminRequestHandler,
+    LoginRequestHandler};
 use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
-use Rosem\Psr\Authentication\UserFactoryInterface;
-use Rosem\Psr\Config\ConfigInterface;
 use Rosem\Psr\Container\ServiceProviderInterface;
+use Rosem\Psr\Environment\EnvironmentInterface;
+use Rosem\Psr\Http\Server\MiddlewareDispatcherInterface;
 use Rosem\Psr\Route\RouteCollectorInterface;
 use Rosem\Psr\Template\TemplateRendererInterface;
 
 class AdminServiceProvider implements ServiceProviderInterface
 {
+    public const CONFIG_USER_IDENTITY = 'admin.user.identity';
+
+    public const CONFIG_USER_PASSWORD = 'admin.user.password';
+
+    public const CONFIG_USER_RESOLVER_PASSWORD = 'admin.user.resolver.password';
+
+    public const CONFIG_URI_LOGGED_IN = 'admin.uri.loggedIn';
+
+    public const CONFIG_URI_LOGIN = 'admin.uri.login';
+
     /**
      * Returns a list of all container entries registered by this service provider.
      *
@@ -24,6 +34,20 @@ class AdminServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
+            static::CONFIG_USER_IDENTITY => function (ContainerInterface $container) {
+                return $container->get(EnvironmentInterface::class)->get('ADMIN_IDENTITY');
+            },
+            static::CONFIG_USER_PASSWORD => function (ContainerInterface $container) {
+                return $container->get(EnvironmentInterface::class)->get('ADMIN_PASSWORD');
+            },
+            static::CONFIG_USER_RESOLVER_PASSWORD => function (ContainerInterface $container) {
+                return function (string $userIdentity) use (&$container): ?string {
+                    return [
+                               $container->get(static::CONFIG_USER_IDENTITY) =>
+                                   $container->get(static::CONFIG_USER_PASSWORD),
+                           ][$userIdentity] ?? null;
+                };
+            },
             'admin.meta.title_prefix' => function (ContainerInterface $container) {
                 return ($container->has('app.name') ? $container->get('app.name') . ' ' : '') . 'Admin | ';
             },
@@ -33,35 +57,22 @@ class AdminServiceProvider implements ServiceProviderInterface
             'admin.meta.title_suffix' => function () {
                 return '';
             },
-            'admin.uri.loggedIn' => function () {
+            static::CONFIG_URI_LOGGED_IN => function () {
                 return '/admin';
             },
-            'admin.uri.login' => function (ContainerInterface $container) {
-                return '/' . trim($container->get('admin.uri.loggedIn'), '/') . '/login';
-            },
-            AuthenticationMiddleware::class . '.admin' => function (ContainerInterface $container) {
-                return new AuthenticationMiddleware(
-                    $container->get(ResponseFactoryInterface::class),
-                    $container->get(UserFactoryInterface::class),
-                    $container->get(AuthenticationServiceProvider::CONFIG_USER_RESOLVER_PASSWORD),
-                    'username',
-                    'password',
-                    '/' . trim($container->get('admin.uri.login'), '/'),
-                    '/' . trim($container->get('admin.uri.loggedIn'), '/')
-                );
+            static::CONFIG_URI_LOGIN => function (ContainerInterface $container) {
+                return '/' . trim($container->get(static::CONFIG_URI_LOGGED_IN), '/') . '/login';
             },
             AdminRequestHandler::class => function (ContainerInterface $container) {
                 return new AdminRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
-                    $container->get(TemplateRendererInterface::class),
-                    $container->get(ConfigInterface::class)
+                    $container->get(TemplateRendererInterface::class)
                 );
             },
             LoginRequestHandler::class => function (ContainerInterface $container) {
                 return new LoginRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
-                    $container->get(TemplateRendererInterface::class),
-                    $container->get(ConfigInterface::class)
+                    $container->get(TemplateRendererInterface::class)
                 );
             },
         ];
@@ -79,14 +90,24 @@ class AdminServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector
             ) {
-                $adminUri = '/' . trim($container->get('admin.uri.loggedIn'), '/');
-                $loginUri = '/' . trim($container->get('admin.uri.login'), '/');
+                $loggedInUri = '/' . trim($container->get(static::CONFIG_URI_LOGGED_IN), '/');
+                $loginUri = '/' . trim($container->get(static::CONFIG_URI_LOGIN), '/');
+                $adminAuthenticationMiddlewareExtension = function (
+                    MiddlewareDispatcherInterface $dispatcher,
+                    ContainerInterface $container
+                ) use (&$loggedInUri, &$loginUri): void {
+                    $dispatcher->add($container->get(AuthenticationMiddleware::class)
+                        ->withPasswordResolver($container->get(static::CONFIG_USER_RESOLVER_PASSWORD))
+                        ->withLoggedInUri($loggedInUri)
+                        ->withLoginUri($loginUri)
+                    );
+                };
                 $routeCollector->get($loginUri, LoginRequestHandler::class)
-                    ->addMiddleware(AuthenticationMiddleware::class . '.admin');
+                    ->middleware($adminAuthenticationMiddlewareExtension);
                 $routeCollector->post($loginUri, LoginRequestHandler::class)
-                    ->addMiddleware(AuthenticationMiddleware::class . '.admin');
-                $routeCollector->get($adminUri . '{adminRelativePath:.*}', AdminRequestHandler::class)
-                    ->addMiddleware(AuthenticationMiddleware::class . '.admin');
+                    ->middleware($adminAuthenticationMiddlewareExtension);
+                $routeCollector->get($loggedInUri . '{adminRelativePath:.*}', AdminRequestHandler::class)
+                    ->middleware($adminAuthenticationMiddlewareExtension);
             },
             TemplateRendererInterface::class => function (
                 ContainerInterface $container,
@@ -95,12 +116,12 @@ class AdminServiceProvider implements ServiceProviderInterface
                 $renderer->addPath(__DIR__ . '/resources/templates', 'admin');
                 $adminData = [
                     'metaTitlePrefix' => $container->get('admin.meta.title_prefix'),
-                    'metaTitle'       => $container->get('admin.meta.title'),
+                    'metaTitle' => $container->get('admin.meta.title'),
                     'metaTitleSuffix' => $container->get('admin.meta.title_suffix'),
                 ];
                 $renderer->addTemplateData('admin::index', $adminData);
                 $renderer->addTemplateData('admin::login', $adminData);
-            }
+            },
         ];
     }
 }

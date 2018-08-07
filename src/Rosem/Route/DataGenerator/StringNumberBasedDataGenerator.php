@@ -2,7 +2,7 @@
 
 namespace Rosem\Route\DataGenerator;
 
-use Rosem\Route\RouteInterface;
+use Rosem\Route\RegexRouteInterface;
 use function count;
 use function strlen;
 
@@ -58,12 +58,12 @@ class StringNumberBasedDataGenerator extends AbstractRegexBasedDataGenerator
     }
 
     /**
-     * @param RouteInterface $route
+     * @param RegexRouteInterface $route
      *
      * @return void
      * @throws \InvalidArgumentException
      */
-    public function addRoute(RouteInterface $route): void
+    public function addRoute(RegexRouteInterface $route): void
     {
         $this->lastInsertId = count($this->routeData);
 
@@ -74,7 +74,7 @@ class StringNumberBasedDataGenerator extends AbstractRegexBasedDataGenerator
         $this->addRegex($route->getRegex() . '/' . $this->convertNumberToRegex($this->lastInsertId));
         $this->routeExpressions[count($this->routeExpressions) - 1][self::KEY_REGEX] =
             '~^' . $this->regex . '.*/$~sD' . ($this->utf8 ? 'u' : '');
-        $middleware = &$route->getMiddlewareListReference();
+        $middleware = &$route->getMiddlewareExtensions();
         $this->routeData[] = [$route->getHandler(), &$middleware, $route->getVariableNames()];
     }
 

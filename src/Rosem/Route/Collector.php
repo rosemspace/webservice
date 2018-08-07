@@ -67,7 +67,7 @@ class Collector extends AbstractRouteCollector
                     $this->staticRouteMap[$method] = [];
                 }
 
-                $middleware = &$route->getMiddlewareListReference();
+                $middleware = &$route->getMiddlewareExtensions();
                 $this->staticRouteMap[$method][$routePattern] = [$route->getHandler(), &$middleware];
             }
         }

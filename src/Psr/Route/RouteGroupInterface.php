@@ -13,11 +13,10 @@ interface RouteGroupInterface
     /**
      * Sets the middleware logic to be executed before the route will be resolved.
      *
-     * @param string $middleware
-     * @param array  $options
+     * @param callable $middlewareExtension
      *
      * @return RouteGroupInterface
      * @see \Psr\Http\Server\MiddlewareInterface
      */
-    public function addMiddleware(string $middleware, array $options = []): RouteGroupInterface;
+    public function middleware(callable $middlewareExtension): RouteGroupInterface;
 }

@@ -9,7 +9,7 @@ use Rosem\Authentication\Http\Server\{
 };
 use Rosem\Psr\Authentication\UserFactoryInterface;
 use Rosem\Psr\Container\ServiceProviderInterface;
-use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
+use Rosem\Psr\Http\Server\MiddlewareDispatcherInterface;
 
 class HttpAuthenticationServiceProvider implements ServiceProviderInterface
 {
@@ -55,11 +55,11 @@ class HttpAuthenticationServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareQueueInterface::class => function (
+            MiddlewareDispatcherInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareQueueInterface $middlewareQueue
+                MiddlewareDispatcherInterface $dispatcher
             ) {
-                $middlewareQueue->use(
+                $dispatcher->use(
                     $container->get(static::CONFIG_TYPE) === 'basic'
                         ? BasicAuthenticationMiddleware::class
                         : DigestAuthenticationMiddleware::class

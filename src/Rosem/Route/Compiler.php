@@ -14,7 +14,7 @@ class Compiler implements CompilerInterface
         $this->parser = $parser;
     }
 
-    public function compile(array $methods, string $routePattern, string $handler): RouteInterface
+    public function compile(array $methods, string $routePattern, string $handler): RegexRouteInterface
     {
         return new Route($methods, $handler, $routePattern, ...$this->parser->parse($routePattern)[0]);
     }
