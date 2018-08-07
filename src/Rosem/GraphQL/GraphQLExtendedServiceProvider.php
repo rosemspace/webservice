@@ -23,7 +23,7 @@ class GraphQLExtendedServiceProvider extends GraphQLServiceProvider
                 ContainerInterface $container,
                 MiddlewareQueueInterface $middlewareQueue
             ) {
-                $middlewareQueue->add(GraphQLMiddleware::class);
+                $middlewareQueue->use(GraphQLMiddleware::class);
             },
         ];
     }

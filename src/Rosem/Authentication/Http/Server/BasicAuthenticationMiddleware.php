@@ -5,8 +5,9 @@ namespace Rosem\Authentication\Http\Server;
 use Psr\Http\Message\{
     ResponseFactoryInterface, ResponseInterface, ServerRequestInterface
 };
-use Rosem\Psr\Authentication\UserFactoryInterface;
-use Rosem\Psr\Authentication\UserInterface;
+use Rosem\Psr\Authentication\{
+    UserFactoryInterface, UserInterface
+};
 use function call_user_func;
 
 class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
@@ -27,20 +28,15 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
      * @param ResponseFactoryInterface $responseFactory
      * @param UserFactoryInterface     $userFactory
      * @param callable                 $userPasswordResolver
-     * @param callable|null            $userRolesResolver
-     * @param callable|null            $userDetailsResolver
      * @param string                   $realm
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
         UserFactoryInterface $userFactory,
         callable $userPasswordResolver,
-        ?callable $userRolesResolver = null,
-        ?callable $userDetailsResolver = null,
         string $realm = 'Login'
     ) {
-        parent::__construct($responseFactory, $userFactory, $userPasswordResolver, $userRolesResolver,
-            $userDetailsResolver);
+        parent::__construct($responseFactory, $userFactory, $userPasswordResolver);
 
         $this->realm = $realm;
     }
@@ -75,11 +71,7 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
             return null;
         }
 
-        return $this->userFactory->createUser(
-            $identity,
-            call_user_func($this->userRolesResolver, $identity),
-            call_user_func($this->userDetailsResolver, $identity)
-        );
+        return $this->userFactory->createUser($identity);
     }
 
     /**

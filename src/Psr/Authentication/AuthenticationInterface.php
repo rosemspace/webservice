@@ -11,7 +11,7 @@ interface AuthenticationInterface
     /**
      * @param ServerRequestInterface $request
      *
-     * @return Interface|null
+     * @return UserInterface|null
      */
     public function authenticate(ServerRequestInterface $request): ?UserInterface;
 

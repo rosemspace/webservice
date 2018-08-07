@@ -2,12 +2,10 @@
 
 namespace Rosem\Admin\Http\Server;
 
-use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Rosem\Psr\Authentication\UserInterface;
 use Rosem\Psr\Config\ConfigInterface;
 use Rosem\Psr\Template\TemplateRendererInterface;
 
@@ -47,11 +45,6 @@ class LoginRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if ($request->getAttribute(UserInterface::class)) {
-            return $this->responseFactory->createResponse(StatusCodeInterface::STATUS_FOUND)
-                ->withHeader('Location', '/admin');
-        }
-
         $response = $this->responseFactory->createResponse();
         $body = $response->getBody();
 

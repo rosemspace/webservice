@@ -6,9 +6,9 @@ use Psr\Http\Message\{
     ResponseInterface, ServerRequestInterface
 };
 use Psr\Http\Message\ResponseFactoryInterface;
-use Rosem\Authentication\User;
-use Rosem\Psr\Authentication\UserFactoryInterface;
-use Rosem\Psr\Authentication\UserInterface;
+use Rosem\Psr\Authentication\{
+    UserFactoryInterface, UserInterface
+};
 use function call_user_func;
 use function count;
 use function strlen;
@@ -45,8 +45,6 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
      * @param ResponseFactoryInterface $responseFactory
      * @param UserFactoryInterface     $userFactory
      * @param callable                 $userPasswordResolver
-     * @param callable|null            $userRolesResolver
-     * @param callable|null            $userDetailsResolver
      * @param string                   $realm
      * @param string                   $nonce
      */
@@ -54,13 +52,10 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
         ResponseFactoryInterface $responseFactory,
         UserFactoryInterface $userFactory,
         callable $userPasswordResolver,
-        ?callable $userRolesResolver = null,
-        ?callable $userDetailsResolver = null,
         string $realm = 'Login',
         string $nonce = ''
     ) {
-        parent::__construct($responseFactory, $userFactory, $userPasswordResolver, $userRolesResolver,
-            $userDetailsResolver, $realm);
+        parent::__construct($responseFactory, $userFactory, $userPasswordResolver, $realm);
 
         $this->nonce = $nonce ?: uniqid('', true);
     }
@@ -116,11 +111,7 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
             return null;
         }
 
-        return $this->userFactory->createUser(
-            $identity,
-            call_user_func($this->userRolesResolver, $identity),
-            call_user_func($this->userDetailsResolver, $identity)
-        );
+        return $this->userFactory->createUser($identity);
     }
 
     /**

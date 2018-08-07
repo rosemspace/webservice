@@ -8,9 +8,9 @@ use Psr\Http\Message\{
 use Psr\Http\Server\{
     MiddlewareInterface, RequestHandlerInterface
 };
-use Rosem\Psr\Authentication\AuthenticationInterface;
-use Rosem\Psr\Authentication\UserFactoryInterface;
-use Rosem\Psr\Authentication\UserInterface;
+use Rosem\Psr\Authentication\{
+    AuthenticationInterface, UserFactoryInterface, UserInterface
+};
 
 abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, AuthenticationInterface
 {
@@ -32,44 +32,20 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
     protected $userPasswordResolver;
 
     /**
-     * The function to get user roles by a username.
-     *
-     * @var callable
-     */
-    protected $userRolesResolver;
-
-    /**
-     * The function to get user details by a username.
-     *
-     * @var callable
-     */
-    protected $userDetailsResolver;
-
-    /**
      * Define de users.
      *
      * @param ResponseFactoryInterface $responseFactory
      * @param UserFactoryInterface     $userFactory
      * @param callable                 $userPasswordResolver
-     * @param callable|null            $userRolesResolver
-     * @param callable|null            $userDetailsResolver
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
         UserFactoryInterface $userFactory,
-        callable $userPasswordResolver,
-        ?callable $userRolesResolver = null,
-        ?callable $userDetailsResolver = null
+        callable $userPasswordResolver
     ) {
         $this->responseFactory = $responseFactory;
         $this->userFactory = $userFactory;
         $this->userPasswordResolver = $userPasswordResolver;
-        $this->userRolesResolver = $userRolesResolver ?: function () {
-            return [];
-        };
-        $this->userDetailsResolver = $userDetailsResolver ?: function () {
-            return [];
-        };
     }
 
     /**

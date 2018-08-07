@@ -44,8 +44,8 @@ class RouteServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 MiddlewareQueueInterface $middlewareQueue
             ) {
-                $middlewareQueue->add(RouteMiddleware::class);
-                $middlewareQueue->add(HandleRequestMiddleware::class);
+                $middlewareQueue->use(RouteMiddleware::class);
+                $middlewareQueue->use(HandleRequestMiddleware::class);
             },
         ];
     }

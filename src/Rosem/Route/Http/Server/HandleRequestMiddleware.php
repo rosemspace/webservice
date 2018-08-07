@@ -67,7 +67,7 @@ class HandleRequestMiddleware implements MiddlewareInterface
                     $request = $request->withAttribute($param, $value);
                 }
 
-                $requestHandler->add($middlewareData[0]);
+                $requestHandler->use($middlewareData[0]);
             }
         } else {
             $requestHandler = $this->container->get($requestData[0]);

@@ -88,7 +88,7 @@ class MiddlewareQueue implements MiddlewareQueueInterface, RequestHandlerInterfa
      * @param array            $requestAttributes
      * @param int|float|string $priority
      */
-    public function add(string $middleware, array $requestAttributes = [], $priority = 0): void // TODO: priority functionality
+    public function use(string $middleware, array $requestAttributes = [], $priority = 0): void // TODO: priority functionality
     {
         if ($this->lastHandler) {
             $this->lastHandler = &$this->lastHandler->nextHandler;

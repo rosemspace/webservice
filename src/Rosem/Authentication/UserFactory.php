@@ -2,8 +2,10 @@
 
 namespace Rosem\Authentication;
 
-use Rosem\Psr\Authentication\UserFactoryInterface;
-use Rosem\Psr\Authentication\UserInterface;
+use Rosem\Psr\Authentication\{
+    UserFactoryInterface, UserInterface
+};
+use function call_user_func;
 
 /**
  * Generic implementation of UserInterface.
@@ -13,8 +15,44 @@ use Rosem\Psr\Authentication\UserInterface;
  */
 final class UserFactory implements UserFactoryInterface
 {
-    public function createUser(string $identity, array $roles = [], array $details = []): UserInterface
+    /**
+     * The function to get user roles by a username.
+     *
+     * @var callable
+     */
+    private $userRolesResolver;
+
+    /**
+     * The function to get user details by a username.
+     *
+     * @var callable
+     */
+    private $userDetailsResolver;
+
+    /**
+     * UserFactory constructor.
+     *
+     * @param callable|null $userRolesResolver
+     * @param callable|null $userDetailsResolver
+     */
+    public function __construct(
+        ?callable $userRolesResolver = null,
+        ?callable $userDetailsResolver = null
+    ) {
+        $this->userRolesResolver = $userRolesResolver ?: function () {
+            return [];
+        };
+        $this->userDetailsResolver = $userDetailsResolver ?: function () {
+            return [];
+        };
+    }
+
+    public function createUser(string $identity): UserInterface
     {
-        return new User($identity, $roles, $details);
+        return new User(
+            $identity,
+            call_user_func($this->userRolesResolver, $identity),
+            call_user_func($this->userDetailsResolver, $identity)
+        );
     }
 }

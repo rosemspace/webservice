@@ -2,8 +2,15 @@
 
 namespace Rosem\Psr\Authentication;
 
-interface UserInterface extends IdentityInterface
+interface UserInterface
 {
+    /**
+     * Get the unique user identity (id, username, email address or ...)
+     *
+     * @return string
+     */
+    public function getIdentity(): string;
+
     /**
      * Get all user roles
      *

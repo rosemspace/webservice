@@ -11,25 +11,22 @@ use Rosem\Psr\Container\ServiceProviderInterface;
 use Rosem\Psr\Http\Server\MiddlewareQueueInterface;
 use Rosem\Psr\Template\TemplateRendererInterface;
 
-class AuthenticationProvider implements ServiceProviderInterface
+class AuthenticationServiceProvider implements ServiceProviderInterface
 {
     public const CONFIG_SYMMETRIC_KEY = 'auth.symmetricKey';
 
     public const CONFIG_USER_RESOLVER_PASSWORD = 'auth.user.resolver.password';
 
-    public const CONFIG_USER_RESOLVER_ROLES = 'auth.user.resolver.roles';
+    public const CONFIG_PARAMETER_IDENTITY = 'auth.parameter.identity';
 
-    public const CONFIG_USER_RESOLVER_DETAILS = 'auth.user.resolver.details';
+    public const CONFIG_PARAMETER_PASSWORD = 'auth.parameter.password';
 
     public const CONFIG_URI_LOGIN = 'auth.uri.login';
 
+    public const CONFIG_URI_LOGGED_IN = 'auth.uri.loggedIn';
+
     /**
-     * Returns a list of all container entries registered by this service provider.
-     * - the key is the entry name
-     * - the value is a callable that will return the entry, aka the **factory**
-     * Factories have the following signature:
-     *        function(\Psr\Container\ContainerInterface $container)
-     * @return callable[]
+     * {@inheritdoc}
      */
     public function getFactories(): array
     {
@@ -42,21 +39,17 @@ class AuthenticationProvider implements ServiceProviderInterface
                     return ['roshe' => '1234'][$username] ?? null;
                 };
             },
-            static::CONFIG_USER_RESOLVER_ROLES => function () {
-                return function (string $username) {
-                    return ['admin'];
-                };
+            static::CONFIG_PARAMETER_IDENTITY => function () {
+                return 'username';
             },
-            static::CONFIG_USER_RESOLVER_DETAILS => function () {
-                return function (string $username) {
-                    return ['username' => $username];
-                };
+            static::CONFIG_PARAMETER_PASSWORD => function () {
+                return 'password';
             },
             static::CONFIG_URI_LOGIN => function () {
                 return '/login';
             },
-            UserFactoryInterface::class => function () {
-                return new UserFactory();
+            static::CONFIG_URI_LOGGED_IN => function () {
+                return '/';
             },
             SessionMiddleware::class => function (ContainerInterface $container) {
 //                return SessionMiddleware::fromSymmetricKeyDefaults(
@@ -84,17 +77,7 @@ class AuthenticationProvider implements ServiceProviderInterface
     }
 
     /**
-     * Returns a list of all container entries extended by this service provider.
-     * - the key is the entry name
-     * - the value is a callable that will return the modified entry
-     * Callables have the following signature:
-     *        function(Psr\Container\ContainerInterface $container, $previous)
-     *     or function(Psr\Container\ContainerInterface $container, $previous = null)
-     * About factories parameters:
-     * - the container (instance of `Psr\Container\ContainerInterface`)
-     * - the entry to be extended. If the entry to be extended does not exist and the parameter is nullable, `null`
-     * will be passed.
-     * @return callable[]
+     * {@inheritdoc}
      */
     public function getExtensions(): array
     {
@@ -111,7 +94,7 @@ class AuthenticationProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 MiddlewareQueueInterface $middlewareQueue
             ) {
-                $middlewareQueue->add(SessionMiddleware::class);
+                $middlewareQueue->use(SessionMiddleware::class);
             },
         ];
     }
@@ -122,9 +105,10 @@ class AuthenticationProvider implements ServiceProviderInterface
             $container->get(ResponseFactoryInterface::class),
             $container->get(UserFactoryInterface::class),
             $container->get(static::CONFIG_USER_RESOLVER_PASSWORD),
-            $container->get(static::CONFIG_USER_RESOLVER_ROLES),
-            $container->get(static::CONFIG_USER_RESOLVER_DETAILS),
-            $container->get(static::CONFIG_URI_LOGIN)
+            $container->get(static::CONFIG_PARAMETER_IDENTITY),
+            $container->get(static::CONFIG_PARAMETER_PASSWORD),
+            $container->get(static::CONFIG_URI_LOGIN),
+            $container->get(static::CONFIG_URI_LOGGED_IN)
         );
     }
 }
