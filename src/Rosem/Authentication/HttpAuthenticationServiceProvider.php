@@ -27,9 +27,8 @@ class HttpAuthenticationServiceProvider implements ServiceProviderInterface
                 return 'digest';
             },
             static::CONFIG_USER_RESOLVER_PASSWORD => function () {
-//                return null;
                 return function (string $username): ?string {
-                    return ['roshe' => '1111'][$username] ?? null;
+                    return ['admin' => 'admin'][$username] ?? null;
                 };
             },
             BasicAuthenticationMiddleware::class => function (ContainerInterface $container) {

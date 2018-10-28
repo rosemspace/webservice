@@ -36,7 +36,7 @@ class AuthenticationServiceProvider implements ServiceProviderInterface
             },
             static::CONFIG_USER_RESOLVER_PASSWORD => function () {
                 return function (string $username): ?string {
-                    return ['roshe' => '1234'][$username] ?? null;
+                    return ['admin' => 'admin'][$username] ?? null;
                 };
             },
             static::CONFIG_PARAMETER_IDENTITY => function () {

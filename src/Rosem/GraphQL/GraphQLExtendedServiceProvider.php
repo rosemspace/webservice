@@ -3,7 +3,6 @@
 namespace Rosem\GraphQL;
 
 use Psr\Container\ContainerInterface;
-use Rosem\Psr\Config\ConfigInterface;
 use Rosem\Psr\Environment\EnvironmentInterface;
 use Rosem\Psr\Http\Server\MiddlewareDispatcherInterface;
 
@@ -32,7 +31,7 @@ class GraphQLExtendedServiceProvider extends GraphQLServiceProvider
     {
         return new GraphQLMiddleware(
             $this->createGraphQLServer($container),
-            $container->get(ConfigInterface::class)->get(static::CONFIG_URI, '/graphql'),
+            $container->get(static::CONFIG_URI),
             $container->get(EnvironmentInterface::class)->isDevelopmentMode()
         );
     }

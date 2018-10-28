@@ -16,12 +16,6 @@ return [
             'title_suffix' => '',
         ],
     ],
-    'webservice' => [
-        'paths' => [
-            'root'   => getenv('WEBSERVICE_ROOT_PATH'),
-            'public' => getenv('WEBSERVICE_PUBLIC_PATH'),
-        ],
-    ],
     'database'   => [
         'driver'    => getenv('DATABASE_DRIVER', 'mysql'),
         'host'      => getenv('DATABASE_HOST', 'localhost'),

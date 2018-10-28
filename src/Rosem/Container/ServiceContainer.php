@@ -3,22 +3,12 @@
 namespace Rosem\Container;
 
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Rosem\Container\Exception;
 use Rosem\Psr\Container\ServiceProviderInterface;
 
-class Container implements ContainerInterface
+class ServiceContainer extends AbstractContainer
 {
-    /**
-     * @var DefinitionProxy[]
-     */
-    protected $definitions;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $delegate;
-
     /**
      * Container constructor.
      *
@@ -69,13 +59,39 @@ class Container implements ContainerInterface
         }
     }
 
-    public function set(string $id, $factory): void
+    /**
+     * Create container instance from array configuration.
+     *
+     * @param array $definitions
+     *
+     * @return self
+     * @throws Exception\ContainerException
+     */
+    public static function fromArray(array $definitions): self
     {
-        $placeholder = &$this->definitions[$id];
-        $placeholder = new DefinitionProxy($this, $placeholder, $factory);
+        return new static($definitions);
     }
 
-    public function extend(string $id, $factory): void
+    /**
+     * Create container instance from file configuration.
+     *
+     * @param string $filename
+     *
+     * @return self
+     * @throws Exception\ContainerException
+     * @throws \Exception
+     */
+    public static function fromFile(string $filename): self
+    {
+        return self::fromArray(self::getConfigurationFromFile($filename));
+    }
+
+    protected function set(string $id, $factory): void
+    {
+        $this->definitions[$id] = new Definition($this, $factory);
+    }
+
+    protected function extend(string $id, $factory): void
     {
         $this->definitions[$id]->extend($factory);
     }
@@ -92,33 +108,19 @@ class Container implements ContainerInterface
     public function get($id)
     {
         if ($this->has($id)) {
-            return $this->definitions[$id]->get();
+            $definition = $this->definitions[$id];
+
+            if ($definition instanceof Definition) {
+                return $this->definitions[$id] = $definition->create();
+            }
+
+            return $definition;
         }
 
         if ($this->delegate) {
             return $this->delegate->get($id);
         }
 
-        throw new Exception\NotFoundException("$id definition not found.");
-    }
-
-    /**
-     * Returns true if the container can return an entry for the given identifier.
-     * Returns false otherwise.
-     * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
-     * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
-     *
-     * @param string $id Identifier of the entry to look for.
-     *
-     * @return bool
-     */
-    public function has($id)
-    {
-        return isset($this->definitions[$id]);
-    }
-
-    public function delegate(ContainerInterface $delegate): void
-    {
-        $this->delegate = $delegate;
+        return Exception\NotFoundException::notFound($id);
     }
 }

@@ -4,6 +4,9 @@ namespace Rosem\Route;
 
 class Regex
 {
+    public const REGEX_GROUP = '/(?:\(\?\(|\[[^\]\\\\]*(?:\\\\.[^\]\\\\]*)*\]|\\\\.)(*SKIP)(*FAIL)|'
+    . '(?<!\(\?\(DEFINE\))\((?!\?(?!<(?![!=])|P<|\')|\*)/';
+
     public const PREG_STATUS_PHRASES = [
         PREG_NO_ERROR => 'No errors',
         PREG_INTERNAL_ERROR => 'There was an internal PCRE error',
@@ -35,7 +38,6 @@ class Regex
 
     public function hasCapturingGroups(): bool
     {
-        return (bool)preg_match('/(?:\(\?\(|\[[^\]\\\\]*(?:\\\\.[^\]\\\\]*)*\]|\\\\.)(*SKIP)(*FAIL)|'
-            . '(?<!\(\?\(DEFINE\))\((?!\?(?!<(?![!=])|P<|\')|\*)/', $this->regex);
+        return (bool)preg_match(self::REGEX_GROUP, $this->regex);
     }
 }

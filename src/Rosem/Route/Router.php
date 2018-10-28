@@ -23,8 +23,8 @@ class Router extends Collector implements RouteDispatcherInterface
      */
     public function __construct(int $routeCountPerRegex = PHP_INT_MAX)
     {
-//        parent::__construct(new Compiler(new Parser()), new MarkBasedDataGenerator($routeCountPerRegex));
-        parent::__construct(new Compiler(new Parser()), new StringNumberBasedDataGenerator());
+        parent::__construct(new Compiler(new Parser()), new MarkBasedDataGenerator($routeCountPerRegex));
+//        parent::__construct(new Compiler(new Parser()), new StringNumberBasedDataGenerator());
 //        parent::__construct(new Compiler(new Parser()), new GroupCountBasedDataGenerator());
 
 //        $this->regexBasedDispatcher = new MarkBasedDispatcher();

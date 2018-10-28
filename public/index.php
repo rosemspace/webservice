@@ -13,7 +13,9 @@ ini_set('display_startup_errors', 'true');
 error_reporting(E_ALL);
 
 //$_SERVER['REQUEST_METHOD'] = 'POST';
-//$_SERVER['REQUEST_URI'] = '/graphql';
+//$_POST['username'] = 'admin';
+//$_POST['password'] = 'admin';
+//$_SERVER['REQUEST_URI'] = '/admin/login';
 
 /*
 |--------------------------------------------------------------------------

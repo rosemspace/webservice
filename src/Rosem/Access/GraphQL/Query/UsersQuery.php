@@ -34,7 +34,7 @@ class UsersQuery extends AbstractQuery
     public function resolve($source, $args, $container, ResolveInfo $info)
     {
         /** @var ContainerInterface $container $users */
-        $users = $container->get(\Spot\Locator::class)->mapper(\Rosem\User\Database\Entity\UserEntity::class)->all();
+        $users = $container->get(\Spot\Locator::class)->mapper(\Rosem\User\DataSource\UserEntity::class)->all();
 
 //        foreach ($users as $user) {
 //            var_dump($user->getFirstName());

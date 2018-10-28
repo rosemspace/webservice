@@ -32,8 +32,18 @@
 //die;
 
 //conception
-$container = new \Rosem\Container\Container(include __DIR__ . '/config/service_providers.php'); //TODO: file exception
-//$container->set(\Psrnext\App\AppInterface::class, [\Psrnext\App\AppFactoryInterface::class, 'create']);
+$environment = new \Rosem\Environment\Environment(
+    dirname((PHP_SAPI !== 'cli-server' ? getcwd() : $_SERVER['DOCUMENT_ROOT']))
+);
+$environment->load();
+$container = new \Rosem\Container\ConfigurationContainer(array_merge_recursive(
+    \Rosem\Container\ConfigurationContainer::getConfigurationFromFile(__DIR__ . '/config/app.php'), [
+    \Rosem\Psr\Environment\EnvironmentInterface::class => $environment,
+    'app' => [
+        'startTime' => microtime(true),
+    ],
+]));
+$container->delegate(\Rosem\Container\ServiceContainer::fromFile(__DIR__ . '/config/service_providers.php'));
 $container->get(\Rosem\Psr\Http\Server\MiddlewareDispatcherInterface::class)->boot();
 //var_dump($container);
 
