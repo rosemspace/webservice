@@ -38,7 +38,9 @@ return [
         ],
     ],
     'admin'      => [
-        'uri'              => 'admin',
+        'uri'              => [
+            'loggedIn' => 'admin',
+        ],
         'meta'             => [
             'title_prefix' => '${app.name} Admin | ',
             'title'        => 'Dashboard',

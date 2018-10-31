@@ -32,18 +32,18 @@
 //die;
 
 //conception
-$environment = new \Rosem\Environment\Environment(
-    dirname((PHP_SAPI !== 'cli-server' ? getcwd() : $_SERVER['DOCUMENT_ROOT']))
-);
+$baseDir = PHP_SAPI !== 'cli-server' ? __DIR__ : dirname($_SERVER['DOCUMENT_ROOT']);
+$environment = new \Rosem\Environment\Environment($baseDir);
 $environment->load();
 $container = new \Rosem\Container\ConfigurationContainer(array_merge_recursive(
     \Rosem\Container\ConfigurationContainer::getConfigurationFromFile(__DIR__ . '/config/app.php'), [
     \Rosem\Psr\Environment\EnvironmentInterface::class => $environment,
     'app' => [
+        'baseDir' => $baseDir,
         'startTime' => microtime(true),
     ],
 ]));
-$container->delegate(\Rosem\Container\ServiceContainer::fromFile(__DIR__ . '/config/service_providers.php'));
+$container->delegate(\Rosem\Container\ServiceContainer::fromFile(__DIR__ . '/config/service-providers.php'));
 $container->get(\Rosem\Psr\Http\Server\MiddlewareDispatcherInterface::class)->boot();
 //var_dump($container);
 

@@ -2,10 +2,12 @@
 
 namespace Rosem\Access\GraphQL\Query;
 
+use Doctrine\ORM\EntityManager;
 use GraphQL\Type\Definition\ResolveInfo;
 use Psr\Container\ContainerInterface;
 use Rosem\Psr\GraphQL\{
-    AbstractQuery, TypeRegistryInterface
+    AbstractQuery,
+    TypeRegistryInterface
 };
 use Rosem\Access\GraphQL\Type\UserType;
 
@@ -26,21 +28,17 @@ class UsersQuery extends AbstractQuery
     public function getBaseArguments(TypeRegistryInterface $registry): array
     {
         return [
-            'id'    => $registry->id(),
+            'id' => $registry->id(),
             'email' => $registry->string(),
         ];
     }
 
     public function resolve($source, $args, $container, ResolveInfo $info)
     {
-        /** @var ContainerInterface $container $users */
-        $users = $container->get(\Spot\Locator::class)->mapper(\Rosem\User\DataSource\UserEntity::class)->all();
-
-//        foreach ($users as $user) {
-//            var_dump($user->getFirstName());
-//        }
-
-//        var_dump($users[0]->getFirstName()); die;
+        /** @var ContainerInterface $container */
+        $users = $container->get(EntityManager::class)
+            ->getRepository(\Rosem\Access\Entity\User::class)
+            ->findAll();
 
         return $users;
     }

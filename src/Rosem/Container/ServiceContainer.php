@@ -19,6 +19,7 @@ class ServiceContainer extends AbstractContainer
      */
     public function __construct(iterable $serviceProviders)
     {
+        parent::__construct();
         AbstractFacade::registerContainer($this);
 
         /** @var ServiceProviderInterface[] $serviceProviderInstances */
@@ -88,7 +89,7 @@ class ServiceContainer extends AbstractContainer
 
     protected function set(string $id, $factory): void
     {
-        $this->definitions[$id] = new Definition($this, $factory);
+        $this->definitions[$id] = new Definition($factory);
     }
 
     protected function extend(string $id, $factory): void
@@ -111,7 +112,7 @@ class ServiceContainer extends AbstractContainer
             $definition = $this->definitions[$id];
 
             if ($definition instanceof Definition) {
-                return $this->definitions[$id] = $definition->create();
+                return $this->definitions[$id] = $definition->create($this->delegator);
             }
 
             return $definition;

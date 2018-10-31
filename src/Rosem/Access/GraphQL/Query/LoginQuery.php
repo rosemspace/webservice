@@ -2,7 +2,10 @@
 
 namespace Rosem\Access\GraphQL\Query;
 
+use Doctrine\ORM\EntityManager;
 use GraphQL\Type\Definition\ResolveInfo;
+use Psr\Container\ContainerInterface;
+use Rosem\Access\Entity\User;
 use Rosem\Psr\GraphQL\AbstractQuery;
 use Rosem\Psr\GraphQL\TypeRegistryInterface;
 use Rosem\Access\GraphQL\Type\UserType;
@@ -22,17 +25,18 @@ class LoginQuery extends AbstractQuery
         return $registry->nonNull($registry->get(UserType::class));
     }
 
-    public function resolve($source, $args, $context, ResolveInfo $resolveInfo)
+    public function resolve($source, $args, $container, ResolveInfo $resolveInfo)
     {
-        $users = ['roshe' => '1234'];
+        if (isset($args['username'])) {
+            /** @var ContainerInterface $container */
+            /** @var User? $user */
+            $user = $container->get(EntityManager::class)
+                ->getRepository(\Rosem\Access\Entity\User::class)
+                ->findOneBy(['email' => $args['username']]);
 
-        if (isset($users[$args['username']]) && $users[$args['username']] === $args['password']) {
-            return [
-                'id' => '1',
-                'firstName' => 'Roman',
-                'lastName' => 'Shevchenko',
-                'email' => 'iroman.via@gmail.com',
-            ];
+            if (null !== $user && $user->getPassword() === $args['password']) {
+                return $user;
+            }
         }
 
         return null;

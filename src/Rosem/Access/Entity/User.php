@@ -27,6 +27,11 @@ class User
      */
     protected $lastName;
 
+    /**
+     * @var string
+     */
+    protected $password;
+
     public function getId(): int
     {
         return $this->id;
@@ -62,6 +67,16 @@ class User
         $this->lastName = $lastName;
     }
 
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
     /**
      * @param ClassMetadata $metadata
      */
@@ -71,6 +86,7 @@ class User
         $builder->createField('id', 'integer')->makePrimaryKey()->generatedValue()->build()
             ->addField('email', 'string')
             ->addField('firstName', 'string')
-            ->addField('lastName', 'string');
+            ->addField('lastName', 'string')
+            ->addField('password', 'string');
     }
 }

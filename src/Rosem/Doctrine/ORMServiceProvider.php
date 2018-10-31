@@ -1,11 +1,10 @@
 <?php
 
-namespace Rosem\Doctrine\Provider;
+namespace Rosem\Doctrine;
 
 use Doctrine\Common\Cache\ApcuCache;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver;
-use Doctrine\Common\Proxy\AbstractProxyFactory;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
@@ -20,9 +19,9 @@ class ORMServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            'ormEntityPaths'   => function (): array {
+            'ormEntityPaths'   => function (ContainerInterface $container): array {
                 return [
-                    getcwd() . '/../app/Rosem/Access/Entity' //TODO: move into Access lib
+                    $container->get('app.baseDir') . '/src/Rosem/Access/Entity' //TODO: improve
                 ];
             },
             EntityManager::class => function (ContainerInterface $container) {
@@ -52,7 +51,6 @@ class ORMServiceProvider implements ServiceProviderInterface
                         $dbConfig['driver'] = 'pdo_mysql';
                     }
 
-                    $ormConfig->setAutoGenerateProxyClasses(AbstractProxyFactory::AUTOGENERATE_EVAL);
                     $cache = new ArrayCache;
                 } else {
                     $cache = new ApcuCache;

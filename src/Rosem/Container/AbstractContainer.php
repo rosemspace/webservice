@@ -17,7 +17,17 @@ abstract class AbstractContainer implements ContainerInterface
     /**
      * @var ContainerInterface
      */
+    protected $delegator;
+
+    /**
+     * @var ContainerInterface
+     */
     protected $delegate;
+
+    public function __construct()
+    {
+        $this->delegator = $this;
+    }
 
     /**
      * @param string $filePath
@@ -81,8 +91,9 @@ abstract class AbstractContainer implements ContainerInterface
         return isset($this->definitions[$id]);
     }
 
-    public function delegate(ContainerInterface $delegate): void
+    public function delegate(self $delegate): void
     {
+        $delegate->delegator = $this;
         $this->delegate = $delegate;
     }
 }

@@ -11,7 +11,7 @@ return [
     Rosem\App\AppServiceProvider::class, // add any route
     Rosem\GraphQL\GraphQLServiceProvider::class,
     Rosem\Access\Provider\AccessServiceProvider::class,
-    Rosem\Database\DatabaseServiceProvider::class,
+    Rosem\Doctrine\ORMServiceProvider::class,
     //    Rosem\Doctrine\Provider\ORMServiceProvider::class,
     //    Rosem\Atlas\Provider\AtlasServiceProvider::class,
 ];

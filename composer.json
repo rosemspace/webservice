@@ -1,69 +1,72 @@
 {
-    "name": "rosem/webservice",
-    "description": "Yet another Web Framework",
-    "keywords": ["framework"],
-    "license": "MIT",
-    "type": "project",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "authors": [
-        {
-            "name": "ma1oy",
-            "email": "iroman.via@gmail.com",
-            "homepage": "https://ma1oy.github.io",
-            "role": "lead"
-        }
-    ],
-    "require": {
-        "roave/security-advisories": "dev-master",
-        "danielstjules/stringy": "~3.1",
-        "fig/http-message-util": "^1.1",
-        "filp/whoops": "^2.1",
-        "kint-php/kint": "^2.0",
-        "league/flysystem": "^1.0",
-        "league/plates": "dev-master",
-        "monolog/monolog": "^1.23",
-        "nesbot/carbon": "^1.23",
-        "nikic/fast-route": "^1.3",
-        "ocramius/psr7-csrf": "^2.0",
-        "php": ">=7.1.0",
-        "psr/container": "^1.0",
-        "psr/http-factory": "^1.0",
-        "psr7-sessions/storageless": "^4.0",
-        "robmorgan/phinx": "^0.9",
-        "symfony/finder": "^4.0",
-        "tedivm/stash": "0.14.*",
-        "tijsverkoyen/css-to-inline-styles": "^2.2",
-        "vlucas/spot2": "^2.2",
-        "vlucas/phpdotenv": "^2.5",
-        "webonyx/graphql-php": "^0.11",
-        "zendframework/zend-diactoros": "^1.7"
-    },
-    "replace": {
-        "rosem/psr-environment": "self.version",
-        "rosem/environment": "self.version"
-    },
-    "require-dev": {
-        "roave/security-advisories": "dev-master",
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "^6.5",
-        "symfony/css-selector": "3.1.*",
-        "symfony/dom-crawler": "3.1.*",
-        "squizlabs/php_codesniffer": "~2.3"
-    },
-    "autoload": {
-        "psr-4": {
-            "Rosem\\": "src/Rosem",
-            "Rosem\\Psr\\": "src/Psr"
-        },
-        "exclude-from-classmap": [
-            "**/Tests/"
-        ],
-        "files": ["src/Rosem/String/functions.php"]
-    },
-    "autoload-dev": {
-        "classmap": [
-        ]
+  "name": "rosem/webservice",
+  "description": "Yet another Web Framework",
+  "keywords": [
+    "framework"
+  ],
+  "license": "MIT",
+  "type": "project",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "ma1oy",
+      "email": "iroman.via@gmail.com",
+      "homepage": "https://ma1oy.github.io",
+      "role": "lead"
     }
+  ],
+  "require": {
+    "danielstjules/stringy": "~3.1",
+    "doctrine/orm": "^2.6",
+    "fig/http-message-util": "^1.1",
+    "filp/whoops": "^2.1",
+    "kint-php/kint": "^2.0",
+    "league/flysystem": "^1.0",
+    "league/plates": "dev-master",
+    "monolog/monolog": "^1.23",
+    "nesbot/carbon": "^1.23",
+    "nikic/fast-route": "^1.3",
+    "ocramius/psr7-csrf": "^2.0",
+    "php": ">=7.1.0",
+    "psr/container": "^1.0",
+    "psr/http-factory": "^1.0",
+    "psr7-sessions/storageless": "^4.0",
+    "roave/security-advisories": "dev-master",
+    "symfony/finder": "^4.0",
+    "tedivm/stash": "0.14.*",
+    "tijsverkoyen/css-to-inline-styles": "^2.2",
+    "vlucas/phpdotenv": "^2.5",
+    "webonyx/graphql-php": "^0.11",
+    "zendframework/zend-diactoros": "^1.7"
+  },
+  "replace": {
+    "rosem/psr-environment": "self.version",
+    "rosem/environment": "self.version"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "fzaninotto/faker": "~1.4",
+    "mockery/mockery": "0.9.*",
+    "phpunit/phpunit": "^6.5",
+    "symfony/css-selector": "3.1.*",
+    "symfony/dom-crawler": "3.1.*",
+    "squizlabs/php_codesniffer": "~2.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Rosem\\": "src/Rosem",
+      "Rosem\\Psr\\": "src/Psr"
+    },
+    "exclude-from-classmap": [
+      "**/Tests/"
+    ],
+    "files": [
+      "src/Rosem/String/functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "classmap": [
+    ]
+  }
 }

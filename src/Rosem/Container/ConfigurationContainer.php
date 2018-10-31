@@ -38,6 +38,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      */
     public function __construct(array $definitions = [], string $delimiter = '.')
     {
+        parent::__construct();
         $this->definitions = $definitions;
         $this->delimiter = $delimiter;
     }

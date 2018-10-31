@@ -16,9 +16,9 @@ class Definition
      */
     private $extendingFactories = [];
 
-    public function __construct(ContainerInterface $container, $factory)
+    public function __construct($factory)
     {
-        $this->initializingFactory = function () use (&$container, &$factory) {
+        $this->initializingFactory = function (ContainerInterface $container) use (&$factory) {
             if (\is_array($factory) && \is_string(reset($factory))) {
                 $factory[key($factory)] = $container->get(reset($factory));
             }
@@ -33,9 +33,9 @@ class Definition
         };
     }
 
-    public function create()
+    public function create(ContainerInterface $container)
     {
-        return \call_user_func($this->initializingFactory);
+        return \call_user_func($this->initializingFactory, $container);
     }
 
     public function extend($factory): void

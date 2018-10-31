@@ -1,13 +1,13 @@
 <?php
 
-namespace Rosem\Atlas\Provider;
+namespace Rosem\Atlas;
 
 use Atlas\Orm\Atlas;
 use Psr\Container\ContainerInterface;
 use Rosem\Psr\Container\ServiceProviderInterface;
 use Rosem\Psr\Environment\EnvironmentInterface;
 
-class AtlasServiceProvider implements ServiceProviderInterface
+class ORMServiceProvider implements ServiceProviderInterface
 {
     public function getFactories() : array
     {

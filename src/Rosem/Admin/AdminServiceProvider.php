@@ -106,8 +106,10 @@ class AdminServiceProvider implements ServiceProviderInterface
                     ->middleware($adminAuthenticationMiddlewareExtension);
                 $routeCollector->post($loginUri, LoginRequestHandler::class)
                     ->middleware($adminAuthenticationMiddlewareExtension);
-                $routeCollector->get($loggedInUri . '{adminRelativePath:.*}', AdminRequestHandler::class)
-                    ->middleware($adminAuthenticationMiddlewareExtension);
+                $routeCollector->get(
+                    $loggedInUri . '{adminRelativePath:.*}',
+                    AdminRequestHandler::class
+                )->middleware($adminAuthenticationMiddlewareExtension);
             },
             TemplateRendererInterface::class => function (
                 ContainerInterface $container,

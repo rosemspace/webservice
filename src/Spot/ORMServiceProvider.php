@@ -1,12 +1,12 @@
 <?php
 
-namespace Rosem\Database;
+namespace Rosem\Spot;
 
 use Psr\Container\ContainerInterface;
 use Rosem\Psr\Container\ServiceProviderInterface;
 use Rosem\Psr\Environment\EnvironmentInterface;
 
-class DatabaseServiceProvider implements ServiceProviderInterface
+class ORMServiceProvider implements ServiceProviderInterface
 {
     /**
      * Returns a list of all container entries registered by this service provider.
