@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\App\Http\Server;
+namespace Rosem\Http\Server;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -48,7 +48,7 @@ class InternalServerErrorRequestHandler implements RequestHandlerInterface
         $body = $response->getBody();
 
         if ($body->isWritable()) {
-            $viewString = $this->view->render('app::500', $this->config);
+            $viewString = $this->view->render('server::500', $this->config);
 
             if ($viewString) {
                 $body->write($viewString);

@@ -12,7 +12,7 @@ use Psr\Http\Server\{
     RequestHandlerInterface};
 use Rosem\Http\Server\{
     CallableBasedMiddleware,
-    MiddlewareDispatcher};
+    MiddlewareCollector};
 
 class HandleRequestMiddleware implements MiddlewareInterface
 {
@@ -68,7 +68,7 @@ class HandleRequestMiddleware implements MiddlewareInterface
         $requestData = $request->getAttribute($this->handlerAttribute);
 
         if (!empty($requestData[static::KEY_MIDDLEWARE])) {
-            $requestHandler = new MiddlewareDispatcher(
+            $requestHandler = new MiddlewareCollector(
                 $this->container,
                 $this->container->get($requestData[static::KEY_HANDLER_OR_ALLOWED_METHODS])
             );

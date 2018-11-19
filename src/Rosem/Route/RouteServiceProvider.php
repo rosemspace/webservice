@@ -3,31 +3,33 @@
 namespace Rosem\Route;
 
 use Psr\Container\ContainerInterface;
-use Rosem\Psr\Container\ServiceProviderInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Rosem\Psr\Http\Server\MiddlewareDispatcherInterface;
-use Rosem\Psr\Route\RouteCollectorInterface;
-use Rosem\Psr\Route\RouteDispatcherInterface;
+use Rosem\Psr\Container\ServiceProviderInterface;
+use Rosem\Psr\Http\Server\MiddlewareCollectorInterface;
+use Rosem\Psr\Route\{
+    RouteCollectorInterface,
+    RouteDispatcherInterface};
 use Rosem\Route\DataGenerator\MarkBasedDataGenerator;
 use Rosem\Route\Dispatcher\MarkBasedDispatcher;
 use Rosem\Route\Http\Server\{
-    HandleRequestMiddleware, RouteMiddleware
-};
+    HandleRequestMiddleware,
+    RouteMiddleware};
 
 class RouteServiceProvider implements ServiceProviderInterface
 {
     /**
      * Returns a list of all container entries registered by this service provider.
+     *
      * @return callable[]
      * @throws \InvalidArgumentException
      */
     public function getFactories(): array
     {
         return [
-            RouteCollectorInterface::class  => [static::class, 'createRouteCollector'],
+            RouteCollectorInterface::class => [static::class, 'createRouteCollector'],
             RouteDispatcherInterface::class => [static::class, 'createRouteDispatcher'],
-            RouteMiddleware::class          => [static::class, 'createRouteMiddleware'],
-            HandleRequestMiddleware::class  => [static::class, 'createHandleRequestMiddleware'],
+            RouteMiddleware::class => [static::class, 'createRouteMiddleware'],
+            HandleRequestMiddleware::class => [static::class, 'createHandleRequestMiddleware'],
         ];
     }
 
@@ -40,12 +42,12 @@ class RouteServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareDispatcherInterface::class => function (
+            MiddlewareCollectorInterface::class => function (
                 ContainerInterface $container,
-                MiddlewareDispatcherInterface $dispatcher
+                MiddlewareCollectorInterface $middlewareCollector
             ) {
-                $dispatcher->use(RouteMiddleware::class);
-                $dispatcher->use(HandleRequestMiddleware::class);
+                $middlewareCollector->use(RouteMiddleware::class);
+                $middlewareCollector->use(HandleRequestMiddleware::class);
             },
         ];
     }
@@ -80,14 +82,16 @@ class RouteServiceProvider implements ServiceProviderInterface
         );
     }
 
-    public function createRouteMiddleware(ContainerInterface $container) {
+    public function createRouteMiddleware(ContainerInterface $container): RouteMiddleware
+    {
         return new RouteMiddleware(
             $container->get(RouteDispatcherInterface::class),
             $container->get(ResponseFactoryInterface::class)
         );
     }
 
-    public function createHandleRequestMiddleware(ContainerInterface $container) {
+    public function createHandleRequestMiddleware(ContainerInterface $container): HandleRequestMiddleware
+    {
         return new HandleRequestMiddleware($container);
     }
 }

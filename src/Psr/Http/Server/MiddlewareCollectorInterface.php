@@ -4,13 +4,12 @@ namespace Rosem\Psr\Http\Server;
 
 use Psr\Http\Server\MiddlewareInterface;
 
-interface MiddlewareDispatcherInterface
+interface MiddlewareCollectorInterface
 {
     /**
      * @param MiddlewareInterface $middleware
-     * @param int|float|string    $priority
      */
-    public function add(MiddlewareInterface $middleware, $priority = 0): void;
+    public function add(MiddlewareInterface $middleware): void;
 
     /**
      * @param string           $middleware

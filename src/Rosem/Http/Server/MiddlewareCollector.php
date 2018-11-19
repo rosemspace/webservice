@@ -5,12 +5,16 @@ namespace Rosem\Http\Server;
 
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
-use Psr\Http\Server\{MiddlewareInterface, RequestHandlerInterface};
-use Rosem\Psr\Http\Server\MiddlewareDispatcherInterface;
+use Psr\Http\Message\{
+    ResponseInterface,
+    ServerRequestInterface};
+use Psr\Http\Server\{
+    MiddlewareInterface,
+    RequestHandlerInterface};
+use Rosem\Psr\Http\Server\MiddlewareCollectorInterface;
 use function call_user_func;
 
-class MiddlewareDispatcher implements MiddlewareDispatcherInterface, RequestHandlerInterface
+class MiddlewareCollector implements MiddlewareCollectorInterface, RequestHandlerInterface
 {
     /**
      * @var ContainerInterface
@@ -137,7 +141,7 @@ class MiddlewareDispatcher implements MiddlewareDispatcherInterface, RequestHand
         }
     }
 
-    public function add(MiddlewareInterface $middleware, $priority = 0): void
+    public function add(MiddlewareInterface $middleware): void
     {
         $this->initializeQueue();
         $this->lastHandler = $this->createRequestHandlerFromMiddleware($middleware);

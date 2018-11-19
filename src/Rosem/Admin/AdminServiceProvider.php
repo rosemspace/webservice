@@ -10,7 +10,7 @@ use Rosem\Admin\Http\Server\{
 use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
 use Rosem\Psr\Container\ServiceProviderInterface;
 use Rosem\Psr\Environment\EnvironmentInterface;
-use Rosem\Psr\Http\Server\MiddlewareDispatcherInterface;
+use Rosem\Psr\Http\Server\MiddlewareCollectorInterface;
 use Rosem\Psr\Route\RouteCollectorInterface;
 use Rosem\Psr\Template\TemplateRendererInterface;
 
@@ -93,10 +93,10 @@ class AdminServiceProvider implements ServiceProviderInterface
                 $loggedInUri = '/' . trim($container->get(static::CONFIG_URI_LOGGED_IN), '/');
                 $loginUri = '/' . trim($container->get(static::CONFIG_URI_LOGIN), '/');
                 $adminAuthenticationMiddlewareExtension = function (
-                    MiddlewareDispatcherInterface $dispatcher,
+                    MiddlewareCollectorInterface $middlewareCollector,
                     ContainerInterface $container
                 ) use (&$loggedInUri, &$loginUri): void {
-                    $dispatcher->add($container->get(AuthenticationMiddleware::class)
+                    $middlewareCollector->add($container->get(AuthenticationMiddleware::class)
                         ->withPasswordResolver($container->get(static::CONFIG_USER_RESOLVER_PASSWORD))
                         ->withLoggedInUri($loggedInUri)
                         ->withLoginUri($loginUri)
@@ -115,7 +115,7 @@ class AdminServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 TemplateRendererInterface $renderer
             ) {
-                $renderer->addPath(__DIR__ . '/resources/templates', 'admin');
+                $renderer->addPath(__DIR__ . '/Resource/templates', 'admin');
                 $adminData = [
                     'metaTitlePrefix' => $container->get('admin.meta.title_prefix'),
                     'metaTitle' => $container->get('admin.meta.title'),

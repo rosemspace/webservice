@@ -1,6 +1,9 @@
 <?php
 
 return [
+    Rosem\Http\Message\MessageFactoryProvider::class,
+    Rosem\Http\Server\EmitterProvider::class,
+    Rosem\Http\Server\MiddlewareServiceProvider::class,
     // FIXME: session provider
     Rosem\Authentication\UserFactoryServiceProvider::class,
     Rosem\Authentication\AuthenticationServiceProvider::class, // add session attr to the request

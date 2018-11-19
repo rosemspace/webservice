@@ -44,7 +44,7 @@ $container = new \Rosem\Container\ConfigurationContainer(array_merge_recursive(
     ],
 ]));
 $container->delegate(\Rosem\Container\ServiceContainer::fromFile(__DIR__ . '/config/service-providers.php'));
-$container->get(\Rosem\Psr\Http\Server\MiddlewareDispatcherInterface::class)->boot();
+$container->get(\Rosem\Psr\Http\Server\MiddlewareRunnerInterface::class)->run();
 //var_dump($container);
 
 //try {

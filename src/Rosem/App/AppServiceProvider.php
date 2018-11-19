@@ -3,24 +3,17 @@
 namespace Rosem\App;
 
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\{
-    ResponseFactoryInterface,
-    ServerRequestFactoryInterface};
+use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\App\Http\Server\{
-    HomeRequestHandler,
-    InternalServerErrorRequestHandler};
+    HomeRequestHandler};
 use Rosem\Environment\Environment;
-use Rosem\Http\Message\{
-    ResponseFactory,
-    ServerRequestFactory};
 use Rosem\Psr\{
-    App\AppFactoryInterface,
     Container\ServiceProviderInterface,
     Environment\EnvironmentInterface,
     Environment\EnvironmentMode,
     Route\RouteCollectorInterface,
     Template\TemplateRendererInterface};
-use Rosem\Psr\Http\Server\MiddlewareDispatcherInterface;
+
 use function dirname;
 
 class AppServiceProvider implements ServiceProviderInterface
@@ -63,31 +56,11 @@ class AppServiceProvider implements ServiceProviderInterface
                 //                return EnvironmentMode::PRODUCTION;
                 return EnvironmentMode::DEVELOPMENT;
             },
-            AppFactoryInterface::class => function () {
-                return new AppFactory;
-            },
-            MiddlewareDispatcherInterface::class => function (ContainerInterface $container) {
-                //                $container->get(AppFactoryInterface::class)->create();
-                return new App($container, $container->get(InternalServerErrorRequestHandler::class));
-            },
             EnvironmentInterface::class => function () {
                 return new Environment($this->baseDirectory);
             },
-            ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
-            ResponseFactoryInterface::class => [static::class, 'createResponseFactory'],
             HomeRequestHandler::class => function (ContainerInterface $container) {
                 return new HomeRequestHandler(
-                    $container->get(ResponseFactoryInterface::class),
-                    $container->get(TemplateRendererInterface::class),
-                    [
-                        'metaTitlePrefix' => $container->get('app.meta.title_prefix'),
-                        'metaTitle' => $container->get('app.meta.title'),
-                        'metaTitleSuffix' => $container->get('app.meta.title_suffix'),
-                    ]
-                );
-            },
-            InternalServerErrorRequestHandler::class => function (ContainerInterface $container) {
-                return new InternalServerErrorRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
                     $container->get(TemplateRendererInterface::class),
                     [
@@ -113,7 +86,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 TemplateRendererInterface $renderer
             ) {
-                $renderer->addPath(__DIR__ . '/resources/templates', 'app');
+                $renderer->addPath(__DIR__ . '/Resource/templates', 'app');
                 $renderer->addGlobalData([
                     'appName' => $container->get('app.name'),
                     'lang' => strtolower($container->get('app.lang')),
@@ -130,15 +103,5 @@ class AppServiceProvider implements ServiceProviderInterface
                 $routeCollector->get('/{appRelativePath.*}', HomeRequestHandler::class);
             },
         ];
-    }
-
-    public function createServerRequestFactory(): ServerRequestFactory
-    {
-        return new ServerRequestFactory;
-    }
-
-    public function createResponseFactory(): ResponseFactory
-    {
-        return new ResponseFactory;
     }
 }
