@@ -1,4 +1,5 @@
 <?php
+//TODO: fix the bug with vars resolving
 
 namespace Rosem\Container;
 
@@ -76,7 +77,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     {
         if (\is_string($value)) {
             $value = preg_replace_callback(self::REGEX_ENV_VAR, function ($matches) {
-                return getenv($matches[1]) ?: $matches[0];
+                return false !== ($envVar = getenv($matches[1])) ? $envVar : $matches[0];
             }, $value);
             $value = preg_replace_callback(self::REGEX_CONFIG_VAR, function ($matches) {
                 if ($this->has($matches[1])) {
