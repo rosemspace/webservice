@@ -4,10 +4,13 @@ namespace Rosem\Container;
 
 use ArrayAccess;
 use Countable;
+use function count;
 
 class ConfigurationContainer extends AbstractContainer implements ArrayAccess, Countable
 {
-    protected const REGEX_VAR = '/\${([a-zA-Z0-9_.-]+)}/';
+    protected const REGEX_CONFIG_VAR = '/\${([a-zA-Z0-9_.-]+)}/';
+
+    protected const REGEX_ENV_VAR = '/^([A-Z]+[A-Z0-9_]*)$/';
 
     /**
      * Last resolved id.
@@ -38,8 +41,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      */
     public function __construct(array $definitions = [], string $delimiter = '.')
     {
-        parent::__construct();
-        $this->definitions = $definitions;
+        parent::__construct($definitions);
         $this->delimiter = $delimiter;
     }
 
@@ -72,8 +74,11 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
 
     protected function replaceVars($value)
     {
-        if (\is_string($value) && strpos($value, '$') !== false) {
-            $value = preg_replace_callback(self::REGEX_VAR, function ($matches) {
+        if (\is_string($value)) {
+            $value = preg_replace_callback(self::REGEX_ENV_VAR, function ($matches) {
+                return getenv($matches[1]) ?: $matches[0];
+            }, $value);
+            $value = preg_replace_callback(self::REGEX_CONFIG_VAR, function ($matches) {
                 if ($this->has($matches[1])) {
                     return $this->get($matches[1]);
                 }
@@ -134,10 +139,10 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      * @return bool
      * @throws Exception\NotFoundException
      */
-    public function has($id)
+    public function has($id): bool
     {
         $path = explode($this->delimiter, $id);
-        $lastIndex = \count($path) - 1;
+        $lastIndex = count($path) - 1;
         $this->currentDefinition = $this->getValue($this->definitions, $path, 0, $lastIndex);
 
         return (bool)$this->currentDefinition;
@@ -179,7 +184,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     public function set(string $id, $value): void
     {
         $path = explode($this->delimiter, $id);
-        $lastIndex = \count($path) - 1;
+        $lastIndex = count($path) - 1;
         $placeholder = &$this->getReference($this->definitions, $path, 0, $lastIndex);
         $placeholder = $value;
     }
@@ -192,7 +197,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      * @return boolean
      * @throws Exception\NotFoundException
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->has($offset);
     }
@@ -236,8 +241,8 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      * @return int The custom count as an integer.
      * The return value is cast to an integer.
      */
-    public function count()
+    public function count(): int
     {
-        return \count($this->definitions);
+        return count($this->definitions);
     }
 }

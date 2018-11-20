@@ -3,11 +3,13 @@
 namespace Rosem\Authentication\Http\Server;
 
 use Psr\Http\Message\{
-    ResponseInterface, ServerRequestInterface
+    ResponseInterface,
+    ServerRequestInterface
 };
 use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Psr\Authentication\{
-    UserFactoryInterface, UserInterface
+    UserFactoryInterface,
+    UserInterface
 };
 use function call_user_func;
 use function count;
@@ -128,7 +130,8 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
             ->withHeader(
                 'WWW-Authenticate',
                 sprintf(
-                    self::AUTHORIZATION_HEADER_PREFIX . ' realm="%s",qop="auth",nonce="%s",opaque="%s"',
+                    self::AUTHORIZATION_HEADER_PREFIX .
+                    ' realm="%s",qop="auth",nonce="%s",opaque="%s"',
                     $realm,
                     $this->nonce,
                     md5($realm)

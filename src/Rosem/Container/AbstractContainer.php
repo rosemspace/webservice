@@ -24,8 +24,9 @@ abstract class AbstractContainer implements ContainerInterface
      */
     protected $delegate;
 
-    public function __construct()
+    public function __construct(array $definitions = [])
     {
+        $this->definitions = $definitions;
         $this->delegator = $this;
     }
 
@@ -45,13 +46,19 @@ abstract class AbstractContainer implements ContainerInterface
                     return $config;
                 }
 
-                throw new \Exception("$filePath configuration file should return an array");
+                throw new Exception\ContainerException(
+                    "$filePath configuration file should return an array"
+                );
             }
 
-            throw new \Exception("$filePath configuration file does not readable");
+            throw new Exception\ContainerException(
+                "$filePath configuration file does not readable"
+            );
         }
 
-        throw new \Exception("$filePath configuration file does not exists");
+        throw new Exception\ContainerException(
+            "$filePath configuration file does not exists"
+        );
     }
 
     /**
@@ -86,7 +93,7 @@ abstract class AbstractContainer implements ContainerInterface
      *
      * @return bool
      */
-    public function has($id)
+    public function has($id): bool
     {
         return isset($this->definitions[$id]);
     }

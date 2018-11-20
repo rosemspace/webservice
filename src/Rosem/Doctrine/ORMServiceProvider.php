@@ -27,7 +27,7 @@ class ORMServiceProvider implements ServiceProviderInterface
             EntityManager::class => function (ContainerInterface $container) {
                 $isDevelopmentMode = $container->get(EnvironmentInterface::class)->isDevelopmentMode();
                 $dbConfig = $container->get('database');
-                $ormConfig = new Configuration;
+                $ormConfig = new Configuration();
                 $ormConfig->setNamingStrategy(new UnderscoreNamingStrategy(CASE_LOWER));
                 $ormConfig->setMetadataDriverImpl(new StaticPHPDriver($container->get('ormEntityPaths')));
                 $ormConfig->setProxyDir(getcwd() . '/../var/database/proxies');
@@ -59,11 +59,17 @@ class ORMServiceProvider implements ServiceProviderInterface
                 $ormConfig->setMetadataCacheImpl($cache);
                 $ormConfig->setQueryCacheImpl($cache);
                 $entityManager = EntityManager::create([
+                    'driver'   => $dbConfig['driver'],
+                    'host'     => $dbConfig['host'],
                     'dbname'   => $dbConfig['name'],
                     'user'     => $dbConfig['username'],
                     'password' => $dbConfig['password'],
-                    'host'     => $dbConfig['host'],
-                    'driver'   => $dbConfig['driver'],
+                    //TODO
+                    //DATABASE_PORT
+                    //DATABASE_CHARSET => 'utf-8'
+                    //DATABASE_ENGINE
+                    //DATABASE_COLLATION => 'utf8_unicode_ci'
+                    //DATABASE_PREFIX => ''
                 ], $ormConfig);
 
                 return $entityManager;

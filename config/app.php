@@ -2,12 +2,12 @@
 
 return [
     'app'        => [
-        'name'      => getenv('APP_NAME'),
-        'env'       => getenv('APP_ENV', 'development'),
+        'name'      => 'APP_NAME',
+        'env'       => 'APP_ENV',
         'lang'      => 'en-US',
         'paths'     => [
-            'root'   => getenv('APP_ROOT_PATH'),
-            'public' => getenv('APP_PUBLIC_PATH'),
+            'root'   => 'APP_ROOT_PATH',
+            'public' => 'APP_PUBLIC_PATH',
         ],
         'meta'      => [
             'charset'      => 'utf-8',
@@ -17,16 +17,16 @@ return [
         ],
     ],
     'database'   => [
-        'driver'    => getenv('DATABASE_DRIVER', 'mysql'),
-        'host'      => getenv('DATABASE_HOST', 'localhost'),
-        'name'      => getenv('DATABASE_NAME', 'rosem'),
-        'username'  => getenv('DATABASE_USERNAME', 'root'),
-        'password'  => getenv('DATABASE_PASSWORD', ''),
-        'port'      => getenv('DATABASE_PORT'),
-        'charset'   => getenv('DATABASE_CHARSET', 'utf-8'),
-        'engine'    => getenv('DATABASE_ENGINE'),
-        'collation' => getenv('DATABASE_COLLATION', 'utf8_unicode_ci'),
-        'prefix'    => getenv('DATABASE_PREFIX', ''),
+        'driver'    => 'DATABASE_DRIVER',
+        'host'      => 'DATABASE_HOST',
+        'name'      => 'DATABASE_NAME',
+        'username'  => 'DATABASE_USERNAME',
+        'password'  => 'DATABASE_PASSWORD',
+        'port'      => 'DATABASE_PORT',
+        'charset'   => 'DATABASE_CHARSET',
+        'engine'    => 'DATABASE_ENGINE',
+        'collation' => 'DATABASE_COLLATION',
+        'prefix'    => 'DATABASE_PREFIX',
     ],
     'graphql'    => [
         'uri'    => '/graphql',
@@ -46,8 +46,12 @@ return [
             'title'        => 'Dashboard',
             'title_suffix' => '',
         ],
-        'username'         => getenv('ADMIN_USERNAME', 'admin'),
-        'password'         => getenv('ADMIN_PASSWORD', 'admin'),
-        'session_lifetime' => getenv('ADMIN_SESSION_LIFETIME', 3000),
+        'user' => [
+            'identity' => 'ADMIN_USER_IDENTITY',
+            'password' => 'ADMIN_USER_PASSWORD',
+        ],
+        'session' => [
+            'lifetime' => 'ADMIN_SESSION_LIFETIME'
+        ],
     ],
 ];

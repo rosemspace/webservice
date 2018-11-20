@@ -14,17 +14,8 @@ use Rosem\Psr\{
     Route\RouteCollectorInterface,
     Template\TemplateRendererInterface};
 
-use function dirname;
-
 class AppServiceProvider implements ServiceProviderInterface
 {
-    protected $baseDirectory;
-
-    public function __construct()
-    {
-        $this->baseDirectory = dirname((PHP_SAPI !== 'cli-server' ? getcwd() : $_SERVER['DOCUMENT_ROOT']));
-    }
-
     /**
      * Returns a list of all container entries registered by this service provider.
      *
@@ -56,8 +47,8 @@ class AppServiceProvider implements ServiceProviderInterface
                 //                return EnvironmentMode::PRODUCTION;
                 return EnvironmentMode::DEVELOPMENT;
             },
-            EnvironmentInterface::class => function () {
-                return new Environment($this->baseDirectory);
+            EnvironmentInterface::class => function (ContainerInterface $container) {
+                return new Environment($container->get('app.baseDir'));
             },
             HomeRequestHandler::class => function (ContainerInterface $container) {
                 return new HomeRequestHandler(

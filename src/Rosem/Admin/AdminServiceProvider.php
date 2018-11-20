@@ -9,7 +9,6 @@ use Rosem\Admin\Http\Server\{
     LoginRequestHandler};
 use Rosem\Authentication\Http\Server\AuthenticationMiddleware;
 use Rosem\Psr\Container\ServiceProviderInterface;
-use Rosem\Psr\Environment\EnvironmentInterface;
 use Rosem\Psr\Http\Server\MiddlewareCollectorInterface;
 use Rosem\Psr\Route\RouteCollectorInterface;
 use Rosem\Psr\Template\TemplateRendererInterface;
@@ -34,12 +33,6 @@ class AdminServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            static::CONFIG_USER_IDENTITY => function (ContainerInterface $container) {
-                return $container->get(EnvironmentInterface::class)->get('ADMIN_IDENTITY');
-            },
-            static::CONFIG_USER_PASSWORD => function (ContainerInterface $container) {
-                return $container->get(EnvironmentInterface::class)->get('ADMIN_PASSWORD');
-            },
             static::CONFIG_USER_RESOLVER_PASSWORD => function (ContainerInterface $container) {
                 return function (string $userIdentity) use (&$container): ?string {
                     return [
@@ -49,7 +42,10 @@ class AdminServiceProvider implements ServiceProviderInterface
                 };
             },
             'admin.meta.title_prefix' => function (ContainerInterface $container) {
-                return ($container->has('app.name') ? $container->get('app.name') . ' ' : '') . 'Admin | ';
+                return ($container->has('app.name')
+                        ? $container->get('app.name') . ' '
+                        : ''
+                    ) . 'Admin | ';
             },
             'admin.meta.title' => function () {
                 return 'Welcome';
