@@ -10,7 +10,6 @@ use Rosem\Environment\Environment;
 use Rosem\Psr\{
     Container\ServiceProviderInterface,
     Environment\EnvironmentInterface,
-    Environment\EnvironmentMode,
     Route\RouteCollectorInterface,
     Template\TemplateRendererInterface};
 
@@ -78,7 +77,7 @@ class AppServiceProvider implements ServiceProviderInterface
                     'appName' => $container->get('app.name'),
                     'lang' => strtolower($container->get('app.lang')),
                     'charset' => strtolower($container->get('app.meta.charset')),
-                    'appEnvironment' => $container->get('app.environment'),
+                    'appMode' => $container->get(EnvironmentInterface::class)->getAppMode(),
                     'metaTitlePrefix' => $container->get('app.meta.title_prefix'),
                     'metaTitleSuffix' => $container->get('app.meta.title_suffix'),
                 ]);
