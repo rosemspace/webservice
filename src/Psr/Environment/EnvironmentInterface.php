@@ -8,7 +8,25 @@ interface EnvironmentInterface
 
     public function get(string $key): string;
 
-    public function getMode(): string;
+    public function getAppMode(): string;
+
+    public function getRootDirectory(): string;
+
+    public function getAppDirectory(): string;
+
+    public function getMediaDirectory(): string;
+
+    public function getTempDirectory(): string;
+
+    public function getCacheDirectory(): string;
+
+    public function getLogDirectory(): string;
+
+    public function getSessionDirectory(): string;
+
+    public function getUploadDirectory(): string;
+
+    public function getExportDirectory(): string;
 
     public function isMaintenanceMode(): bool; // show maintenance page
 

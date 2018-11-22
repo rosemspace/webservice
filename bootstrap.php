@@ -31,17 +31,21 @@
 //echo '</pre>';
 //die;
 
-$container = new \Rosem\Container\ConfigurationContainer(array_merge_recursive(
-    \Rosem\Container\ConfigurationContainer::getConfigurationFromFile(__DIR__ . '/config/app.php'), [
-    'app' => [
-        'baseDir' => PHP_SAPI !== 'cli-server' ? __DIR__ : dirname($_SERVER['DOCUMENT_ROOT']),
-        'startTime' => microtime(true),
-    ],
-]));
-$container->delegate(\Rosem\Container\ServiceContainer::fromFile(__DIR__ . '/config/service-providers.php'));
-$container->get(\Rosem\Psr\Environment\EnvironmentInterface::class)->load();
-$container->get(\Rosem\Psr\Http\Server\MiddlewareRunnerInterface::class)->run();
-//var_dump($container);
+try {
+    $app = \Rosem\Container\ServiceContainer::fromFile(
+        __DIR__ . '/config/service-providers.php'
+    );
+    $app->delegate(
+        \Rosem\Container\ConfigurationContainer::fromFile(
+            __DIR__ . '/config/app.php'
+        )
+    );
+    $app->get(\Rosem\Psr\Environment\EnvironmentInterface::class)->load();
+    $app->get(\Rosem\Psr\Http\Server\MiddlewareRunnerInterface::class)->run();
+} catch (Exception $exception) {
+    echo $exception->getMessage();
+    var_dump($app);
+}
 
 //try {
 //    $app = Rosem\App\AppFactory::create();

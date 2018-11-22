@@ -1,5 +1,4 @@
 <?php
-//TODO: fix the bug with vars resolving
 
 namespace Rosem\Container;
 
@@ -14,18 +13,25 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     protected const REGEX_ENV_VAR = '/^([A-Z]+[A-Z0-9_]*)$/';
 
     /**
+     * Resolve definitions.
+     *
+     * @var mixed[]
+     */
+    protected $resolvedDefinitions = [];
+
+    /**
      * Last resolved id.
      *
      * @var string
      */
-    protected $currentId;
+    protected $lastId;
 
     /**
      * Last resolved definition.
      *
      * @var mixed
      */
-    protected $currentDefinition;
+    protected $lastDefinition;
 
     /**
      * Query string delimiter
@@ -86,6 +92,10 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
 
                 return $matches[0];
             }, $value);
+        } elseif (\is_array($value)) {
+            array_walk($value, function (&$value) {
+                $value = $this->replaceVars($value);
+            });
         }
 
         return $value;
@@ -102,15 +112,33 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      * @return mixed
      * @throws Exception\NotFoundException
      */
-    protected function getValue(array &$array, array &$path, int $offset, int &$lastIndex)
+    protected function getValue(array &$array, array &$path, int $offset, int $lastIndex)
     {
-        $next = &$array[$path[$offset]];
+        $next = $array[$path[$offset]] ?? null;
 
-        if ($next && $offset < $lastIndex) {
+        if (null !== $next && $offset < $lastIndex) {
             return $this->getValue($next, $path, ++$offset, $lastIndex);
         }
 
-        return $next ? $this->replaceVars($next) : null;
+        return $next;
+    }
+
+    /**
+     * Recursively getting value from array by query
+     *
+     * @param array $array
+     * @param int   $offset
+     * @param array $path
+     * @param int   $lastIndex
+     *
+     * @return mixed
+     * @throws Exception\NotFoundException
+     */
+    protected function replaceVarsAndGetValue(array &$array, array &$path, int $offset, int $lastIndex)
+    {
+        $value = $this->getValue($array, $path, $offset, $lastIndex);
+
+        return $value ? $this->replaceVars($value) : null;
     }
 
     /**
@@ -123,15 +151,31 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      *
      * @return mixed
      */
-    protected function &getReference(array &$array, array &$path, int $offset, int &$lastIndex)
+    protected function &getReference(array &$array, array &$path, int $offset, int $lastIndex)
     {
-        $next = &$array[$path[$offset]] ?? [];
+        $next = &$array[$path[$offset]];
+        $next = $next ?? [];
 
         if ($offset < $lastIndex) {
             return $this->getReference($next, $path, ++$offset, $lastIndex);
         }
 
         return $next;
+    }
+
+    /**
+     * Set value.
+     *
+     * @param array $array
+     * @param array $path
+     * @param int   $offset
+     * @param int   $lastIndex
+     * @param mixed $value
+     */
+    protected function setValue(array &$array, array &$path, int $offset, int $lastIndex, $value): void
+    {
+        $placeholder = &$this->getReference($array, $path, $offset, $lastIndex);
+        $placeholder = $value;
     }
 
     /**
@@ -144,9 +188,30 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     {
         $path = explode($this->delimiter, $id);
         $lastIndex = count($path) - 1;
-        $this->currentDefinition = $this->getValue($this->definitions, $path, 0, $lastIndex);
 
-        return (bool)$this->currentDefinition;
+        $this->lastDefinition =
+            $this->getValue($this->resolvedDefinitions, $path, 0, $lastIndex);
+
+        if (null !== $this->lastDefinition) {
+            return $this->lastDefinition;
+        }
+
+        $this->lastDefinition =
+            $this->replaceVarsAndGetValue($this->definitions, $path, 0, $lastIndex);
+
+        if (null !== $this->lastDefinition) {
+            $this->setValue(
+                $this->resolvedDefinitions,
+                $path,
+                0,
+                $lastIndex,
+                $this->lastDefinition
+            );
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -159,14 +224,14 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      */
     public function get($id)
     {
-        if ($this->currentId === $id) {
-            return $this->currentDefinition;
+        if ($this->lastId === $id) {
+            return $this->lastDefinition;
         }
 
-        $this->currentId = $id;
+        $this->lastId = $id;
 
         if ($this->has($id)) {
-            return $this->currentDefinition;
+            return $this->lastDefinition;
         }
 
         if ($this->delegate) {
@@ -185,9 +250,21 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     public function set(string $id, $value): void
     {
         $path = explode($this->delimiter, $id);
-        $lastIndex = count($path) - 1;
-        $placeholder = &$this->getReference($this->definitions, $path, 0, $lastIndex);
-        $placeholder = $value;
+        $this->setValue($this->definitions, $path, 0, count($path) - 1, $value);
+    }
+
+    /**
+     * Extend definitions.
+     *
+     * @param array[] $definitions
+     *
+     * @return self
+     */
+    public function extend(array ...$definitions): self
+    {
+        $this->definitions = array_merge_recursive($this->definitions, ...$definitions);
+
+        return $this;
     }
 
     /**

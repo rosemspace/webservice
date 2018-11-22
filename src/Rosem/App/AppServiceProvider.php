@@ -43,12 +43,8 @@ class AppServiceProvider implements ServiceProviderInterface
             'app.meta.title_suffix' => function () {
                 return '';
             },
-            'app.environment' => function () {
-                //                return EnvironmentMode::PRODUCTION;
-                return EnvironmentMode::DEVELOPMENT;
-            },
-            EnvironmentInterface::class => function (ContainerInterface $container) {
-                return new Environment($container->get('app.baseDir'));
+            EnvironmentInterface::class => function () {
+                return new Environment(\dirname($_SERVER['DOCUMENT_ROOT']));
             },
             HomeRequestHandler::class => function (ContainerInterface $container) {
                 return new HomeRequestHandler(

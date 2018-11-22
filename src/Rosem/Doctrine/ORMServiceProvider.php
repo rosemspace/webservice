@@ -21,7 +21,8 @@ class ORMServiceProvider implements ServiceProviderInterface
         return [
             'ormEntityPaths' => function (ContainerInterface $container): array {
                 return [
-                    $container->get('app.baseDir') . '/src/Rosem/Access/Entity' //TODO: improve
+                    $container->get(EnvironmentInterface::class)->getRootDirectory() .
+                        '/src/Rosem/Access/Entity' //TODO: improve
                 ];
             },
             EntityManager::class => function (ContainerInterface $container) {

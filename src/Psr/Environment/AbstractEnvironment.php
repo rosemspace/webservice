@@ -6,26 +6,26 @@ abstract class AbstractEnvironment implements EnvironmentInterface
 {
     public function isMaintenanceMode(): bool
     {
-        return $this->getMode() === EnvironmentMode::MAINTENANCE;
+        return $this->getAppMode() === EnvironmentMode::MAINTENANCE;
     }
 
     public function isDemoMode(): bool
     {
-        return $this->getMode() === EnvironmentMode::DEMO;
+        return $this->getAppMode() === EnvironmentMode::DEMO;
     }
 
     public function isDevelopmentMode(): bool
     {
-        return $this->getMode() === EnvironmentMode::DEVELOPMENT;
+        return $this->getAppMode() === EnvironmentMode::DEVELOPMENT;
     }
 
     public function isStagingMode(): bool
     {
-        return $this->getMode() === EnvironmentMode::STAGING;
+        return $this->getAppMode() === EnvironmentMode::STAGING;
     }
 
     public function isProductionMode(): bool
     {
-        return $this->getMode() === EnvironmentMode::PRODUCTION;
+        return $this->getAppMode() === EnvironmentMode::PRODUCTION;
     }
 }

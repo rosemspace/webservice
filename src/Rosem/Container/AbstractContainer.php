@@ -17,17 +17,11 @@ abstract class AbstractContainer implements ContainerInterface
     /**
      * @var ContainerInterface
      */
-    protected $delegator;
-
-    /**
-     * @var ContainerInterface
-     */
     protected $delegate;
 
     public function __construct(array $definitions = [])
     {
         $this->definitions = $definitions;
-        $this->delegator = $this;
     }
 
     /**
@@ -100,7 +94,6 @@ abstract class AbstractContainer implements ContainerInterface
 
     public function delegate(self $delegate): void
     {
-        $delegate->delegator = $this;
         $this->delegate = $delegate;
     }
 }
