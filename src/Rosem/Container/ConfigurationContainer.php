@@ -34,49 +34,60 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     protected $lastDefinition;
 
     /**
-     * Query string delimiter
+     * Query string separator
      *
-     * @var string $delimiter
+     * @var string $separator
      */
-    protected $delimiter;
+    protected $separator;
 
     /**
-     * ArraySeparatorQuery constructor.
+     * ConfigurationContainer constructor.
      *
      * @param array  $definitions
-     * @param string $delimiter
+     * @param string $separator
      */
-    public function __construct(array $definitions = [], string $delimiter = '.')
+    public function __construct(array $definitions = [], string $separator = '.')
     {
         parent::__construct($definitions);
-        $this->delimiter = $delimiter;
+
+        $this->separator = $separator;
     }
 
     /**
      * Create container instance from array configuration.
      *
      * @param array  $definitions
-     * @param string $delimiter
+     * @param string $separator
      *
      * @return self
      */
-    public static function fromArray(array $definitions, string $delimiter = '.'): self
+    public static function fromArray(array $definitions, string $separator = '.'): self
     {
-        return new static($definitions, $delimiter);
+        return new static($definitions, $separator);
     }
 
     /**
      * Create container instance from file configuration.
      *
      * @param string $filename
-     * @param string $delimiter
+     * @param string $separator
      *
      * @return self
      * @throws \Exception
      */
-    public static function fromFile(string $filename, string $delimiter = '.'): self
+    public static function fromFile(string $filename, string $separator = '.'): self
     {
-        return self::fromArray(self::getConfigurationFromFile($filename), $delimiter);
+        return self::fromArray(self::getConfigurationFromFile($filename), $separator);
+    }
+
+    public function serializeId(array $id): string
+    {
+        return implode($this->separator, $id);
+    }
+
+    public function deserializeId(string $id): array
+    {
+        return explode($this->separator, $id);
     }
 
     protected function replaceVars($value)
@@ -102,25 +113,30 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     }
 
     /**
-     * Recursively getting value from array by query
+     * Recursively check if value exists in array by query
      *
      * @param array $array
      * @param int   $offset
      * @param array $path
      * @param int   $lastIndex
      *
-     * @return mixed
-     * @throws Exception\NotFoundException
+     * @return bool
      */
-    protected function getValue(array &$array, array &$path, int $offset, int $lastIndex)
+    protected function hasValue(array &$array, array &$path, int $offset, int $lastIndex): bool
     {
-        $next = $array[$path[$offset]] ?? null;
+        if (isset($array[$path[$offset]])) {
+            $next = $array[$path[$offset]];
 
-        if (null !== $next && $offset < $lastIndex) {
-            return $this->getValue($next, $path, ++$offset, $lastIndex);
+            if (null !== $next && $offset < $lastIndex) {
+                return $this->hasValue($next, $path, ++$offset, $lastIndex);
+            }
+
+            $this->lastDefinition = $next;
+
+            return true;
         }
 
-        return $next;
+        return false;
     }
 
     /**
@@ -132,13 +148,21 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      * @param int   $lastIndex
      *
      * @return mixed
-     * @throws Exception\NotFoundException
+     * @throws Exception\ContainerException
      */
-    protected function replaceVarsAndGetValue(array &$array, array &$path, int $offset, int $lastIndex)
+    protected function getValue(array &$array, array &$path, int $offset, int $lastIndex)
     {
-        $value = $this->getValue($array, $path, $offset, $lastIndex);
+        if (isset($array[$path[$offset]])) {
+            $next = $array[$path[$offset]];
 
-        return $value ? $this->replaceVars($value) : null;
+            if (null !== $next && $offset < $lastIndex) {
+                return $this->getValue($next, $path, ++$offset, $lastIndex);
+            }
+
+            return $this->lastDefinition = $next;
+        }
+
+        return Exception\ContainerException::notDefined($this->serializeId($path));
     }
 
     /**
@@ -182,24 +206,21 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      * @param string $id
      *
      * @return bool
-     * @throws Exception\NotFoundException
      */
     public function has($id): bool
     {
-        $path = explode($this->delimiter, $id);
+        $path = $this->deserializeId($id);
         $lastIndex = count($path) - 1;
 
-        $this->lastDefinition =
-            $this->getValue($this->resolvedDefinitions, $path, 0, $lastIndex);
+        if ($this->hasValue($this->resolvedDefinitions, $path, 0, $lastIndex)) {
+            $this->lastId = $id;
 
-        if (null !== $this->lastDefinition) {
-            return $this->lastDefinition;
+            return true;
         }
 
-        $this->lastDefinition =
-            $this->replaceVarsAndGetValue($this->definitions, $path, 0, $lastIndex);
-
-        if (null !== $this->lastDefinition) {
+        if ($this->hasValue($this->definitions, $path, 0, $lastIndex)) {
+            $this->lastId = $id;
+            $this->lastDefinition = $this->replaceVars($this->lastDefinition);
             $this->setValue(
                 $this->resolvedDefinitions,
                 $path,
@@ -211,6 +232,10 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
             return true;
         }
 
+        if ($this->delegate) {
+            return $this->delegate->has($id);
+        }
+
         return false;
     }
 
@@ -220,18 +245,25 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      * @param string $id
      *
      * @return mixed
+     * @throws Exception\ContainerException
      * @throws Exception\NotFoundException
      */
     public function get($id)
     {
-        if ($this->lastId === $id) {
+        if ($id === $this->lastId) {
             return $this->lastDefinition;
         }
 
-        $this->lastId = $id;
-
         if ($this->has($id)) {
-            return $this->lastDefinition;
+            if (null !== $this->lastDefinition) {
+                return $this->lastDefinition;
+            }
+
+            if ($this->delegate) {
+                return $this->delegate->get($id);
+            }
+
+            return Exception\ContainerException::notDefined($id);
         }
 
         if ($this->delegate) {
@@ -249,7 +281,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      */
     public function set(string $id, $value): void
     {
-        $path = explode($this->delimiter, $id);
+        $path = $this->deserializeId($id);
         $this->setValue($this->definitions, $path, 0, count($path) - 1, $value);
     }
 

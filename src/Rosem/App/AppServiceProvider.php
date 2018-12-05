@@ -15,6 +15,8 @@ use Rosem\Psr\{
 
 class AppServiceProvider implements ServiceProviderInterface
 {
+    public const CONFIG_DIRECTORY_ROOT = 'directory.root';
+
     /**
      * Returns a list of all container entries registered by this service provider.
      *
@@ -24,6 +26,9 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
+            static::CONFIG_DIRECTORY_ROOT => function() {
+                return null;
+            },
             'app.name' => function () {
                 return 'Rosem';
             },
@@ -33,26 +38,26 @@ class AppServiceProvider implements ServiceProviderInterface
             'app.meta.charset' => function () {
                 return 'utf-8';
             },
-            'app.meta.title_prefix' => function () {
+            'app.meta.titlePrefix' => function () {
                 return 'Rosem | ';
             },
             'app.meta.title' => function () {
                 return 'Welcome';
             },
-            'app.meta.title_suffix' => function () {
+            'app.meta.titleSuffix' => function () {
                 return '';
             },
-            EnvironmentInterface::class => function () {
-                return new Environment(\dirname($_SERVER['DOCUMENT_ROOT']));
+            EnvironmentInterface::class => function (ContainerInterface $container) {
+                return new Environment($container->get(static::CONFIG_DIRECTORY_ROOT));
             },
             HomeRequestHandler::class => function (ContainerInterface $container) {
                 return new HomeRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
                     $container->get(TemplateRendererInterface::class),
                     [
-                        'metaTitlePrefix' => $container->get('app.meta.title_prefix'),
+                        'metaTitlePrefix' => $container->get('app.meta.titlePrefix'),
                         'metaTitle' => $container->get('app.meta.title'),
-                        'metaTitleSuffix' => $container->get('app.meta.title_suffix'),
+                        'metaTitleSuffix' => $container->get('app.meta.titleSuffix'),
                     ]
                 );
             },
@@ -78,8 +83,8 @@ class AppServiceProvider implements ServiceProviderInterface
                     'lang' => strtolower($container->get('app.lang')),
                     'charset' => strtolower($container->get('app.meta.charset')),
                     'appMode' => $container->get(EnvironmentInterface::class)->getAppMode(),
-                    'metaTitlePrefix' => $container->get('app.meta.title_prefix'),
-                    'metaTitleSuffix' => $container->get('app.meta.title_suffix'),
+                    'metaTitlePrefix' => $container->get('app.meta.titlePrefix'),
+                    'metaTitleSuffix' => $container->get('app.meta.titleSuffix'),
                 ]);
             },
             RouteCollectorInterface::class => function (

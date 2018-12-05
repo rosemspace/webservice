@@ -17,7 +17,7 @@ class Environment extends AbstractEnvironment
 
     public const ROOT_DIRECTORY = 'ROOT_DIRECTORY';
 
-    public const APP_DIRECTORY = 'APP_DIRECTORY';
+    public const PUBLIC_DIRECTORY = 'PUBLIC_DIRECTORY';
 
     public const MEDIA_DIRECTORY = 'MEDIA_DIRECTORY';
 
@@ -97,9 +97,9 @@ class Environment extends AbstractEnvironment
         return $this->get(self::ROOT_DIRECTORY);
     }
 
-    public function getAppDirectory(): string
+    public function getPublicDirectory(): string
     {
-        return $this->get(self::APP_DIRECTORY);
+        return $this->get(self::PUBLIC_DIRECTORY);
     }
 
     public function getMediaDirectory(): string

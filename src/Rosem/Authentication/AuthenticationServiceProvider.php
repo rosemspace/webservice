@@ -32,7 +32,7 @@ class AuthenticationServiceProvider implements ServiceProviderInterface
     {
         return [
             static::CONFIG_SYMMETRIC_KEY => function () {
-                return 'mBC5v1sOKVvbdEitdSBenu59nfNfhwkedkJVNabosTw=';
+                return null;
             },
             static::CONFIG_USER_RESOLVER_PASSWORD => function () {
                 return function (string $username): ?string {
@@ -57,6 +57,7 @@ class AuthenticationServiceProvider implements ServiceProviderInterface
 //                    20 * 60 // 20 minutes
 //                );
 
+                // TODO: add validation for symmetric key
                 $symmetricKey = $container->get(static::CONFIG_SYMMETRIC_KEY);
 
                 return new SessionMiddleware(

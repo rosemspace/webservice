@@ -67,9 +67,9 @@ class MiddlewareServiceProvider implements ServiceProviderInterface
             $container->get(ResponseFactoryInterface::class),
             $container->get(TemplateRendererInterface::class),
             [
-                'metaTitlePrefix' => $container->get('app.meta.title_prefix'),
+                'metaTitlePrefix' => $container->get('app.meta.titlePrefix'),
                 'metaTitle' => $container->get('app.meta.title'),
-                'metaTitleSuffix' => $container->get('app.meta.title_suffix'),
+                'metaTitleSuffix' => $container->get('app.meta.titleSuffix'),
             ]
         );
     }

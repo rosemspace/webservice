@@ -31,7 +31,7 @@
 //echo '</pre>';
 //die;
 
-try {
+//try {
     $app = \Rosem\Container\ServiceContainer::fromFile(
         __DIR__ . '/config/service-providers.php'
     );
@@ -42,10 +42,10 @@ try {
     );
     $app->get(\Rosem\Psr\Environment\EnvironmentInterface::class)->load();
     $app->get(\Rosem\Psr\Http\Server\MiddlewareRunnerInterface::class)->run();
-} catch (Exception $exception) {
-    echo $exception->getMessage();
-    var_dump($app);
-}
+//} catch (Exception $exception) {
+//    echo $exception->getMessage();
+//    var_dump($app);
+//}
 
 //try {
 //    $app = Rosem\App\AppFactory::create();

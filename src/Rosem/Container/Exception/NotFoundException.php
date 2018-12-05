@@ -10,9 +10,11 @@ class NotFoundException extends Exception implements NotFoundExceptionInterface
     /**
      * @param $id
      *
+     * @return NotFoundException
      * @throws NotFoundException
      */
-    public static function notFound($id) {
-        throw new self("\"$id\" definition not found in the container.");
+    public static function notFound($id): self
+    {
+        throw new self("\"$id\" definition is not found in the container.");
     }
 }

@@ -112,7 +112,17 @@ class ServiceContainer extends AbstractContainer
             $definition = $this->definitions[$id];
 
             if ($definition instanceof Definition) {
-                return $this->definitions[$id] = $definition->create($this);
+                $value = $definition->create($this);
+
+                if (null !== $value) {
+                    return $this->definitions[$id] = $value;
+                }
+
+                if ($this->delegate) {
+                    return $this->delegate->get($id);
+                }
+
+                return Exception\ContainerException::notDefined($id);
             }
 
             return $definition;

@@ -66,9 +66,9 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
     /**
      * @param string $uri
      *
-     * @return static
+     * @return AuthenticationMiddleware
      */
-    public function withLoginUri(string $uri)
+    public function withLoginUri(string $uri): self
     {
         $new = clone $this;
         $new->setLoginUri($uri);
@@ -84,9 +84,9 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
     /**
      * @param string $uri
      *
-     * @return static
+     * @return AuthenticationMiddleware
      */
-    public function withLoggedInUri(string $uri)
+    public function withLoggedInUri(string $uri): self
     {
         $new = clone $this;
         $new->setLoggedInUri($uri);

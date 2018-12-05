@@ -12,7 +12,7 @@ interface EnvironmentInterface
 
     public function getRootDirectory(): string;
 
-    public function getAppDirectory(): string;
+    public function getPublicDirectory(): string;
 
     public function getMediaDirectory(): string;
 

@@ -1,19 +1,26 @@
 <?php
 
 return [
+    'directory' => [
+        'root'    => \dirname(getcwd()),
+        'public'  => '${app.directories.root}/DIRECTORY_PUBLIC',
+        'media'   => '${app.directories.root}/DIRECTORY_MEDIA',
+        'temp'    => '${app.directories.root}/DIRECTORY_TEMP',
+        'cache'   => '${app.directories.root}/DIRECTORY_CACHE',
+        'log'     => '${app.directories.root}/DIRECTORY_LOG',
+        'session' => '${app.directories.root}/DIRECTORY_SESSION',
+        'upload'  => '${app.directories.root}/DIRECTORY_UPLOAD',
+        'export'  => '${app.directories.root}/DIRECTORY_EXPORT',
+    ],
     'app'        => [
         'name'      => 'APP_NAME',
         'env'       => 'APP_ENV',
         'lang'      => 'en-US',
-        'paths'     => [
-            'root'   => 'APP_ROOT_PATH',
-            'public' => 'APP_PUBLIC_PATH',
-        ],
         'meta'      => [
             'charset'      => 'utf-8',
-            'title_prefix' => '${app.name} | ',
+            'titlePrefix'  => '${app.name} | ',
             'title'        => 'Welcome',
-            'title_suffix' => '',
+            'titleSuffix'  => '',
         ],
     ],
     'database'   => [
@@ -32,7 +39,8 @@ return [
         'uri'    => '/graphql',
         'schema' => 'default',
     ],
-    'authentication' => [
+    'auth' => [
+        'symmetricKey' => 'AUTH_SYMMETRIC_KEY',
         'http' => [
             'type' => 'digest',
         ],
@@ -42,9 +50,9 @@ return [
             'loggedIn' => 'admin',
         ],
         'meta'             => [
-            'title_prefix' => '${app.name} Admin | ',
+            'titlePrefix' => '${app.name} Admin | ',
             'title'        => 'Dashboard',
-            'title_suffix' => '',
+            'titleSuffix'  => '',
         ],
         'user' => [
             'identity' => 'ADMIN_USER_IDENTITY',

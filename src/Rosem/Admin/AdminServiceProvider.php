@@ -41,7 +41,7 @@ class AdminServiceProvider implements ServiceProviderInterface
                            ][$userIdentity] ?? null;
                 };
             },
-            'admin.meta.title_prefix' => function (ContainerInterface $container) {
+            'admin.meta.titlePrefix' => function (ContainerInterface $container) {
                 return ($container->has('app.name')
                         ? $container->get('app.name') . ' '
                         : ''
@@ -50,7 +50,7 @@ class AdminServiceProvider implements ServiceProviderInterface
             'admin.meta.title' => function () {
                 return 'Welcome';
             },
-            'admin.meta.title_suffix' => function () {
+            'admin.meta.titleSuffix' => function () {
                 return '';
             },
             static::CONFIG_URI_LOGGED_IN => function () {
@@ -113,9 +113,9 @@ class AdminServiceProvider implements ServiceProviderInterface
             ) {
                 $renderer->addPath(__DIR__ . '/Resource/templates', 'admin');
                 $adminData = [
-                    'metaTitlePrefix' => $container->get('admin.meta.title_prefix'),
+                    'metaTitlePrefix' => $container->get('admin.meta.titlePrefix'),
                     'metaTitle' => $container->get('admin.meta.title'),
-                    'metaTitleSuffix' => $container->get('admin.meta.title_suffix'),
+                    'metaTitleSuffix' => $container->get('admin.meta.titleSuffix'),
                 ];
                 $renderer->addTemplateData('admin::index', $adminData);
                 $renderer->addTemplateData('admin::login', $adminData);
