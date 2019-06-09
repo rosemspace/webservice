@@ -1,0 +1,25 @@
+{
+    "name": "rosem/hasher",
+    "description": "Hash generation and verification library",
+    "license": "MIT",
+    "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "ma1oy",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://rosem.io",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0",
+        "rosem/contract-hasher": "^0.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Component\\Hash\\": "src"
+        }
+    }
+}

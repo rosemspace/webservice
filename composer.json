@@ -32,7 +32,6 @@
     "psr/container": "^1.0",
     "psr/http-factory": "^1.0",
     "psr7-sessions/storageless": "^4.0",
-    "roave/security-advisories": "dev-master",
     "symfony/finder": "^4.0",
     "tedivm/stash": "0.14.*",
     "tijsverkoyen/css-to-inline-styles": "^2.2",
@@ -55,14 +54,13 @@
   },
   "autoload": {
     "psr-4": {
-      "Rosem\\": "src/Rosem",
-      "Rosem\\Psr\\": "src/Psr"
+      "Rosem\\": "src/Rosem"
     },
     "exclude-from-classmap": [
       "**/Tests/"
     ],
     "files": [
-      "src/Rosem/String/functions.php"
+      "src/Rosem/Component/String/functions.php"
     ]
   },
   "autoload-dev": {

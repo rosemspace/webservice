@@ -32,16 +32,16 @@
 //die;
 
 //try {
-    $app = \Rosem\Container\ServiceContainer::fromFile(
+    $app = \Rosem\Component\Container\ServiceContainer::fromFile(
         __DIR__ . '/config/service-providers.php'
     );
     $app->delegate(
-        \Rosem\Container\ConfigurationContainer::fromFile(
+        \Rosem\Component\Container\ConfigurationContainer::fromFile(
             __DIR__ . '/config/app.php'
         )
     );
-    $app->get(\Rosem\Psr\Environment\EnvironmentInterface::class)->load();
-    $app->get(\Rosem\Psr\Http\Server\MiddlewareRunnerInterface::class)->run();
+    $app->get(\Rosem\Contract\Environment\EnvironmentInterface::class)->load();
+    $app->get(\Rosem\Contract\Http\Server\MiddlewareRunnerInterface::class)->run();
 //} catch (Exception $exception) {
 //    echo $exception->getMessage();
 //    var_dump($app);

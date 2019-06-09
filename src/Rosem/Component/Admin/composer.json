@@ -1,0 +1,29 @@
+{
+  "name": "rosem/admin",
+  "type": "library",
+  "description": "Back office library",
+  "keywords": [],
+  "homepage": "https://rosemlab.github.io/admin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "roshecode",
+      "email": "iroman.via@gmail.com",
+      "homepage": "https://rosemlab.github.io",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.3.0",
+    "rosem/authentication": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Rosem\\Component\\Admin\\": ""
+    },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
+  },
+  "minimum-stability": "dev"
+}

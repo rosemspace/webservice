@@ -1,20 +1,20 @@
 <?php
 
 return [
-    Rosem\Http\Message\MessageFactoryProvider::class,
-    Rosem\Http\Server\EmitterProvider::class,
-    Rosem\Http\Server\MiddlewareServiceProvider::class,
+    Rosem\Component\Http\Message\MessageFactoryProvider::class,
+    Rosem\Component\Http\Server\EmitterProvider::class,
+    Rosem\Component\Http\Server\MiddlewareServiceProvider::class,
     // FIXME: session provider
-    Rosem\Authentication\UserFactoryServiceProvider::class,
-    Rosem\Authentication\AuthenticationServiceProvider::class, // add session attr to the request
-    Rosem\Route\RouteServiceProvider::class, // use session on admin route, add route and handler middleware
+    Rosem\Component\Authentication\UserFactoryServiceProvider::class,
+    Rosem\Component\Authentication\AuthenticationServiceProvider::class, // add session attr to the request
+    Rosem\Component\Route\RouteServiceProvider::class, // use session on admin route, add route and handler middleware
     // FIXME: auth provider
-    Rosem\Admin\AdminServiceProvider::class, // add admin route
-    Rosem\Template\TemplateServiceProvider::class,
-    Rosem\App\AppServiceProvider::class, // add any route
-    Rosem\GraphQL\GraphQLServiceProvider::class,
-    Rosem\Access\Provider\AccessServiceProvider::class,
-    Rosem\Doctrine\ORMServiceProvider::class,
+    Rosem\Component\Admin\AdminServiceProvider::class, // add admin route
+    Rosem\Component\Template\TemplateServiceProvider::class,
+    Rosem\Component\App\AppServiceProvider::class, // add any route
+    Rosem\Component\GraphQL\GraphQLServiceProvider::class,
+    Rosem\Component\Access\Provider\AccessServiceProvider::class,
+    Rosem\Component\Doctrine\ORMServiceProvider::class,
     //    Rosem\Doctrine\Provider\ORMServiceProvider::class,
     //    Rosem\Atlas\Provider\AtlasServiceProvider::class,
 ];

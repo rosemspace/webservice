@@ -2,7 +2,7 @@
 
 return [
     'directory' => [
-        'root'    => \dirname(getcwd()),
+        'root'    => dirname(getcwd()),
         'public'  => '${app.directories.root}/DIRECTORY_PUBLIC',
         'media'   => '${app.directories.root}/DIRECTORY_MEDIA',
         'temp'    => '${app.directories.root}/DIRECTORY_TEMP',

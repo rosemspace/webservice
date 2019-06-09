@@ -1,0 +1,25 @@
+{
+    "name": "rosem/contract-environment",
+    "type": "library",
+    "description": "Environment standard",
+    "keywords": [],
+    "homepage": "https://rosemlab.github.io/contract-environment",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "roshecode",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://rosemlab.github.io",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Contract\\Environment\\": ""
+        }
+    },
+    "minimum-stability": "dev"
+}

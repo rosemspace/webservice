@@ -1,0 +1,25 @@
+{
+    "name": "rosem/contract-eav",
+    "description": "Entity attribute value standard",
+    "license": "MIT",
+    "homepage": "https://rosem.github.io/contract-eav",
+    "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "ma1oy",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://roshecode.github.io",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "~7.2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Contract\\Eav\\": ""
+        }
+    }
+}
