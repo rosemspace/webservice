@@ -1,5 +1,7 @@
 <?php
 
+use Rosem\Component\App\App;
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -10,51 +12,12 @@
 | the IoC container for the system binding all of the various parts.
 |
 */
-//function test($name) {
-//    return "Hello, $name";
-//}
-//
-//class App extends Rosem\Container\Container
-//{
-//    public function __construct()
-//    {
-//        $this->set('.env', $this->class(Dotenv\Dotenv::class, [__DIR__]));
-//        $this->set('test', $this->function(function ($name) {
-//            return "Bie, $name";
-//        }, ['Rosem']));
-//    }
-//}
-//
-//$app = new App();
-//echo '<pre>';
-//var_dump($app->get('test'));
-//echo '</pre>';
-//die;
-
-//try {
-    $app = \Rosem\Component\Container\ServiceContainer::fromFile(
-        __DIR__ . '/config/service-providers.php'
-    );
-    $app->delegate(
-        \Rosem\Component\Container\ConfigurationContainer::fromFile(
-            __DIR__ . '/config/app.php'
-        )
-    );
-    $app->get(\Rosem\Contract\Environment\EnvironmentInterface::class)->load();
+try {
+    $app = new App(include __DIR__ . '/config/app.php');
     $app->get(\Rosem\Contract\Http\Server\MiddlewareRunnerInterface::class)->run();
-//} catch (Exception $exception) {
-//    echo $exception->getMessage();
-//    var_dump($app);
-//}
-
-//try {
-//    $app = Rosem\App\AppFactory::create();
-//    $app->loadServiceProviders(__DIR__ . '/config/service_providers.php');
-//    $app->loadMiddlewares(__DIR__ . '/config/middlewares.php');
-//    $app->boot(__DIR__ . '/config/app.php');
-
-//$atlas = $container->get(\Atlas\Orm\Atlas::class);
-//var_dump($atlas->select(\Rosem\DataSource\User\UserMapper::class)->fetchRecordSet()->getArrayCopy());
+} catch (Exception $exception) {
+    echo $exception->getMessage();
+}
 
 //    $entityManager = $app->get(\Doctrine\ORM\EntityManager::class);
 //    $newUser = new \Rosem\Access\Entity\User;

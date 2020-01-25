@@ -6,10 +6,8 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Component\App\Http\Server\{
     HomeRequestHandler};
-use Rosem\Component\Environment\Environment;
 use Rosem\Contract\{
     Container\ServiceProviderInterface,
-    Environment\EnvironmentInterface,
     Route\RouteCollectorInterface,
     Template\TemplateRendererInterface};
 
@@ -47,9 +45,6 @@ class AppServiceProvider implements ServiceProviderInterface
             'app.meta.titleSuffix' => function () {
                 return '';
             },
-            EnvironmentInterface::class => function (ContainerInterface $container) {
-                return new Environment($container->get(static::CONFIG_DIRECTORY_ROOT));
-            },
             HomeRequestHandler::class => function (ContainerInterface $container) {
                 return new HomeRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
@@ -82,7 +77,6 @@ class AppServiceProvider implements ServiceProviderInterface
                     'appName' => $container->get('app.name'),
                     'lang' => strtolower($container->get('app.lang')),
                     'charset' => strtolower($container->get('app.meta.charset')),
-                    'appMode' => $container->get(EnvironmentInterface::class)->getAppMode(),
                     'metaTitlePrefix' => $container->get('app.meta.titlePrefix'),
                     'metaTitleSuffix' => $container->get('app.meta.titleSuffix'),
                 ]);

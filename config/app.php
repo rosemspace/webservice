@@ -1,16 +1,17 @@
 <?php
 
 return [
+    'root' => dirname(getcwd()),
+    'serviceProviders' => include __DIR__ . '/service-providers.php',
     'directory' => [
-        'root'    => dirname(getcwd()),
-        'public'  => '${app.directories.root}/DIRECTORY_PUBLIC',
-        'media'   => '${app.directories.root}/DIRECTORY_MEDIA',
-        'temp'    => '${app.directories.root}/DIRECTORY_TEMP',
-        'cache'   => '${app.directories.root}/DIRECTORY_CACHE',
-        'log'     => '${app.directories.root}/DIRECTORY_LOG',
-        'session' => '${app.directories.root}/DIRECTORY_SESSION',
-        'upload'  => '${app.directories.root}/DIRECTORY_UPLOAD',
-        'export'  => '${app.directories.root}/DIRECTORY_EXPORT',
+        'public'  => '${root}/DIRECTORY_PUBLIC',
+        'media'   => '${root}/DIRECTORY_MEDIA',
+        'temp'    => '${root}/DIRECTORY_TEMP',
+        'cache'   => '${root}/DIRECTORY_CACHE',
+        'log'     => '${root}/DIRECTORY_LOG',
+        'session' => '${root}/DIRECTORY_SESSION',
+        'upload'  => '${root}/DIRECTORY_UPLOAD',
+        'export'  => '${root}/DIRECTORY_EXPORT',
     ],
     'app'        => [
         'name'      => 'APP_NAME',
@@ -43,6 +44,12 @@ return [
         'symmetricKey' => 'AUTH_SYMMETRIC_KEY',
         'http' => [
             'type' => 'digest',
+            'realm' => 'SECRET',
+            'user' => [
+                'list' => [
+                    'admin' => 'admin',
+                ],
+            ],
         ],
     ],
     'admin'      => [
