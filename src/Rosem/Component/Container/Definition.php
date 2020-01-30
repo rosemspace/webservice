@@ -2,8 +2,8 @@
 
 namespace Rosem\Component\Container;
 
-use Closure;
 use Psr\Container\ContainerInterface;
+use TypeError;
 
 class Definition
 {
@@ -24,10 +24,14 @@ class Definition
      */
     public function __construct($factory)
     {
+        if (!is_callable($factory)) {
+            throw new TypeError('A factory in a service provider should be a callable.');
+        }
+
         if (is_array($factory) && is_string(reset($factory))) {
             [$interface, $method] = $factory;
             $this->initializingFactory = static fn(ContainerInterface $container) =>
-                call_user_func([$container->get($interface), $method], $container);
+            ([$container->get($interface), $method])($container);
         } else {
             $this->initializingFactory = $factory;
         }
@@ -35,7 +39,7 @@ class Definition
 
     public function create(ContainerInterface $container)
     {
-        $result = call_user_func($this->initializingFactory, $container);
+        $result = ($this->initializingFactory)($container);
 
         foreach ($this->extendingFactories as $factory) {
             $factory($container, $result);
