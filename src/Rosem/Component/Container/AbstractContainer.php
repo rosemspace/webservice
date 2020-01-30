@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Rosem\Component\Container;
 
@@ -7,52 +8,33 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Rosem\Component\Container\Exception;
 
+/**
+ * Class AbstractContainer.
+ *
+ * @package Rosem\Component\Container
+ */
 abstract class AbstractContainer implements ContainerInterface
 {
+    use ConfigFileTrait;
+
     /**
      * @var mixed[]|Definition[]
      */
-    protected $definitions;
+    protected array $definitions;
 
     /**
-     * @var ContainerInterface
+     * @var ContainerInterface|null
      */
-    protected $delegate;
+    protected ?ContainerInterface $delegate = null;
 
+    /**
+     * AbstractContainer constructor.
+     *
+     * @param array $definitions
+     */
     public function __construct(array $definitions = [])
     {
         $this->definitions = $definitions;
-    }
-
-    /**
-     * @param string $filePath
-     *
-     * @return mixed
-     * @throws \Exception
-     */
-    public static function getConfigurationFromFile(string $filePath): array
-    {
-        if (file_exists($filePath)) {
-            if (is_readable($filePath)) {
-                $config = include $filePath;
-
-                if (\is_array($config)) {
-                    return $config;
-                }
-
-                throw new Exception\ContainerException(
-                    "$filePath configuration file should return an array"
-                );
-            }
-
-            throw new Exception\ContainerException(
-                "$filePath configuration file does not readable"
-            );
-        }
-
-        throw new Exception\ContainerException(
-            "$filePath configuration file does not exists"
-        );
     }
 
     /**
@@ -70,7 +52,7 @@ abstract class AbstractContainer implements ContainerInterface
             return $this->definitions[$id];
         }
 
-        if ($this->delegate) {
+        if ($this->delegate !== null) {
             return $this->delegate->get($id);
         }
 

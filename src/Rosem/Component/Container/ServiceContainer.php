@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Rosem\Component\Container;
 
@@ -29,10 +30,11 @@ class ServiceContainer extends AbstractContainer
         foreach ($serviceProviders as $serviceProvider) {
             if (\is_string($serviceProvider)) {
                 if (class_exists($serviceProvider)) {
-                    $serviceProviderInstances[] = $serviceProviderInstance = new $serviceProvider; //TODO: exception
+                    //TODO: exception
+                    $serviceProviderInstances[] = $serviceProviderInstance = new $serviceProvider;
 
                     if ($serviceProviderInstance instanceof ServiceProviderInterface) {
-                        $this->set($serviceProvider, function () use ($serviceProviderInstance) {
+                        $this->set($serviceProvider, static function () use ($serviceProviderInstance) {
                             return $serviceProviderInstance;
                         });
 
@@ -102,9 +104,9 @@ class ServiceContainer extends AbstractContainer
      *
      * @param string $id Identifier of the entry to look for.
      *
-     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
-     * @throws ContainerExceptionInterface Error while retrieving the entry.
      * @return mixed Entry.
+     * @throws ContainerExceptionInterface Error while retrieving the entry.
+     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
      */
     public function get($id)
     {
@@ -118,7 +120,7 @@ class ServiceContainer extends AbstractContainer
                     return $this->definitions[$id] = $value;
                 }
 
-                if ($this->delegate) {
+                if ($this->delegate !== null) {
                     return $this->delegate->get($id);
                 }
 
@@ -128,7 +130,7 @@ class ServiceContainer extends AbstractContainer
             return $definition;
         }
 
-        if ($this->delegate) {
+        if ($this->delegate !== null) {
             return $this->delegate->get($id);
         }
 

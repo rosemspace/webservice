@@ -1,7 +1,8 @@
 {
   "name": "rosem/webservice",
-  "description": "Yet another Web Framework",
+  "description": "Rosem Web Framework",
   "keywords": [
+    "rosem",
     "framework"
   ],
   "license": "MIT",

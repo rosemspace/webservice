@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Rosem\Component\Container;
 
 use ArrayAccess;
 use Countable;
-use function count;
+use Rosem\Component\Container\Exception;
 
 class ConfigurationContainer extends AbstractContainer implements ArrayAccess, Countable
 {
@@ -17,14 +18,14 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      *
      * @var mixed[]
      */
-    protected $resolvedDefinitions = [];
+    protected array $resolvedDefinitions = [];
 
     /**
      * Last resolved id.
      *
      * @var string
      */
-    protected $lastId;
+    protected ?string $lastId = null;
 
     /**
      * Last resolved definition.
@@ -38,7 +39,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      *
      * @var string $separator
      */
-    protected $separator;
+    protected string $separator;
 
     /**
      * ConfigurationContainer constructor.
@@ -73,7 +74,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      * @param string $separator
      *
      * @return self
-     * @throws \Exception
+     * @throws Exception\ContainerException
      */
     public static function fromFile(string $filename, string $separator = '.'): self
     {
@@ -93,7 +94,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     protected function replaceVars($value)
     {
         if (is_string($value)) {
-            $value = preg_replace_callback(self::REGEX_ENV_VAR, function ($matches) {
+            $value = preg_replace_callback(self::REGEX_ENV_VAR, static function ($matches) {
                 return false !== ($envVar = getenv($matches[1])) ? $envVar : $matches[0];
             }, $value);
             $value = preg_replace_callback(self::REGEX_CONFIG_VAR, function ($matches) {
@@ -113,7 +114,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     }
 
     /**
-     * Recursively check if value exists in array by query
+     * Recursively check if the value exists in the array by the path.
      *
      * @param array $array
      * @param int   $offset
@@ -122,13 +123,13 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      *
      * @return bool
      */
-    protected function internalHas(array &$array, array &$path, int $offset, int $lastIndex): bool
+    protected function hasByPath(array &$array, array &$path, int $offset, int $lastIndex): bool
     {
         if (isset($array[$path[$offset]])) {
             $next = $array[$path[$offset]];
 
             if (null !== $next && $offset < $lastIndex) {
-                return $this->internalHas($next, $path, ++$offset, $lastIndex);
+                return $this->hasByPath($next, $path, ++$offset, $lastIndex);
             }
 
             $this->lastDefinition = $next;
@@ -166,7 +167,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     }
 
     /**
-     * Recursively getting array item reference by query
+     * Recursively getting an array item reference by the path.
      *
      * @param array   $array
      * @param integer $offset
@@ -175,20 +176,20 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      *
      * @return mixed
      */
-    protected function &getReference(array &$array, array &$path, int $offset, int $lastIndex)
+    protected function &getRefByPath(array &$array, array &$path, int $offset, int $lastIndex)
     {
         $next = &$array[$path[$offset]];
         $next = $next ?? [];
 
         if ($offset < $lastIndex) {
-            return $this->getReference($next, $path, ++$offset, $lastIndex);
+            return $this->getRefByPath($next, $path, ++$offset, $lastIndex);
         }
 
         return $next;
     }
 
     /**
-     * Set value.
+     * Set the value by the path.
      *
      * @param array $array
      * @param array $path
@@ -196,10 +197,10 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      * @param int   $lastIndex
      * @param mixed $value
      */
-    protected function internalSet(array &$array, array &$path, int $offset, int $lastIndex, $value): void
+    protected function setByPath(array &$array, array &$path, int $offset, int $lastIndex, $value): void
     {
-        $placeholder = &$this->getReference($array, $path, $offset, $lastIndex);
-        $placeholder = $value;
+        $ref = &$this->getRefByPath($array, $path, $offset, $lastIndex);
+        $ref = $value;
     }
 
     /**
@@ -212,16 +213,16 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
         $path = $this->deserializeId($id);
         $lastIndex = count($path) - 1;
 
-        if ($this->internalHas($this->resolvedDefinitions, $path, 0, $lastIndex)) {
+        if ($this->hasByPath($this->resolvedDefinitions, $path, 0, $lastIndex)) {
             $this->lastId = $id;
 
             return true;
         }
 
-        if ($this->internalHas($this->definitions, $path, 0, $lastIndex)) {
+        if ($this->hasByPath($this->definitions, $path, 0, $lastIndex)) {
             $this->lastId = $id;
             $this->lastDefinition = $this->replaceVars($this->lastDefinition);
-            $this->internalSet(
+            $this->setByPath(
                 $this->resolvedDefinitions,
                 $path,
                 0,
@@ -232,7 +233,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
             return true;
         }
 
-        if ($this->delegate) {
+        if ($this->delegate !== null) {
             return $this->delegate->has($id);
         }
 
@@ -259,14 +260,14 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
                 return $this->lastDefinition;
             }
 
-            if ($this->delegate) {
+            if ($this->delegate !== null) {
                 return $this->delegate->get($id);
             }
 
             return Exception\ContainerException::notDefined($id);
         }
 
-        if ($this->delegate) {
+        if ($this->delegate !== null) {
             return $this->delegate->get($id);
         }
 
@@ -282,19 +283,19 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     public function set(string $id, $value): void
     {
         $path = $this->deserializeId($id);
-        $this->internalSet($this->definitions, $path, 0, count($path) - 1, $value);
+        $this->setByPath($this->definitions, $path, 0, count($path) - 1, $value);
     }
 
     /**
      * Extend definitions.
      *
-     * @param array[] $definitions
+     * @param mixed[] $definitions
      *
      * @return self
      */
     public function extend(array ...$definitions): self
     {
-        $this->definitions = array_merge_recursive($this->definitions, ...$definitions);
+        $this->definitions = array_replace_recursive($this->definitions, ...$definitions);
 
         return $this;
     }
@@ -305,7 +306,6 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
      * @param mixed $offset
      *
      * @return boolean
-     * @throws Exception\NotFoundException
      */
     public function offsetExists($offset): bool
     {

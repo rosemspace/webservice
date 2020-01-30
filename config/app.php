@@ -1,8 +1,7 @@
 <?php
 
 return [
-    'root' => dirname(getcwd()),
-    'serviceProviders' => include __DIR__ . '/service-providers.php',
+    'providers' => include __DIR__ . '/providers.php',
     'directory' => [
         'public'  => '${root}/DIRECTORY_PUBLIC',
         'media'   => '${root}/DIRECTORY_MEDIA',
@@ -44,7 +43,7 @@ return [
         'symmetricKey' => 'AUTH_SYMMETRIC_KEY',
         'http' => [
             'type' => 'digest',
-            'realm' => 'SECRET',
+            'realm' => 'AUTH_HTTP_REALM',
             'user' => [
                 'list' => [
                     'admin' => 'admin',

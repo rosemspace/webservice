@@ -2,40 +2,46 @@
 
 namespace Rosem\Component\Container;
 
+use Closure;
 use Psr\Container\ContainerInterface;
 
 class Definition
 {
     /**
-     * @var \Closure
+     * @var callable
      */
     private $initializingFactory;
 
     /**
-     * @var \Closure[]
+     * @var callable[]
      */
-    private $extendingFactories = [];
+    private array $extendingFactories = [];
 
+    /**
+     * Definition constructor.
+     *
+     * @param callable|string[] $factory
+     */
     public function __construct($factory)
     {
-        $this->initializingFactory = function (ContainerInterface $container) use (&$factory) {
-            if (\is_array($factory) && \is_string(reset($factory))) {
-                $factory[key($factory)] = $container->get(reset($factory));
-            }
-
-            $result = $factory($container);
-
-            foreach ($this->extendingFactories as $factory) {
-                $factory($container, $result);
-            }
-
-            return $result;
-        };
+        if (is_array($factory) && is_string(reset($factory))) {
+            [$interface, $method] = $factory;
+            $this->initializingFactory = static fn(ContainerInterface $container) =>
+                call_user_func([$container->get($interface), $method], $container);
+        } else {
+            $this->initializingFactory = $factory;
+        }
     }
 
     public function create(ContainerInterface $container)
     {
-        return \call_user_func($this->initializingFactory, $container);
+        $result = call_user_func($this->initializingFactory, $container);
+
+        foreach ($this->extendingFactories as $factory) {
+            $factory($container, $result);
+        }
+
+        return $result;
     }
 
     public function extend($factory): void

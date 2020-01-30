@@ -7,10 +7,8 @@
  */
 
 declare(strict_types=1);
+
 define('APP_START', microtime(true));
-ini_set('display_errors', 'true');
-ini_set('display_startup_errors', 'true');
-error_reporting(E_ALL);
 
 //$_SERVER['REQUEST_METHOD'] = 'POST';
 //$_POST['username'] = 'admin';

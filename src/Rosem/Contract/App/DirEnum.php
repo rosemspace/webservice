@@ -6,6 +6,10 @@ class DirEnum
 {
     public const ROOT_DIRECTORY = 'ROOT_DIRECTORY';
 
+    public const BOOTSTRAP_DIRECTORY = 'BOOTSTRAP_DIRECTORY';
+
+    public const CONFIG_DIRECTORY = 'CONFIG_DIRECTORY';
+
     public const PUBLIC_DIRECTORY = 'PUBLIC_DIRECTORY';
 
     public const MEDIA_DIRECTORY = 'MEDIA_DIRECTORY';

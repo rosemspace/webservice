@@ -12,23 +12,20 @@ trait EnvTrait
     protected Dotenv $env;
 
     /**
-     * @var array|null
+     * @var bool
      */
-    private ?array $loadedEnv = null;
+    protected bool $envLoaded = false;
 
     protected function createEnv($path, $file = '.env'): void
     {
         $this->env = new Dotenv($path, $file);
     }
 
-    public function loadEnv(): array
+    public function loadEnv(): void
     {
-        if ($this->loadedEnv === null) {
-            $this->loadedEnv = $this->env->load();
-            $this->validateEnv();
-        }
-
-        return $this->loadedEnv;
+        $this->env->load();
+        $this->envLoaded = true;
+        $this->validateEnv();
     }
 
     public function overloadEnv(): void
@@ -39,19 +36,35 @@ trait EnvTrait
 
     public function hasEnv($id): bool
     {
-        return false !== $this->get($id);
+        return false !== $this->getEnv($id);
     }
 
     /**
      * @param string|null $id
      *
-     * @return array|string|null
+     * @return string[]|string|boolean|null
      */
     public function getEnv(?string $id)
     {
-        $this->loadEnv();
+        $env = getenv($id);
 
-        return getenv($id) ?: null;
+        switch ($env) {
+            case 'true':
+            case '(true)':
+                return true;
+            case 'false':
+            case '(false)':
+                return false;
+            case 'empty':
+            case '(empty)':
+                return '';
+            case 'null':
+            case '(null)':
+            case false:
+                return null;
+            default:
+                return $env;
+        }
     }
 
     abstract protected function validateEnv(): void;
