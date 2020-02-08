@@ -5,7 +5,7 @@ namespace Rosem\Provider\Atlas;
 use Atlas\Orm\Atlas;
 use Psr\Container\ContainerInterface;
 use Rosem\Contract\Container\ServiceProviderInterface;
-use Rosem\Contract\Environment\EnvironmentInterface;
+use Rosem\Contract\Env\EnvInterface;
 
 class ORMServiceProvider implements ServiceProviderInterface
 {
@@ -13,7 +13,7 @@ class ORMServiceProvider implements ServiceProviderInterface
     {
         return [
             Atlas::class => function (ContainerInterface $container) {
-                $env = $container->get(EnvironmentInterface::class);
+                $env = $container->get(EnvInterface::class);
 
                 $atlas = Atlas::new(
                     $env->get('DATABASE_DRIVER') .

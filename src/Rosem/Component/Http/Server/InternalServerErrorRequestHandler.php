@@ -2,10 +2,12 @@
 
 namespace Rosem\Component\Http\Server;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\{
+    ResponseFactoryInterface,
+    ResponseInterface,
+    ServerRequestInterface
+};
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Contract\Template\TemplateRendererInterface;
 
 class InternalServerErrorRequestHandler implements RequestHandlerInterface
@@ -13,17 +15,17 @@ class InternalServerErrorRequestHandler implements RequestHandlerInterface
     /**
      * @var ResponseFactoryInterface
      */
-    protected $responseFactory;
+    protected ResponseFactoryInterface $responseFactory;
 
     /**
      * @var TemplateRendererInterface
      */
-    protected $view;
+    protected TemplateRendererInterface $view;
 
     /**
      * @var array
      */
-    protected $config;
+    protected array $config;
 
     /**
      * MainController constructor.

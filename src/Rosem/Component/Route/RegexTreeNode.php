@@ -35,7 +35,7 @@ class RegexTreeNode
 
     public function hasNodes(): bool
     {
-        return !empty($this->nodes);
+        return $this->nodes !== [];
     }
 
     public function getNodes(): array

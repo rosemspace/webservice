@@ -10,7 +10,7 @@ class Parser implements ParserInterface
 
     protected const DEFAULT_DISPATCH_REGEX = '[^/]++';
 
-    private $variableSplitRegex;
+    private string $variableSplitRegex;
 
     public function __construct(bool $useUtf8 = false)
     {

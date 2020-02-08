@@ -4,8 +4,14 @@ namespace Rosem\Component\Route;
 
 class Regex
 {
-    public const REGEX_GROUP = '/(?:\(\?\(|\[[^\]\\\\]*(?:\\\\.[^\]\\\\]*)*\]|\\\\.)(*SKIP)(*FAIL)|'
-    . '(?<!\(\?\(DEFINE\))\((?!\?(?!<(?![!=])|P<|\')|\*)/';
+    public const REGEX_GROUP = <<<'REGEX'
+        (?:
+            \(\?\(|\[[^\]\\\\]*(?:\\\\.[^\]\\\\]*)*\]|\\\\.
+        )(*SKIP)(*FAIL)
+        |(?<!
+            \(\?\(DEFINE\)
+        )\((?!\?(?!<(?![!=])|P<|\')|\*)
+        REGEX;
 
     public const PREG_STATUS_PHRASES = [
         PREG_NO_ERROR => 'No errors',
@@ -19,7 +25,7 @@ class Regex
     /**
      * @var string
      */
-    protected $regex;
+    protected string $regex;
 
     public function __construct(string $regex)
     {

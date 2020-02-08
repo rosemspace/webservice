@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rosem\Component\Http\Server;
@@ -7,11 +8,14 @@ use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\{
     ResponseInterface,
-    ServerRequestInterface};
+    ServerRequestInterface
+};
 use Psr\Http\Server\{
     MiddlewareInterface,
-    RequestHandlerInterface};
+    RequestHandlerInterface
+};
 use Rosem\Contract\Http\Server\MiddlewareCollectorInterface;
+
 use function call_user_func;
 
 class MiddlewareCollector implements MiddlewareCollectorInterface, RequestHandlerInterface
@@ -19,17 +23,17 @@ class MiddlewareCollector implements MiddlewareCollectorInterface, RequestHandle
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    protected ContainerInterface $container;
 
     /**
      * @var RequestHandlerInterface
      */
-    protected $finalHandler;
+    protected RequestHandlerInterface $finalHandler;
 
     /**
-     * @var RequestHandlerInterface
+     * @var RequestHandlerInterface|null
      */
-    protected $handlerQueue;
+    protected ?RequestHandlerInterface $handlerQueue;
 
     /**
      * @var RequestHandlerInterface|object
@@ -44,8 +48,7 @@ class MiddlewareCollector implements MiddlewareCollectorInterface, RequestHandle
 
     public static function fromCallable(callable $middleware)
     {
-        return new class ($middleware) implements MiddlewareInterface
-        {
+        return new class ($middleware) implements MiddlewareInterface {
             private $middleware;
 
             public function __construct(callable $middleware)
@@ -67,11 +70,10 @@ class MiddlewareCollector implements MiddlewareCollectorInterface, RequestHandle
 
     protected function createRequestHandlerFromMiddleware(MiddlewareInterface $middleware): object
     {
-        return new class ($middleware) implements RequestHandlerInterface
-        {
-            private $middleware;
+        return new class ($middleware) implements RequestHandlerInterface {
+            private MiddlewareInterface $middleware;
 
-            public $nextHandler;
+            public RequestHandlerInterface $nextHandler;
 
             public function __construct(MiddlewareInterface $middleware)
             {
@@ -92,13 +94,12 @@ class MiddlewareCollector implements MiddlewareCollectorInterface, RequestHandle
      */
     protected function createDeferredRequestHandlerFromMiddleware(string $middleware): object
     {
-        return new class ($this->container, $middleware) implements RequestHandlerInterface
-        {
-            private $container;
+        return new class ($this->container, $middleware) implements RequestHandlerInterface {
+            private ContainerInterface $container;
 
-            private $middleware;
+            private string $middleware;
 
-            public $nextHandler;
+            public RequestHandlerInterface $nextHandler;
 
             public function __construct(ContainerInterface $container, string $middleware)
             {
@@ -151,6 +152,7 @@ class MiddlewareCollector implements MiddlewareCollectorInterface, RequestHandle
     /**
      * @param string           $middleware
      * @param int|float|string $priority
+     *
      * @todo: priority functionality
      */
     public function addDeferredMiddleware(string $middleware, $priority = 0): void

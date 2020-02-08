@@ -4,7 +4,7 @@ namespace Rosem\Provider\Spot;
 
 use Psr\Container\ContainerInterface;
 use Rosem\Contract\Container\ServiceProviderInterface;
-use Rosem\Contract\Environment\EnvironmentInterface;
+use Rosem\Contract\Env\EnvInterface;
 
 class ORMServiceProvider implements ServiceProviderInterface
 {
@@ -21,8 +21,8 @@ class ORMServiceProvider implements ServiceProviderInterface
         return [
             \Spot\Locator::class => function (ContainerInterface $container) {
                 $config = new \Spot\Config();
-                $environment = $container->get(EnvironmentInterface::class);
-                $driver = $container->get(EnvironmentInterface::class)->get('DATABASE_DRIVER');
+                $environment = $container->get(EnvInterface::class);
+                $driver = $container->get(EnvInterface::class)->get('DATABASE_DRIVER');
                 /** @noinspection PhpParamsInspection */
                 $config->addConnection($driver, [
                     'dbname' => $environment->get('DATABASE_NAME'),

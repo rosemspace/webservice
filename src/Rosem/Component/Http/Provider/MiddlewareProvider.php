@@ -1,18 +1,24 @@
 <?php
 
-namespace Rosem\Component\Http\Server;
+namespace Rosem\Component\Http\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Rosem\Component\Http\Server\{
+    InternalServerErrorRequestHandler,
+    MiddlewareCollector,
+    MiddlewareRunner
+};
 use Rosem\Contract\Container\ServiceProviderInterface;
 use Rosem\Contract\Http\Server\{
     EmitterInterface,
     MiddlewareCollectorInterface,
-    MiddlewareRunnerInterface};
+    MiddlewareRunnerInterface
+};
 use Rosem\Contract\Template\TemplateRendererInterface;
 
-class MiddlewareServiceProvider implements ServiceProviderInterface
+class MiddlewareProvider implements ServiceProviderInterface
 {
     /**
      * @return callable[]

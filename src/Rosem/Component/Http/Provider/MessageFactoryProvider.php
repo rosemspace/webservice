@@ -1,14 +1,16 @@
 <?php
 
-namespace Rosem\Component\Http\Message;
+namespace Rosem\Component\Http\Provider;
 
+use Laminas\Diactoros\{
+    ResponseFactory,
+    ServerRequestFactory
+};
 use Psr\Http\Message\{
     ResponseFactoryInterface,
-    ServerRequestFactoryInterface};
+    ServerRequestFactoryInterface
+};
 use Rosem\Contract\Container\ServiceProviderInterface;
-use Zend\Diactoros\{
-    ResponseFactory,
-    ServerRequestFactory};
 
 class MessageFactoryProvider implements ServiceProviderInterface
 {

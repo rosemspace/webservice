@@ -5,10 +5,14 @@ namespace Rosem\Component\App;
 use Exception;
 use Rosem\Component\Container\ConfigurationContainer;
 use Rosem\Component\Container\ServiceContainer;
-use Rosem\Contract\App\AppInterface;
-use Rosem\Contract\App\EnvEnum;
+use Rosem\Contract\App\{
+    AppInterface,
+    EnvEnum
+};
+use Rosem\Contract\Debug\InspectableInterface;
+use Rosem\Contract\Http\Server\MiddlewareRunnerInterface;
 
-class App extends ServiceContainer implements AppInterface
+class App extends ServiceContainer implements AppInterface, InspectableInterface
 {
     use EnvTrait;
 
@@ -68,6 +72,9 @@ class App extends ServiceContainer implements AppInterface
      * @param array $config
      *
      * @throws \Rosem\Component\Container\Exception\ContainerException
+     * @throws \Dotenv\Exception\InvalidPathException
+     * @throws \Dotenv\Exception\InvalidFileException
+     * @throws \Dotenv\Exception\ValidationException
      */
     public function __construct(array $config)
     {
@@ -91,8 +98,8 @@ class App extends ServiceContainer implements AppInterface
         $this->createEnv($this->rootDir, $config['envFile'] ?? '.env');
         $exceptionThrown = false;
         //todo env variables may be set before application initialization
-//        $this->environment = $this->getEnv(static::ENV_KEY) ?? '';
-//        $this->debug = $this->isEnvironment(EnvEnum::DEVELOPMENT);
+        //$this->environment = $this->getEnv(static::ENV_KEY) ?? '';
+        //$this->debug = $this->isEnvironment(EnvEnum::DEVELOPMENT);
 
         try {
             $this->loadEnv();
@@ -127,18 +134,25 @@ class App extends ServiceContainer implements AppInterface
         $this->delegate(ConfigurationContainer::fromArray($config));
     }
 
+    public function run(): bool
+    {
+        return $this->get(MiddlewareRunnerInterface::class)->run();
+    }
+
     protected function validateEnv(): void
     {
         $this->env->required(static::VERSION_KEY)->notEmpty();
-        $this->env->required(static::ENV_KEY)->allowedValues([
-            EnvEnum::LOCAL,
-            EnvEnum::MAINTENANCE,
-            EnvEnum::DEMO,
-            EnvEnum::DEVELOPMENT,
-            EnvEnum::TEST,
-            EnvEnum::ACCEPTANCE,
-            EnvEnum::PRODUCTION,
-        ]);
+        $this->env->required(static::ENV_KEY)->allowedValues(
+            [
+                EnvEnum::LOCAL,
+                EnvEnum::MAINTENANCE,
+                EnvEnum::DEMO,
+                EnvEnum::DEVELOPMENT,
+                EnvEnum::TEST,
+                EnvEnum::ACCEPTANCE,
+                EnvEnum::PRODUCTION,
+            ]
+        );
     }
 
     public function getRootDir(): string
@@ -190,5 +204,11 @@ class App extends ServiceContainer implements AppInterface
     public function isDemoVersion(): bool
     {
         return false;
+    }
+
+    public function inspect(): array
+    {
+        // TODO: Implement inspect() method.
+        return [];
     }
 }

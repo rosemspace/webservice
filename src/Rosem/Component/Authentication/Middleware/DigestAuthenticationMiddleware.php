@@ -1,7 +1,8 @@
 <?php
 
-namespace Rosem\Component\Authentication\Http\Server;
+namespace Rosem\Component\Authentication\Middleware;
 
+use InvalidArgumentException;
 use Psr\Http\Message\{
     ResponseInterface,
     ServerRequestInterface
@@ -11,11 +12,13 @@ use Rosem\Contract\Authentication\{
     UserFactoryInterface,
     UserInterface
 };
+
 use function call_user_func;
 use function count;
 use function strlen;
 
 /** @noinspection LongInheritanceChainInspection */
+
 class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
 {
     /**
@@ -39,7 +42,7 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
     /**
      * @var string|null The nonce value
      */
-    protected $nonce;
+    protected ?string $nonce;
 
     /**
      * DigestAuthenticationMiddleware constructor.
@@ -54,7 +57,7 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
         ResponseFactoryInterface $responseFactory,
         UserFactoryInterface $userFactory,
         callable $userPasswordResolver,
-        string $realm = 'Login',
+        string $realm,
         string $nonce = ''
     ) {
         parent::__construct($responseFactory, $userFactory, $userPasswordResolver, $realm);
@@ -73,7 +76,6 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
     {
         $authHeader = $request->getHeader('Authorization');
 
-        /** @noinspection NotOptimalIfConditionsInspection */
         if (empty($authHeader)
             || strpos(reset($authHeader), self::AUTHORIZATION_HEADER_PREFIX . ' ') !== 0
             || !preg_match_all(
@@ -100,15 +102,17 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
         $password = call_user_func($this->userPasswordResolver, $identity, $request);
 
         if (!$password
-            || $authorization['response'] !== md5(sprintf(
-                '%s:%s:%s:%s:%s:%s',
-                md5("{$authorization['username']}:$this->realm:$password"),
-                $authorization['nonce'],
-                $authorization['nc'],
-                $authorization['cnonce'],
-                $authorization['qop'],
-                md5($request->getMethod() . ':' . $authorization['uri'])
-            ))
+            || $authorization['response'] !== md5(
+                sprintf(
+                    '%s:%s:%s:%s:%s:%s',
+                    md5("{$authorization['username']}:$this->realm:$password"),
+                    $authorization['nonce'],
+                    $authorization['nc'],
+                    $authorization['cnonce'],
+                    $authorization['qop'],
+                    md5($request->getMethod() . ':' . $authorization['uri'])
+                )
+            )
         ) {
             return null;
         }
@@ -120,7 +124,7 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
      * Create unauthorized response.
      *
      * @return ResponseInterface
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function createUnauthorizedResponse(): ResponseInterface
     {

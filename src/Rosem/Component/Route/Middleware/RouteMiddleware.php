@@ -1,15 +1,17 @@
 <?php
 
-namespace Rosem\Component\Route\Http\Server;
+namespace Rosem\Component\Route\Middleware;
 
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\{
     ResponseInterface,
-    ServerRequestInterface};
+    ServerRequestInterface
+};
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Server\{
     MiddlewareInterface,
-    RequestHandlerInterface};
+    RequestHandlerInterface
+};
 use Rosem\Contract\Route\RouteDispatcherInterface;
 
 class RouteMiddleware implements MiddlewareInterface
@@ -22,14 +24,14 @@ class RouteMiddleware implements MiddlewareInterface
 
     protected const KEY_VARIABLES = 3;
 
-    protected $router;
+    protected RouteDispatcherInterface $router;
 
-    protected $responseFactory;
+    protected ResponseFactoryInterface $responseFactory;
 
     /**
      * @var string Attribute name for handler reference
      */
-    protected $attribute = 'requestHandler';
+    protected string $attribute = RequestHandlerInterface::class;
 
     public function __construct(
         RouteDispatcherInterface $router,

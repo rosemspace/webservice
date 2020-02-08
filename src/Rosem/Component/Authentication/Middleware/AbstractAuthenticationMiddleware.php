@@ -1,15 +1,20 @@
 <?php
 
-namespace Rosem\Component\Authentication\Http\Server;
+namespace Rosem\Component\Authentication\Middleware;
 
 use Psr\Http\Message\{
-    ResponseFactoryInterface, ResponseInterface, ServerRequestInterface
+    ResponseFactoryInterface,
+    ResponseInterface,
+    ServerRequestInterface
 };
 use Psr\Http\Server\{
-    MiddlewareInterface, RequestHandlerInterface
+    MiddlewareInterface,
+    RequestHandlerInterface
 };
 use Rosem\Contract\Authentication\{
-    AuthenticationInterface, UserFactoryInterface, UserInterface
+    AuthenticationInterface,
+    UserFactoryInterface,
+    UserInterface
 };
 
 abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, AuthenticationInterface
@@ -17,12 +22,12 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
     /**
      * @var ResponseFactoryInterface
      */
-    protected $responseFactory;
+    protected ResponseFactoryInterface $responseFactory;
 
     /**
      * @var UserFactoryInterface
      */
-    protected $userFactory;
+    protected UserFactoryInterface $userFactory;
 
     /**
      * The function to get a password by a username.
@@ -58,7 +63,7 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
      *
      * @return static
      */
-    public function withPasswordResolver(callable $resolver)
+    public function withPasswordResolver(callable $resolver): self
     {
         $new = clone $this;
         $new->setPasswordResolver($resolver);

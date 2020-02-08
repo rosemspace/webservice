@@ -1,18 +1,25 @@
 <?php
 
-namespace Rosem\Component\Route\Http\Server;
+namespace Rosem\Component\Route\Middleware;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\{
     ResponseInterface,
-    ServerRequestInterface};
+    ServerRequestInterface
+};
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Server\{
     MiddlewareInterface,
-    RequestHandlerInterface};
+    RequestHandlerInterface
+};
 use Rosem\Component\Http\Server\{
     CallableBasedMiddleware,
-    MiddlewareCollector};
+    MiddlewareCollector
+};
+use RuntimeException;
+
+use function is_callable;
+use function is_string;
 
 class HandleRequestMiddleware implements MiddlewareInterface
 {
@@ -23,12 +30,12 @@ class HandleRequestMiddleware implements MiddlewareInterface
     /**
      * @var ContainerInterface used to resolve the handlers
      */
-    private $container;
+    private ContainerInterface $container;
 
     /**
      * @var string attribute name for handler reference
      */
-    private $handlerAttribute = 'requestHandler';
+    private string $handlerAttribute = RequestHandlerInterface::class;
 
     /**
      * RequestHandlerMiddleware constructor.
@@ -47,7 +54,7 @@ class HandleRequestMiddleware implements MiddlewareInterface
      *
      * @return self
      */
-    public function handlerAttribute(string $handlerAttribute): self
+    public function setHandlerAttribute(string $handlerAttribute): self
     {
         $this->handlerAttribute = $handlerAttribute;
 
@@ -85,17 +92,18 @@ class HandleRequestMiddleware implements MiddlewareInterface
             return $requestHandler->handle($request);
         }
 
-        if (\is_callable($requestHandler)) {
-            if (\is_string(reset($requestHandler))) {
+        if (is_callable($requestHandler)) {
+            if (is_string(reset($requestHandler))) {
                 $requestHandler[key($requestHandler)] = $this->container->get(reset($requestHandler));
             }
 
             return (new CallableBasedMiddleware(
                 $this->container->get(ResponseFactoryInterface::class),
-                $requestHandler)
+                $requestHandler
+            )
             )->process($request, $handler);
         }
 
-        throw new \RuntimeException(sprintf('Invalid request handler: %s', \gettype($requestHandler)));
+        throw new RuntimeException(sprintf('Invalid request handler: %s', \gettype($requestHandler)));
     }
 }

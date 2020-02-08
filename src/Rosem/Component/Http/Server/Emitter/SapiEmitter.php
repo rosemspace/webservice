@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rosem\Component\Http\Server;
+namespace Rosem\Component\Http\Server\Emitter;
 
 use Psr\Http\Message\ResponseInterface;
 use Rosem\Contract\Http\Server\EmitterInterface;

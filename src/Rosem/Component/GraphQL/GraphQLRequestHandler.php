@@ -8,36 +8,36 @@ use GraphQL\Server\StandardServer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\JsonResponse;
 
 class GraphQLRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var StandardServer
      */
-    protected $server;
+    protected StandardServer $server;
 
     /**
-     * @var bool|int
+     * @var int|null
      */
-    protected $debug;
+    public ?int $debug;
 
     /**
      * GraphQLMiddleware constructor.
      *
      * @param StandardServer $server
-     * @param bool           $debug
+     * @param int|null       $debug
      */
-    public function __construct(StandardServer $server, $debug = false)
+    public function __construct(StandardServer $server, ?int $debug = null)
     {
         $this->server = $server;
         $this->debug = $debug;
     }
 
     /**
-     * @return bool|int
+     * @return int|null
      */
-    protected function getDebug()
+    protected function getDebug(): ?int
     {
         if ($this->debug) {
             return Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE;
@@ -47,9 +47,9 @@ class GraphQLRequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * @param bool $debug
+     * @param int|null $debug
      */
-    public function setDebug(bool $debug): void
+    public function setDebug(?int $debug): void
     {
         $this->debug = $debug;
     }
@@ -68,14 +68,14 @@ class GraphQLRequestHandler implements RequestHandlerInterface
 
         if (strtoupper($request->getMethod()) === RequestMethodInterface::METHOD_GET) {
             $params = $request->getQueryParams();
-            $params['variables'] = $params['variables'] ?? null;
+            $params['variables'] ??= null;
             $request = $request->withQueryParams($params);
         } else {
-            $params = json_decode($request->getBody()->getContents(), true);
-            $params['variables'] = $params['variables'] ?? null;
+            $params = json_decode($request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+            $params['variables'] ??= null;
             $request = $request->withParsedBody($params);
         }
 
-        return new JsonResponse($this->server->executePsrRequest($request)->toArray($this->getDebug()));
+        return new JsonResponse($this->server->executePsrRequest($request)->toArray($this->getDebug() ?? false));
     }
 }

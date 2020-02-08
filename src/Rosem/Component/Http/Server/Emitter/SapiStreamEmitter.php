@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Rosem\Component\Http\Server;
+namespace Rosem\Component\Http\Server\Emitter;
 
 use Psr\Http\Message\ResponseInterface;
 use Rosem\Contract\Http\Server\EmitterInterface;
+
 use function preg_match;
 use function strlen;
 use function substr;
@@ -17,7 +18,7 @@ class SapiStreamEmitter implements EmitterInterface
     /**
      * @var int Maximum output buffering size for each iteration.
      */
-    private $maxBufferLength;
+    private int $maxBufferLength;
 
     public function __construct(int $maxBufferLength = 8192)
     {

@@ -1,12 +1,13 @@
 <?php
 
-namespace Rosem\Component\Authentication;
+namespace Rosem\Component\Authentication\Provider;
 
 use Psr\Container\ContainerInterface;
+use Rosem\Component\Authentication\UserFactory;
 use Rosem\Contract\Authentication\UserFactoryInterface;
 use Rosem\Contract\Container\ServiceProviderInterface;
 
-class UserFactoryServiceProvider implements ServiceProviderInterface
+class UserFactoryProvider implements ServiceProviderInterface
 {
     public const CONFIG_RESOLVER_ROLES = 'auth.user.resolver.roles';
 
@@ -18,13 +19,13 @@ class UserFactoryServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            static::CONFIG_RESOLVER_ROLES => function () {
-                return function (string $username) {
+            static::CONFIG_RESOLVER_ROLES => static function () {
+                return static function (string $username) {
                     return ['admin'];
                 };
             },
-            static::CONFIG_RESOLVER_DETAILS => function () {
-                return function (string $username) {
+            static::CONFIG_RESOLVER_DETAILS => static function () {
+                return static function (string $username) {
                     return ['username' => $username];
                 };
             },

@@ -18,7 +18,7 @@ trait EnvTrait
 
     protected function createEnv($path, $file = '.env'): void
     {
-        $this->env = new Dotenv($path, $file);
+        $this->env = Dotenv::createImmutable($path, $file);
     }
 
     public function loadEnv(): void
@@ -28,6 +28,10 @@ trait EnvTrait
         $this->validateEnv();
     }
 
+    /**
+     * @todo
+     * @deprecated
+     */
     public function overloadEnv(): void
     {
         $this->env->overload();

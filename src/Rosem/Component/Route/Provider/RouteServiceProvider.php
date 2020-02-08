@@ -1,19 +1,27 @@
 <?php
 
-namespace Rosem\Component\Route;
+namespace Rosem\Component\Route\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
+use Rosem\Component\Route\{
+    Collector,
+    Compiler,
+    Dispatcher,
+    Parser
+};
+use Rosem\Component\Route\DataGenerator\MarkBasedDataGenerator;
+use Rosem\Component\Route\Dispatcher\MarkBasedDispatcher;
+use Rosem\Component\Route\Middleware\{
+    HandleRequestMiddleware,
+    RouteMiddleware
+};
 use Rosem\Contract\Container\ServiceProviderInterface;
 use Rosem\Contract\Http\Server\MiddlewareCollectorInterface;
 use Rosem\Contract\Route\{
     RouteCollectorInterface,
-    RouteDispatcherInterface};
-use Rosem\Component\Route\DataGenerator\MarkBasedDataGenerator;
-use Rosem\Component\Route\Dispatcher\MarkBasedDispatcher;
-use Rosem\Component\Route\Http\Server\{
-    HandleRequestMiddleware,
-    RouteMiddleware};
+    RouteDispatcherInterface
+};
 
 class RouteServiceProvider implements ServiceProviderInterface
 {

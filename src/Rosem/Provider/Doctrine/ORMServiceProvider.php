@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\Component\Doctrine;
+namespace Rosem\Provider\Doctrine;
 
 use Doctrine\Common\Cache\ApcuCache;
 use Doctrine\Common\Cache\ArrayCache;
@@ -10,7 +10,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Psr\Container\ContainerInterface;
 use Rosem\Contract\Container\ServiceProviderInterface;
-use Rosem\Contract\Environment\EnvironmentInterface;
+use Rosem\Component\App\DirEnum;
+use Rosem\Contract\Env\EnvInterface;
 
 class ORMServiceProvider implements ServiceProviderInterface
 {
@@ -21,12 +22,12 @@ class ORMServiceProvider implements ServiceProviderInterface
         return [
             'ormEntityPaths' => function (ContainerInterface $container): array {
                 return [
-                    $container->get(EnvironmentInterface::class)->getRootDirectory() .
+                    $container->get(EnvInterface::class)->getEnv(DirEnum::ROOT_DIRECTORY) .
                         '/src/Rosem/Component/Access/Entity' //TODO: improve
                 ];
             },
             EntityManager::class => function (ContainerInterface $container) {
-                $isDevelopmentMode = $container->get(EnvironmentInterface::class)->isDevelopmentMode();
+                $isDevelopmentMode = $container->get(EnvInterface::class)->isDevelopmentMode();
                 $ormConfig = new Configuration();
                 $ormConfig->setNamingStrategy(new UnderscoreNamingStrategy(CASE_LOWER));
                 $ormConfig->setMetadataDriverImpl(new StaticPHPDriver($container->get('ormEntityPaths')));

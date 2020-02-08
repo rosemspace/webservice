@@ -1,13 +1,17 @@
 <?php
 
-namespace Rosem\Component\Authentication\Http\Server;
+namespace Rosem\Component\Authentication\Middleware;
 
 use Psr\Http\Message\{
-    ResponseFactoryInterface, ResponseInterface, ServerRequestInterface
+    ResponseFactoryInterface,
+    ResponseInterface,
+    ServerRequestInterface
 };
 use Rosem\Contract\Authentication\{
-    UserFactoryInterface, UserInterface
+    UserFactoryInterface,
+    UserInterface
 };
+
 use function call_user_func;
 
 class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
@@ -20,7 +24,7 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
     /**
      * @var string
      */
-    protected $realm;
+    protected string $realm;
 
     /**
      * Define de users.
@@ -34,7 +38,7 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
         ResponseFactoryInterface $responseFactory,
         UserFactoryInterface $userFactory,
         callable $userPasswordResolver,
-        string $realm = 'Login'
+        string $realm
     ) {
         parent::__construct($responseFactory, $userFactory, $userPasswordResolver);
 
@@ -59,7 +63,8 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
         if (!preg_match(
             '/' . self::AUTHORIZATION_HEADER_PREFIX . ' (?<credentials>[a-zA-Z0-9\+\/\=]+)/',
             reset($authHeader),
-            $match)
+            $match
+        )
         ) {
             return null;
         }

@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Rosem\Component\Http\Server;
+namespace Rosem\Component\Http\Server\Emitter;
 
 use Psr\Http\Message\ResponseInterface;
 use Rosem\Component\Http\Server\Exception\EmitterException;
+
 use function ob_get_length;
 use function ob_get_level;
 use function sprintf;
@@ -40,20 +41,24 @@ trait SapiEmitterTrait
      * `emitHeaders()` in order to prevent PHP from changing the status code of
      * the emitted response.
      *
-     * @see \Rosem\Component\Http\Server\SapiEmitterTrait::emitHeaders()
-     *
      * @param ResponseInterface $response
+     *
+     * @see \Rosem\Component\Http\Server\SapiEmitterTrait::emitHeaders()
      */
     private function emitStatusLine(ResponseInterface $response): void
     {
         $reasonPhrase = $response->getReasonPhrase();
         $statusCode = $response->getStatusCode();
-        header(sprintf(
-            'HTTP/%s %d%s',
-            $response->getProtocolVersion(),
-            $statusCode,
-            ($reasonPhrase ? ' ' . $reasonPhrase : '')
-        ), true, $statusCode);
+        header(
+            sprintf(
+                'HTTP/%s %d%s',
+                $response->getProtocolVersion(),
+                $statusCode,
+                ($reasonPhrase ? ' ' . $reasonPhrase : '')
+            ),
+            true,
+            $statusCode
+        );
     }
 
     /**
@@ -74,11 +79,15 @@ trait SapiEmitterTrait
             $first = $name !== 'Set-Cookie';
 
             foreach ($values as $value) {
-                header(sprintf(
-                    '%s: %s',
-                    $name,
-                    $value
-                ), $first, $statusCode);
+                header(
+                    sprintf(
+                        '%s: %s',
+                        $name,
+                        $value
+                    ),
+                    $first,
+                    $statusCode
+                );
                 $first = false;
             }
         }

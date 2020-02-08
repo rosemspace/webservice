@@ -2,23 +2,31 @@
 
 namespace Rosem\Component\Http\Server;
 
+use Laminas\Diactoros\ServerRequestFactory;
 use Psr\Http\Server\RequestHandlerInterface;
-use Rosem\Contract\Http\Server\EmitterInterface;
-use Rosem\Contract\Http\Server\MiddlewareRunnerInterface;
-use Zend\Diactoros\ServerRequestFactory;
+use Rosem\Contract\Http\Server\{
+    EmitterInterface,
+    MiddlewareRunnerInterface
+};
 
 class MiddlewareRunner implements MiddlewareRunnerInterface
 {
     /**
      * @var RequestHandlerInterface
      */
-    protected $requestHandler;
+    protected RequestHandlerInterface $requestHandler;
 
     /**
      * @var EmitterInterface
      */
-    protected $emitter;
+    protected EmitterInterface $emitter;
 
+    /**
+     * MiddlewareRunner constructor.
+     *
+     * @param RequestHandlerInterface $requestHandler
+     * @param EmitterInterface        $emitter
+     */
     public function __construct(RequestHandlerInterface $requestHandler, EmitterInterface $emitter)
     {
         $this->requestHandler = $requestHandler;

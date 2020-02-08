@@ -3,8 +3,9 @@
 namespace Rosem\Contract\App;
 
 use Psr\Container\ContainerInterface;
+use Rosem\Contract\Http\Server\MiddlewareRunnerInterface;
 
-interface AppInterface extends ContainerInterface
+interface AppInterface extends ContainerInterface, MiddlewareRunnerInterface
 {
     /**
      * Get an application root directory.

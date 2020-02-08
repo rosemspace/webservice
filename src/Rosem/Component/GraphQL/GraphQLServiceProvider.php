@@ -3,18 +3,23 @@
 namespace Rosem\Component\GraphQL;
 
 use Fig\Http\Message\RequestMethodInterface;
+use GraphQL\Error\Debug;
 use GraphQL\Server\StandardServer;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Schema as GraphQLSchema;
 use GraphQL\Type\SchemaConfig;
 use GraphQL\Validator\DocumentValidator;
-use GraphQL\Validator\Rules\DisableIntrospection;
 use GraphQL\Validator\Rules\QueryComplexity;
 use GraphQL\Validator\Rules\QueryDepth;
 use Psr\Container\ContainerInterface;
 use Rosem\Contract\{
-    Container\ServiceProviderInterface, Environment\EnvironmentInterface, GraphQL\GraphInterface, GraphQL\TypeRegistryInterface, Route\RouteCollectorInterface
+    App\AppInterface,
+    Container\ServiceProviderInterface,
+    GraphQL\GraphInterface,
+    GraphQL\TypeRegistryInterface,
+    Route\RouteCollectorInterface
 };
+
 use function Rosem\Component\String\snakeCase;
 
 class GraphQLServiceProvider implements ServiceProviderInterface
@@ -50,29 +55,26 @@ class GraphQLServiceProvider implements ServiceProviderInterface
      * - the value is a callable that will return the entry, aka the **factory**
      * Factories have the following signature:
      *        function(\Psr\Container\ContainerInterface $container)
+     *
      * @return callable[]
      */
     public function getFactories(): array
     {
         return [
-            static::CONFIG_URI => function (): string {
+            static::CONFIG_URI => static function (): string {
                 return '/graphql';
             },
-            static::CONFIG_SCHEMA => function (): string {
+            static::CONFIG_SCHEMA => static function (): string {
                 return 'default';
             },
-            static::CONFIG_MAX_QUERY_COMPLEXITY => function (): int {
+            static::CONFIG_MAX_QUERY_COMPLEXITY => static function (): int {
                 return 200;
             },
-            static::CONFIG_MAX_QUERY_DEPTH => function (): int {
+            static::CONFIG_MAX_QUERY_DEPTH => static function (): int {
                 return 20;
             },
-            static::CONFIG_DEBUG => function (ContainerInterface $container): bool {
-                if ($container->has(EnvironmentInterface::class)) {
-                    return $container->get(EnvironmentInterface::class)->isDevelopmentMode();
-                }
-
-                return false;
+            static::CONFIG_DEBUG => static function (AppInterface $app): bool {
+                return $app->isAllowedToDebug() ? Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE : null;
             },
             TypeRegistryInterface::class => [static::class, 'createGraphQLTypeRegistry'],
             GraphInterface::class => [static::class, 'createGraphQLGraph'],
@@ -91,12 +93,13 @@ class GraphQLServiceProvider implements ServiceProviderInterface
      * - the container (instance of `Psr\Container\ContainerInterface`)
      * - the entry to be extended. If the entry to be extended does not exist and the parameter is nullable, `null`
      * will be passed.
+     *
      * @return callable[]
      */
     public function getExtensions(): array
     {
         return [
-            RouteCollectorInterface::class => function (
+            RouteCollectorInterface::class => static function (
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector
             ) {
@@ -128,40 +131,44 @@ class GraphQLServiceProvider implements ServiceProviderInterface
         DocumentValidator::addRule(new QueryComplexity($container->get(static::CONFIG_MAX_QUERY_COMPLEXITY)));
         // set max query depth
         DocumentValidator::addRule(new QueryDepth($container->get(static::CONFIG_MAX_QUERY_DEPTH)));
-//        DocumentValidator::addRule(new DisableIntrospection());
+        //DocumentValidator::addRule(new DisableIntrospection());
         $schema = $container->get(GraphInterface::class)->getSchema($container->get(static::CONFIG_SCHEMA));
         $schemaConfig = SchemaConfig::create($schema->getTree());
         $typeRegistry = $container->get(TypeRegistryInterface::class);
-        $schemaConfig->setTypeLoader(function ($name) use (&$typeRegistry) {
-            return $typeRegistry->get($name);
-        });
+        $schemaConfig->setTypeLoader(
+            function ($name) use (&$typeRegistry) {
+                return $typeRegistry->get($name);
+            }
+        );
 
-        return new StandardServer([
-            'schema' => new GraphQLSchema($schemaConfig),
-            'context' => $container,
-            'fieldResolver' => function ($source, $args, $context, ResolveInfo $info) {
-                $fieldName = $info->fieldName;
-                $property = null;
+        return new StandardServer(
+            [
+                'schema' => new GraphQLSchema($schemaConfig),
+                'context' => $container,
+                'fieldResolver' => static function ($source, $args, $context, ResolveInfo $info) {
+                    $fieldName = $info->fieldName;
+                    $property = null;
 
-                if ((\is_array($source) || $source instanceof \ArrayAccess) && isset($source[$fieldName])) {
-                    $property = $source[$fieldName];
-                } elseif (\is_object($source)) {
-                    if (isset($source->{$fieldName})) {
-                        $property = $source->{$fieldName};
-                    } else {
-                        $method = 'get' . ucfirst($fieldName);
+                    if ((\is_array($source) || $source instanceof \ArrayAccess) && isset($source[$fieldName])) {
+                        $property = $source[$fieldName];
+                    } elseif (\is_object($source)) {
+                        if (isset($source->{$fieldName})) {
+                            $property = $source->{$fieldName};
+                        } else {
+                            $method = 'get' . ucfirst($fieldName);
 
-                        if (method_exists($source, $method)) {
-                            $property = $source->$method();
-                        } elseif (method_exists($source, 'get')) {
-                            $property = $source->get(snakeCase($fieldName));
+                            if (method_exists($source, $method)) {
+                                $property = $source->$method();
+                            } elseif (method_exists($source, 'get')) {
+                                $property = $source->get(snakeCase($fieldName));
+                            }
                         }
                     }
-                }
 
-                return $property instanceof \Closure ? $property($source, $args, $context) : $property;
-            },
-        ]);
+                    return $property instanceof \Closure ? $property($source, $args, $context) : $property;
+                },
+            ]
+        );
     }
 
     public function createGraphQLRequestHandler(ContainerInterface $container): GraphQLRequestHandler

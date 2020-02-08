@@ -1,18 +1,23 @@
 <?php
 
-namespace Rosem\Component\Authentication\Http\Server;
+namespace Rosem\Component\Authentication\Middleware;
 
 use Fig\Http\Message\{
-    RequestMethodInterface, StatusCodeInterface
+    RequestMethodInterface,
+    StatusCodeInterface
 };
 use Psr\Http\Message\{
-    ResponseFactoryInterface, ResponseInterface, ServerRequestInterface
+    ResponseFactoryInterface,
+    ResponseInterface,
+    ServerRequestInterface
 };
 use Psr\Http\Server\RequestHandlerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use Rosem\Contract\Authentication\{
-    UserFactoryInterface, UserInterface
+    UserFactoryInterface,
+    UserInterface
 };
+
 use function call_user_func;
 
 class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
@@ -22,13 +27,13 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
      */
     private const AUTHORIZATION_HEADER_PREFIX = 'Bearer';
 
-    protected $identityParameter;
+    protected string $identityParameter;
 
-    protected $passwordParameter;
+    protected string $passwordParameter;
 
-    protected $loginUri;
+    protected string $loginUri;
 
-    protected $loggedInUri;
+    protected string $loggedInUri;
 
     /**
      * AuthenticationMiddleware constructor.

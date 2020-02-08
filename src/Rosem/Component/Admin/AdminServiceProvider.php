@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Component\Admin\Http\Server\{
     AdminRequestHandler,
     LoginRequestHandler};
-use Rosem\Component\Authentication\Http\Server\AuthenticationMiddleware;
+use Rosem\Component\Authentication\Middleware\AuthenticationMiddleware;
 use Rosem\Contract\Container\ServiceProviderInterface;
 use Rosem\Contract\Http\Server\MiddlewareCollectorInterface;
 use Rosem\Contract\Route\RouteCollectorInterface;
