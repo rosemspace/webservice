@@ -3,6 +3,7 @@
 namespace Rosem\Component\Route\DataGenerator;
 
 use Rosem\Component\Route\RegexRouteInterface;
+
 use function count;
 
 class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
@@ -11,9 +12,9 @@ class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
 
     public const KEY_OFFSET = 1;
 
-    protected $chunkCount = 0;
+    protected int $chunkCount = 0;
 
-    protected $groupCount = 0;
+    protected int $groupCount = 0;
 
     /**
      * GroupCountBasedChunk constructor.

@@ -1,8 +1,12 @@
 <?php
 
-namespace Symfony\Component\Routing;
+namespace Bench;
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../../../../../vendor/autoload.php';
+
+const NUMBER_OF_ROUTES = 1000;
+
+namespace Symfony\Component\Routing;
 
 $routes = new RouteCollection();
 
@@ -11,20 +15,18 @@ for ($i = 0; $i < 400; ++$i) {
     $routes->add('f'.$i, new Route('/abc{foo}/'.$i));
 }
 
-$dumper = new Matcher\Dumper\PhpMatcherDumper($routes);
+$dumper = new Matcher\Dumper\CompiledUrlMatcherDumper($routes);
 
-eval('?'.'>'.$dumper->dump());
+//eval('?'.'>'.$dumper->dump());
 
-$router = new \ProjectUrlMatcher(new RequestContext());
+$router = new \Symfony\Component\Routing\Matcher\CompiledUrlMatcher($dumper->getCompiledRoutes(), new RequestContext());
 
-$i = 10000;
+$i = \Bench\NUMBER_OF_ROUTES;
 $s = microtime(1);
 
 while (--$i) {
     $res = $router->match('/abcdef/399');
 }
-
-var_dump($res);
 
 echo 'Symfony: ', 1000 * (microtime(1) - $s), "\n";
 
@@ -37,11 +39,11 @@ $dispatcher = simpleDispatcher(function(RouteCollector $r) {
     }
 });
 
-$i = 10000;
+$i = \Bench\NUMBER_OF_ROUTES;
 $s = microtime(1);
 
 while (--$i) {
-    $dispatcher->dispatch('GET', '/abcdef/399');
+    $res = $dispatcher->dispatch('GET', '/abcdef/399');
 }
 
 echo 'FastRoute: ', 1000 * (microtime(1) - $s), "\n";

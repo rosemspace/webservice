@@ -10,9 +10,9 @@ use Rosem\Component\Route\Dispatcher\MarkBasedDispatcher;
 use Rosem\Component\Route\Dispatcher\StringNumberBasedDispatcher;
 use Rosem\Component\Route\Dispatcher\GroupCountBasedDispatcher;
 
-class Router extends Collector implements RouteDispatcherInterface
+class Router extends RouteCollector implements RouteDispatcherInterface
 {
-    use RegexBasedDispatcherTrait;
+    use RouteDispatcherTrait;
 
     /**
      * Router constructor.
@@ -27,23 +27,8 @@ class Router extends Collector implements RouteDispatcherInterface
 //        parent::__construct(new Compiler(new Parser()), new StringNumberBasedDataGenerator());
 //        parent::__construct(new Compiler(new Parser()), new GroupCountBasedDataGenerator());
 
-//        $this->regexBasedDispatcher = new MarkBasedDispatcher();
-        $this->regexBasedDispatcher = new StringNumberBasedDispatcher();
-//        $this->regexBasedDispatcher = new GroupCountBasedDispatcher();
-    }
-
-    public function dispatch(string $method, string $uri): array
-    {
-        if (isset($this->staticRouteMap[$method][$uri])) {
-            [$handler, $middleware] = $this->staticRouteMap[$method][$uri];
-
-            return [200, &$handler, &$middleware, []];
-        }
-
-        return $this->regexBasedDispatcher->dispatch(
-            $this->variableRouteMap[$method]->routeExpressions,
-            $this->variableRouteMap[$method]->routeData,
-            $uri
-        );
+        $this->dispatcher = new MarkBasedDispatcher();
+//        $this->dispatcher = new StringNumberBasedDispatcher();
+//        $this->dispatcher = new GroupCountBasedDispatcher();
     }
 }

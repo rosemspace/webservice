@@ -10,5 +10,6 @@ interface RegexRouteInterface extends RouteInterface
 
     public function getVariableNames(): array;
 
+    //todo
     public function &getMiddlewareExtensions(): array;
 }

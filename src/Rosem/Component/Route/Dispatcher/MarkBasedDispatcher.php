@@ -2,7 +2,10 @@
 
 namespace Rosem\Component\Route\Dispatcher;
 
-class MarkBasedDispatcher extends AbstractRegexBasedDispatcher
+use Fig\Http\Message\StatusCodeInterface;
+use Rosem\Component\Route\RegexBasedDispatcherInterface;
+
+class MarkBasedDispatcher implements RegexBasedDispatcherInterface
 {
     /**
      * @param array  $metaList
@@ -23,10 +26,10 @@ class MarkBasedDispatcher extends AbstractRegexBasedDispatcher
                     $variableData[$variableName] = &$matches[$index + 1];
                 }
 
-                return [self::ROUTE_FOUND, $handler, $middleware, $variableData];
+                return [StatusCodeInterface::STATUS_FOUND, $handler, $middleware, $variableData];
             }
         }
 
-        return [self::ROUTE_NOT_FOUND];
+        return [StatusCodeInterface::STATUS_NOT_FOUND];
     }
 }

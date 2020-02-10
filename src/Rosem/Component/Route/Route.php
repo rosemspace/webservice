@@ -6,21 +6,21 @@ use Rosem\Contract\Route\RouteInterface;
 
 class Route implements RegexRouteInterface
 {
-    protected $methods;
+    protected array $methods;
 
-    protected $handler;
+    protected string $handler;
 
-    protected $pathPattern;
+    protected string $pathPattern;
 
-    protected $hostPattern;
+    protected string $hostPattern;
 
-    protected $schemes;
+    protected array $schemes;
 
-    protected $middlewareExtensions = [];
+    protected array $middlewareExtensions = [];
 
-    protected $regex;
+    protected string $regex;
 
-    protected $variableNames;
+    protected array $variableNames;
 
     public function __construct(array $methods, string $handler, ...$data)
     {

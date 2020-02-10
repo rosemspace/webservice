@@ -2,9 +2,13 @@
 
 namespace Rosem\Component\Route\Dispatcher;
 
-use Rosem\Component\Route\DataGenerator\StringNumberBasedDataGenerator;
+use Fig\Http\Message\StatusCodeInterface;
+use Rosem\Component\Route\{
+    DataGenerator\StringNumberBasedDataGenerator,
+    RegexBasedDispatcherInterface
+};
 
-class StringNumberBasedDispatcher extends AbstractRegexBasedDispatcher
+class StringNumberBasedDispatcher implements RegexBasedDispatcherInterface
 {
     /**
      * @param array[] $metaList
@@ -28,6 +32,7 @@ class StringNumberBasedDispatcher extends AbstractRegexBasedDispatcher
             $segmentCount = $meta[StringNumberBasedDataGenerator::KEY_SEGMENT_COUNT];
             $indexString = '';
 
+            // todo fix a bug
             do {
                 $lastMatch = array_pop($matches);
                 $indexString = $lastMatch[0] . $indexString . (isset($lastMatch[1]) ? $lastMatch[-1] : '');
@@ -36,9 +41,9 @@ class StringNumberBasedDispatcher extends AbstractRegexBasedDispatcher
             [$handler, $middleware, $variableNames] =
                 $dataList[$meta[StringNumberBasedDataGenerator::KEY_LAST_CHUNK_OFFSET] + (int)$indexString];
 
-            return [self::ROUTE_FOUND, $handler, $middleware, array_combine($variableNames, $matches)];
+            return [StatusCodeInterface::STATUS_FOUND, $handler, $middleware, array_combine($variableNames, $matches)];
         }
 
-        return [self::ROUTE_NOT_FOUND];
+        return [StatusCodeInterface::STATUS_NOT_FOUND];
     }
 }

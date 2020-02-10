@@ -5,12 +5,12 @@ namespace Rosem\Component\Route;
 /**
  * Trait RouteDispatcherTrait.
  */
-trait RegexBasedDispatcherTrait
+trait RouteDispatcherTrait
 {
     /**
      * @var RegexBasedDispatcherInterface
      */
-    protected $regexBasedDispatcher;
+    protected RegexBasedDispatcherInterface $dispatcher;
 
     /**
      * Dispatches against the provided HTTP method verb and URI.
@@ -45,7 +45,7 @@ trait RegexBasedDispatcherTrait
             return [200, &$handler, &$middleware, []];
         }
 
-        return $this->regexBasedDispatcher->dispatch(
+        return $this->dispatcher->dispatch(
             $this->variableRouteMap[$method]->routeExpressions,
             $this->variableRouteMap[$method]->routeData,
             $uri

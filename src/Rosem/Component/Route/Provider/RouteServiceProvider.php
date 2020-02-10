@@ -5,9 +5,9 @@ namespace Rosem\Component\Route\Provider;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Component\Route\{
-    Collector,
+    RouteCollector,
     Compiler,
-    Dispatcher,
+    RouteDispatcher,
     Parser
 };
 use Rosem\Component\Route\DataGenerator\MarkBasedDataGenerator;
@@ -69,7 +69,7 @@ class RouteServiceProvider implements ServiceProviderInterface
      */
     public function createRouteCollector(ContainerInterface $container): RouteCollectorInterface
     {
-        return new Collector(new Compiler(new Parser()), new MarkBasedDataGenerator());
+        return new RouteCollector(new Compiler(new Parser()), new MarkBasedDataGenerator());
     }
 
     /**
@@ -80,10 +80,10 @@ class RouteServiceProvider implements ServiceProviderInterface
      */
     public function createRouteDispatcher(ContainerInterface $container): RouteDispatcherInterface
     {
-        /** @var Collector $collector */
+        /** @var RouteCollector $collector */
         $collector = $container->get(RouteCollectorInterface::class);
 
-        return new Dispatcher(
+        return new RouteDispatcher(
             $collector->getStaticRouteMap(),
             $collector->getVariableRouteMap(),
             new MarkBasedDispatcher()

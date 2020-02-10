@@ -3,6 +3,7 @@
 namespace Rosem\Component\Route\DataGenerator;
 
 use Rosem\Component\Route\RegexRouteInterface;
+
 use function count;
 use function strlen;
 
@@ -16,7 +17,7 @@ class StringNumberBasedDataGenerator extends AbstractRegexBasedDataGenerator
 
     public const KEY_LAST_CHUNK_OFFSET = 3;
 
-    protected $lastChunkOffset = 0;
+    protected int $lastChunkOffset = 0;
 
     /**
      * NumberBasedChunk constructor.
@@ -46,7 +47,7 @@ class StringNumberBasedDataGenerator extends AbstractRegexBasedDataGenerator
     {
         $this->regexTree->clear();
         $this->lastChunkOffset = $this->lastInsertId;
-//        $this->routeCountPerRegex = 900; // TODO: auto-generate
+        //        $this->routeCountPerRegex = 900; // TODO: auto-generate
         $routeMaxCountLength = strlen((string)($this->routeCountPerRegex - 1));
         $this->routeExpressions[] = [
             self::KEY_REGEX => '',

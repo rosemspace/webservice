@@ -4,14 +4,23 @@ namespace Rosem\Component\Route;
 
 class Regex
 {
-    public const REGEX_GROUP = <<<'REGEX'
-        (?:
-            \(\?\(|\[[^\]\\\\]*(?:\\\\.[^\]\\\\]*)*\]|\\\\.
+    public const REGEX_GROUP = <<<'REGEXP'
+        ~ (?:
+            \(\?\(|\[[^]\\\\]*(?:
+                \\\\.[^]\\\\]*
+            )*]|\\\\.
         )(*SKIP)(*FAIL)
-        |(?<!
+        | (?<!
             \(\?\(DEFINE\)
-        )\((?!\?(?!<(?![!=])|P<|\')|\*)
-        REGEX;
+        )\((?!
+            \?(?!
+                <(?![!=])
+                |P<
+                |'
+            )
+            |\*
+        ) ~x
+        REGEXP;
 
     public const PREG_STATUS_PHRASES = [
         PREG_NO_ERROR => 'No errors',
@@ -49,6 +58,6 @@ class Regex
 
     public function hasCapturingGroups(): bool
     {
-        return (bool)preg_match(self::REGEX_GROUP, $this->regex);
+        return $this->isValid() && (bool)preg_match(self::REGEX_GROUP, $this->regex);
     }
 }

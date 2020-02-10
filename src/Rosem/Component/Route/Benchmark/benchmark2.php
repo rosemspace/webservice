@@ -4,25 +4,19 @@ ini_set('display_errors', true);
 ini_set('display_startup_errors', true);
 error_reporting(E_ALL);
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../../../../../vendor/autoload.php';
 
 const FIRST = 'first';
 const MIDDLE = 'middle';
 const LAST = 'last';
 const UNKNOWN = 'unknown';
-const ROSEM_ROUTER = 'rosem-route';
-const FAST_ROUTER = 'fast-route';
-const SYMFONY_ROUTER = 'symfony-route';
+const FAST_ROUTER = 'nikic/fast-route';
+const SYMFONY_ROUTER = 'symfony/routing';
+const ROSEM_ROUTER = 'rosem/route-dispatcher';
 
 // BENCHMARK 2
 
-$stats = [
-    ROSEM_ROUTER => [], FAST_ROUTER => [], SYMFONY_ROUTER => [],
-];
-$options = [
-    'dataGenerator' => \FastRoute\DataGenerator\GroupCountBased::class,
-    'dispatcher' => \FastRoute\Dispatcher\GroupCountBased::class,
-];
+$stats = [FAST_ROUTER => [], SYMFONY_ROUTER => [], ROSEM_ROUTER => []];
 $lastStr = null;
 $nRoutes = 300;
 $nArgs = 9;
@@ -45,6 +39,81 @@ echo <<<HTML
     </tbody>
 </table>
 HTML;
+
+// FAST ROUTER =========================================================================================================
+$args = implode('/', array_map(function($i) { return "{arg$i}"; }, range(1, $nArgs)));
+$router = \FastRoute\simpleDispatcher(function(\FastRoute\RouteCollector $router) use($nRoutes, $args, &$lastStr) {
+    for ($i = 0, $str = 'a'; $i < $nRoutes; $i++, $str++) {
+        $router->addRoute('GET', '/' . $str . '/' . $args, 'handler' . $i);
+        $lastStr = $str;
+    }
+}, [
+    'dataGenerator' => \FastRoute\DataGenerator\MarkBased::class,
+    'dispatcher' => \FastRoute\Dispatcher\MarkBased::class,
+]);
+// first route ---------------------------------------------------------------------------------------------------------
+$startTime = microtime(true);
+for ($i = 0; $i < $nMatches; $i++) {
+    $res = $router->dispatch('GET', '/a/' . $args);
+}
+$stats[FAST_ROUTER][FIRST] = microtime(true) - $startTime;
+// middle route --------------------------------------------------------------------------------------------------------
+$startTime = microtime(true);
+for ($i = 0; $i < $nMatches; $i++) {
+    $res = $router->dispatch('GET', '/es/' . $args);
+}
+$stats[FAST_ROUTER][MIDDLE] = microtime(true) - $startTime;
+// last route ----------------------------------------------------------------------------------------------------------
+$startTime = microtime(true);
+for ($i = 0; $i < $nMatches; $i++) {
+    $res = $router->dispatch('GET', '/' . $lastStr . '/' . $args);
+}
+$stats[FAST_ROUTER][LAST] = microtime(true) - $startTime;
+// unknown route -------------------------------------------------------------------------------------------------------
+$startTime = microtime(true);
+for ($i = 0; $i < $nMatches; $i++) {
+    $res = $router->dispatch('GET', '/foobar/' . $args);
+}
+$stats[FAST_ROUTER][UNKNOWN] = microtime(true) - $startTime;
+//----------------------------------------------------------------------------------------------------------------------
+
+// SYMFONY ROUTER ======================================================================================================
+$router = new \Symfony\Component\Routing\RouteCollection();
+for ($i = 0, $str = 'a'; $i < $nRoutes; $i++, $str++) {
+    $router->add('handler' . $i, new \Symfony\Component\Routing\Route('/' . $str . '/' . $args));
+    $lastStr = $str;
+}
+$dumper = new \Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper($router);
+//$dump = $dumper->dump();
+//eval('?'.'>'.$dump);
+$router = new \Symfony\Component\Routing\Matcher\CompiledUrlMatcher($dumper->getCompiledRoutes(), new \Symfony\Component\Routing\RequestContext());
+// first route ---------------------------------------------------------------------------------------------------------
+$startTime = microtime(true);
+for ($i = 0; $i < $nMatches; $i++) {
+    $res = $router->match('/a/' . $args);
+}
+$stats[SYMFONY_ROUTER][FIRST] = microtime(true) - $startTime;
+// middle route --------------------------------------------------------------------------------------------------------
+$startTime = microtime(true);
+for ($i = 0; $i < $nMatches; $i++) {
+    $res = $router->match('/es/' . $args);
+}
+$stats[SYMFONY_ROUTER][MIDDLE] = microtime(true) - $startTime;
+// last route ----------------------------------------------------------------------------------------------------------
+$startTime = microtime(true);
+for ($i = 0; $i < $nMatches; $i++) {
+    $res = $router->match('/' . $lastStr . '/' . $args);
+}
+$stats[SYMFONY_ROUTER][LAST] = microtime(true) - $startTime;
+// unknown route -------------------------------------------------------------------------------------------------------
+$startTime = microtime(true);
+for ($i = 0; $i < $nMatches; $i++) {
+    try {
+        $res = $router->match('/foobar/' . $args);
+    } catch (\Exception $exception) {}
+}
+$stats[SYMFONY_ROUTER][UNKNOWN] = microtime(true) - $startTime;
+// ---------------------------------------------------------------------------------------------------------------------
 
 // ROSEM ROUTER ========================================================================================================
 $router = new \Rosem\Component\Route\Router();
@@ -92,77 +161,5 @@ if ($res[0] !== 404) {
     throw new \Exception('Invalid response');
 }
 //----------------------------------------------------------------------------------------------------------------------
-
-// FAST ROUTER =========================================================================================================
-$args = implode('/', array_map(function($i) { return "{arg$i}"; }, range(1, $nArgs)));
-$router = \FastRoute\simpleDispatcher(function(\FastRoute\RouteCollector $router) use($nRoutes, $args, &$lastStr) {
-    for ($i = 0, $str = 'a'; $i < $nRoutes; $i++, $str++) {
-        $router->addRoute('GET', '/' . $str . '/' . $args, 'handler' . $i);
-        $lastStr = $str;
-    }
-}, $options);
-// first route ---------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
-for ($i = 0; $i < $nMatches; $i++) {
-    $res = $router->dispatch('GET', '/a/' . $args);
-}
-$stats[FAST_ROUTER][FIRST] = microtime(true) - $startTime;
-// middle route --------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
-for ($i = 0; $i < $nMatches; $i++) {
-    $res = $router->dispatch('GET', '/es/' . $args);
-}
-$stats[FAST_ROUTER][MIDDLE] = microtime(true) - $startTime;
-// last route ----------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
-for ($i = 0; $i < $nMatches; $i++) {
-    $res = $router->dispatch('GET', '/' . $lastStr . '/' . $args);
-}
-$stats[FAST_ROUTER][LAST] = microtime(true) - $startTime;
-// unknown route -------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
-for ($i = 0; $i < $nMatches; $i++) {
-    $res = $router->dispatch('GET', '/foobar/' . $args);
-}
-$stats[FAST_ROUTER][UNKNOWN] = microtime(true) - $startTime;
-//----------------------------------------------------------------------------------------------------------------------
-
-// SYMFONY ROUTER ======================================================================================================
-$router = new \Symfony\Component\Routing\RouteCollection();
-for ($i = 0, $str = 'a'; $i < $nRoutes; $i++, $str++) {
-    $router->add('handler' . $i, new \Symfony\Component\Routing\Route('/' . $str . '/' . $args));
-    $lastStr = $str;
-}
-$dumper = new \Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper($router);
-$dump = $dumper->dump();
-eval('?'.'>'.$dump);
-$router = new \ProjectUrlMatcher(new \Symfony\Component\Routing\RequestContext());
-// first route ---------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
-for ($i = 0; $i < $nMatches; $i++) {
-    $res = $router->match('/a/' . $args);
-}
-$stats[SYMFONY_ROUTER][FIRST] = microtime(true) - $startTime;
-// middle route --------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
-for ($i = 0; $i < $nMatches; $i++) {
-    $res = $router->match('/es/' . $args);
-}
-$stats[SYMFONY_ROUTER][MIDDLE] = microtime(true) - $startTime;
-// last route ----------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
-for ($i = 0; $i < $nMatches; $i++) {
-    $res = $router->match('/' . $lastStr . '/' . $args);
-}
-$stats[SYMFONY_ROUTER][LAST] = microtime(true) - $startTime;
-// unknown route -------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
-for ($i = 0; $i < $nMatches; $i++) {
-    try {
-        $res = $router->match('/foobar/' . $args);
-    } catch (\Exception $exception) {}
-}
-$stats[SYMFONY_ROUTER][UNKNOWN] = microtime(true) - $startTime;
-// ---------------------------------------------------------------------------------------------------------------------
 
 !d($stats);

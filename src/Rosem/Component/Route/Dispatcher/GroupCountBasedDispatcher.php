@@ -2,10 +2,15 @@
 
 namespace Rosem\Component\Route\Dispatcher;
 
-use Rosem\Component\Route\DataGenerator\GroupCountBasedDataGenerator;
+use Fig\Http\Message\StatusCodeInterface;
+use Rosem\Component\Route\{
+    DataGenerator\GroupCountBasedDataGenerator,
+    RegexBasedDispatcherInterface
+};
+
 use function count;
 
-class GroupCountBasedDispatcher extends AbstractRegexBasedDispatcher
+class GroupCountBasedDispatcher implements RegexBasedDispatcherInterface
 {
     /**
      * @param array  $metaList
@@ -33,9 +38,9 @@ class GroupCountBasedDispatcher extends AbstractRegexBasedDispatcher
                 $variableData[$variableName] = &$matches[$index + 1];
             }
 
-            return [self::ROUTE_FOUND, $handler, $middleware, $variableData];
+            return [StatusCodeInterface::STATUS_OK, $handler, $middleware, $variableData];
         }
 
-        return [self::ROUTE_NOT_FOUND];
+        return [StatusCodeInterface::STATUS_NOT_FOUND];
     }
 }

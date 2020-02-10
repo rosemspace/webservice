@@ -4,25 +4,25 @@ namespace Rosem\Component\Route;
 
 use Rosem\Contract\Route\RouteDispatcherInterface;
 
-class Dispatcher implements RouteDispatcherInterface
+class RouteDispatcher implements RouteDispatcherInterface
 {
-    use MapTrait;
-    use RegexBasedDispatcherTrait;
+    use RouteMapTrait;
+    use RouteDispatcherTrait;
 
     /**
      * RouteDispatcher constructor.
      *
      * @param array                         $staticRouteMap
      * @param array                         $variableRouteMap
-     * @param RegexBasedDispatcherInterface $variableDispatcher
+     * @param RegexBasedDispatcherInterface $dispatcher
      */
     public function __construct(
         array $staticRouteMap,
         array $variableRouteMap,
-        RegexBasedDispatcherInterface $variableDispatcher
+        RegexBasedDispatcherInterface $dispatcher
     ) {
         $this->staticRouteMap = $staticRouteMap;
         $this->variableRouteMap = $variableRouteMap;
-        $this->regexBasedDispatcher = $variableDispatcher;
+        $this->dispatcher = $dispatcher;
     }
 }

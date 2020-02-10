@@ -3,28 +3,31 @@
 namespace Rosem\Component\Route;
 
 use Rosem\Contract\Route\{
-    AbstractRouteCollector, RouteGroupInterface, RouteInterface
+    AbstractRouteCollector,
+    RouteGroupInterface,
+    RouteInterface
 };
+
 use function count;
 
-class Collector extends AbstractRouteCollector
+class RouteCollector extends AbstractRouteCollector
 {
-    use MapTrait;
+    use RouteMapTrait;
 
     /**
-     * @var Compiler
+     * @var CompilerInterface
      */
-    protected $compiler;
+    protected CompilerInterface $compiler;
 
     /**
      * @var RegexBasedDataGeneratorInterface
      */
-    protected $dataGenerator;
+    protected RegexBasedDataGeneratorInterface $dataGenerator;
 
     /**
      * @var string
      */
-    protected $prefix = '';
+    protected string $currentGroupPrefix = '';
 
     public function __construct(CompilerInterface $compiler, RegexBasedDataGeneratorInterface $dataGenerator)
     {
@@ -39,18 +42,23 @@ class Collector extends AbstractRouteCollector
 
     /**
      * @param string|string[] $methods
-     * @param string          $routePattern
+     * @param string          $pattern
      * @param mixed           $handler
      *
      * @return RouteInterface
      * @throws Exception\TooLongRouteException
      */
-    public function addRoute($methods, string $routePattern, $handler): RouteInterface
+    public function addRoute($methods, string $pattern, $handler): RouteInterface
     {
-        $route = $this->compiler->compile((array)$methods, self::normalize($routePattern), $handler);
+        $route = $this->compiler->compile(
+            (array)$methods,
+            $this->currentGroupPrefix . self::normalize($pattern),
+            $handler
+        );
 
         foreach ($route->getMethods() as $method) {
-            if (count($route->getVariableNames())) { // dynamic route
+            if (count($route->getVariableNames())) {
+                // Dynamic route
                 if (!isset($this->variableRouteMap[$method])) {
                     $this->variableRouteMap[$method] = clone $this->dataGenerator;
                 }
@@ -58,17 +66,18 @@ class Collector extends AbstractRouteCollector
                 try {
                     $this->variableRouteMap[$method]->addRoute($route);
                 } catch (Exception\TooLongRouteException $exception) {
-//                    $this->variableRouteMap[$method]->rollback(); // TODO: add rollback
+                    //$this->variableRouteMap[$method]->rollback(); // TODO: add rollback
                     $this->variableRouteMap[$method]->newChunk();
                     $this->variableRouteMap[$method]->addRoute($route);
                 }
-            } else { // static route
+            } else {
+                // Static route
                 if (!isset($this->staticRouteMap[$method])) {
                     $this->staticRouteMap[$method] = [];
                 }
 
                 $middleware = &$route->getMiddlewareExtensions();
-                $this->staticRouteMap[$method][$routePattern] = [$route->getHandler(), &$middleware];
+                $this->staticRouteMap[$method][$pattern] = [$route->getHandler(), &$middleware];
             }
         }
 
@@ -77,15 +86,16 @@ class Collector extends AbstractRouteCollector
 
     /**
      * @param string   $prefix
-     * @param callable $group
+     * @param callable $callback
      *
      * @return RouteGroupInterface
      */
-    public function addGroup(string $prefix, callable $group): RouteGroupInterface
+    public function addGroup(string $prefix, callable $callback): RouteGroupInterface
     {
-        $this->prefix .= self::normalize($prefix);
-        $group($this);
-        $this->prefix = '';
+        $previousGroupPrefix = $this->currentGroupPrefix;
+        $this->currentGroupPrefix .= self::normalize($prefix);
+        $callback($this);
+        $this->currentGroupPrefix = $previousGroupPrefix;
         // TODO: return
     }
 

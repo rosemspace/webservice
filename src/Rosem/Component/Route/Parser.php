@@ -4,23 +4,23 @@ namespace Rosem\Component\Route;
 
 class Parser implements ParserInterface
 {
-    protected const VARIABLE_TOKENS = ['{', '}'];
+    protected const DEFAULT_VARIABLE_TOKENS = ['{', '}'];
 
-    protected const VARIABLE_REGEX_TOKEN = ':';
+    protected const DEFAULT_VARIABLE_REGEX_TOKEN = ':';
 
     protected const DEFAULT_DISPATCH_REGEX = '[^/]++';
 
-    private string $variableSplitRegex;
+    protected string $variableSplitRegex;
 
-    public function __construct(bool $useUtf8 = false)
+    public function __construct(bool $useUtf8 = true)
     {
         // {\s*([a-zA-Z_][a-zA-Z0-9_-]*)\s*:?([^\/]*?[^{]*)}
-        $this->variableSplitRegex = '/'
-            . static::VARIABLE_TOKENS[0]
-            . '\s*([[:alpha:]_][[:alnum:]_-]*)\s*' . static::VARIABLE_REGEX_TOKEN
-            . '?([^\\/]*?[^' . static::VARIABLE_TOKENS[0] . ']*)'
-            . static::VARIABLE_TOKENS[1]
-            . '/';
+        $this->variableSplitRegex = '~'
+            . static::DEFAULT_VARIABLE_TOKENS[0]
+            . '\s*([[:alpha:]_][[:alnum:]_-]*)\s*' . static::DEFAULT_VARIABLE_REGEX_TOKEN
+            . '?([^\\/]*?[^' . static::DEFAULT_VARIABLE_TOKENS[0] . ']*)'
+            . static::DEFAULT_VARIABLE_TOKENS[1]
+            . '~'; //x;
 
         if ($useUtf8) {
             $this->variableSplitRegex .= 'u';
@@ -36,12 +36,16 @@ class Parser implements ParserInterface
     {
         $variableNames = [];
         $index = 0;
-        $regex = preg_replace_callback($this->variableSplitRegex, function ($matches) use (&$variableNames, &$index) {
-            $variableNames[] = $matches[1] ?: $index;
-            ++$index;
+        $regex = preg_replace_callback(
+            $this->variableSplitRegex,
+            static function ($matches) use (&$variableNames, &$index) {
+                $variableNames[] = $matches[1] ?: $index;
+                ++$index;
 
-            return '(' . ($matches[2] ?: self::DEFAULT_DISPATCH_REGEX) . ')';
-        }, $routePattern);
+                return '(' . ($matches[2] ?: self::DEFAULT_DISPATCH_REGEX) . ')';
+            },
+            $routePattern
+        );
 
         return [
             [$regex, $variableNames],

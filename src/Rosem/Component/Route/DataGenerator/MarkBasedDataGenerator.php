@@ -3,11 +3,12 @@
 namespace Rosem\Component\Route\DataGenerator;
 
 use Rosem\Component\Route\RegexRouteInterface;
+
 use function count;
 
 class MarkBasedDataGenerator extends AbstractRegexBasedDataGenerator
 {
-    protected $lastChunkOffset = 0;
+    protected int $lastChunkOffset = 0;
 
     /**
      * MarkBasedChunk constructor.

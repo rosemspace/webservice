@@ -10,12 +10,12 @@ class RegexTreeNode
     /**
      * @var string
      */
-    protected $prefix;
+    protected string $prefix;
 
     /**
      * @var self[]
      */
-    protected $nodes = [];
+    protected array $nodes = [];
 
     public function __construct(string $prefix = '', array $nodes = [])
     {

@@ -2,7 +2,7 @@
 
 namespace Rosem\Component\Route;
 
-trait MapTrait
+trait RouteMapTrait
 {
     /**
      * [
@@ -17,10 +17,10 @@ trait MapTrait
      *
      * @var array[]
      */
-    protected $staticRouteMap = [];
+    protected array $staticRouteMap = [];
 
     /**
      * @var RegexBasedDataGeneratorInterface[]
      */
-    protected $variableRouteMap = [];
+    protected array $variableRouteMap = [];
 }

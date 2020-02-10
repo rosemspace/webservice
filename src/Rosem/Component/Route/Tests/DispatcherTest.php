@@ -8,12 +8,12 @@ use Rosem\Component\Route\Dispatcher\MarkBasedDispatcher;
 class DispatcherTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var Collector
+     * @var RouteCollector
      */
     protected $collector;
 
     /**
-     * @var Dispatcher
+     * @var RouteDispatcher
      */
     protected $dispatcher;
 
@@ -21,8 +21,8 @@ class DispatcherTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        $this->collector = new Collector(new Compiler(new Parser()), new MarkBasedDataGenerator());
-        $this->dispatcher = new Dispatcher(
+        $this->collector = new RouteCollector(new Compiler(new Parser()), new MarkBasedDataGenerator());
+        $this->dispatcher = new RouteDispatcher(
             $this->collector->getStaticRouteMap(),
             $this->collector->getVariableRouteMap(),
             new MarkBasedDispatcher()

@@ -4,8 +4,11 @@ namespace Rosem\Component\Route\DataGenerator;
 
 use InvalidArgumentException;
 use Rosem\Component\Route\{
-    Exception\TooLongRouteException, RegexBasedDataGeneratorInterface, RegexTreeNode
+    Exception\TooLongRouteException,
+    RegexBasedDataGeneratorInterface,
+    RegexTreeNode
 };
+
 use function strlen;
 
 abstract class AbstractRegexBasedDataGenerator implements RegexBasedDataGeneratorInterface
@@ -15,56 +18,56 @@ abstract class AbstractRegexBasedDataGenerator implements RegexBasedDataGenerato
      *
      * @var array
      */
-    public $routeExpressions = [];
+    public array $routeExpressions = [];
 
     /**
      * Data of each route in the collection.
      *
      * @var array
      */
-    public $routeData = [];
+    public array $routeData = [];
 
     /**
      * Count of routes per one regex.
      *
      * @var int
      */
-    protected $routeCountPerRegex;
+    protected int $routeCountPerRegex;
 
     /**
      * Last inserted route id.
      *
      * @var int
      */
-    protected $lastInsertId = 0;
+    protected int $lastInsertId = 0;
 
     /**
      * The final regex.
      *
      * @var string
      */
-    protected $regex = '';
+    protected string $regex = '';
 
     /**
      * Max length of the final regex.
      *
      * @var int
      */
-    protected $regexMaxLength;
+    protected int $regexMaxLength;
 
     /**
      * Regex tree optimizer.
      *
      * @var RegexTreeNode
      */
-    protected $regexTree;
+    protected RegexTreeNode $regexTree;
 
     /**
      * UTF-8 flag.
      *
      * @var bool
      */
-    protected $utf8 = false;
+    protected bool $utf8 = false;
 
     /**
      * NumberBasedChunk constructor.
@@ -83,7 +86,7 @@ abstract class AbstractRegexBasedDataGenerator implements RegexBasedDataGenerato
         }
 
         $this->routeCountPerRegex = $routeCountPerRegex;
-        $this->regexMaxLength = $regexMaxLength ?: (int)ini_get('pcre.backtrack_limit') ?: 1000000;
+        $this->regexMaxLength = $regexMaxLength ?: (int)ini_get('pcre.backtrack_limit') ?: 1_000_000;
         $this->regexTree = new RegexTreeNode();
     }
 
@@ -111,7 +114,7 @@ abstract class AbstractRegexBasedDataGenerator implements RegexBasedDataGenerato
 
         if (strlen($this->regex) > $this->regexMaxLength) {
             // TODO: rollback
-//            $this->regexTree->rollback();
+            //            $this->regexTree->rollback();
 
             throw new TooLongRouteException('Your route is too long');
         }

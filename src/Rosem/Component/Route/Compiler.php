@@ -7,7 +7,7 @@ class Compiler implements CompilerInterface
     /**
      * @var ParserInterface
      */
-    protected $parser;
+    protected ParserInterface $parser;
 
     public function __construct(ParserInterface $parser)
     {

@@ -2,6 +2,8 @@
 
 namespace Rosem\Component\Route\Exception;
 
-class BadRouteException extends \LogicException
+use LogicException;
+
+class BadRouteException extends LogicException
 {
 }
