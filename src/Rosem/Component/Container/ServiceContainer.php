@@ -1,12 +1,20 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rosem\Component\Container;
 
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use Psr\Container\{
+    ContainerExceptionInterface,
+    NotFoundExceptionInterface
+};
 use Rosem\Component\Container\Exception;
 use Rosem\Contract\Container\ServiceProviderInterface;
+
+use function class_exists;
+use function class_implements;
+use function is_object;
+use function is_string;
 
 class ServiceContainer extends AbstractContainer
 {
@@ -28,27 +36,41 @@ class ServiceContainer extends AbstractContainer
 
         // 1. In the first pass, the container calls the getFactories method of all service providers.
         foreach ($serviceProviders as $serviceProvider) {
-            if (\is_string($serviceProvider)) {
-                if (class_exists($serviceProvider)) {
-                    //TODO: exception
-                    $serviceProviderInstances[] = $serviceProviderInstance = new $serviceProvider;
+            $serviceProviderInstance = $serviceProvider;
 
-                    if ($serviceProviderInstance instanceof ServiceProviderInterface) {
-                        $this->set($serviceProvider, static function () use ($serviceProviderInstance) {
-                            return $serviceProviderInstance;
-                        });
-
-                        foreach ($serviceProviderInstance->getFactories() as $key => $factory) {
-                            $this->set($key, $factory);
-                        }
-                    } else {
-                        Exception\ServiceProviderException::invalidInterface($serviceProvider);
-                    }
-                } else {
+            if (is_string($serviceProvider)) {
+                if (!class_exists($serviceProvider)) {
                     Exception\ServiceProviderException::doesNotExist($serviceProvider);
                 }
-            } else {
+
+                if (!in_array(
+                    ServiceProviderInterface::class,
+                    class_implements($serviceProvider, true),
+                    true
+                )) {
+//                if (!is_a($serviceProvider, ServiceProviderInterface::class)) {
+                    Exception\ServiceProviderException::invalidInterface($serviceProvider);
+                }
+
+                $serviceProviderInstance = new $serviceProvider();
+            } elseif (!is_object($serviceProvider)) {
                 Exception\ServiceProviderException::invalidType($serviceProvider);
+            }
+
+            if ($serviceProviderInstance instanceof ServiceProviderInterface) {
+                $serviceProviderInstances[] = $serviceProviderInstance;
+                $this->set(
+                    $serviceProvider,
+                    static function () use ($serviceProviderInstance) {
+                        return $serviceProviderInstance;
+                    }
+                );
+
+                foreach ($serviceProviderInstance->getFactories() as $key => $factory) {
+                    $this->set($key, $factory);
+                }
+            } else {
+                Exception\ServiceProviderException::invalidInterface(get_class($serviceProviderInstance));
             }
         }
 
