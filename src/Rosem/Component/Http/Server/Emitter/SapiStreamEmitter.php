@@ -36,6 +36,12 @@ class SapiStreamEmitter implements EmitterInterface
      */
     public function emit(ResponseInterface $response): bool
     {
+        if (!$response->hasHeader('Content-Disposition') &&
+            !$response->hasHeader('Content-Range')
+        ) {
+            return false;
+        }
+
         $this->assertNoPreviousOutput();
         $this->emitHeaders($response);
         $this->emitStatusLine($response);

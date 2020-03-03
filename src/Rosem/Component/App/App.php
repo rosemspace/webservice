@@ -136,7 +136,11 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
 
     public function run(): bool
     {
-        return $this->get(MiddlewareRunnerInterface::class)->run();
+        return $this->get(EmitterInterface::class)->emit(
+            $this->get(MiddlewareCollectorInterface::class)->handle(
+                $this->get(ServerRequestInterface::class)
+            )
+        );
     }
 
     protected function validateEnv(): void

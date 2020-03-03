@@ -4,15 +4,17 @@ namespace Rosem\Component\Http\Provider;
 
 use Laminas\Diactoros\{
     ResponseFactory,
+    ServerRequest,
     ServerRequestFactory
 };
 use Psr\Http\Message\{
     ResponseFactoryInterface,
-    ServerRequestFactoryInterface
+    ServerRequestFactoryInterface,
+    ServerRequestInterface
 };
 use Rosem\Contract\Container\ServiceProviderInterface;
 
-class MessageFactoryProvider implements ServiceProviderInterface
+class MessageServiceProvider implements ServiceProviderInterface
 {
     /**
      * @return callable[]
@@ -22,6 +24,7 @@ class MessageFactoryProvider implements ServiceProviderInterface
         return [
             ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
             ResponseFactoryInterface::class => [static::class, 'createResponseFactory'],
+            ServerRequestInterface::class => [static::class, 'createServerRequest'],
         ];
     }
 
@@ -41,5 +44,10 @@ class MessageFactoryProvider implements ServiceProviderInterface
     public function createResponseFactory(): ResponseFactory
     {
         return new ResponseFactory();
+    }
+
+    public function createServerRequest(): ServerRequest
+    {
+        return ServerRequestFactory::fromGlobals();
     }
 }

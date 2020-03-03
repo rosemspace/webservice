@@ -16,9 +16,7 @@ use Psr\Http\Server\{
 };
 use Rosem\Contract\Http\Server\MiddlewareCollectorInterface;
 
-use function call_user_func;
-
-class MiddlewareCollector implements MiddlewareCollectorInterface, RequestHandlerInterface
+class MiddlewareCollector implements MiddlewareCollectorInterface
 {
     /**
      * @var ContainerInterface
@@ -57,13 +55,13 @@ class MiddlewareCollector implements MiddlewareCollectorInterface, RequestHandle
             }
 
             /**
-             * {@inheritdoc}
+             * @inheritdoc
              */
             public function process(
                 ServerRequestInterface $request,
                 RequestHandlerInterface $handler
             ): ResponseInterface {
-                return call_user_func($this->middleware, $request, $handler);
+                return ($this->middleware)($request, $handler);
             }
         };
     }

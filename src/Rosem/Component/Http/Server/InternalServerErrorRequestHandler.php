@@ -37,7 +37,7 @@ class InternalServerErrorRequestHandler implements RequestHandlerInterface
     public function __construct(
         ResponseFactoryInterface $responseFactory,
         TemplateRendererInterface $view,
-        array $config
+        array $config = []
     ) {
         $this->responseFactory = $responseFactory;
         $this->view = $view;

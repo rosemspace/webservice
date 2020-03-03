@@ -9,7 +9,6 @@ use Rosem\Component\Http\Server\Exception\EmitterException;
 
 use function ob_get_length;
 use function ob_get_level;
-use function sprintf;
 use function str_replace;
 use function ucwords;
 
@@ -28,6 +27,7 @@ trait SapiEmitterTrait
         if (headers_sent()) {
             throw EmitterException::forHeadersSent();
         }
+
         if (ob_get_level() > 0 && ob_get_length() > 0) {
             throw EmitterException::forOutputSent();
         }
@@ -47,18 +47,10 @@ trait SapiEmitterTrait
      */
     private function emitStatusLine(ResponseInterface $response): void
     {
-        $reasonPhrase = $response->getReasonPhrase();
         $statusCode = $response->getStatusCode();
-        header(
-            sprintf(
-                'HTTP/%s %d%s',
-                $response->getProtocolVersion(),
-                $statusCode,
-                ($reasonPhrase ? ' ' . $reasonPhrase : '')
-            ),
-            true,
-            $statusCode
-        );
+        $protocolVersion = $response->getProtocolVersion();
+        $reasonPhrase = rtrim(' ' . $response->getReasonPhrase());
+        header("HTTP/$protocolVersion $statusCode$reasonPhrase", true, $statusCode);
     }
 
     /**
@@ -79,22 +71,14 @@ trait SapiEmitterTrait
             $first = $name !== 'Set-Cookie';
 
             foreach ($values as $value) {
-                header(
-                    sprintf(
-                        '%s: %s',
-                        $name,
-                        $value
-                    ),
-                    $first,
-                    $statusCode
-                );
+                header("$name: $value", $first, $statusCode);
                 $first = false;
             }
         }
     }
 
     /**
-     * Filter a header name to wordcase
+     * Filter a header name to wordcase.
      *
      * @param string $header
      *

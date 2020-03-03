@@ -45,36 +45,7 @@ class EmitterProvider implements ServiceProviderInterface
     {
         $stack = new EmitterStack();
         $stack->push($this->createSapiEmitter());
-        $sapiStreamEmitter = $this->createSapiStreamEmitter();
-        $stack->push(
-            new class($sapiStreamEmitter) implements EmitterInterface {
-                /**
-                 * @var EmitterInterface
-                 */
-                private EmitterInterface $emitter;
-
-                public function __construct(EmitterInterface $emitter)
-                {
-                    $this->emitter = $emitter;
-                }
-
-                /**
-                 * @param ResponseInterface $response
-                 *
-                 * @return bool
-                 */
-                public function emit(ResponseInterface $response): bool
-                {
-                    if (!$response->hasHeader('Content-Disposition')
-                        && !$response->hasHeader('Content-Range')
-                    ) {
-                        return false;
-                    }
-
-                    return $this->emitter->emit($response);
-                }
-            }
-        );
+        $stack->push($this->createSapiStreamEmitter());
 
         return $stack;
     }

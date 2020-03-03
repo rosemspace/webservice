@@ -30,7 +30,7 @@ abstract class AbstractAggregateServiceProvider implements ServiceProviderInterf
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getFactories(): array
     {
@@ -46,7 +46,7 @@ abstract class AbstractAggregateServiceProvider implements ServiceProviderInterf
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getExtensions(): array
     {
