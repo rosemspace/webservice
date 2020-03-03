@@ -3,40 +3,25 @@
 namespace Rosem\Component\App;
 
 use Exception;
-use Rosem\Component\Container\ConfigurationContainer;
-use Rosem\Component\Container\ServiceContainer;
+use Psr\Http\Message\ServerRequestInterface;
+use Rosem\Component\Container\{
+    ConfigurationContainer,
+    ServiceContainer
+};
 use Rosem\Contract\App\{
-    AppInterface,
-    EnvEnum
+    AppEnv,
+    AppEnvVar,
+    AppInterface
 };
 use Rosem\Contract\Debug\InspectableInterface;
-use Rosem\Contract\Http\Server\MiddlewareRunnerInterface;
+use Rosem\Contract\Http\Server\{
+    EmitterInterface,
+    MiddlewareCollectorInterface
+};
 
 class App extends ServiceContainer implements AppInterface, InspectableInterface
 {
     use EnvTrait;
-
-    /**
-     * The application environment key.
-     */
-    public const ENV_KEY = 'APP_ENV';
-
-    /**
-     * The application version key.
-     */
-    public const VERSION_KEY = 'APP_VERSION';
-
-    /**
-     * The application debug key.
-     */
-    public const DEBUG_KEY = 'APP_DEBUG';
-
-    /**
-     * The application root directory.
-     *
-     * @var string
-     */
-    private string $rootDir;
 
     /**
      * The application version.
@@ -51,6 +36,18 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
      * @var string
      */
     private string $environment;
+
+    /**
+     * @var string
+     */
+    private string $locale = 'en-us';
+
+    /**
+     * The application root directory.
+     *
+     * @var string
+     */
+    private string $rootDir;
 
     /**
      * Check if the application is allowed to debug.
@@ -98,7 +95,7 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
         $this->createEnv($this->rootDir, $config['envFile'] ?? '.env');
         $exceptionThrown = false;
         //todo env variables may be set before application initialization
-        //$this->environment = $this->getEnv(static::ENV_KEY) ?? '';
+        //$this->environment = $this->getEnv(self::ENV_KEY) ?? '';
         //$this->debug = $this->isEnvironment(EnvEnum::DEVELOPMENT);
 
         try {
@@ -107,14 +104,14 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
             $exceptionThrown = true;
         }
 
-        $this->environment = $this->getEnv(static::ENV_KEY) ?? '';
-        $debug = $this->getEnv(static::DEBUG_KEY);
+        $this->environment = $this->getEnv(AppEnvVar::ENV_KEY) ?? '';
+        $debug = $this->getEnv(AppEnvVar::DEBUG_KEY);
         $this->debug = $debug !== 'auto'
             ? $debug
-            : $this->isEnvironment(EnvEnum::DEVELOPMENT);
+            : $this->isEnvironment(AppEnv::DEVELOPMENT);
 
         if ($this->envLoaded) {
-            $this->version = $this->getEnv(static::VERSION_KEY) ?? '';
+            $this->version = $this->getEnv(AppEnvVar::VERSION_KEY) ?? '';
         }
 
         if ($this->debug) {
@@ -145,16 +142,15 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
 
     protected function validateEnv(): void
     {
-        $this->env->required(static::VERSION_KEY)->notEmpty();
-        $this->env->required(static::ENV_KEY)->allowedValues(
+        $this->env->required(AppEnvVar::VERSION_KEY)->notEmpty();
+        $this->env->required(AppEnvVar::ENV_KEY)->allowedValues(
             [
-                EnvEnum::LOCAL,
-                EnvEnum::MAINTENANCE,
-                EnvEnum::DEMO,
-                EnvEnum::DEVELOPMENT,
-                EnvEnum::TEST,
-                EnvEnum::ACCEPTANCE,
-                EnvEnum::PRODUCTION,
+                AppEnv::LOCAL,
+                AppEnv::DEMO,
+                AppEnv::DEVELOPMENT,
+                AppEnv::TEST,
+                AppEnv::ACCEPTANCE,
+                AppEnv::PRODUCTION,
             ]
         );
     }
@@ -185,7 +181,23 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
     }
 
     /**
-     * @return bool
+     * @inheritDoc
+     */
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isLocale(string $locale): bool
+    {
+        return $locale === $this->locale;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function isAllowedToDebug(): bool
     {
@@ -193,7 +205,7 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
     }
 
     /**
-     * @return bool
+     * @inheritDoc
      * @todo
      */
     public function isDownForMaintenance(): bool
@@ -202,14 +214,24 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
     }
 
     /**
-     * @return bool
-     * @todo
+     * @inheritDoc
      */
     public function isDemoVersion(): bool
     {
-        return false;
+        return $this->getEnv(AppEnvVar::ENV_KEY) === AppEnv::DEMO;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function isRunningInConsole(): bool
+    {
+        return PHP_SAPI === 'cli';
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function inspect(): array
     {
         // TODO: Implement inspect() method.

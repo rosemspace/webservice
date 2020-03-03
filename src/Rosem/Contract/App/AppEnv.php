@@ -2,13 +2,10 @@
 
 namespace Rosem\Contract\App;
 
-class EnvEnum
+class AppEnv
 {
     // private usage
     public const LOCAL = 'local';
-
-    // show maintenance page
-    public const MAINTENANCE = 'maintenance';
 
     // allow only partial functionality
     public const DEMO = 'demo';

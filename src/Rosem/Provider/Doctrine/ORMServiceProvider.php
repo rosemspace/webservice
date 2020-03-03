@@ -9,9 +9,10 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Psr\Container\ContainerInterface;
+use Rosem\Contract\App\AppEnv;
+use Rosem\Contract\App\AppInterface;
 use Rosem\Contract\Container\ServiceProviderInterface;
-use Rosem\Component\App\DirEnum;
-use Rosem\Contract\Env\EnvInterface;
+use Rosem\Contract\App\DirEnvVar;
 
 class ORMServiceProvider implements ServiceProviderInterface
 {
@@ -20,14 +21,14 @@ class ORMServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            'ormEntityPaths' => function (ContainerInterface $container): array {
+            'ormEntityPaths' => static function (ContainerInterface $container): array {
                 return [
-                    $container->get(EnvInterface::class)->getEnv(DirEnum::ROOT_DIRECTORY) .
+                    $container->get(DirEnvVar::ROOT) .
                         '/src/Rosem/Component/Access/Entity' //TODO: improve
                 ];
             },
             EntityManager::class => function (ContainerInterface $container) {
-                $isDevelopmentMode = $container->get(EnvInterface::class)->isDevelopmentMode();
+                $isDevelopmentMode = $container->get(AppInterface::ENV_KEY) === AppEnv::DEVELOPMENT;
                 $ormConfig = new Configuration();
                 $ormConfig->setNamingStrategy(new UnderscoreNamingStrategy(CASE_LOWER));
                 $ormConfig->setMetadataDriverImpl(new StaticPHPDriver($container->get('ormEntityPaths')));
