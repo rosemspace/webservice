@@ -2,7 +2,7 @@
 
 namespace Rosem\Component\GraphQL;
 
-use Fig\Http\Message\RequestMethodInterface;
+use Fig\Http\Message\RequestMethodInterface as RequestMethod;
 use GraphQL\Error\Debug;
 use GraphQL\Server\StandardServer;
 use Psr\Http\Message\ResponseInterface;
@@ -66,7 +66,7 @@ class GraphQLRequestHandler implements RequestHandlerInterface
     {
         //TODO: move json_decode into separated middleware
 
-        if (strtoupper($request->getMethod()) === RequestMethodInterface::METHOD_GET) {
+        if (strtoupper($request->getMethod()) === RequestMethod::METHOD_GET) {
             $params = $request->getQueryParams();
             $params['variables'] ??= null;
             $request = $request->withQueryParams($params);

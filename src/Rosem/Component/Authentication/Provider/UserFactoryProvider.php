@@ -29,7 +29,7 @@ class UserFactoryProvider implements ServiceProviderInterface
                     return ['username' => $username];
                 };
             },
-            UserFactoryInterface::class => function (ContainerInterface $container) {
+            UserFactoryInterface::class => static function (ContainerInterface $container) {
                 return new UserFactory(
                     $container->get(static::CONFIG_RESOLVER_ROLES),
                     $container->get(static::CONFIG_RESOLVER_DETAILS)

@@ -2,7 +2,7 @@
 
 namespace Rosem\Component\Route\Dispatcher;
 
-use Fig\Http\Message\StatusCodeInterface;
+use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use Rosem\Component\Route\{
     DataGenerator\GroupCountBasedDataGenerator,
     RegexBasedDispatcherInterface
@@ -38,9 +38,9 @@ class GroupCountBasedDispatcher implements RegexBasedDispatcherInterface
                 $variableData[$variableName] = &$matches[$index + 1];
             }
 
-            return [StatusCodeInterface::STATUS_OK, $handler, $middleware, $variableData];
+            return [StatusCode::STATUS_OK, $handler, $middleware, $variableData];
         }
 
-        return [StatusCodeInterface::STATUS_NOT_FOUND];
+        return [StatusCode::STATUS_NOT_FOUND];
     }
 }

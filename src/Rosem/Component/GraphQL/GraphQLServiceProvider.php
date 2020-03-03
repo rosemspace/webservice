@@ -2,7 +2,7 @@
 
 namespace Rosem\Component\GraphQL;
 
-use Fig\Http\Message\RequestMethodInterface;
+use Fig\Http\Message\RequestMethodInterface as RequestMethod;
 use GraphQL\Error\Debug;
 use GraphQL\Server\StandardServer;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -104,7 +104,7 @@ class GraphQLServiceProvider implements ServiceProviderInterface
                 RouteCollectorInterface $routeCollector
             ) {
                 $routeCollector->addRoute(
-                    [RequestMethodInterface::METHOD_GET, RequestMethodInterface::METHOD_POST],
+                    [RequestMethod::METHOD_GET, RequestMethod::METHOD_POST],
                     $container->get(static::CONFIG_URI),
                     GraphQLRequestHandler::class
                 );

@@ -2,7 +2,7 @@
 
 namespace Rosem\Component\Route\Middleware;
 
-use Fig\Http\Message\StatusCodeInterface;
+use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use Psr\Http\Message\{
     ResponseInterface,
     ServerRequestInterface
@@ -48,7 +48,7 @@ class RouteMiddleware implements MiddlewareInterface
      *
      * @return RouteMiddleware
      */
-    public function attribute(string $attribute): self
+    public function setAttribute(string $attribute): self
     {
         $this->attribute = $attribute;
 
@@ -65,11 +65,11 @@ class RouteMiddleware implements MiddlewareInterface
     {
         $route = $this->router->dispatch($request->getMethod(), $request->getUri()->getPath());
 
-        if ($route[static::KEY_STATUS] === StatusCodeInterface::STATUS_NOT_FOUND) {
+        if ($route[static::KEY_STATUS] === StatusCode::STATUS_NOT_FOUND) {
             return $this->createNotFoundResponse();
         }
 
-        if ($route[static::KEY_STATUS] === StatusCodeInterface::STATUS_METHOD_NOT_ALLOWED) {
+        if ($route[static::KEY_STATUS] === StatusCode::STATUS_METHOD_NOT_ALLOWED) {
             return $this->createMethodNotAllowedResponse();
         }
 
@@ -100,7 +100,7 @@ class RouteMiddleware implements MiddlewareInterface
 
     public function createNotFoundResponse(): ResponseInterface
     {
-        $response = $this->responseFactory->createResponse(StatusCodeInterface::STATUS_NOT_FOUND);
+        $response = $this->responseFactory->createResponse(StatusCode::STATUS_NOT_FOUND);
         $response->getBody()->write('Not found :(');
 
         return $response;
@@ -108,7 +108,7 @@ class RouteMiddleware implements MiddlewareInterface
 
     public function createMethodNotAllowedResponse(): ResponseInterface
     {
-        $response = $this->responseFactory->createResponse(StatusCodeInterface::STATUS_METHOD_NOT_ALLOWED);
+        $response = $this->responseFactory->createResponse(StatusCode::STATUS_METHOD_NOT_ALLOWED);
         $response->getBody()->write('Method not allowed :(');
 
         return $response;

@@ -3,8 +3,8 @@
 namespace Rosem\Component\Authentication\Middleware;
 
 use Fig\Http\Message\{
-    RequestMethodInterface,
-    StatusCodeInterface
+    RequestMethodInterface as RequestMethod,
+    StatusCodeInterface as StatusCode
 };
 use Psr\Http\Message\{
     ResponseFactoryInterface,
@@ -135,14 +135,14 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
             $response = $requestHandler->handle($request->withAttribute(UserInterface::class, $user));
 
             if ($this->loggedInUri && $request->getUri()->getPath() !== $this->loggedInUri) {
-                return $response->withStatus(StatusCodeInterface::STATUS_FOUND)
+                return $response->withStatus(StatusCode::STATUS_FOUND)
                     ->withHeader('Location', $this->loggedInUri);
             }
 
             return $response;
         }
 
-        if ($this->loginUri && $request->getMethod() === RequestMethodInterface::METHOD_GET
+        if ($this->loginUri && $request->getMethod() === RequestMethod::METHOD_GET
             && $request->getUri()->getPath() === $this->loginUri
         ) {
             return $requestHandler->handle($request);
@@ -162,7 +162,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
         $identity = $session->get('identity');
 
         if (!$identity) {
-            if ($request->getMethod() !== RequestMethodInterface::METHOD_POST) {
+            if ($request->getMethod() !== RequestMethod::METHOD_POST) {
                 return null;
             }
 
@@ -193,7 +193,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
      */
     public function createUnauthorizedResponse(): ResponseInterface
     {
-        $response = $this->responseFactory->createResponse(StatusCodeInterface::STATUS_FOUND);
+        $response = $this->responseFactory->createResponse(StatusCode::STATUS_FOUND);
 
         if (null !== $this->loginUri) {
             return $response->withHeader('Location', $this->loginUri);

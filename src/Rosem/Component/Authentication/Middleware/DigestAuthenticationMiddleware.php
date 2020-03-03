@@ -2,6 +2,7 @@
 
 namespace Rosem\Component\Authentication\Middleware;
 
+use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use InvalidArgumentException;
 use Psr\Http\Message\{
     ResponseInterface,
@@ -130,7 +131,7 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
     {
         $realm = $this->realm;
 
-        return $this->responseFactory->createResponse(401)
+        return $this->responseFactory->createResponse(StatusCode::STATUS_UNAUTHORIZED)
             ->withHeader(
                 'WWW-Authenticate',
                 sprintf(

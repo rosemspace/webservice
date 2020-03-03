@@ -2,6 +2,7 @@
 
 namespace Rosem\Component\Authentication\Middleware;
 
+use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use Psr\Http\Message\{
     ResponseFactoryInterface,
     ResponseInterface,
@@ -61,7 +62,7 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
         }
 
         if (!preg_match(
-            '/' . self::AUTHORIZATION_HEADER_PREFIX . ' (?<credentials>[a-zA-Z0-9\+\/\=]+)/',
+            '/' . self::AUTHORIZATION_HEADER_PREFIX . ' (?<credentials>[a-zA-Z0-9+\/=]+)/',
             reset($authHeader),
             $match
         )
@@ -87,7 +88,7 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
      */
     public function createUnauthorizedResponse(): ResponseInterface
     {
-        return $this->responseFactory->createResponse(401)
+        return $this->responseFactory->createResponse(StatusCode::STATUS_UNAUTHORIZED)
             ->withHeader(
                 'WWW-Authenticate',
                 self::AUTHORIZATION_HEADER_PREFIX . ' realm="' . $this->realm . '"'
