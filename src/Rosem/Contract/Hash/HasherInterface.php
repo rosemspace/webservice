@@ -5,7 +5,7 @@ namespace Rosem\Contract\Hash;
 /**
  * Representation of hasher.
  */
-interface HashInterface
+interface HasherInterface
 {
     /**
      * Hash the given value.

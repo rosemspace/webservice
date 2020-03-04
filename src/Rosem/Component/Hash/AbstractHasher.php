@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\Component\HashManager;
+namespace Rosem\Component\Hash;
 
 use Rosem\Contract\Hash\HasherInterface;
 

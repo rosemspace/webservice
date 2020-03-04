@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\Component\HashManager;
+namespace Rosem\Component\Hash;
 
 use RuntimeException;
 
@@ -11,21 +11,21 @@ class ArgonHasher extends AbstractHasher
      *
      * @var int
      */
-    protected $threads = PASSWORD_ARGON2_DEFAULT_THREADS;
+    protected int $threads = PASSWORD_ARGON2_DEFAULT_THREADS;
 
     /**
      * Default memory cost factor.
      *
      * @var int
      */
-    protected $memoryCost = PASSWORD_ARGON2_DEFAULT_MEMORY_COST;
+    protected int $memoryCost = PASSWORD_ARGON2_DEFAULT_MEMORY_COST;
 
     /**
      * Default time cost factor.
      *
      * @var int
      */
-    protected $timeCost = PASSWORD_ARGON2_DEFAULT_TIME_COST;
+    protected int $timeCost = PASSWORD_ARGON2_DEFAULT_TIME_COST;
 
     /**
      * ArgonHasher constructor.

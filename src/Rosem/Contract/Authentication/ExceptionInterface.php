@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rosem\Contract\Http\Server;
+namespace Rosem\Contract\Authentication;
 
 use Throwable;
 

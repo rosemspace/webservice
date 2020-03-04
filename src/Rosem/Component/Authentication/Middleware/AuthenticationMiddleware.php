@@ -13,10 +13,12 @@ use Psr\Http\Message\{
 };
 use Psr\Http\Server\RequestHandlerInterface;
 use PSR7Sessions\Storageless\Http\SessionMiddleware;
+use Rosem\Component\Authentication\Exception\AuthenticationException;
 use Rosem\Contract\Authentication\{
     UserFactoryInterface,
     UserInterface
 };
+use Rosem\Contract\Hash\HasherInterface;
 
 use function call_user_func;
 
@@ -26,6 +28,8 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
      * Authorization header prefix.
      */
     private const AUTHORIZATION_HEADER_PREFIX = 'Bearer';
+
+    protected HasherInterface $hasher;
 
     protected string $identityParameter;
 
@@ -40,6 +44,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
      *
      * @param ResponseFactoryInterface $responseFactory
      * @param UserFactoryInterface     $userFactory
+     * @param HasherInterface          $hasher
      * @param callable                 $userPasswordResolver
      * @param string                   $identityParameter
      * @param string                   $passwordParameter
@@ -49,6 +54,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
     public function __construct(
         ResponseFactoryInterface $responseFactory,
         UserFactoryInterface $userFactory,
+        HasherInterface $hasher,
         callable $userPasswordResolver,
         string $identityParameter = 'username',
         string $passwordParameter = 'password',
@@ -57,6 +63,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
     ) {
         parent::__construct($responseFactory, $userFactory, $userPasswordResolver);
 
+        $this->hasher = $hasher;
         $this->identityParameter = $identityParameter;
         $this->passwordParameter = $passwordParameter;
         $this->loginUri = $loginUri;
@@ -125,6 +132,10 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
         return $new;
     }
 
+    /**
+     * {@inheritDoc}
+     * @throws \Rosem\Contract\Authentication\AuthenticationExceptionInterface
+     */
     public function process(
         ServerRequestInterface $request,
         RequestHandlerInterface $requestHandler
@@ -152,12 +163,14 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
     }
 
     /**
-     * @param ServerRequestInterface $request
-     *
-     * @return UserInterface|null
+     * @inheritDoc
      */
     public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
+        if (PHP_SAPI !== 'cli-server' && $request->getUri()->getScheme() !== 'https') {
+            throw AuthenticationException::forHttpViaWebServerNotSupported();
+        }
+
         $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
         $identity = $session->get('identity');
 
@@ -175,7 +188,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
             $identity = $body[$this->identityParameter];
             $password = call_user_func($this->userPasswordResolver, $identity);
 
-            if (!$password || $password !== $body[$this->passwordParameter]) {
+            if (!$password || !$this->hasher->verify($body[$this->passwordParameter], $password)) {
                 return null;
             }
 

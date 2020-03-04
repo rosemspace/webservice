@@ -8,6 +8,7 @@ use PSR7Sessions\Storageless\Http\SessionMiddleware;
 use Rosem\Component\Authentication\Middleware\AuthenticationMiddleware;
 use Rosem\Contract\Authentication\UserFactoryInterface;
 use Rosem\Contract\Container\ServiceProviderInterface;
+use Rosem\Contract\Hash\HasherInterface;
 use Rosem\Contract\Http\Server\MiddlewareCollectorInterface;
 use Rosem\Contract\Template\TemplateRendererInterface;
 
@@ -107,6 +108,7 @@ class AuthenticationProvider implements ServiceProviderInterface
         return new AuthenticationMiddleware(
             $container->get(ResponseFactoryInterface::class),
             $container->get(UserFactoryInterface::class),
+            $container->get(HasherInterface::class),
             $container->get(static::CONFIG_USER_PASSWORD_RESOLVER),
             $container->get(static::CONFIG_PARAMETER_IDENTITY),
             $container->get(static::CONFIG_PARAMETER_PASSWORD),
