@@ -133,6 +133,9 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
 
     public function run(): bool
     {
+        $app = $this;
+        $this->set(AppInterface::class, static fn() => $app);
+
         return $this->get(EmitterInterface::class)->emit(
             $this->get(MiddlewareCollectorInterface::class)->handle(
                 $this->get(ServerRequestInterface::class)

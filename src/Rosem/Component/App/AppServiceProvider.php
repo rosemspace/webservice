@@ -10,6 +10,7 @@ use Rosem\Contract\{
     Container\ServiceProviderInterface,
     Route\RouteCollectorInterface,
     Template\TemplateRendererInterface};
+use Rosem\Component\Admin\AdminServiceProvider;
 
 class AppServiceProvider implements ServiceProviderInterface
 {
@@ -24,28 +25,14 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            static::CONFIG_DIRECTORY_ROOT => function() {
-                return null;
-            },
-            'app.name' => function () {
-                return 'Rosem';
-            },
-            'app.lang' => function () {
-                return 'en';
-            },
-            'app.meta.charset' => function () {
-                return 'utf-8';
-            },
-            'app.meta.titlePrefix' => function () {
-                return 'Rosem | ';
-            },
-            'app.meta.title' => function () {
-                return 'Welcome';
-            },
-            'app.meta.titleSuffix' => function () {
-                return '';
-            },
-            HomeRequestHandler::class => function (ContainerInterface $container) {
+            static::CONFIG_DIRECTORY_ROOT => static fn() => null,
+            'app.name' => static fn(): string => 'Rosem',
+            'app.lang' => static fn(): string => 'en',
+            'app.meta.charset' => static fn(): string => 'utf-8',
+            'app.meta.titlePrefix' => static fn(): string => 'Rosem | ',
+            'app.meta.title' => static fn(): string => 'Welcome',
+            'app.meta.titleSuffix' => static fn(): string => '',
+            HomeRequestHandler::class => static function (ContainerInterface $container): HomeRequestHandler {
                 return new HomeRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
                     $container->get(TemplateRendererInterface::class),
@@ -68,10 +55,10 @@ class AppServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            TemplateRendererInterface::class => function (
+            TemplateRendererInterface::class => static function (
                 ContainerInterface $container,
                 TemplateRendererInterface $renderer
-            ) {
+            ): void {
                 $renderer->addPath(__DIR__ . '/Resource/templates', 'app');
                 $renderer->addGlobalData([
                     'appName' => $container->get('app.name'),
@@ -81,11 +68,14 @@ class AppServiceProvider implements ServiceProviderInterface
                     'metaTitleSuffix' => $container->get('app.meta.titleSuffix'),
                 ]);
             },
-            RouteCollectorInterface::class => function (
+            RouteCollectorInterface::class => static function (
                 ContainerInterface $container,
                 RouteCollectorInterface $routeCollector
-            ) {
-                $routeCollector->get('/{appRelativePath.*}', HomeRequestHandler::class);
+            ): void {
+                $regex = $container->has(AdminServiceProvider::class)
+                    ? '^(?!' . $container->get(AdminServiceProvider::CONFIG_URI_LOGGED_IN) . ').*'
+                    : '.*';
+                $routeCollector->get("{appRelativePath:$regex}", HomeRequestHandler::class);
             },
         ];
     }

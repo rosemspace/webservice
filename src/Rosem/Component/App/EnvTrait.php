@@ -28,16 +28,6 @@ trait EnvTrait
         $this->validateEnv();
     }
 
-    /**
-     * @todo
-     * @deprecated
-     */
-    public function overloadEnv(): void
-    {
-        $this->env->overload();
-        $this->validateEnv();
-    }
-
     public function hasEnv($id): bool
     {
         return false !== $this->getEnv($id);

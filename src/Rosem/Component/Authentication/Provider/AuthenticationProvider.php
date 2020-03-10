@@ -27,59 +27,28 @@ class AuthenticationProvider implements ServiceProviderInterface
     public const CONFIG_URI_LOGGED_IN = 'auth.uri.loggedIn';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getFactories(): array
     {
         return [
-            static::CONFIG_SYMMETRIC_KEY => static function () {
-                return null;
-            },
-            static::CONFIG_USER_PASSWORD_RESOLVER => static function () {
+            static::CONFIG_SYMMETRIC_KEY => static fn() => null,
+            static::CONFIG_USER_PASSWORD_RESOLVER => static function (): callable {
                 return static function (string $username): ?string {
                     return ['admin' => 'admin'][$username] ?? null;
                 };
             },
-            static::CONFIG_PARAMETER_IDENTITY => static function () {
-                return 'username';
-            },
-            static::CONFIG_PARAMETER_PASSWORD => static function () {
-                return 'password';
-            },
-            static::CONFIG_URI_LOGIN => static function () {
-                return '/login';
-            },
-            static::CONFIG_URI_LOGGED_IN => static function () {
-                return '/';
-            },
-            SessionMiddleware::class => static function (ContainerInterface $container) {
-//                return SessionMiddleware::fromSymmetricKeyDefaults(
-//                    $container->get(static::CONFIG_SYMMETRIC_KEY),
-//                    20 * 60 // 20 minutes
-//                );
-
-                // TODO: add validation for symmetric key
-                $symmetricKey = $container->get(static::CONFIG_SYMMETRIC_KEY);
-
-                return new SessionMiddleware(
-                    new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                    $symmetricKey,
-                    $symmetricKey,
-                    \Dflydev\FigCookies\SetCookie::create('session')
-                        ->withSecure(PHP_SAPI !== 'cli-server')
-                        ->withHttpOnly(true)
-                        ->withPath('/admin'),
-                    new \Lcobucci\JWT\Parser(),
-                    20 * 60, // 20 minutes,
-                    new \Lcobucci\Clock\SystemClock()
-                );
-            },
+            static::CONFIG_PARAMETER_IDENTITY => static fn(): string => 'username',
+            static::CONFIG_PARAMETER_PASSWORD => static fn(): string => 'password',
+            static::CONFIG_URI_LOGIN => static fn(): string => '/login',
+            static::CONFIG_URI_LOGGED_IN => static fn(): string => '/',
+            SessionMiddleware::class => [static::class, 'createSessionMiddleware'],
             AuthenticationMiddleware::class => [static::class, 'createAuthenticationMiddleware'],
         ];
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getExtensions(): array
     {
@@ -101,6 +70,30 @@ class AuthenticationProvider implements ServiceProviderInterface
                 $middlewareCollector->addDeferredMiddleware(SessionMiddleware::class);
             },
         ];
+    }
+
+    public function createSessionMiddleware(ContainerInterface $container): SessionMiddleware
+    {
+//        return SessionMiddleware::fromSymmetricKeyDefaults(
+//            $container->get(static::CONFIG_SYMMETRIC_KEY),
+//            20 * 60 // 20 minutes
+//        );
+
+        // TODO: add validation for symmetric key
+        $symmetricKey = $container->get(static::CONFIG_SYMMETRIC_KEY);
+
+        return new SessionMiddleware(
+            new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+            $symmetricKey,
+            $symmetricKey,
+            \Dflydev\FigCookies\SetCookie::create('session')
+                ->withSecure(PHP_SAPI !== 'cli-server')
+                ->withHttpOnly(true)
+                ->withPath('/admin'),
+            new \Lcobucci\JWT\Parser(),
+            20 * 60, // 20 minutes,
+            new \Lcobucci\Clock\SystemClock()
+        );
     }
 
     public function createAuthenticationMiddleware(ContainerInterface $container): AuthenticationMiddleware
