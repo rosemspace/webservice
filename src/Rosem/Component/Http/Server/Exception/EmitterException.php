@@ -9,12 +9,12 @@ use RuntimeException;
 
 class EmitterException extends RuntimeException implements EmitterExceptionInterface
 {
-    public static function forHeadersSent(): self
+    public static function dueToAlreadySentHeaders(): self
     {
         return new self('Unable to emit response; headers already sent');
     }
 
-    public static function forOutputSent(): self
+    public static function dueToAlreadySentOutput(): self
     {
         return new self('Output has been emitted previously; cannot emit response');
     }

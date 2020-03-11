@@ -12,7 +12,7 @@ class AuthenticationException extends Exception implements AuthenticationExcepti
      *
      * @return self
      */
-    public static function forHttpViaWebServerNotSupported(): self
+    public static function dueToWebServerInsecureHttpConnection(): self
     {
         return new self(
             'Authentication supports only HTTPS if not served via PHP web server.'

@@ -168,7 +168,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
     public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
         if (PHP_SAPI !== 'cli-server' && $request->getUri()->getScheme() !== 'https') {
-            throw AuthenticationException::forHttpViaWebServerNotSupported();
+            throw AuthenticationException::dueToWebServerInsecureHttpConnection();
         }
 
         $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
