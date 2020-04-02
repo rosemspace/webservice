@@ -46,8 +46,8 @@ trait RouteDispatcherTrait
         }
 
         return $this->dispatcher->dispatch(
-            $this->variableRouteMap[$method]->routeExpressions,
-            $this->variableRouteMap[$method]->routeData,
+            $this->variableRouteMap[$method]->routeExpressions ?? [],
+            $this->variableRouteMap[$method]->routeData ?? [],
             $uri
         );
     }

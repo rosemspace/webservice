@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Internal server error</title>
+    <title>404 Not found</title>
     <style>
     body {
         font-family: sans-serif;
@@ -44,8 +44,8 @@
 </head>
 <body>
 <main>
-    <h1><code>500</code> Internal server error</h1>
-    <p>The server encountered an internal error or misconfiguration and was unable to complete your request.</p>
+    <h1><code>404</code> Page not found</h1>
+    <p>The requested URI <?php echo $v($_SERVER['REQUEST_URI']) ?? '' ?> was not found on this server.</p>
 </main>
 </body>
 </html>

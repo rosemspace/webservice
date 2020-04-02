@@ -5,8 +5,7 @@
 
 namespace Rosem\Contract\Route;
 
-use Fig\Http\Message\RequestMethodInterface;
-use Rosem\Contract\Route\InvalidRouteExceptionInterface;
+use Fig\Http\Message\RequestMethodInterface as RequestMethod;
 
 /**
  * Partial implementation of the route collector interface.
@@ -14,92 +13,112 @@ use Rosem\Contract\Route\InvalidRouteExceptionInterface;
 abstract class AbstractRouteCollector implements RouteCollectorInterface
 {
     /**
-     * Adds a GET route to the collection
-     * This is simply an alias of $this->addRoute('GET', $route, $handler)
-     *
-     * @param string $route
-     * @param mixed  $handler
-     *
-     * @return RouteInterface
-     * @throws InvalidRouteExceptionInterface
+     * @inheritDoc
      */
-    public function get(string $route, $handler): RouteInterface
+    public function head(string $routePattern, $handler): RouteInterface
     {
-        return $this->addRoute(RequestMethodInterface::METHOD_GET, $route, $handler);
+        return $this->addRoute(RequestMethod::METHOD_HEAD, $routePattern, $handler);
     }
 
     /**
-     * Adds a POST route to the collection
-     * This is simply an alias of $this->addRoute('POST', $route, $handler)
-     *
-     * @param string $route
-     * @param mixed  $handler
-     *
-     * @return RouteInterface
-     * @throws InvalidRouteExceptionInterface
+     * @inheritDoc
      */
-    public function post(string $route, $handler): RouteInterface
+    public function get(string $routePattern, $handler): RouteInterface
     {
-        return $this->addRoute(RequestMethodInterface::METHOD_POST, $route, $handler);
+        return $this->addRoute(RequestMethod::METHOD_GET, $routePattern, $handler);
     }
 
     /**
-     * Adds a PUT route to the collection
-     * This is simply an alias of $this->addRoute('PUT', $route, $handler)
-     *
-     * @param string $route
-     * @param mixed  $handler
-     *
-     * @return RouteInterface
-     * @throws InvalidRouteExceptionInterface
+     * @inheritDoc
      */
-    public function put(string $route, $handler): RouteInterface
+    public function post(string $routePattern, $handler): RouteInterface
     {
-        return $this->addRoute(RequestMethodInterface::METHOD_PUT, $route, $handler);
+        return $this->addRoute(RequestMethod::METHOD_POST, $routePattern, $handler);
     }
 
     /**
-     * Adds a DELETE route to the collection
-     * This is simply an alias of $this->addRoute('DELETE', $route, $handler)
-     *
-     * @param string $route
-     * @param mixed  $handler
-     *
-     * @return RouteInterface
-     * @throws InvalidRouteExceptionInterface
+     * @inheritDoc
      */
-    public function delete(string $route, $handler): RouteInterface
+    public function put(string $routePattern, $handler): RouteInterface
     {
-        return $this->addRoute(RequestMethodInterface::METHOD_DELETE, $route, $handler);
+        return $this->addRoute(RequestMethod::METHOD_PUT, $routePattern, $handler);
     }
 
     /**
-     * Adds a PATCH route to the collection
-     * This is simply an alias of $this->addRoute('PATCH', $route, $handler)
-     *
-     * @param string $route
-     * @param mixed  $handler
-     *
-     * @return  RouteInterface
-     * @throws InvalidRouteExceptionInterface
+     * @inheritDoc
      */
-    public function patch(string $route, $handler): RouteInterface
+    public function patch(string $routePattern, $handler): RouteInterface
     {
-        return $this->addRoute(RequestMethodInterface::METHOD_PATCH, $route, $handler);
+        return $this->addRoute(RequestMethod::METHOD_PATCH, $routePattern, $handler);
     }
 
     /**
-     * Adds a HEAD route to the collection
-     * This is simply an alias of $this->addRoute('HEAD', $route, $handler)
-     *
-     * @param string $route
-     * @param mixed  $handler
-     *
-     * @return RouteInterface
-     * @throws InvalidRouteExceptionInterface
+     * @inheritDoc
      */
-    public function head(string $route, $handler): RouteInterface
+    public function delete(string $routePattern, $handler): RouteInterface
     {
-        return $this->addRoute(RequestMethodInterface::METHOD_HEAD, $route, $handler);
+        return $this->addRoute(RequestMethod::METHOD_DELETE, $routePattern, $handler);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function purge(string $routePattern, $handler): RouteInterface
+    {
+        return $this->addRoute(RequestMethod::METHOD_PURGE, $routePattern, $handler);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function options(string $routePattern, $handler): RouteInterface
+    {
+        return $this->addRoute(RequestMethod::METHOD_OPTIONS, $routePattern, $handler);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function trace(string $routePattern, $handler): RouteInterface
+    {
+        return $this->addRoute(RequestMethod::METHOD_TRACE, $routePattern, $handler);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function connect(string $routePattern, $handler): RouteInterface
+    {
+        return $this->addRoute(RequestMethod::METHOD_CONNECT, $routePattern, $handler);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function any(string $routePattern, $handler): RouteInterface
+    {
+        return $this->addRoute(
+            [
+                RequestMethod::METHOD_HEAD,
+                RequestMethod::METHOD_GET,
+                RequestMethod::METHOD_POST,
+                RequestMethod::METHOD_PUT,
+                RequestMethod::METHOD_PATCH,
+                RequestMethod::METHOD_DELETE,
+                RequestMethod::METHOD_PURGE,
+                RequestMethod::METHOD_OPTIONS,
+                RequestMethod::METHOD_TRACE,
+                RequestMethod::METHOD_CONNECT,
+            ],
+            $routePattern,
+            $handler
+        );
+    }
+
+    public function redirect(string $routePattern, string $route, int $statusCode): void
+    {
+        //todo
+//        $response->withStatus(StatusCode::STATUS_FOUND)
+//            ->withHeader('Location', $this->loggedInUri);
     }
 }

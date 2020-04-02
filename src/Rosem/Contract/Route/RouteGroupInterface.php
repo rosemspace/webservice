@@ -18,5 +18,5 @@ interface RouteGroupInterface
      * @return RouteGroupInterface
      * @see \Psr\Http\Server\MiddlewareInterface
      */
-    public function middleware(callable $middlewareExtension): RouteGroupInterface;
+    public function addMiddleware(callable $middlewareExtension): RouteGroupInterface;
 }

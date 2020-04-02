@@ -14,7 +14,7 @@ class Route implements RegexRouteInterface
 
     protected string $hostPattern;
 
-    protected array $schemes;
+    protected string $schemePattern;
 
     protected array $middlewareExtensions = [];
 
@@ -87,7 +87,7 @@ class Route implements RegexRouteInterface
      */
     public function getSchemePattern(): string
     {
-        return $this->schemes;
+        return $this->schemePattern;
     }
 
     /**
@@ -98,7 +98,7 @@ class Route implements RegexRouteInterface
      * @return RouteInterface
      * @see \Psr\Http\Server\MiddlewareInterface
      */
-    public function middleware(callable $middlewareExtension): RouteInterface
+    public function addMiddleware(callable $middlewareExtension): RouteInterface
     {
         $this->middlewareExtensions[] = $middlewareExtension;
 

@@ -54,5 +54,5 @@ interface RouteInterface
      * @return RouteInterface
      * @see \Psr\Http\Server\MiddlewareInterface
      */
-    public function middleware(callable $middlewareExtension): RouteInterface;
+    public function addMiddleware(callable $middlewareExtension): RouteInterface;
 }

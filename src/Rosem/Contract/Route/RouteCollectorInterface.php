@@ -5,8 +5,6 @@
 
 namespace Rosem\Contract\Route;
 
-use Rosem\Contract\Route\InvalidRouteExceptionInterface;
-
 /**
  * Route collector collects routes with its handlers.
  */
@@ -38,8 +36,26 @@ interface RouteCollectorInterface
     public function addGroup(string $prefix, callable $callback): RouteGroupInterface;
 
     /**
+     * Adds a HEAD route to the collection
+     * This is simply an alias of
+     * <code>
+     * $this->addRoute('HEAD', $routePattern, $handler)
+     * </code>
+     *
+     * @param string $routePattern
+     * @param mixed  $handler
+     *
+     * @return RouteInterface
+     * @throws InvalidRouteExceptionInterface
+     */
+    public function head(string $routePattern, $handler): RouteInterface;
+
+    /**
      * Adds a GET route to the collection
-     * This is simply an alias of $this->addRoute('GET', $route, $handler)
+     * This is simply an alias of
+     * <code>
+     * $this->addRoute('GET', $routePattern, $handler)
+     * </code>
      *
      * @param string $routePattern
      * @param mixed  $handler
@@ -51,7 +67,10 @@ interface RouteCollectorInterface
 
     /**
      * Adds a POST route to the collection
-     * This is simply an alias of $this->addRoute('POST', $route, $handler)
+     * This is simply an alias of
+     * <code>
+     * $this->addRoute('POST', $routePattern, $handler)
+     * </code>
      *
      * @param string $routePattern
      * @param mixed  $handler
@@ -63,7 +82,10 @@ interface RouteCollectorInterface
 
     /**
      * Adds a PUT route to the collection
-     * This is simply an alias of $this->addRoute('PUT', $route, $handler)
+     * This is simply an alias of
+     * <code>
+     * $this->addRoute('PUT', $routePattern, $handler)
+     * </code>
      *
      * @param string $routePattern
      * @param mixed  $handler
@@ -74,20 +96,11 @@ interface RouteCollectorInterface
     public function put(string $routePattern, $handler): RouteInterface;
 
     /**
-     * Adds a DELETE route to the collection
-     * This is simply an alias of $this->addRoute('DELETE', $route, $handler)
-     *
-     * @param string $routePattern
-     * @param mixed  $handler
-     *
-     * @return RouteInterface
-     * @throws InvalidRouteExceptionInterface
-     */
-    public function delete(string $routePattern, $handler): RouteInterface;
-
-    /**
      * Adds a PATCH route to the collection
-     * This is simply an alias of $this->addRoute('PATCH', $route, $handler)
+     * This is simply an alias of
+     * <code>
+     * $this->addRoute('PATCH', $routePattern, $handler)
+     * </code>
      *
      * @param string $routePattern
      * @param mixed  $handler
@@ -98,8 +111,11 @@ interface RouteCollectorInterface
     public function patch(string $routePattern, $handler): RouteInterface;
 
     /**
-     * Adds a HEAD route to the collection
-     * This is simply an alias of $this->addRoute('HEAD', $route, $handler)
+     * Adds a DELETE route to the collection
+     * This is simply an alias of
+     * <code>
+     * $this->addRoute('DELETE', $routePattern, $handler)
+     * </code>
      *
      * @param string $routePattern
      * @param mixed  $handler
@@ -107,5 +123,79 @@ interface RouteCollectorInterface
      * @return RouteInterface
      * @throws InvalidRouteExceptionInterface
      */
-    public function head(string $routePattern, $handler): RouteInterface;
+    public function delete(string $routePattern, $handler): RouteInterface;
+
+    /**
+     * Adds a PURGE route to the collection
+     * This is simply an alias of
+     * <code>
+     * $this->addRoute('PURGE', $routePattern, $handler)
+     * </code>
+     *
+     * @param string $routePattern
+     * @param mixed  $handler
+     *
+     * @return RouteInterface
+     * @throws InvalidRouteExceptionInterface
+     */
+    public function purge(string $routePattern, $handler): RouteInterface;
+
+    /**
+     * Adds a OPTIONS route to the collection
+     * This is simply an alias of
+     * <code>
+     * $this->addRoute('OPTIONS', $routePattern, $handler)
+     * </code>
+     *
+     * @param string $routePattern
+     * @param mixed  $handler
+     *
+     * @return RouteInterface
+     * @throws InvalidRouteExceptionInterface
+     */
+    public function options(string $routePattern, $handler): RouteInterface;
+
+    /**
+     * Adds a TRACE route to the collection
+     * This is simply an alias of
+     * <code>
+     * $this->addRoute('TRACE', $routePattern, $handler)
+     * </code>
+     *
+     * @param string $routePattern
+     * @param mixed  $handler
+     *
+     * @return RouteInterface
+     * @throws InvalidRouteExceptionInterface
+     */
+    public function trace(string $routePattern, $handler): RouteInterface;
+
+    /**
+     * Adds a CONNECT route to the collection
+     * This is simply an alias of $this->addRoute('CONNECT', $routePattern, $handler)
+     *
+     * @param string $routePattern
+     * @param mixed  $handler
+     *
+     * @return RouteInterface
+     * @throws InvalidRouteExceptionInterface
+     */
+    public function connect(string $routePattern, $handler): RouteInterface;
+
+    /**
+     * Adds a HEAD, GET, POST, PUT, PATCH, DELETE, PURGE, OPTIONS, TRACE and CONNECT routes to the collection
+     * This is simply an alias of
+     * <code>
+     * $this->addRoute([
+     *     'HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'PURGE', 'OPTIONS', 'TRACE', 'CONNECT'
+     * ], $routePattern, $handler)
+     * </code>
+     *
+     * @param string $routePattern
+     * @param mixed  $handler
+     *
+     * @return RouteInterface
+     * @throws InvalidRouteExceptionInterface
+     */
+    public function any(string $routePattern, $handler): RouteInterface;
 }

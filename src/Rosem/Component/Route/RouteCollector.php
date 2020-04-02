@@ -22,22 +22,30 @@ class RouteCollector extends AbstractRouteCollector
     /**
      * @var RegexBasedDataGeneratorInterface
      */
-    protected RegexBasedDataGeneratorInterface $dataGenerator;
+    protected RegexBasedDataGeneratorInterface $dataGeneratorPrototype;
 
     /**
      * @var string
      */
     protected string $currentGroupPrefix = '';
 
-    public function __construct(CompilerInterface $compiler, RegexBasedDataGeneratorInterface $dataGenerator)
+    /**
+     * RouteCollector constructor.
+     *
+     * @param CompilerInterface                $compiler
+     * @param RegexBasedDataGeneratorInterface $dataGeneratorPrototype
+     */
+    public function __construct(CompilerInterface $compiler, RegexBasedDataGeneratorInterface $dataGeneratorPrototype)
     {
         $this->compiler = $compiler;
-        $this->dataGenerator = $dataGenerator;
+        $this->dataGeneratorPrototype = $dataGeneratorPrototype;
     }
 
     protected static function normalize(string $route): string
     {
-        return '/' . trim($route, '/');
+        return $route;
+//        return rtrim($route, '/');
+//        return '/' . trim($route, '/');
     }
 
     /**
@@ -60,7 +68,7 @@ class RouteCollector extends AbstractRouteCollector
             if (count($route->getVariableNames())) {
                 // Dynamic route
                 if (!isset($this->variableRouteMap[$method])) {
-                    $this->variableRouteMap[$method] = clone $this->dataGenerator;
+                    $this->variableRouteMap[$method] = clone $this->dataGeneratorPrototype;
                 }
 
                 try {

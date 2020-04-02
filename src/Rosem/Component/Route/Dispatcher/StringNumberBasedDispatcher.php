@@ -17,7 +17,7 @@ class StringNumberBasedDispatcher implements RegexBasedDispatcherInterface
      *
      * @return array
      */
-    public function dispatch(array &$metaList, array &$dataList, string &$uri): array
+    public function dispatch(array $metaList, array $dataList, string $uri): array
     {
         foreach ($metaList as &$meta) {
             if (!preg_match(

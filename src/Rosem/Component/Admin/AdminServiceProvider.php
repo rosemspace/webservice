@@ -84,20 +84,20 @@ class AdminServiceProvider implements ServiceProviderInterface
                 $adminAuthenticationMiddlewareExtension = static fn(
                     MiddlewareCollectorInterface $middlewareCollector,
                     ContainerInterface $container
-                ) use (&$loggedInUri, &$loginUri): void {
-                    $middlewareCollector->addMiddleware($container->get(AuthenticationMiddleware::class)
+                ) => $middlewareCollector->addMiddleware(
+                    $container->get(AuthenticationMiddleware::class)
                         ->withPasswordResolver($container->get(static::CONFIG_USER_RESOLVER_PASSWORD))
                         ->withLoggedInUri($loggedInUri)
                         ->withLoginUri($loginUri)
                 );
                 $routeCollector->get($loginUri, LoginRequestHandler::class)
-                    ->middleware($adminAuthenticationMiddlewareExtension);
+                    ->addMiddleware($adminAuthenticationMiddlewareExtension);
                 $routeCollector->post($loginUri, LoginRequestHandler::class)
-                    ->middleware($adminAuthenticationMiddlewareExtension);
+                    ->addMiddleware($adminAuthenticationMiddlewareExtension);
                 $routeCollector->get(
                     $loggedInUri . '{adminRelativePath:.*}',
                     AdminRequestHandler::class
-                )->middleware($adminAuthenticationMiddlewareExtension);
+                )->addMiddleware($adminAuthenticationMiddlewareExtension);
             },
             TemplateRendererInterface::class => static function (
                 ContainerInterface $container,

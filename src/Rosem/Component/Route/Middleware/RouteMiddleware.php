@@ -65,12 +65,11 @@ class RouteMiddleware implements MiddlewareInterface
     {
         $route = $this->router->dispatch($request->getMethod(), $request->getUri()->getPath());
 
-        if ($route[static::KEY_STATUS] === StatusCode::STATUS_NOT_FOUND) {
-            return $this->createNotFoundResponse();
-        }
-
-        if ($route[static::KEY_STATUS] === StatusCode::STATUS_METHOD_NOT_ALLOWED) {
-            return $this->createMethodNotAllowedResponse();
+        switch ($route[static::KEY_STATUS]) {
+            case StatusCode::STATUS_NOT_FOUND:
+                return $this->createNotFoundResponse();
+            case StatusCode::STATUS_METHOD_NOT_ALLOWED:
+                return $this->createMethodNotAllowedResponse();
         }
 
         foreach ($route[static::KEY_VARIABLES] as $name => $value) {
@@ -100,17 +99,11 @@ class RouteMiddleware implements MiddlewareInterface
 
     public function createNotFoundResponse(): ResponseInterface
     {
-        $response = $this->responseFactory->createResponse(StatusCode::STATUS_NOT_FOUND);
-        $response->getBody()->write('Not found :(');
-
-        return $response;
+        return $this->responseFactory->createResponse(StatusCode::STATUS_NOT_FOUND);
     }
 
     public function createMethodNotAllowedResponse(): ResponseInterface
     {
-        $response = $this->responseFactory->createResponse(StatusCode::STATUS_METHOD_NOT_ALLOWED);
-        $response->getBody()->write('Method not allowed :(');
-
-        return $response;
+        return $this->responseFactory->createResponse(StatusCode::STATUS_METHOD_NOT_ALLOWED);
     }
 }

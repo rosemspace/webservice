@@ -14,7 +14,7 @@ class MarkBasedDispatcher implements RegexBasedDispatcherInterface
      *
      * @return array
      */
-    public function dispatch(array &$metaList, array &$dataList, string &$uri): array
+    public function dispatch(array $metaList, array $dataList, string $uri): array
     {
         foreach ($metaList as &$regex) {
             if (preg_match($regex, $uri, $matches)) {
