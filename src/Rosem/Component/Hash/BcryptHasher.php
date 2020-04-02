@@ -2,10 +2,10 @@
 
 namespace Rosem\Component\Hash;
 
-use RuntimeException;
 use LengthException;
+use RuntimeException;
 
-use function function_exists;
+use function mb_strlen;
 
 class BcryptHasher extends AbstractHasher
 {
@@ -13,6 +13,11 @@ class BcryptHasher extends AbstractHasher
      * Max length of string to hash.
      */
     public const VALUE_MAX_LENGTH = 72;
+
+    /**
+     * Hash string length.
+     */
+    public const HASH_LENGTH = 60;
 
     /**
      * The default cost factor.
@@ -55,7 +60,7 @@ class BcryptHasher extends AbstractHasher
         $hash = password_hash($value, PASSWORD_BCRYPT, $this->mergeOptions($options));
 
         if ($hash === false) {
-            throw new RuntimeException('Bcrypt hashing not supported.');
+            throw new RuntimeException('Crypt Blowfish hashing not supported.');
         }
 
         return $hash;
@@ -89,10 +94,7 @@ class BcryptHasher extends AbstractHasher
      */
     public function validate(string $value): bool
     {
-        return (function_exists('mb_strlen')
-                ? \mb_strlen($value)
-                : \strlen($value)
-            ) <= self::VALUE_MAX_LENGTH;
+        return mb_strlen($value) <= self::VALUE_MAX_LENGTH;
     }
 
     /**

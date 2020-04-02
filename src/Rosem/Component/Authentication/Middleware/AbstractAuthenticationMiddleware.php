@@ -72,14 +72,14 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
     }
 
     /**
-     * Process an incoming server request and return a response, optionally delegating
-     * response creation to a handler.
+     * {@inheritDoc}
      *
      * @param ServerRequestInterface  $request
      * @param RequestHandlerInterface $requestHandler
      *
      * @return ResponseInterface
      * @throws \InvalidArgumentException
+     * @throws \Rosem\Contract\Authentication\AuthenticationExceptionInterface
      */
     public function process(
         ServerRequestInterface $request,
@@ -93,4 +93,11 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
 
         return $this->createUnauthorizedResponse();
     }
+
+    /**
+     * Create unauthorized response.
+     *
+     * @return ResponseInterface
+     */
+    abstract public function createUnauthorizedResponse(): ResponseInterface;
 }

@@ -56,7 +56,7 @@ abstract class AbstractContainer implements ContainerInterface
             return $this->delegate->get($id);
         }
 
-        return Exception\NotFoundException::notFound($id);
+        throw Exception\NotFoundException::dueToMissingEntry($id);
     }
 
     /**

@@ -163,7 +163,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
             return $this->lastDefinition = $next;
         }
 
-        return Exception\ContainerException::notDefined($this->serializeId($path));
+        throw Exception\ContainerException::forUndefinedEntry($this->serializeId($path));
     }
 
     /**
@@ -234,7 +234,11 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
         }
 
         if ($this->delegate !== null) {
-            return $this->delegate->has($id);
+            if ($this->delegate->has($id)) {
+//                $this->lastDefinition = $this->delegate->get($id);
+
+                return true;
+            }
         }
 
         return false;
@@ -255,6 +259,9 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
             return $this->lastDefinition;
         }
 
+        $this->lastDefinition = null;
+
+        // Resolving
         if ($this->has($id)) {
             if (null !== $this->lastDefinition) {
                 return $this->lastDefinition;
@@ -264,14 +271,14 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
                 return $this->delegate->get($id);
             }
 
-            return Exception\ContainerException::notDefined($id);
+            throw Exception\ContainerException::forUndefinedEntry($id);
         }
 
-        if ($this->delegate !== null) {
-            return $this->delegate->get($id);
-        }
+//        if ($this->delegate !== null) {
+//            return $this->delegate->get($id);
+//        }
 
-        return Exception\NotFoundException::notFound($id);
+        throw Exception\NotFoundException::dueToMissingEntry($id);
     }
 
     /**

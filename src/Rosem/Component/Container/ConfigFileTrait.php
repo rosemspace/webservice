@@ -2,6 +2,10 @@
 
 namespace Rosem\Component\Container;
 
+use function file_exists;
+use function is_array;
+use function is_readable;
+
 trait ConfigFileTrait
 {
     /**
@@ -17,13 +21,13 @@ trait ConfigFileTrait
                 /** @noinspection PhpIncludeInspection */
                 $config = include $filePath;
 
-                if (is_array($config)) {
-                    return $config;
+                if (!is_array($config)) {
+                    throw new Exception\ContainerException(
+                        "$filePath configuration file should return an array"
+                    );
                 }
 
-                throw new Exception\ContainerException(
-                    "$filePath configuration file should return an array"
-                );
+                return $config;
             }
 
             throw new Exception\ContainerException(

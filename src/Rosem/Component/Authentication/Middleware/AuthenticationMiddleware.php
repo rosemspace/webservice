@@ -133,8 +133,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
     }
 
     /**
-     * {@inheritDoc}
-     * @throws \Rosem\Contract\Authentication\AuthenticationExceptionInterface
+     * @inheritDoc
      */
     public function process(
         ServerRequestInterface $request,

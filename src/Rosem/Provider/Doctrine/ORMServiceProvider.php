@@ -10,13 +10,13 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Psr\Container\ContainerInterface;
 use Rosem\Contract\App\AppEnv;
-use Rosem\Contract\App\AppInterface;
+use Rosem\Contract\App\AppEnvVar;
 use Rosem\Contract\Container\ServiceProviderInterface;
 use Rosem\Contract\App\DirEnvVar;
 
 class ORMServiceProvider implements ServiceProviderInterface
 {
-    public const PROXY_NAMESPACE = 'Rosem\Component\Doctrine\ORM\GeneratedProxies';
+    public const PROXY_NAMESPACE = 'Proxies\__CG__';
 
     public function getFactories(): array
     {
@@ -28,7 +28,7 @@ class ORMServiceProvider implements ServiceProviderInterface
                 ];
             },
             EntityManager::class => function (ContainerInterface $container) {
-                $isDevelopmentMode = $container->get(AppInterface::ENV_KEY) === AppEnv::DEVELOPMENT;
+                $isDevelopmentMode = $container->get(AppEnvVar::ENV_KEY) === AppEnv::DEVELOPMENT;
                 $ormConfig = new Configuration();
                 $ormConfig->setNamingStrategy(new UnderscoreNamingStrategy(CASE_LOWER));
                 $ormConfig->setMetadataDriverImpl(new StaticPHPDriver($container->get('ormEntityPaths')));

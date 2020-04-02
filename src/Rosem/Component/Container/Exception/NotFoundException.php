@@ -2,19 +2,17 @@
 
 namespace Rosem\Component\Container\Exception;
 
-use Exception;
 use Psr\Container\NotFoundExceptionInterface;
 
-class NotFoundException extends Exception implements NotFoundExceptionInterface
+class NotFoundException extends ContainerException implements NotFoundExceptionInterface
 {
     /**
      * @param $id
      *
-     * @return NotFoundException
-     * @throws NotFoundException
+     * @return self
      */
-    public static function notFound($id): self
+    public static function dueToMissingEntry($id): self
     {
-        throw new self("\"$id\" definition is not found in the container.");
+        return new self("The entry \"$id\" is not found in the container.");
     }
 }

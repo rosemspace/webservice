@@ -8,7 +8,6 @@ use Rosem\Component\Authentication\Middleware\{
     BasicAuthenticationMiddleware,
     DigestAuthenticationMiddleware
 };
-use Rosem\Contract\App\AppInterface;
 use Rosem\Contract\Authentication\UserFactoryInterface;
 use Rosem\Contract\Container\ServiceProviderInterface;
 use Rosem\Contract\Http\Server\MiddlewareCollectorInterface;
@@ -29,7 +28,7 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            static::CONFIG_REALM => static fn(AppInterface $app) => null, //$app->getEnv('AUTH_HTTP_REALM');,
+            static::CONFIG_REALM => static fn(ContainerInterface $container) => null, //$app->getEnv('AUTH_HTTP_REALM');,
             static::CONFIG_TYPE => static fn(): string => 'digest',
             static::CONFIG_USER_PASSWORD_RESOLVER => static function (ContainerInterface $container): callable {
                 return static function (string $username) use (&$container): ?string {
@@ -59,14 +58,16 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareCollectorInterface::class => static fn(
+            MiddlewareCollectorInterface::class => static function (
                 ContainerInterface $container,
                 MiddlewareCollectorInterface $middlewareCollector
-            ) => $middlewareCollector->addDeferredMiddleware(
-                $container->get(static::CONFIG_TYPE) === 'basic'
-                    ? BasicAuthenticationMiddleware::class
-                    : DigestAuthenticationMiddleware::class
-            ),
+            ): void {
+                $middlewareCollector->addDeferredMiddleware(
+                    $container->get(static::CONFIG_TYPE) === 'basic'
+                        ? BasicAuthenticationMiddleware::class
+                        : DigestAuthenticationMiddleware::class
+                );
+            },
         ];
     }
 }

@@ -62,7 +62,7 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
         }
 
         if (!preg_match(
-            '/' . self::AUTHORIZATION_HEADER_PREFIX . ' (?<credentials>[a-zA-Z0-9+\/=]+)/',
+            '~' . self::AUTHORIZATION_HEADER_PREFIX . ' (?<credentials>[a-zA-Z0-9+/=]+)~',
             reset($authHeader),
             $match
         )

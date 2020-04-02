@@ -2,9 +2,7 @@
 
 namespace Rosem\Contract\App;
 
-use Psr\Container\ContainerInterface;
-
-interface AppInterface extends ContainerInterface
+interface AppInterface
 {
     /**
      * Run the application.

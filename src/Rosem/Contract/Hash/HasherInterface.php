@@ -15,6 +15,7 @@ interface HasherInterface
      *
      * @return string
      * @throws \RuntimeException
+     * @throws \Exception
      */
     public function hash(string $value, array $options = []) : string;
 
@@ -35,6 +36,8 @@ interface HasherInterface
      * @param  array  $options
      *
      * @return bool
+     *
+     * @throws \Exception
      */
     public function needsRehash(string $hashedValue, array $options = []) : bool;
 

@@ -15,7 +15,8 @@
     ],
     "require": {
         "php": ">=7.2.0",
-        "rosem/contract-hasher": "^0.0.1"
+        "rosem/contract-hasher": "^0.0.1",
+        "symfony/polyfill-mbstring": "~1.14"
     },
     "autoload": {
         "psr-4": {

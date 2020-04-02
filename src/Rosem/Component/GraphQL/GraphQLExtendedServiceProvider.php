@@ -27,12 +27,12 @@ class GraphQLExtendedServiceProvider extends GraphQLServiceProvider
         ];
     }
 
-    public function createGraphQLMiddleware(AppInterface $app): GraphQLMiddleware
+    public function createGraphQLMiddleware(ContainerInterface $container): GraphQLMiddleware
     {
         return new GraphQLMiddleware(
-            $this->createGraphQLServer($app),
-            $app->get(static::CONFIG_URI),
-            $app->isAllowedToDebug()
+            $this->createGraphQLServer($container),
+            $container->get(static::CONFIG_URI),
+            true //todo $container->isAllowedToDebug()
         );
     }
 }

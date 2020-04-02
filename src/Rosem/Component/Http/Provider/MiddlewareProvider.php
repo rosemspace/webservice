@@ -3,8 +3,10 @@
 namespace Rosem\Component\Http\Provider;
 
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\{
+    Message\ResponseFactoryInterface,
+    Server\RequestHandlerInterface
+};
 use Rosem\Component\Http\Server\{
     InternalServerErrorRequestHandler,
     MiddlewareCollector
@@ -24,6 +26,9 @@ class MiddlewareProvider implements ServiceProviderInterface
     {
         return [
             MiddlewareCollectorInterface::class => [static::class, 'createMiddlewareCollector'],
+            RequestHandlerInterface::class => fn(ContainerInterface $container) => $container->get(
+                MiddlewareCollectorInterface::class
+            ),
             InternalServerErrorRequestHandler::class => [
                 static::class,
                 'createInternalServerErrorRequestHandler',

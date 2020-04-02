@@ -47,7 +47,7 @@ class ArgonHasher extends AbstractHasher
      *
      * @return array
      */
-    protected function mergeOptions(array $options = []) : array
+    protected function mergeOptions(array $options = []): array
     {
         return [
             'memory_cost' => $options['memory_cost'] ?? $this->memoryCost,
@@ -57,15 +57,9 @@ class ArgonHasher extends AbstractHasher
     }
 
     /**
-     * Hash the given value.
-     *
-     * @param  string $value
-     * @param  array  $options
-     *
-     * @return string
-     * @throws \RuntimeException
+     * @inheritDoc
      */
-    public function hash(string $value, array $options = []) : string
+    public function hash(string $value, array $options = []): string
     {
         $hash = password_hash($value, PASSWORD_ARGON2I, $this->mergeOptions($options));
 
@@ -77,14 +71,9 @@ class ArgonHasher extends AbstractHasher
     }
 
     /**
-     * Check if the given hash has been hashed using the given options.
-     *
-     * @param  string $hashedValue
-     * @param  array  $options
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function needsRehash(string $hashedValue, array $options = []) : bool
+    public function needsRehash(string $hashedValue, array $options = []): bool
     {
         return password_needs_rehash($hashedValue, PASSWORD_ARGON2I, $this->mergeOptions($options));
     }
@@ -96,7 +85,7 @@ class ArgonHasher extends AbstractHasher
      *
      * @return void
      */
-    public function setThreads(int $threads) : void
+    public function setThreads(int $threads): void
     {
         $this->threads = $threads;
     }
@@ -108,7 +97,7 @@ class ArgonHasher extends AbstractHasher
      *
      * @return void
      */
-    public function setMemoryCost(int $memoryCost) : void
+    public function setMemoryCost(int $memoryCost): void
     {
         $this->memoryCost = $memoryCost;
     }
@@ -120,7 +109,7 @@ class ArgonHasher extends AbstractHasher
      *
      * @return void
      */
-    public function setTimeCost(int $timeCost) : void
+    public function setTimeCost(int $timeCost): void
     {
         $this->timeCost = $timeCost;
     }

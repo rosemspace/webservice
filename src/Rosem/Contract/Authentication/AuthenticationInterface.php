@@ -2,10 +2,7 @@
 
 namespace Rosem\Contract\Authentication;
 
-use Psr\Http\Message\{
-    ResponseInterface,
-    ServerRequestInterface
-};
+use Psr\Http\Message\ServerRequestInterface;
 
 interface AuthenticationInterface
 {
@@ -18,11 +15,4 @@ interface AuthenticationInterface
      * @throws AuthenticationExceptionInterface
      */
     public function authenticate(ServerRequestInterface $request): ?UserInterface;
-
-    /**
-     * Create unauthorized response.
-     *
-     * @return ResponseInterface
-     */
-    public function createUnauthorizedResponse(): ResponseInterface;
 }

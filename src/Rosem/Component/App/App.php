@@ -4,7 +4,9 @@ namespace Rosem\Component\App;
 
 use Exception;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Rosem\Component\Container\{
+    AbstractContainer,
     ConfigurationContainer,
     ServiceContainer
 };
@@ -14,12 +16,9 @@ use Rosem\Contract\App\{
     AppInterface
 };
 use Rosem\Contract\Debug\InspectableInterface;
-use Rosem\Contract\Http\Server\{
-    EmitterInterface,
-    MiddlewareCollectorInterface
-};
+use Rosem\Contract\Http\Server\EmitterInterface;
 
-class App extends ServiceContainer implements AppInterface, InspectableInterface
+class App implements AppInterface, InspectableInterface
 {
     use EnvTrait;
 
@@ -57,11 +56,11 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
     private bool $debug;
 
     /**
-     * The application configuration.
+     * The application container.
      *
-     * @var ConfigurationContainer
+     * @var AbstractContainer
      */
-    protected ConfigurationContainer $configuration;
+    protected AbstractContainer $container;
 
     /**
      * App constructor.
@@ -75,7 +74,7 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
      */
     public function __construct(array $config)
     {
-        parent::__construct($config['providers'] ?? []);
+//        parent::__construct($config['providers'] ?? []);
 
         if (!isset($config['root'])) {
             // todo vendor/rosem/app - 3
@@ -90,6 +89,11 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
             $config['root'] = $rootDir;
         }
 
+//        $this->delegate(ConfigurationContainer::fromArray($config));
+        $this->container = ConfigurationContainer::fromArray($config);
+        $this->container->delegate(
+            new ServiceContainer($config['providers'] ?? [], $this->container)
+        );
         $this->rootDir = $config['root'];
         //$filePath //$path, $file = '.env'
         $this->createEnv($this->rootDir, $config['envFile'] ?? '.env');
@@ -127,18 +131,19 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
             //todo show maintenance
             exit(1);
         }
-
-        $this->delegate(ConfigurationContainer::fromArray($config));
     }
 
+    /**
+     * @inheritDoc
+     */
     public function run(): bool
     {
-        $app = $this;
-        $this->set(AppInterface::class, static fn() => $app);
+//        $app = $this;
+//        $this->container->set(AppInterface::class, static fn() => $app);
 
-        return $this->get(EmitterInterface::class)->emit(
-            $this->get(MiddlewareCollectorInterface::class)->handle(
-                $this->get(ServerRequestInterface::class)
+        return $this->container->get(EmitterInterface::class)->emit(
+            $this->container->get(RequestHandlerInterface::class)->handle(
+                $this->container->get(ServerRequestInterface::class)
             )
         );
     }
@@ -158,29 +163,36 @@ class App extends ServiceContainer implements AppInterface, InspectableInterface
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getRootDir(): string
     {
         return $this->rootDir;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getVersion(): string
     {
         return $this->version;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getEnvironment(): string
     {
         return $this->environment;
     }
 
     /**
-     * @param string[]|string $env
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function isEnvironment($env): bool
+    public function isEnvironment(string $env): bool
     {
-        return is_array($env) ? in_array($this->environment, $env, true) : $this->environment === $env;
+        return $this->environment === $env;
     }
 
     /**

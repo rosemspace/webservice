@@ -10,11 +10,10 @@ class ContainerException extends Exception implements ContainerExceptionInterfac
     /**
      * @param $id
      *
-     * @return ContainerException
-     * @throws ContainerException
+     * @return self
      */
-    public static function notDefined($id): self
+    public static function forUndefinedEntry($id): self
     {
-        throw new self("\"$id\" definition is not defined in the container.");
+        return new self("The entry \"$id\" is not defined in the container.");
     }
 }

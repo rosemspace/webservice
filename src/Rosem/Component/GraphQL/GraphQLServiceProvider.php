@@ -13,7 +13,6 @@ use GraphQL\Validator\Rules\QueryComplexity;
 use GraphQL\Validator\Rules\QueryDepth;
 use Psr\Container\ContainerInterface;
 use Rosem\Contract\{
-    App\AppInterface,
     Container\ServiceProviderInterface,
     GraphQL\GraphInterface,
     GraphQL\TypeRegistryInterface,
@@ -73,8 +72,9 @@ class GraphQLServiceProvider implements ServiceProviderInterface
             static::CONFIG_MAX_QUERY_DEPTH => static function (): int {
                 return 20;
             },
-            static::CONFIG_DEBUG => static function (AppInterface $app): bool {
-                return $app->isAllowedToDebug() ? Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE : null;
+            static::CONFIG_DEBUG => static function (ContainerInterface $container): bool {
+                //todo
+                return /*$container->isAllowedToDebug()*/true ? Debug::INCLUDE_DEBUG_MESSAGE | Debug::INCLUDE_TRACE : null;
             },
             TypeRegistryInterface::class => [static::class, 'createGraphQLTypeRegistry'],
             GraphInterface::class => [static::class, 'createGraphQLGraph'],

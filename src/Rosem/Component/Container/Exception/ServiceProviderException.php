@@ -9,36 +9,33 @@ class ServiceProviderException extends ContainerException
     /**
      * @param string $serviceProviderClass
      *
-     * @throws ContainerException
-     * @return void
+     * @return self
      */
-    public static function invalidType(string $serviceProviderClass): void
+    public static function dueToMissingClass(string $serviceProviderClass): self
     {
-        throw new self('An item of service providers configuration should be a string ' .
+        return new self("The service provider \"$serviceProviderClass\" does not exist.");
+    }
+
+    /**
+     * @param string $serviceProviderClass
+     *
+     * @return self
+     */
+    public static function dueToInvalidType(string $serviceProviderClass): self
+    {
+        return new self('An item of service providers configuration should be a string ' .
             'that represents a service provider class which implements \"' .
-            ServiceProviderInterface::class . "\" interface, got \"$serviceProviderClass\"");
+            ServiceProviderInterface::class . "\" interface, got \"$serviceProviderClass\".");
     }
 
     /**
      * @param string $serviceProviderClass
      *
-     * @throws ContainerException
-     * @return void
+     * @return self
      */
-    public static function doesNotExist(string $serviceProviderClass): void
+    public static function dueToInvalidInterface(string $serviceProviderClass): self
     {
-        throw new self("The service provider \"$serviceProviderClass\" does not exist.");
-    }
-
-    /**
-     * @param string $serviceProviderClass
-     *
-     * @throws ContainerException
-     * @return void
-     */
-    public static function invalidInterface(string $serviceProviderClass): void
-    {
-        throw new self("The service provider \"$serviceProviderClass\" should implement \"" .
+        return new self("The service provider \"$serviceProviderClass\" should implement \"" .
             ServiceProviderInterface::class . '\" interface.');
     }
 }

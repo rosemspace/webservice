@@ -6,8 +6,8 @@ namespace Rosem\Component\Container;
 
 use Psr\Container\{
     ContainerExceptionInterface,
-    NotFoundExceptionInterface
-};
+    ContainerInterface,
+    NotFoundExceptionInterface};
 use Rosem\Component\Container\Exception;
 use Rosem\Contract\Container\ServiceProviderInterface;
 
@@ -18,6 +18,8 @@ use function is_string;
 
 class ServiceContainer extends AbstractContainer
 {
+    protected ContainerInterface $context;
+
     /**
      * Container constructor.
      *
@@ -26,10 +28,12 @@ class ServiceContainer extends AbstractContainer
      * @throws \InvalidArgumentException
      * @throws Exception\ContainerException
      */
-    public function __construct(iterable $serviceProviders)
+    public function __construct(iterable $serviceProviders, ?ContainerInterface $context = null)
     {
         parent::__construct();
-        AbstractFacade::registerContainer($this);
+
+        $this->context = $context ?: $this;
+        AbstractFacade::registerContainer($this->context);
 
         /** @var ServiceProviderInterface[] $serviceProviderInstances */
         $serviceProviderInstances = [];
@@ -40,7 +44,7 @@ class ServiceContainer extends AbstractContainer
 
             if (is_string($serviceProvider)) {
                 if (!class_exists($serviceProvider)) {
-                    Exception\ServiceProviderException::doesNotExist($serviceProvider);
+                    throw Exception\ServiceProviderException::dueToMissingClass($serviceProvider);
                 }
 
                 if (!in_array(
@@ -49,12 +53,12 @@ class ServiceContainer extends AbstractContainer
                     true
                 )) {
 //                if (!is_a($serviceProvider, ServiceProviderInterface::class)) {
-                    Exception\ServiceProviderException::invalidInterface($serviceProvider);
+                    throw Exception\ServiceProviderException::dueToInvalidInterface($serviceProvider);
                 }
 
                 $serviceProviderInstance = new $serviceProvider();
             } elseif (!is_object($serviceProvider)) {
-                Exception\ServiceProviderException::invalidType($serviceProvider);
+                throw Exception\ServiceProviderException::dueToInvalidType($serviceProvider);
             }
 
             if ($serviceProviderInstance instanceof ServiceProviderInterface) {
@@ -70,7 +74,7 @@ class ServiceContainer extends AbstractContainer
                     $this->set($key, $factory);
                 }
             } else {
-                Exception\ServiceProviderException::invalidInterface(get_class($serviceProviderInstance));
+                throw Exception\ServiceProviderException::dueToInvalidInterface(get_class($serviceProviderInstance));
             }
         }
 
@@ -136,7 +140,7 @@ class ServiceContainer extends AbstractContainer
             $definition = $this->definitions[$id];
 
             if ($definition instanceof Definition) {
-                $value = $definition->create($this);
+                $value = $definition->create($this->context);
 
                 if (null !== $value) {
                     return $this->definitions[$id] = $value;
@@ -146,7 +150,7 @@ class ServiceContainer extends AbstractContainer
                     return $this->delegate->get($id);
                 }
 
-                return Exception\ContainerException::notDefined($id);
+                throw Exception\ContainerException::forUndefinedEntry($id);
             }
 
             return $definition;
@@ -156,6 +160,6 @@ class ServiceContainer extends AbstractContainer
             return $this->delegate->get($id);
         }
 
-        return Exception\NotFoundException::notFound($id);
+        throw Exception\NotFoundException::dueToMissingEntry($id);
     }
 }
