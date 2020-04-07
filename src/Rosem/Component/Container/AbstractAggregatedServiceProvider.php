@@ -5,11 +5,11 @@ namespace Rosem\Component\Container;
 use Rosem\Contract\Container\ServiceProviderInterface;
 
 /**
- * Class AbstractAggregateServiceProvider.
+ * Class AbstractAggregatedServiceProvider.
  *
  * @package Rosem\Component\Container
  */
-abstract class AbstractAggregateServiceProvider implements ServiceProviderInterface
+abstract class AbstractAggregatedServiceProvider implements ServiceProviderInterface
 {
     /**
      * @var ServiceProviderInterface[]
@@ -17,7 +17,7 @@ abstract class AbstractAggregateServiceProvider implements ServiceProviderInterf
     protected array $serviceProviders;
 
     /**
-     * AbstractAggregateServiceProvider constructor.
+     * AbstractAggregatedServiceProvider constructor.
      *
      * @param array $serviceProviderClassList
      */

@@ -2,9 +2,9 @@
 
 namespace Rosem\Component\Http\Provider;
 
-use Rosem\Component\Container\AbstractAggregateServiceProvider;
+use Rosem\Component\Container\AbstractAggregatedServiceProvider;
 
-class KernelServiceProvider extends AbstractAggregateServiceProvider
+class KernelServiceProvider extends AbstractAggregatedServiceProvider
 {
     public function __construct()
     {
