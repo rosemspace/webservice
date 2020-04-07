@@ -47,17 +47,6 @@ class InternalServerErrorRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $response = $this->responseFactory->createResponse(StatusCode::STATUS_INTERNAL_SERVER_ERROR);
-        $body = $response->getBody();
-
-        if ($body->isWritable()) {
-            $viewString = $this->view->render('server::500', $this->config);
-
-            if ($viewString) {
-                $body->write($viewString);
-            }
-        }
-
-        return $response;
+        return $this->responseFactory->createResponse(StatusCode::STATUS_INTERNAL_SERVER_ERROR);
     }
 }

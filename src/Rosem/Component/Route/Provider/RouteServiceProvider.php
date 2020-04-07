@@ -13,7 +13,6 @@ use Rosem\Component\Route\{
 use Rosem\Component\Route\DataGenerator\MarkBasedDataGenerator;
 use Rosem\Component\Route\Dispatcher\MarkBasedDispatcher;
 use Rosem\Component\Route\Middleware\{
-    ClientErrorMiddleware,
     HandleRequestMiddleware,
     RouteMiddleware
 };
@@ -23,7 +22,6 @@ use Rosem\Contract\Route\{
     RouteCollectorInterface,
     RouteDispatcherInterface
 };
-use Rosem\Contract\Template\TemplateRendererInterface;
 
 class RouteServiceProvider implements ServiceProviderInterface
 {
@@ -40,7 +38,6 @@ class RouteServiceProvider implements ServiceProviderInterface
             RouteDispatcherInterface::class => [static::class, 'createRouteDispatcher'],
             RouteMiddleware::class => [static::class, 'createRouteMiddleware'],
             HandleRequestMiddleware::class => [static::class, 'createHandleRequestMiddleware'],
-            ClientErrorMiddleware::class => [static::class, 'createClientErrorMiddleware'],
         ];
     }
 
@@ -57,19 +54,8 @@ class RouteServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 MiddlewareCollectorInterface $middlewareCollector
             ) {
-                $middlewareCollector->addDeferredMiddleware(ClientErrorMiddleware::class);
                 $middlewareCollector->addDeferredMiddleware(RouteMiddleware::class);
                 $middlewareCollector->addDeferredMiddleware(HandleRequestMiddleware::class);
-            },
-            TemplateRendererInterface::class => static function (
-                ContainerInterface $container,
-                TemplateRendererInterface $renderer
-            ) {
-                $s = DIRECTORY_SEPARATOR;
-                $renderer->addPath(
-                    __DIR__ . "$s..{$s}Resource{$s}templates",
-                    'route'
-                );
             },
         ];
     }
@@ -115,13 +101,5 @@ class RouteServiceProvider implements ServiceProviderInterface
     public function createHandleRequestMiddleware(ContainerInterface $container): HandleRequestMiddleware
     {
         return new HandleRequestMiddleware($container);
-    }
-
-    public function createClientErrorMiddleware(ContainerInterface $container): ClientErrorMiddleware
-    {
-        return new ClientErrorMiddleware(
-            $container->get(ResponseFactoryInterface::class),
-            $container->get(TemplateRendererInterface::class)
-        );
     }
 }

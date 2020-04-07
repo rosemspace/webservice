@@ -26,7 +26,7 @@ class MarkBasedDispatcher implements RegexBasedDispatcherInterface
                     $variableData[$variableName] = &$matches[$index + 1];
                 }
 
-                return [StatusCode::STATUS_FOUND, $handler, $middleware, $variableData];
+                return [StatusCode::STATUS_OK, $handler, $middleware, $variableData];
             }
         }
 

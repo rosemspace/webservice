@@ -41,7 +41,7 @@ class StringNumberBasedDispatcher implements RegexBasedDispatcherInterface
             [$handler, $middleware, $variableNames] =
                 $dataList[$meta[StringNumberBasedDataGenerator::KEY_LAST_CHUNK_OFFSET] + (int)$indexString];
 
-            return [StatusCode::STATUS_FOUND, $handler, $middleware, array_combine($variableNames, $matches)];
+            return [StatusCode::STATUS_OK, $handler, $middleware, array_combine($variableNames, $matches)];
         }
 
         return [StatusCode::STATUS_NOT_FOUND];

@@ -1,19 +1,20 @@
 <?php
 
-namespace Rosem\Component\Route\Middleware;
+namespace Rosem\Component\Http\Server\Middleware;
 
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use Psr\Http\Message\{
     ResponseFactoryInterface,
     ResponseInterface,
-    ServerRequestInterface};
+    ServerRequestInterface
+};
 use Psr\Http\Server\{
     MiddlewareInterface,
     RequestHandlerInterface
 };
 use Rosem\Contract\Template\TemplateRendererInterface;
 
-class ClientErrorMiddleware implements MiddlewareInterface
+class ErrorMiddleware implements MiddlewareInterface
 {
     /**
      * @var ResponseFactoryInterface
@@ -63,6 +64,10 @@ class ClientErrorMiddleware implements MiddlewareInterface
                 $this->attachHtmlToResponse($response, StatusCode::STATUS_METHOD_NOT_ALLOWED);
 
                 break;
+            case StatusCode::STATUS_INTERNAL_SERVER_ERROR:
+                $this->attachHtmlToResponse($response, StatusCode::STATUS_INTERNAL_SERVER_ERROR);
+
+                break;
         }
 
         return $response;
@@ -72,12 +77,16 @@ class ClientErrorMiddleware implements MiddlewareInterface
     {
         $body = $response->getBody();
 
-        if ($body->isWritable()) {
-            $viewString = $this->view->render('route::' . $statusCode, $this->config);
-
-            if ($viewString) {
-                $body->write($viewString);
-            }
+        if (!$body->isWritable()) {
+            return;
         }
+
+        $viewString = $this->view->render("error::$statusCode", $this->config);
+
+        if (empty($viewString)) {
+            return;
+        }
+
+        $body->write($viewString);
     }
 }
