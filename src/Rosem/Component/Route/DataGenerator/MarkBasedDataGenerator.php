@@ -10,23 +10,6 @@ class MarkBasedDataGenerator extends AbstractRegexBasedDataGenerator
 {
     protected int $lastChunkOffset = 0;
 
-    /**
-     * MarkBasedChunk constructor.
-     *
-     * @param int      $routeCountPerRegex
-     * @param int|null $regexMaxLength
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function __construct(
-        int $routeCountPerRegex = PHP_INT_MAX,
-        ?int $regexMaxLength = null
-    ) {
-        parent::__construct($routeCountPerRegex, $regexMaxLength);
-
-        $this->routeExpressions[] = '';
-    }
-
     public function newChunk(): void
     {
         $this->regexTree->clear();
@@ -44,7 +27,7 @@ class MarkBasedDataGenerator extends AbstractRegexBasedDataGenerator
     {
         $this->lastInsertId = count($this->routeData);
 
-        if ($this->lastInsertId - $this->lastChunkOffset >= $this->routeCountPerRegex) {
+        if (!$this->lastInsertId || $this->lastInsertId - $this->lastChunkOffset >= $this->routeCountPerRegex) {
             $this->newChunk();
         }
 
@@ -52,6 +35,6 @@ class MarkBasedDataGenerator extends AbstractRegexBasedDataGenerator
         $this->routeExpressions[count($this->routeExpressions) - 1] =
             '~^' . $this->regex . '$~sD' . ($this->utf8 ? 'u' : '');
         $middleware = &$route->getMiddlewareExtensions();
-        $this->routeData[] = [$route->getHandler(), &$middleware, $route->getVariableNames()];
+        $this->routeData[] = [$route->getMethods(), $route->getHandler(), &$middleware, $route->getVariableNames()];
     }
 }

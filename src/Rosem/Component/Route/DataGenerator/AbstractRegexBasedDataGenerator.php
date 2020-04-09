@@ -78,7 +78,7 @@ abstract class AbstractRegexBasedDataGenerator implements RegexBasedDataGenerato
      * @throws \InvalidArgumentException
      */
     public function __construct(
-        int $routeCountPerRegex,
+        int $routeCountPerRegex = PHP_INT_MAX,
         ?int $regexMaxLength = null
     ) {
         if ($routeCountPerRegex <= 0) {
@@ -118,5 +118,13 @@ abstract class AbstractRegexBasedDataGenerator implements RegexBasedDataGenerato
 
             throw new TooLongRouteException('Your route is too long');
         }
+    }
+
+    /**
+     * Create a new regex tree to avoid data sharing.
+     */
+    public function __clone()
+    {
+        $this->regexTree = new RegexTreeNode();
     }
 }

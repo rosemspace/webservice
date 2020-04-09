@@ -29,11 +29,6 @@ class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
         ?int $regexMaxLength = null
     ) {
         parent::__construct($routeCountPerRegex, $regexMaxLength);
-
-        $this->routeExpressions[] = [
-            self::KEY_REGEX => '',
-            self::KEY_OFFSET => $this->groupCount,
-        ];
     }
 
     public function newChunk(): void
@@ -58,7 +53,7 @@ class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
     {
         $this->lastInsertId = $this->routeCountPerRegex * $this->chunkCount;
 
-        if (count($this->routeData) - $this->lastInsertId >= $this->routeCountPerRegex) {
+        if (!$this->chunkCount || count($this->routeData) - $this->lastInsertId >= $this->routeCountPerRegex) {
             $this->newChunk();
         }
 
@@ -71,6 +66,6 @@ class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
         ++$this->groupCount; // +1 for first regex matching / next route index
         $middleware = &$route->getMiddlewareExtensions();
         $this->routeData[$this->lastInsertId + $this->groupCount] =
-            [$route->getHandler(), &$middleware, $route->getVariableNames()];
+            [$route->getMethods(), $route->getHandler(), &$middleware, $route->getVariableNames()];
     }
 }

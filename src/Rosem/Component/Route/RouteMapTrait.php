@@ -20,7 +20,7 @@ trait RouteMapTrait
     protected array $staticRouteMap = [];
 
     /**
-     * @var RegexBasedDataGeneratorInterface[]
+     * @var RegexBasedDataGeneratorInterface
      */
-    protected array $variableRouteMap = [];
+    protected RegexBasedDataGeneratorInterface $variableRouteMap;
 }

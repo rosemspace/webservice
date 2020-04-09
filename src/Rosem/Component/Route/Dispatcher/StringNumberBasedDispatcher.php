@@ -2,7 +2,6 @@
 
 namespace Rosem\Component\Route\Dispatcher;
 
-use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use Rosem\Component\Route\{
     DataGenerator\StringNumberBasedDataGenerator,
     RegexBasedDispatcherInterface
@@ -38,12 +37,12 @@ class StringNumberBasedDispatcher implements RegexBasedDispatcherInterface
                 $indexString = $lastMatch[0] . $indexString . (isset($lastMatch[1]) ? $lastMatch[-1] : '');
             } while (--$segmentCount);
 
-            [$handler, $middleware, $variableNames] =
+            [$methods, $handler, $middleware, $variableNames] =
                 $dataList[$meta[StringNumberBasedDataGenerator::KEY_LAST_CHUNK_OFFSET] + (int)$indexString];
 
-            return [StatusCode::STATUS_OK, $handler, $middleware, array_combine($variableNames, $matches)];
+            return [$methods, $handler, $middleware, array_combine($variableNames, $matches)];
         }
 
-        return [StatusCode::STATUS_NOT_FOUND];
+        return [];
     }
 }

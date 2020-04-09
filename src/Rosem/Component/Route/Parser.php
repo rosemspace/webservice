@@ -32,10 +32,12 @@ class Parser implements ParserInterface
      *
      * @return array[]
      */
-    public function parse(string $routePattern): array // TODO: parse user groups and optional end part
+    public function parse(string $routePattern): array
     {
         $variableNames = [];
         $index = 0;
+        // TODO: parse user groups
+        // TODO: parse optional end part
         $regex = preg_replace_callback(
             $this->variableSplitRegex,
             static function ($matches) use (&$variableNames, &$index) {

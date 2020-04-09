@@ -12,13 +12,13 @@ class RouteDispatcher implements RouteDispatcherInterface
     /**
      * RouteDispatcher constructor.
      *
-     * @param array                         $staticRouteMap
-     * @param array                         $variableRouteMap
-     * @param RegexBasedDispatcherInterface $dispatcher
+     * @param array                            $staticRouteMap
+     * @param RegexBasedDataGeneratorInterface $variableRouteMap
+     * @param RegexBasedDispatcherInterface    $dispatcher
      */
     public function __construct(
         array $staticRouteMap,
-        array $variableRouteMap,
+        RegexBasedDataGeneratorInterface $variableRouteMap,
         RegexBasedDispatcherInterface $dispatcher
     ) {
         $this->staticRouteMap = $staticRouteMap;

@@ -20,11 +20,6 @@ class RouteCollector extends AbstractRouteCollector
     protected CompilerInterface $compiler;
 
     /**
-     * @var RegexBasedDataGeneratorInterface
-     */
-    protected RegexBasedDataGeneratorInterface $dataGeneratorPrototype;
-
-    /**
      * @var string
      */
     protected string $currentGroupPrefix = '';
@@ -33,12 +28,12 @@ class RouteCollector extends AbstractRouteCollector
      * RouteCollector constructor.
      *
      * @param CompilerInterface                $compiler
-     * @param RegexBasedDataGeneratorInterface $dataGeneratorPrototype
+     * @param RegexBasedDataGeneratorInterface $dataGenerator
      */
-    public function __construct(CompilerInterface $compiler, RegexBasedDataGeneratorInterface $dataGeneratorPrototype)
+    public function __construct(CompilerInterface $compiler, RegexBasedDataGeneratorInterface $dataGenerator)
     {
         $this->compiler = $compiler;
-        $this->dataGeneratorPrototype = $dataGeneratorPrototype;
+        $this->variableRouteMap = $dataGenerator;
     }
 
     protected static function normalize(string $route): string
@@ -58,38 +53,30 @@ class RouteCollector extends AbstractRouteCollector
      */
     public function addRoute($methods, string $pattern, $handler): RouteInterface
     {
-        $route = $this->compiler->compile(
+        $routes = $this->compiler->compile(
             (array)$methods,
             $this->currentGroupPrefix . self::normalize($pattern),
             $handler
         );
 
-        foreach ($route->getMethods() as $method) {
+        foreach ($routes as $route) {
             if (count($route->getVariableNames())) {
-                // Dynamic route
-                if (!isset($this->variableRouteMap[$method])) {
-                    $this->variableRouteMap[$method] = clone $this->dataGeneratorPrototype;
-                }
-
                 try {
-                    $this->variableRouteMap[$method]->addRoute($route);
+                    $this->variableRouteMap->addRoute($route);
                 } catch (Exception\TooLongRouteException $exception) {
-                    //$this->variableRouteMap[$method]->rollback(); // TODO: add rollback
-                    $this->variableRouteMap[$method]->newChunk();
-                    $this->variableRouteMap[$method]->addRoute($route);
+                    // TODO: add rollback
+                    //$this->variableRouteMap[$method]->rollback();
+                    $this->variableRouteMap->newChunk();
+                    $this->variableRouteMap->addRoute($route);
                 }
             } else {
-                // Static route
-                if (!isset($this->staticRouteMap[$method])) {
-                    $this->staticRouteMap[$method] = [];
-                }
-
                 $middleware = &$route->getMiddlewareExtensions();
-                $this->staticRouteMap[$method][$pattern] = [$route->getHandler(), &$middleware];
+                $this->staticRouteMap[$pattern] = [$route->getMethods(), $route->getHandler(), &$middleware];
             }
         }
 
-        return $route;
+        // TODO: return middleware collector?
+        return $routes[0];
     }
 
     /**
@@ -116,9 +103,9 @@ class RouteCollector extends AbstractRouteCollector
     }
 
     /**
-     * @return array
+     * @return RegexBasedDataGeneratorInterface
      */
-    public function getVariableRouteMap(): array
+    public function getVariableRouteMap(): RegexBasedDataGeneratorInterface
     {
         return $this->variableRouteMap;
     }

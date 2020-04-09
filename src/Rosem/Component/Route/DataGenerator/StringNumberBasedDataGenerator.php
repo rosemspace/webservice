@@ -76,7 +76,7 @@ class StringNumberBasedDataGenerator extends AbstractRegexBasedDataGenerator
         $this->routeExpressions[count($this->routeExpressions) - 1][self::KEY_REGEX] =
             '~^' . $this->regex . '.*/$~sD' . ($this->utf8 ? 'u' : '');
         $middleware = &$route->getMiddlewareExtensions();
-        $this->routeData[] = [$route->getHandler(), &$middleware, $route->getVariableNames()];
+        $this->routeData[] = [$route->getMethods(), $route->getHandler(), &$middleware, $route->getVariableNames()];
     }
 
     protected function convertNumberToRegex(int $number): string

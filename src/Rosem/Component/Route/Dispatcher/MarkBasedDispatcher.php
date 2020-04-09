@@ -2,7 +2,6 @@
 
 namespace Rosem\Component\Route\Dispatcher;
 
-use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use Rosem\Component\Route\RegexBasedDispatcherInterface;
 
 class MarkBasedDispatcher implements RegexBasedDispatcherInterface
@@ -18,18 +17,22 @@ class MarkBasedDispatcher implements RegexBasedDispatcherInterface
     {
         foreach ($metaList as &$regex) {
             if (preg_match($regex, $uri, $matches)) {
-                [$handler, $middleware, $variableNames] = $dataList[$matches['MARK']];
+                $routeData = $dataList[$matches['MARK']];
                 $variableData = [];
 
-                /** @var string[] $variableNames */
-                foreach ($variableNames as $index => &$variableName) {
+                // count($routeData) - 1 = 3
+                /** @noinspection AlterInForeachInspection */
+                foreach ($routeData[3] as $index => &$variableName) {
                     $variableData[$variableName] = &$matches[$index + 1];
                 }
 
-                return [StatusCode::STATUS_OK, $handler, $middleware, $variableData];
+                $routeData[3] = $variableData;
+                unset($variableData, $variableName);
+
+                return $routeData;
             }
         }
 
-        return [StatusCode::STATUS_NOT_FOUND];
+        return [];
     }
 }
