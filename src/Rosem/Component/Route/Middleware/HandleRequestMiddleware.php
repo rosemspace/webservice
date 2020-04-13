@@ -82,7 +82,11 @@ class HandleRequestMiddleware implements MiddlewareInterface
 
             /** @var array[] $requestData */
             foreach ($requestData[static::KEY_MIDDLEWARE] as $middlewareExtension) {
-                $middlewareExtension($requestHandler, $this->container);
+                $requestHandler->addMiddleware(
+                    is_callable($middlewareExtension)
+                        ? $middlewareExtension($this->container)
+                        : $this->container->get($middlewareExtension)
+                );
             }
         } else {
             $requestHandler = $this->container->get($requestData[static::KEY_HANDLER_OR_ALLOWED_METHODS]);

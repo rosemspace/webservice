@@ -6,17 +6,17 @@
 namespace Rosem\Contract\Route;
 
 /**
- * Route dispatcher returns handlers of a route.
+ * Route dispatcher returns data of a route.
  */
 interface RouteDispatcherInterface
 {
     /**
-     * Dispatches against the provided HTTP method verb and URI.
+     * Dispatches against the provided scope and route.
      *
-     * @param string $httpMethod
-     * @param string $uri
+     * @param string $scope
+     * @param string $route
      *
-     * @return array The handler and variables
+     * @return array<int, mixed> The status code, data and variables
      */
-    public function dispatch(string $httpMethod, string $uri): array;
+    public function dispatch(string $scope, string $route): array;
 }

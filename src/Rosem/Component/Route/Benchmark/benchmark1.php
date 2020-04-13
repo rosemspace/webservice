@@ -151,7 +151,6 @@ $startTime = microtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
     try {
         $res = $router->dispatch('GET', '/foobar/bar');
-        throw new \Exception('404');
     } catch (\Exception $exception) {}
 }
 $stats[ROSEM_ROUTER][UNKNOWN] = microtime(true) - $startTime;

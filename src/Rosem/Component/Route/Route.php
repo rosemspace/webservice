@@ -4,7 +4,7 @@ namespace Rosem\Component\Route;
 
 use Rosem\Contract\Route\RouteInterface;
 
-class Route implements RegexRouteInterface
+class Route implements RouteInterface
 {
     protected array $methods;
 

@@ -2,9 +2,10 @@
 
 namespace Rosem\Component\Route\DataGenerator;
 
-use Rosem\Component\Route\RegexRouteInterface;
+use Rosem\Component\Route\Contract\RegexRouteInterface;
 
 use function count;
+use function str_repeat;
 
 class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
 {

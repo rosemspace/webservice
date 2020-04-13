@@ -5,7 +5,7 @@ namespace Rosem\Component\Route;
 use function mb_strlen;
 use function mb_substr;
 
-class RegexTreeNode
+class RegexNode
 {
     /**
      * @var string
@@ -15,12 +15,12 @@ class RegexTreeNode
     /**
      * @var self[]
      */
-    protected array $nodes = [];
+    protected array $children = [];
 
-    public function __construct(string $prefix = '', array $nodes = [])
+    public function __construct(string $prefix = '', array $children = [])
     {
         $this->prefix = $prefix;
-        $this->nodes = $nodes;
+        $this->children = $children;
     }
 
     public function clear(): void
@@ -33,14 +33,14 @@ class RegexTreeNode
         return $this->prefix;
     }
 
-    public function hasNodes(): bool
+    public function hasChildren(): bool
     {
-        return $this->nodes !== [];
+        return $this->children !== [];
     }
 
-    public function getNodes(): array
+    public function getChildren(): array
     {
-        return $this->nodes;
+        return $this->children;
     }
 
     public function addRegex(string $regex): void
@@ -48,7 +48,7 @@ class RegexTreeNode
         $patternLength = mb_strlen($regex);
         $matchLength = 0;
 
-        foreach ($this->nodes as $index => &$node) {
+        foreach ($this->children as $index => &$node) {
             $nodePrefix = $node->getPrefix();
             $nodePrefixLength = mb_strlen($nodePrefix);
             $end = min($patternLength, $nodePrefixLength);
@@ -70,8 +70,8 @@ class RegexTreeNode
                     ++$ignoreMatchLength;
                 } elseif ((isset($regex[$matchLength + 1]) && '?' === $regex[$matchLength + 1])
                     || (isset($nodePrefix[$matchLength + 1]) && '?' === $nodePrefix[$matchLength + 1])
-                    || '/' === $nodePrefix[$matchLength]
-                    || '/' === $regex[$matchLength]
+//                    || '/' === $nodePrefix[$matchLength]
+//                    || '/' === $regex[$matchLength]
                 ) {
                     ++$ignoreMatchLength;
                 } else {
@@ -85,8 +85,8 @@ class RegexTreeNode
                 if ($matchLength !== $nodePrefixLength) {
                     $newPrefix = mb_substr($nodePrefix, 0, $matchLength);
                     $newChild = mb_substr($nodePrefix, $matchLength);
-                    $node = new self($newPrefix, [new self($newChild, $node->getNodes())]);
-                } elseif (!$node->hasNodes()) {
+                    $node = new self($newPrefix, [new self($newChild, $node->getChildren())]);
+                } elseif (!$node->hasChildren()) {
                     $node->addRegex('');
                 }
 
@@ -101,7 +101,7 @@ class RegexTreeNode
         unset($node);
 
         if (!$matchLength) {
-            $this->nodes[] = new self($regex);
+            $this->children[] = new self($regex);
         }
     }
 
@@ -109,10 +109,10 @@ class RegexTreeNode
     {
         $regex = $this->prefix;
 
-        if ($this->hasNodes()) {
+        if ($this->hasChildren()) {
             $regex .= '(?';
 
-            foreach ($this->nodes as $node) {
+            foreach ($this->children as $node) {
                 $regex .= '|' . $node->getRegex();
             }
 

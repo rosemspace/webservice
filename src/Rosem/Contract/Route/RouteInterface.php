@@ -46,6 +46,8 @@ interface RouteInterface
      */
     public function getHandler(): string;
 
+    public function getVariableNames(): array;
+
     /**
      * Sets the middleware logic to be executed before the route will be resolved.
      *

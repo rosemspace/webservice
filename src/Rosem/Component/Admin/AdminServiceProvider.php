@@ -10,8 +10,7 @@ use Rosem\Component\Admin\Http\Server\{
 };
 use Rosem\Component\Authentication\Middleware\AuthenticationMiddleware;
 use Rosem\Contract\Container\ServiceProviderInterface;
-use Rosem\Contract\Http\Server\MiddlewareCollectorInterface;
-use Rosem\Contract\Route\RouteCollectorInterface;
+use Rosem\Contract\Route\HttpRouteCollectorInterface;
 use Rosem\Contract\Template\TemplateRendererInterface;
 
 class AdminServiceProvider implements ServiceProviderInterface
@@ -75,29 +74,31 @@ class AdminServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            RouteCollectorInterface::class => static function (
+            HttpRouteCollectorInterface::class => static function (
                 ContainerInterface $container,
-                RouteCollectorInterface $routeCollector
+                HttpRouteCollectorInterface $routeCollector
             ): void {
                 $loggedInUri = '/' . trim($container->get(static::CONFIG_URI_LOGGED_IN), '/');
                 $loginUri = '/' . trim($container->get(static::CONFIG_URI_LOGIN), '/');
-                $adminAuthenticationMiddlewareExtension = static fn(
-                    MiddlewareCollectorInterface $middlewareCollector,
+                $middleware = null;
+                $adminAuthenticationMiddleware = static fn(
                     ContainerInterface $container
-                ) => $middlewareCollector->addMiddleware(
-                    $container->get(AuthenticationMiddleware::class)
-                        ->withPasswordResolver($container->get(static::CONFIG_USER_RESOLVER_PASSWORD))
-                        ->withLoggedInUri($loggedInUri)
-                        ->withLoginUri($loginUri)
-                );
-                $routeCollector->get($loginUri, LoginRequestHandler::class)
-                    ->addMiddleware($adminAuthenticationMiddlewareExtension);
-                $routeCollector->post($loginUri, LoginRequestHandler::class)
-                    ->addMiddleware($adminAuthenticationMiddlewareExtension);
+                ) => $container->get(AuthenticationMiddleware::class)
+                    ->withPasswordResolver($container->get(static::CONFIG_USER_RESOLVER_PASSWORD))
+                    ->withLoggedInUri($loggedInUri)
+                    ->withLoginUri($loginUri);
                 $routeCollector->get(
-                    $loggedInUri . '{adminRelativePath:.*}',
-                    AdminRequestHandler::class
-                )->addMiddleware($adminAuthenticationMiddlewareExtension);
+                    $loginUri,
+                    [LoginRequestHandler::class, [$adminAuthenticationMiddleware]]
+                );
+                $routeCollector->post(
+                    $loginUri,
+                    [LoginRequestHandler::class, [$adminAuthenticationMiddleware]]
+                );
+                $routeCollector->get(
+                    $loggedInUri . '{adminPath:.*}',
+                    [AdminRequestHandler::class, [$adminAuthenticationMiddleware]]
+                );
             },
             TemplateRendererInterface::class => static function (
                 ContainerInterface $container,

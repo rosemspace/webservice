@@ -10,7 +10,7 @@ use Rosem\Component\App\Http\Server\{
 };
 use Rosem\Contract\{
     Container\ServiceProviderInterface,
-    Route\RouteCollectorInterface,
+    Route\HttpRouteCollectorInterface,
     Template\TemplateRendererInterface
 };
 
@@ -72,14 +72,14 @@ class AppServiceProvider implements ServiceProviderInterface
                     ]
                 );
             },
-            RouteCollectorInterface::class => static function (
+            HttpRouteCollectorInterface::class => static function (
                 ContainerInterface $container,
-                RouteCollectorInterface $routeCollector
+                HttpRouteCollectorInterface $routeCollector
             ): void {
                 $regex = $container->has(AdminServiceProvider::class)
                     ? '^(?!/' . ltrim($container->get(AdminServiceProvider::CONFIG_URI_LOGGED_IN), '/') . ').*'
                     : '.*';
-                $routeCollector->get("{appRelativePath:$regex}", HomeRequestHandler::class);
+                $routeCollector->get("{appPath:$regex}", HomeRequestHandler::class);
             },
         ];
     }

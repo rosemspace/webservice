@@ -2,9 +2,12 @@
 
 namespace Rosem\Component\Route\DataGenerator;
 
-use Rosem\Component\Route\RegexRouteInterface;
+use Rosem\Component\Route\Contract\RegexRouteInterface;
 
+use function ceil;
 use function count;
+use function rtrim;
+use function str_pad;
 use function strlen;
 
 class StringNumberBasedDataGenerator extends AbstractRegexBasedDataGenerator

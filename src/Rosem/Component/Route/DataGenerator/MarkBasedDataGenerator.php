@@ -2,7 +2,7 @@
 
 namespace Rosem\Component\Route\DataGenerator;
 
-use Rosem\Component\Route\RegexRouteInterface;
+use Rosem\Component\Route\Contract\RegexRouteInterface;
 
 use function count;
 
@@ -31,6 +31,7 @@ class MarkBasedDataGenerator extends AbstractRegexBasedDataGenerator
             $this->newChunk();
         }
 
+        // (*:...) - shorthand for (*MARK:...)
         $this->addRegex($route->getRegex() . '(*:' . $this->lastInsertId . ')');
         $this->routeExpressions[count($this->routeExpressions) - 1] =
             '~^' . $this->regex . '$~sD' . ($this->utf8 ? 'u' : '');

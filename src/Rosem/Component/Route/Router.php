@@ -2,33 +2,25 @@
 
 namespace Rosem\Component\Route;
 
-use Rosem\Contract\Route\RouteDispatcherInterface;
-use Rosem\Component\Route\DataGenerator\MarkBasedDataGenerator;
-use Rosem\Component\Route\DataGenerator\StringNumberBasedDataGenerator;
-use Rosem\Component\Route\DataGenerator\GroupCountBasedDataGenerator;
-use Rosem\Component\Route\Dispatcher\MarkBasedDispatcher;
-use Rosem\Component\Route\Dispatcher\StringNumberBasedDispatcher;
-use Rosem\Component\Route\Dispatcher\GroupCountBasedDispatcher;
+use Rosem\Component\Route\Map\MarkBasedMap;
+use Rosem\Contract\Route\{
+    HttpRouteCollectorInterface,
+    HttpRouteCollectorTrait
+};
 
-class Router extends RouteCollector implements RouteDispatcherInterface
+/**
+ * Class RouteCollector.
+ */
+class Router extends MarkBasedMap implements HttpRouteCollectorInterface
 {
-    use RouteDispatcherTrait;
+    use HttpRouteCollectorTrait;
 
-    /**
-     * Router constructor.
-     *
-     * @param int $routeCountPerRegex
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function __construct(int $routeCountPerRegex = PHP_INT_MAX)
+    /** TODO: disable / enable some methods */
+    public function setAllowedMethods(array $methods)
     {
-        parent::__construct(new Compiler(new Parser()), new MarkBasedDataGenerator($routeCountPerRegex));
-//        parent::__construct(new Compiler(new Parser()), new StringNumberBasedDataGenerator());
-//        parent::__construct(new Compiler(new Parser()), new GroupCountBasedDataGenerator());
+    }
 
-        $this->dispatcher = new MarkBasedDispatcher();
-//        $this->dispatcher = new StringNumberBasedDispatcher();
-//        $this->dispatcher = new GroupCountBasedDispatcher();
+    public function isMethodAllowed(string $method)
+    {
     }
 }

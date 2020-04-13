@@ -1,11 +1,11 @@
 <?php
 
-namespace Rosem\Component\Route;
+namespace Rosem\Component\Route\Contract;
 
 /**
  * Interface CompilerInterface.
  */
-interface CompilerInterface
+interface RouteCompilerInterface
 {
     /**
      * Compile the pattern to real routes.

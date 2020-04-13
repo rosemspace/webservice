@@ -2,21 +2,16 @@
 
 namespace Rosem\Component\Route\Dispatcher;
 
-use Rosem\Component\Route\{
-    DataGenerator\GroupCountBasedDataGenerator,
-    RegexBasedDispatcherInterface
-};
+use Rosem\Component\Route\Contract\RegexBasedDispatcherInterface;
+use Rosem\Component\Route\DataGenerator\GroupCountBasedDataGenerator;
 
 use function count;
+use function preg_match;
 
 class GroupCountBasedDispatcher implements RegexBasedDispatcherInterface
 {
     /**
-     * @param array  $metaList
-     * @param array  $dataList
-     * @param string $uri
-     *
-     * @return array
+     * @inheritDoc
      */
     public function dispatch(array $metaList, array $dataList, string $uri): array
     {

@@ -16,7 +16,7 @@ use Rosem\Contract\{
     Container\ServiceProviderInterface,
     GraphQL\GraphInterface,
     GraphQL\TypeRegistryInterface,
-    Route\RouteCollectorInterface
+    Route\HttpRouteCollectorInterface
 };
 
 use function Rosem\Component\String\snakeCase;
@@ -99,9 +99,9 @@ class GraphQLServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            RouteCollectorInterface::class => static function (
+            HttpRouteCollectorInterface::class => static function (
                 ContainerInterface $container,
-                RouteCollectorInterface $routeCollector
+                HttpRouteCollectorInterface $routeCollector
             ) {
                 $routeCollector->addRoute(
                     [RequestMethod::METHOD_GET, RequestMethod::METHOD_POST],

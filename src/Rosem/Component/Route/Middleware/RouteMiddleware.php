@@ -18,11 +18,9 @@ class RouteMiddleware implements MiddlewareInterface
 {
     protected const KEY_STATUS = 0;
 
-    protected const KEY_HANDLER_OR_ALLOWED_METHODS = 1;
+    protected const KEY_DATA = 1;
 
-    protected const KEY_MIDDLEWARE = 2;
-
-    protected const KEY_VARIABLES = 3;
+    protected const KEY_VARIABLES = 2;
 
     protected RouteDispatcherInterface $router;
 
@@ -76,10 +74,7 @@ class RouteMiddleware implements MiddlewareInterface
             $request = $request->withAttribute($name, $value);
         }
 
-        $request = $this->setHandler(
-            $request,
-            [$route[static::KEY_HANDLER_OR_ALLOWED_METHODS], $route[static::KEY_MIDDLEWARE]]
-        );
+        $request = $this->setHandler($request, (array)$route[static::KEY_DATA]);
 
         return $nextHandler->handle($request);
     }

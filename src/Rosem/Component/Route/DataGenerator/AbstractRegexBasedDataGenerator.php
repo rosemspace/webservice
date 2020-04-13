@@ -4,11 +4,12 @@ namespace Rosem\Component\Route\DataGenerator;
 
 use InvalidArgumentException;
 use Rosem\Component\Route\{
+    Contract\RegexBasedDataGeneratorInterface,
     Exception\TooLongRouteException,
-    RegexBasedDataGeneratorInterface,
-    RegexTreeNode
+    RegexNode
 };
 
+use function ini_get;
 use function strlen;
 
 abstract class AbstractRegexBasedDataGenerator implements RegexBasedDataGeneratorInterface
@@ -58,9 +59,9 @@ abstract class AbstractRegexBasedDataGenerator implements RegexBasedDataGenerato
     /**
      * Regex tree optimizer.
      *
-     * @var RegexTreeNode
+     * @var RegexNode
      */
-    protected RegexTreeNode $regexTree;
+    protected RegexNode $regexTree;
 
     /**
      * UTF-8 flag.
@@ -87,7 +88,7 @@ abstract class AbstractRegexBasedDataGenerator implements RegexBasedDataGenerato
 
         $this->routeCountPerRegex = $routeCountPerRegex;
         $this->regexMaxLength = $regexMaxLength ?: (int)ini_get('pcre.backtrack_limit') ?: 1_000_000;
-        $this->regexTree = new RegexTreeNode();
+        $this->regexTree = new RegexNode();
     }
 
     /**
@@ -125,6 +126,6 @@ abstract class AbstractRegexBasedDataGenerator implements RegexBasedDataGenerato
      */
     public function __clone()
     {
-        $this->regexTree = new RegexTreeNode();
+        $this->regexTree = new RegexNode();
     }
 }

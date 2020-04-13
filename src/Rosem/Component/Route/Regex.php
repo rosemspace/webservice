@@ -2,8 +2,54 @@
 
 namespace Rosem\Component\Route;
 
+use RuntimeException;
+
 class Regex
 {
+    /**
+     * A regular expression to check if other regular expression has capturing groups.
+     * () - yes
+     * \() - invalid
+     * \(\) - no
+     * (\) - invalid
+     * (a) - yes
+     * (a|b) - yes
+     * (\?a) - yes
+     * \(\?a\) - no
+     * (?:a) - no
+     * (?:?a) - invalid
+     * (?:\?a) - no
+     * (?>a) - no
+     * (?|a) - no
+     * (?#a) - no
+     * (?'a'b) - yes, where "a" should match [a-zA-Z_][a-zA-Z0-9_]*
+     * (?<a>b) - yes
+     * (?P<a>b) - yes
+     * (?ia) - no
+     * (?-ia) - no
+     * (?(1)a|b) - invalid, requires Nth capturing group. Ex: (?(2)a|b)()()
+     * (?(R)a|b) - no
+     * (?(R1)a|b) - NA+
+     * (?(R&name)a|b) - NA+
+     * (?(?=is)a|b) - no
+     * (?(?<=is)a|b) - no
+     * (?R) - no
+     * (?1) - NA
+     * (?+1) - NA
+     * (?&name) - invalid, requires "name" capturing group. Ex: (?&name)(?<name>)
+     * (?P=name) - NA
+     * (?P>name) - NA
+     * (?(DEFINE)(?<a>)b) - FX
+     * ((?P>a)) - yes
+     * (?=a) - no
+     * (?!a) - no
+     * (?<=a) - no
+     * (?<!a) - no
+     * (*ACCEPT) - no
+     * (*SKIP) - no
+     * (*FAIL) - no
+     * (*MARK) - no
+     */
     public const REGEX_GROUP = <<<'REGEXP'
         ~ (?:
             \(\?\(|\[[^]\\\\]*(?:
@@ -37,32 +83,141 @@ class Regex
     ];
 
     /**
+     * The regular expression.
+     *
      * @var string
      */
-    protected string $regex;
+    protected string $regexp;
 
-    public function __construct(string $regex)
+    /**
+     * A flag to check if the regular expression has capturing groups.
+     *
+     * @var bool|null
+     */
+    private ?bool $hasCapturingGroups = null;
+
+    /**
+     * Regex constructor.
+     *
+     * @param string $regexp
+     *
+     * @throws RuntimeException
+     */
+    public function __construct(string $regexp)
     {
-        $this->regex = $regex;
+        self::assertValid($regexp);
+
+        $this->regexp = $regexp;
     }
 
-    public static function from(string $regex): self
+    /**
+     * Static constructor.
+     *
+     * @param string $regexp
+     *
+     * @return static
+     */
+    public static function of(string $regexp): self
     {
-        return new Regex($regex);
+        return new Regex($regexp);
     }
 
-    protected static function getLastErrorMessage(): string
+    /**
+     * Check if the regular expression is valid.
+     *
+     * @param string $regexp
+     *
+     * @return bool
+     */
+    public static function isValid(string $regexp): bool
     {
-        return self::PREG_ERROR_MESSAGES[preg_last_error()];
+        return @preg_match($regexp, null) !== false;
     }
 
-    public function isValid(): bool
+    /**
+     * Throw an exception if the regular expression is not valid.
+     *
+     * @param string $regexp
+     *
+     * @return void
+     * @trows RuntimeException
+     */
+    public static function assertValid(string $regexp): void
     {
-        return @preg_match($this->regex, null) !== false;
+        if (self::isValid($regexp)) {
+            return;
+        }
+
+        $errorCode = self::getLastErrorCode();
+
+        throw new RuntimeException(self::PREG_ERROR_MESSAGES[$errorCode], $errorCode);
     }
 
+    /**
+     * Retrieve a code of the last error occurred.
+     *
+     * @return string
+     */
+    public static function getLastErrorCode(): string
+    {
+        return preg_last_error();
+    }
+
+    /**
+     * Retrieve a message of the last error occurred.
+     *
+     * @return string
+     */
+    public static function getLastErrorMessage(): string
+    {
+        return self::PREG_ERROR_MESSAGES[self::getLastErrorCode()];
+    }
+
+    /**
+     * Check if the regular expression has capturing groups.
+     *
+     * @return bool
+     */
     public function hasCapturingGroups(): bool
     {
-        return $this->isValid() && (bool) preg_match(self::REGEX_GROUP, $this->regex);
+        if ($this->hasCapturingGroups !== null) {
+            return $this->hasCapturingGroups;
+        }
+
+        if (strpos($this->regexp, '(') === false) {
+            // Needs to have at least a ( to contain a capturing group
+            $this->hasCapturingGroups = false;
+        } else {
+            $this->hasCapturingGroups = (bool)preg_match(self::REGEX_GROUP, $this->regexp);
+        }
+
+        return $this->hasCapturingGroups;
+    }
+
+    public function transformCapturingGroupsToNonCapturing(): void
+    {
+        $regexp = $this->regexp;
+        $regexpLength = strlen($regexp);
+
+        for ($i = 0; $i < $regexpLength; ++$i) {
+            if ($regexp[$i] === '\\') {
+                ++$i;
+                continue;
+            }
+
+            if ('(' !== $regexp[$i] || !isset($regexp[$i + 2])) {
+                continue;
+            }
+
+            if ('*' === $regexp[++$i] || '?' === $regexp[$i]) {
+                ++$i;
+                continue;
+            }
+
+            $regexp = substr_replace($regexp, '?:', $i, 0);
+            ++$i;
+        }
+
+        $this->regexp = $regexp;
     }
 }
