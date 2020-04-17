@@ -140,6 +140,9 @@ class MiddlewareCollector implements MiddlewareCollectorInterface
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function addMiddleware(MiddlewareInterface $middleware): void
     {
         $this->initializeQueue();

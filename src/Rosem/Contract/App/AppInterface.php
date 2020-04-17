@@ -13,6 +13,7 @@ interface AppInterface
      * Get the root directory of the application.
      *
      * @return string
+     * TODO: move to Filesystem\DirectoryList class (+ getRoot getPublicPath getPath)
      */
     public function getRootDir(): string;
 
@@ -31,29 +32,11 @@ interface AppInterface
     public function getEnvironment(): string;
 
     /**
-     * Determine the current environment.
-     *
-     * @param string $env
-     *
-     * @return bool
-     */
-    public function isEnvironment(string $env): bool;
-
-    /**
      * Get the current application locale.
      *
      * @return string
      */
     public function getLocale(): string;
-
-    /**
-     * Determine the current locale.
-     *
-     * @param string $locale
-     *
-     * @return bool
-     */
-    public function isLocale(string $locale): bool;
 
     /**
      * Determine if the application is allowed to debug.

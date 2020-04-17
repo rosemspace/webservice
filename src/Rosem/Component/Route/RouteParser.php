@@ -21,13 +21,12 @@ class RouteParser implements RouteParserInterface
     public function __construct(bool $useUtf8 = false)
     {
         $nameRegExp = $useUtf8 ? '[[:alpha:]_][[:alnum:]_]*' : '[a-zA-Z_][a-zA-Z0-9_]*';
-        // {\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:?([^\/]*?[^{]*)}
-        // todo improve regex to handle escaped curl bracket
+        // (?<!\\\\){\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:?([^\/]*?[^{]*)(?<!\\\\)}
         $this->variableSplitRegex = '~'
-            . static::DEFAULT_VARIABLE_TOKENS[0]
+            . '(?<!\\\\)' . static::DEFAULT_VARIABLE_TOKENS[0]
             . "\s*($nameRegExp)\s*" . static::DEFAULT_VARIABLE_REGEX_TOKEN
             . '?([^\\/]*?[^' . static::DEFAULT_VARIABLE_TOKENS[0] . ']*)'
-            . static::DEFAULT_VARIABLE_TOKENS[1]
+            . '(?<!\\\\)' . static::DEFAULT_VARIABLE_TOKENS[1]
             . '~'; //x;
 
         if ($useUtf8) {

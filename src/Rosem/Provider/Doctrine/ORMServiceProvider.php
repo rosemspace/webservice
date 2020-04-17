@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Psr\Container\ContainerInterface;
 use Rosem\Contract\App\AppEnv;
-use Rosem\Contract\App\AppEnvVar;
+use Rosem\Contract\App\AppEnvKey;
 use Rosem\Contract\Container\ServiceProviderInterface;
 use Rosem\Contract\App\DirEnvVar;
 
@@ -28,7 +28,7 @@ class ORMServiceProvider implements ServiceProviderInterface
                 ];
             },
             EntityManager::class => function (ContainerInterface $container) {
-                $isDevelopmentMode = $container->get(AppEnvVar::ENV_KEY) === AppEnv::DEVELOPMENT;
+                $isDevelopmentMode = $container->get(AppEnvKey::ENV) === AppEnv::DEVELOPMENT;
                 $ormConfig = new Configuration();
                 $ormConfig->setNamingStrategy(new UnderscoreNamingStrategy(CASE_LOWER));
                 $ormConfig->setMetadataDriverImpl(new StaticPHPDriver($container->get('ormEntityPaths')));

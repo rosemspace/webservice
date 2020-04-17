@@ -15,6 +15,7 @@ return [
     'app'        => [
         'name'      => 'APP_NAME',
         'env'       => 'APP_ENV',
+        'debug'     => 'APP_DEBUG',
         'lang'      => 'en-US',
         'meta'      => [
             'charset'      => 'utf-8',
@@ -36,6 +37,7 @@ return [
         'prefix'    => 'DATABASE_PREFIX',
     ],
     'graphql'    => [
+        'debug'  => '${app.debug}',
         'uri'    => '/graphql',
         'schema' => 'default',
     ],

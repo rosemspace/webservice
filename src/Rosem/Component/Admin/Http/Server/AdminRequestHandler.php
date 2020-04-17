@@ -10,17 +10,20 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Rosem\Contract\Authentication\UserInterface;
 use Rosem\Contract\Template\TemplateRendererInterface;
 
+/**
+ * Class AdminRequestHandler.
+ */
 class AdminRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface
      */
-    protected $responseFactory;
+    protected ResponseFactoryInterface $responseFactory;
 
     /**
      * @var TemplateRendererInterface
      */
-    protected $view;
+    protected TemplateRendererInterface $view;
 
     /**
      * MainController constructor.
@@ -36,6 +39,9 @@ class AdminRequestHandler implements RequestHandlerInterface
         $this->view = $view;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = $this->responseFactory->createResponse();

@@ -144,7 +144,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
         if ($user) {
             $response = $requestHandler->handle($request->withAttribute(UserInterface::class, $user));
 
-            if ($this->loggedInUri && $request->getUri()->getPath() !== $this->loggedInUri) {
+            if ($this->loggedInUri && rtrim($request->getUri()->getPath(), '/') !== $this->loggedInUri) {
                 return $response->withStatus(StatusCode::STATUS_FOUND)
                     ->withHeader('Location', $this->loggedInUri);
             }
@@ -152,8 +152,8 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
             return $response;
         }
 
-        if ($this->loginUri && $request->getMethod() === RequestMethod::METHOD_GET
-            && $request->getUri()->getPath() === $this->loginUri
+        if ($this->loginUri && $request->getMethod() === RequestMethod::METHOD_GET &&
+            rtrim($request->getUri()->getPath(), '/') === $this->loginUri
         ) {
             return $requestHandler->handle($request);
         }

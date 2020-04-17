@@ -11,6 +11,8 @@ interface MiddlewareCollectorInterface extends RequestHandlerInterface
 {
     /**
      * @param MiddlewareInterface $middleware
+     *
+     * @return void
      */
     public function addMiddleware(MiddlewareInterface $middleware): void;
 

@@ -9,30 +9,33 @@ use Psr\Http\Message\{
 use Psr\Http\Server\RequestHandlerInterface;
 use Rosem\Contract\Template\TemplateRendererInterface;
 
+/**
+ * Class LoginRequestHandler.
+ */
 class LoginRequestHandler implements RequestHandlerInterface
 {
     /**
      * @var ResponseFactoryInterface
      */
-    protected $responseFactory;
+    protected ResponseFactoryInterface $responseFactory;
 
     /**
      * @var TemplateRendererInterface
      */
-    protected $view;
+    protected TemplateRendererInterface $templateRenderer;
 
     /**
      * MainController constructor.
      *
      * @param ResponseFactoryInterface  $responseFactory
-     * @param TemplateRendererInterface $view
+     * @param TemplateRendererInterface $templateRenderer
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        TemplateRendererInterface $view
+        TemplateRendererInterface $templateRenderer
     ) {
         $this->responseFactory = $responseFactory;
-        $this->view = $view;
+        $this->templateRenderer = $templateRenderer;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -41,7 +44,7 @@ class LoginRequestHandler implements RequestHandlerInterface
         $body = $response->getBody();
 
         if ($body->isWritable()) {
-            $viewString = $this->view->render(
+            $viewString = $this->templateRenderer->render(
                 'admin::login',
                 [
                     'metaTitle' => 'Login',

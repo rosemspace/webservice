@@ -12,7 +12,7 @@ use Rosem\Component\Container\{
 };
 use Rosem\Contract\App\{
     AppEnv,
-    AppEnvVar,
+    AppEnvKey,
     AppInterface
 };
 use Rosem\Contract\Debug\InspectableInterface;
@@ -108,14 +108,14 @@ class App implements AppInterface, InspectableInterface
             $exceptionThrown = true;
         }
 
-        $this->environment = $this->getEnv(AppEnvVar::ENV_KEY) ?? '';
-        $debug = $this->getEnv(AppEnvVar::DEBUG_KEY);
+        $this->environment = $this->getEnv(AppEnvKey::ENV) ?? '';
+        $debug = $this->getEnv(AppEnvKey::DEBUG);
         $this->debug = $debug !== 'auto'
             ? $debug
-            : $this->isEnvironment(AppEnv::DEVELOPMENT);
+            : $this->environment === AppEnv::DEVELOPMENT;
 
         if ($this->envLoaded) {
-            $this->version = $this->getEnv(AppEnvVar::VERSION_KEY) ?? '';
+            $this->version = $this->getEnv(AppEnvKey::VERSION) ?? '';
         }
 
         if ($this->debug) {
@@ -150,8 +150,8 @@ class App implements AppInterface, InspectableInterface
 
     protected function validateEnv(): void
     {
-        $this->env->required(AppEnvVar::VERSION_KEY)->notEmpty();
-        $this->env->required(AppEnvVar::ENV_KEY)->allowedValues(
+        $this->env->required(AppEnvKey::VERSION)->notEmpty();
+        $this->env->required(AppEnvKey::ENV)->allowedValues(
             [
                 AppEnv::LOCAL,
                 AppEnv::DEMO,
@@ -190,25 +190,9 @@ class App implements AppInterface, InspectableInterface
     /**
      * @inheritDoc
      */
-    public function isEnvironment(string $env): bool
-    {
-        return $this->environment === $env;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getLocale(): string
     {
         return $this->locale;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function isLocale(string $locale): bool
-    {
-        return $locale === $this->locale;
     }
 
     /**
@@ -233,7 +217,7 @@ class App implements AppInterface, InspectableInterface
      */
     public function isDemoVersion(): bool
     {
-        return $this->getEnv(AppEnvVar::ENV_KEY) === AppEnv::DEMO;
+        return $this->getEnv(AppEnvKey::ENV) === AppEnv::DEMO;
     }
 
     /**

@@ -2,20 +2,20 @@
 
 namespace Rosem\Contract\App;
 
-class AppEnvVar
+final class AppEnvKey
 {
     /**
      * The application environment key.
      */
-    public const ENV_KEY = 'APP_ENV';
+    public const ENV = 'APP_ENV';
 
     /**
      * The application version key.
      */
-    public const VERSION_KEY = 'APP_VERSION';
+    public const VERSION = 'APP_VERSION';
 
     /**
      * The application debug key.
      */
-    public const DEBUG_KEY = 'APP_DEBUG';
+    public const DEBUG = 'APP_DEBUG';
 }

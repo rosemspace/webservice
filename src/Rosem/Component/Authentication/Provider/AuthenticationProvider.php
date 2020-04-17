@@ -89,7 +89,7 @@ class AuthenticationProvider implements ServiceProviderInterface
             \Dflydev\FigCookies\SetCookie::create('session')
                 ->withSecure(PHP_SAPI !== 'cli-server')
                 ->withHttpOnly(true)
-                ->withPath('/admin'),
+                ->withPath('/admin'), // todo: use config
             new \Lcobucci\JWT\Parser(),
             20 * 60, // 20 minutes,
             new \Lcobucci\Clock\SystemClock()

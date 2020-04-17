@@ -114,7 +114,7 @@ $stats[SYMFONY_ROUTER][UNKNOWN] = microtime(true) - $startTime;
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ROSEM ROUTER ========================================================================================================
-$router = new \Rosem\Component\Route\Router();
+$router = new \Rosem\Component\Route\Router(new \Rosem\Component\Route\RouteParser());
 for ($i = 0, $str = 'a'; $i < $nRoutes; $i++, $str++) {
     $router->addRoute('GET', '/' . $str . '/{arg}', 'handler' . $i);
     $lastStr = $str;
