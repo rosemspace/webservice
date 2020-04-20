@@ -1,0 +1,43 @@
+{
+  "name": "rosem/hash",
+  "description": "Hash generation and verification library",
+  "homepage": "https://rosem.space/container",
+  "license": "MIT",
+  "type": "library",
+  "keywords": [
+    "hash"
+  ],
+  "authors": [
+    {
+      "name": "ma1oy",
+      "email": "iroman.via@gmail.com",
+      "homepage": "https://rosem.space",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "rosem/hash-contract": "^0.0.1",
+    "symfony/polyfill-mbstring": "1.15.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Rosem\\Component\\Hash\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Rosem\\Component\\Hash\\Tests\\": "tests"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.0-dev"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}

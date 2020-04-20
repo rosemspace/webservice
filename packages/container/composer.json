@@ -1,0 +1,47 @@
+{
+    "name": "rosem/container",
+    "description": "Dependency injection container library",
+    "homepage": "https://rosem.space/container",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "ioc",
+        "container"
+    ],
+    "authors": [
+        {
+            "name": "roshecode",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://rosem.space",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "psr/container": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.0",
+        "psr/http-server-handler": "^1.0"
+    },
+    "require-dev": {
+        "container-interop/service-provider": "^0.4.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Component\\Container\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rosem\\Component\\Container\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,0 +1,34 @@
+{
+    "name": "rosem/route-contract",
+    "type": "library",
+    "description": "Route contract",
+    "keywords": [
+        "route",
+        "contract"
+    ],
+    "homepage": "https://rosem.space/route-contract",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "roshecode",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://rosem.space",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Contract\\Route\\": "src"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

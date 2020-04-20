@@ -1,0 +1,44 @@
+{
+  "name": "rosem/admin",
+  "type": "library",
+  "description": "Back office library",
+  "keywords": ["admin"],
+  "homepage": "https://rosem.space/admin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "roshecode",
+      "email": "iroman.via@gmail.com",
+      "homepage": "https://rosem.space",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "psr/container": "^1.0",
+    "psr/http-factory": "^1.0",
+    "psr/http-message": "^1.0",
+    "psr/http-server-handler": "^1.0",
+    "rosem/authentication": "^0.0.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Rosem\\Component\\Admin\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Rosem\\Component\\Admin\\Tests\\": "tests"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.0-dev"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
