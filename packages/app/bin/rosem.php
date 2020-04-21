@@ -50,5 +50,6 @@ if ($autoloadFile === null) {
 }
 
 require_once $autoloadFile;
+require_once dirname($autoloadFile, 2) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 unset($autoloadFile);

@@ -76,17 +76,10 @@ class App implements AppInterface, InspectableInterface
     {
 //        parent::__construct($config['providers'] ?? []);
 
-        if (!isset($config['root'])) {
-            // todo vendor/rosem/app/src - 4
-            $rootDir = dirname(__DIR__, 3);
-
-            if ($rootDir === '.') {
-                $rootDir = !empty($_SERVER['DOCUMENT_ROOT'])
-                    ? dirname($_SERVER['DOCUMENT_ROOT'])
-                    : getcwd();
-            }
-
-            $config['root'] = $rootDir;
+        if (isset($config['root'])) {
+            $this->rootDir = $config['root'];
+        } else {
+            $config['root'] = $this->getRootDir();
         }
 
 //        $this->delegate(ConfigurationContainer::fromArray($config));
@@ -94,7 +87,6 @@ class App implements AppInterface, InspectableInterface
         $this->container->delegate(
             new ServiceContainer($config['providers'] ?? [], $this->container)
         );
-        $this->rootDir = $config['root'];
         //$filePath //$path, $file = '.env'
         $this->createEnv($this->rootDir, $config['envFile'] ?? '.env');
         $exceptionThrown = false;
@@ -110,9 +102,9 @@ class App implements AppInterface, InspectableInterface
 
         $this->environment = $this->getEnv(AppEnvKey::ENV) ?? '';
         $debug = $this->getEnv(AppEnvKey::DEBUG);
-        $this->debug = $debug !== 'auto'
-            ? $debug
-            : $this->environment === AppEnv::DEVELOPMENT;
+        $this->debug = $debug === 'auto'
+            ? $this->environment === AppEnv::DEVELOPMENT
+            : $debug;
 
         if ($this->envLoaded) {
             $this->version = $this->getEnv(AppEnvKey::VERSION) ?? '';
@@ -168,6 +160,30 @@ class App implements AppInterface, InspectableInterface
      */
     public function getRootDir(): string
     {
+        //todo html escape
+        if (!isset($this->rootDir)) {
+            if (PHP_SAPI === 'cli') {
+                /** @noinspection RegExpRedundantEscape */
+                // Go above "bin/rosem" file
+                $this->rootDir = dirname(
+                    preg_replace(
+                        '/\\' . DIRECTORY_SEPARATOR . '\.?$/',
+                        '',
+                        $_SERVER['PWD'] ?: getcwd()
+                    ) . DIRECTORY_SEPARATOR .
+                    preg_replace(
+                        '/^\.?\\' . DIRECTORY_SEPARATOR . '|\\' . DIRECTORY_SEPARATOR . '\.?$/',
+                        '',
+                        $_SERVER['SCRIPT_NAME']
+                    ),
+                    2
+                );
+            } else {
+                // Go above "public" directory
+                $this->rootDir = dirname($_SERVER['DOCUMENT_ROOT'] ?: getcwd());
+            }
+        }
+
         return $this->rootDir;
     }
 
