@@ -48,7 +48,9 @@ class MiddlewareProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 MiddlewareCollectorInterface $middlewareCollector
             ) {
-                $middlewareCollector->addDeferredMiddleware(ErrorMiddleware::class);
+                if ($container->has(TemplateRendererInterface::class)) {
+                    $middlewareCollector->addDeferredMiddleware(ErrorMiddleware::class);
+                }
             },
             TemplateRendererInterface::class => static function (
                 ContainerInterface $container,
@@ -74,10 +76,7 @@ class MiddlewareProvider implements ServiceProviderInterface
     public function createInternalServerErrorRequestHandler(
         ContainerInterface $container
     ): RequestHandlerInterface {
-        return new InternalServerErrorRequestHandler(
-            $container->get(ResponseFactoryInterface::class),
-            $container->get(TemplateRendererInterface::class)
-        );
+        return new InternalServerErrorRequestHandler($container->get(ResponseFactoryInterface::class));
     }
 
     public function createErrorMiddleware(ContainerInterface $container): ErrorMiddleware

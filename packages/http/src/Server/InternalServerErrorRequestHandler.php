@@ -9,7 +9,6 @@ use Psr\Http\Message\{
     ServerRequestInterface
 };
 use Psr\Http\Server\RequestHandlerInterface;
-use Rosem\Contract\Template\TemplateRendererInterface;
 
 class InternalServerErrorRequestHandler implements RequestHandlerInterface
 {
@@ -19,30 +18,13 @@ class InternalServerErrorRequestHandler implements RequestHandlerInterface
     protected ResponseFactoryInterface $responseFactory;
 
     /**
-     * @var TemplateRendererInterface
-     */
-    protected TemplateRendererInterface $view;
-
-    /**
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * MainController constructor.
      *
      * @param ResponseFactoryInterface  $responseFactory
-     * @param TemplateRendererInterface $view
-     * @param array                     $config
      */
-    public function __construct(
-        ResponseFactoryInterface $responseFactory,
-        TemplateRendererInterface $view,
-        array $config = []
-    ) {
+    public function __construct(ResponseFactoryInterface $responseFactory)
+    {
         $this->responseFactory = $responseFactory;
-        $this->view = $view;
-        $this->config = $config;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
