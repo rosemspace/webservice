@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\Component\Admin;
+namespace Rosem\Component\Admin\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -104,7 +104,11 @@ class AdminServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 TemplateRendererInterface $renderer
             ): void {
-                $renderer->addPath(__DIR__ . '/Resource/templates', 'admin');
+                $renderer->addPath(
+                    dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR .
+                        'templates',
+                    'admin'
+                );
                 $adminData = [
                     'metaTitlePrefix' => $container->get('admin.meta.titlePrefix'),
                     'metaTitle' => $container->get('admin.meta.title'),

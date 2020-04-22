@@ -1,10 +1,10 @@
 <?php
 
-namespace Rosem\Component\App;
+namespace Rosem\Component\App\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Rosem\Component\Admin\AdminServiceProvider;
+use Rosem\Component\Admin\Provider\AdminServiceProvider;
 use Rosem\Component\App\Http\Server\{
     HomeRequestHandler
 };
@@ -61,7 +61,11 @@ class AppServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 TemplateRendererInterface $renderer
             ): void {
-                $renderer->addPath(__DIR__ . '/Resource/templates', 'app');
+                $renderer->addPath(
+                    dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR .
+                        'templates',
+                    'app'
+                );
                 $renderer->addGlobalData(
                     [
                         'appName' => $container->get('app.name'),

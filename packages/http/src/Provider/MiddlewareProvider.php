@@ -56,9 +56,9 @@ class MiddlewareProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 TemplateRendererInterface $renderer
             ) {
-                $s = DIRECTORY_SEPARATOR;
                 $renderer->addPath(
-                    __DIR__ . "$s..{$s}Resource{$s}templates",
+                    dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR .
+                        'templates',
                     'error'
                 );
             },
