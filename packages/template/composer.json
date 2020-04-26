@@ -3,7 +3,6 @@
   "description": "Template library",
   "homepage": "https://rosem.space/template",
   "license": "MIT",
-  "type": "library",
   "keywords": ["template"],
   "authors": [
     {
@@ -21,7 +20,8 @@
     "psr/http-server-handler": "^1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.0"
+    "phpunit/phpunit": "^9.0",
+    "roave/security-advisories": "dev-master"
   },
   "autoload": {
     "psr-4": {

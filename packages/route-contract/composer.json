@@ -1,6 +1,5 @@
 {
     "name": "rosem/route-contract",
-    "type": "library",
     "description": "Route contract",
     "keywords": [
         "route",

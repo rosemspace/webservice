@@ -1,6 +1,5 @@
 {
     "name": "rosem/debug-contract",
-    "type": "library",
     "description": "Debug contract",
     "keywords": [
         "debug",

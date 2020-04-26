@@ -3,7 +3,6 @@
   "description": "HTTP library",
   "homepage": "https://rosem.space/route",
   "license": "MIT",
-  "type": "library",
   "keywords": ["route"],
   "authors": [
     {
@@ -23,6 +22,7 @@
   "require-dev": {
     "nikic/fast-route": "1.3.*",
     "phpunit/phpunit": "^9.0",
+    "roave/security-advisories": "dev-master",
     "symfony/routing": "~5.0.7"
   },
   "autoload": {

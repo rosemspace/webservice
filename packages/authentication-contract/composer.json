@@ -1,6 +1,5 @@
 {
     "name": "rosem/authentication-contract",
-    "type": "library",
     "description": "Authentication contract",
     "keywords": [
         "authentication",

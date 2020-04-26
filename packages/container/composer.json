@@ -3,7 +3,6 @@
     "description": "Dependency injection container library",
     "homepage": "https://rosem.space/container",
     "license": "MIT",
-    "type": "library",
     "keywords": [
         "ioc",
         "container"
@@ -25,7 +24,8 @@
     },
     "require-dev": {
         "container-interop/service-provider": "^0.4.0",
-        "phpunit/phpunit": "^9.0"
+        "phpunit/phpunit": "^9.0",
+        "roave/security-advisories": "dev-master"
     },
     "autoload": {
         "psr-4": {

@@ -1,6 +1,5 @@
 {
   "name": "rosem/admin",
-  "type": "library",
   "description": "Back office library",
   "keywords": ["admin"],
   "homepage": "https://rosem.space/admin",
@@ -22,7 +21,8 @@
     "rosem/authentication": "^0.0.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.0"
+    "phpunit/phpunit": "^9.0",
+    "roave/security-advisories": "dev-master"
   },
   "autoload": {
     "psr-4": {

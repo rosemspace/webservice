@@ -1,6 +1,5 @@
 {
     "name": "rosem/app-contract",
-    "type": "library",
     "description": "Application contract",
     "keywords": [
         "app",

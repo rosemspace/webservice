@@ -1,6 +1,5 @@
 {
     "name": "rosem/http-server-emitter-contract",
-    "type": "library",
     "description": "HTTP server emitter contract",
     "keywords": [
         "http-emitter",

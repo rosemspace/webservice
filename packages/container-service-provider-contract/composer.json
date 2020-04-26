@@ -1,6 +1,5 @@
 {
     "name": "rosem/container-service-provider-contract",
-    "type": "library",
     "description": "Service provider contract",
     "keywords": [
         "service-provider",

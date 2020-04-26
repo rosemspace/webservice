@@ -1,6 +1,5 @@
 {
   "name": "rosem/app",
-  "type": "library",
   "description": "Application library",
   "keywords": ["app"],
   "homepage": "https://rosem.space/app",

@@ -1,6 +1,5 @@
 {
     "name": "rosem/hash-contract",
-    "type": "library",
     "description": "Hash contract",
     "keywords": [
         "hash",

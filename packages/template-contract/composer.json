@@ -1,6 +1,5 @@
 {
     "name": "rosem/template-contract",
-    "type": "library",
     "description": "Template contract",
     "keywords": [
         "template",
