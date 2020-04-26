@@ -10,22 +10,22 @@ use Rosem\Contract\Authentication\UserInterface;
  * user state changes.
  * We recommend that any details injected are serializable.
  */
-final class User implements UserInterface
+class User implements UserInterface
 {
     /**
      * @var string
      */
-    private $identity;
+    private string $identity;
 
     /**
      * @var string[]
      */
-    private $roles;
+    private array $roles;
 
     /**
      * @var array
      */
-    private $details;
+    private array $details;
 
     public function __construct(string $identity, array $roles = [], array $details = [])
     {

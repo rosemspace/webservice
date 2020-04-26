@@ -20,7 +20,7 @@ class InternalServerErrorRequestHandler implements RequestHandlerInterface
     /**
      * MainController constructor.
      *
-     * @param ResponseFactoryInterface  $responseFactory
+     * @param ResponseFactoryInterface $responseFactory
      */
     public function __construct(ResponseFactoryInterface $responseFactory)
     {

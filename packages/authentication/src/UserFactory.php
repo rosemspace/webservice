@@ -39,14 +39,17 @@ final class UserFactory implements UserFactoryInterface
         ?callable $userRolesResolver = null,
         ?callable $userDetailsResolver = null
     ) {
-        $this->userRolesResolver = $userRolesResolver ?: function () {
-            return [];
-        };
-        $this->userDetailsResolver = $userDetailsResolver ?: function () {
-            return [];
-        };
+        $this->userRolesResolver = $userRolesResolver ?? fn() => [];
+        $this->userDetailsResolver = $userDetailsResolver ?? fn() => [];
     }
 
+    /**
+     * Create user instance with roles and details.
+     *
+     * @param string $identity
+     *
+     * @return UserInterface
+     */
     public function createUser(string $identity): UserInterface
     {
         return new User(

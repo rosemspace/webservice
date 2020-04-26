@@ -14,6 +14,7 @@ return [
     ],
     'app'        => [
         'name'      => 'APP_NAME',
+        'version'   => 'APP_VERSION',
         'env'       => 'APP_ENV',
         'debug'     => 'APP_DEBUG',
         'lang'      => 'en-US',

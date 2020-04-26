@@ -5,6 +5,7 @@
  * @var $metaTitle
  * @var $metaTitleSuffix
  * @var $appName
+ * @var $appVersion
  */
 ?>
 <!doctype html>
@@ -16,10 +17,67 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <!--    <meta name="csrf-token" content="--><?php //echo $v($csrfToken); ?><!--">-->
     <title><?php echo $v("$metaTitlePrefix$metaTitle$metaTitleSuffix") ?></title>
+    <style>
+    body, .container {
+      min-height: 100vh;
+    }
+
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background-color: #fafafa;
+      color: #667;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 5rem;
+      font-weight: normal;
+      letter-spacing: 2rem;
+      text-indent: 1rem;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a,
+    a:visited {
+      text-decoration: none;
+    }
+
+    .links {
+      letter-spacing: 1rem;
+      text-indent: .5rem;
+    }
+
+    .links a {
+      font-size: .8rem;
+      text-transform: uppercase;
+      padding: 10px;
+    }
+    </style>
 </head>
 <body>
-<main>
-    <h1><?php echo $appName ?> app</h1>
+<main class="container">
+    <h1><?php echo $appName ?> <?php echo $appVersion ?></h1>
+    <div class="links">
+        <a href="https://rosem.space/documentation" target="_blank">Documentation</a>
+        <a href="https://github.com/rosemspace/webservice" target="_blank">GitHub</a>
+    </div>
 </main>
 </body>
 </html>

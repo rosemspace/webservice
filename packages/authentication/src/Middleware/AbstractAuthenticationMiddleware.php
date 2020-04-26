@@ -41,16 +41,19 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
      *
      * @param ResponseFactoryInterface $responseFactory
      * @param UserFactoryInterface     $userFactory
-     * @param callable                 $userPasswordResolver
+     * @param callable|null            $userPasswordResolver
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
         UserFactoryInterface $userFactory,
-        callable $userPasswordResolver
+        ?callable $userPasswordResolver
     ) {
         $this->responseFactory = $responseFactory;
         $this->userFactory = $userFactory;
-        $this->userPasswordResolver = $userPasswordResolver;
+
+        if ($userPasswordResolver !== null) {
+            $this->userPasswordResolver = $userPasswordResolver;
+        }
     }
 
     private function setPasswordResolver(callable $resolver): void

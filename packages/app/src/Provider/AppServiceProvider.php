@@ -69,6 +69,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 $renderer->addGlobalData(
                     [
                         'appName' => $container->get('app.name'),
+                        'appVersion' => $container->get('app.version'),
                         'lang' => strtolower($container->get('app.lang')),
                         'charset' => strtolower($container->get('app.meta.charset')),
                         'metaTitlePrefix' => $container->get('app.meta.titlePrefix'),

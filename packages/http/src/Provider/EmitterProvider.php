@@ -2,7 +2,6 @@
 
 namespace Rosem\Component\Http\Provider;
 
-use Psr\Http\Message\ResponseInterface;
 use Rosem\Component\Http\Server\{
     EmitterStack,
     Emitter\SapiEmitter,
