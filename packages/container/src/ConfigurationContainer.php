@@ -1,13 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Rosem\Component\Container;
 
-use ArrayAccess;
-use Countable;
 use Rosem\Component\Container\Exception;
 
-class ConfigurationContainer extends AbstractContainer implements ArrayAccess, Countable
+class ConfigurationContainer extends AbstractContainer
 {
     protected const REGEX_CONFIG_VAR = '/\${([a-zA-Z0-9_.-]+)}/';
 
@@ -81,12 +80,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
         return self::fromArray(self::getConfigurationFromFile($filename), $separator);
     }
 
-    public function serializeId(array $id): string
-    {
-        return implode($this->separator, $id);
-    }
-
-    public function deserializeId(string $id): array
+    protected function deserializeId(string $id): array
     {
         return explode($this->separator, $id);
     }
@@ -94,20 +88,31 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     protected function replaceVars($value)
     {
         if (is_string($value)) {
-            $value = preg_replace_callback(self::REGEX_ENV_VAR, static function ($matches) {
-                return false !== ($envVar = getenv($matches[1])) ? $envVar : $matches[0];
-            }, $value);
-            $value = preg_replace_callback(self::REGEX_CONFIG_VAR, function ($matches) {
-                if ($this->has($matches[1])) {
-                    return $this->get($matches[1]);
-                }
+            $value = preg_replace_callback(
+                self::REGEX_ENV_VAR,
+                static function ($matches) {
+                    return false !== ($envVar = getenv($matches[1])) ? $envVar : $matches[0];
+                },
+                $value
+            );
+            $value = preg_replace_callback(
+                self::REGEX_CONFIG_VAR,
+                function ($matches) {
+                    if ($this->has($matches[1])) {
+                        return $this->get($matches[1]);
+                    }
 
-                return $matches[0];
-            }, $value);
+                    return $matches[0];
+                },
+                $value
+            );
         } elseif (is_array($value)) {
-            array_walk($value, function (&$value) {
-                $value = $this->replaceVars($value);
-            });
+            array_walk(
+                $value,
+                function (&$value) {
+                    $value = $this->replaceVars($value);
+                }
+            );
         }
 
         return $value;
@@ -138,32 +143,6 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
         }
 
         return false;
-    }
-
-    /**
-     * Recursively getting value from array by query
-     *
-     * @param array $array
-     * @param int   $offset
-     * @param array $path
-     * @param int   $lastIndex
-     *
-     * @return mixed
-     * @throws Exception\ContainerException
-     */
-    protected function internalGet(array &$array, array &$path, int $offset, int $lastIndex)
-    {
-        if (isset($array[$path[$offset]])) {
-            $next = $array[$path[$offset]];
-
-            if (null !== $next && $offset < $lastIndex) {
-                return $this->internalGet($next, $path, ++$offset, $lastIndex);
-            }
-
-            return $this->lastDefinition = $next;
-        }
-
-        throw Exception\ContainerException::forUndefinedEntry($this->serializeId($path));
     }
 
     /**
@@ -204,9 +183,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     }
 
     /**
-     * @param string $id
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function has($id): bool
     {
@@ -233,9 +210,9 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
             return true;
         }
 
-        if ($this->delegate !== null && $this->delegate->has($id)) {
+        if ($this->child !== null && $this->child->has($id)) {
             $this->lastId = $id;
-            $this->lastDefinition = $this->delegate->get($id);
+            $this->lastDefinition = $this->child->get($id);
 
             return true;
         }
@@ -244,13 +221,7 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
     }
 
     /**
-     * Select value by query
-     *
-     * @param string $id
-     *
-     * @return mixed
-     * @throws Exception\ContainerException
-     * @throws Exception\NotFoundException
+     * @inheritDoc
      */
     public function get($id)
     {
@@ -258,34 +229,20 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
             return $this->lastDefinition;
         }
 
-//        $this->lastId = null;
-//        $this->lastDefinition = null;
-
         // Resolving
         if ($this->has($id)) {
             if (null !== $this->lastDefinition) {
                 return $this->lastDefinition;
             }
 
-//            if ($this->delegate !== null) {
-//                return $this->delegate->get($id);
-//            }
-
             throw Exception\ContainerException::forUndefinedEntry($id);
         }
-
-//        if ($this->delegate !== null) {
-//            return $this->delegate->get($id);
-//        }
 
         throw Exception\NotFoundException::dueToMissingEntry($id);
     }
 
     /**
-     * Set value by query
-     *
-     * @param string $id
-     * @param mixed  $value
+     * @inheritDoc
      */
     public function set(string $id, $value): void
     {
@@ -305,61 +262,5 @@ class ConfigurationContainer extends AbstractContainer implements ArrayAccess, C
         $this->definitions = array_replace_recursive($this->definitions, ...$definitions);
 
         return $this;
-    }
-
-    /**
-     * Whether a offset exists
-     *
-     * @param mixed $offset
-     *
-     * @return boolean
-     */
-    public function offsetExists($offset): bool
-    {
-        return $this->has($offset);
-    }
-
-    /**
-     * Offset to retrieve
-     *
-     * @param mixed $offset
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset)
-    {
-        return $this->definitions[$offset] ?? null;
-    }
-
-    /**
-     * Offset to set
-     *
-     * @param mixed $offset
-     * @param mixed $value
-     */
-    public function offsetSet($offset, $value)
-    {
-        null === $offset ? $this->definitions[] = $value : $this->definitions[$offset] = $value;
-    }
-
-    /**
-     * Offset to unset
-     *
-     * @param mixed $offset
-     */
-    public function offsetUnset($offset)
-    {
-        unset($this->definitions[$offset]);
-    }
-
-    /**
-     * Count elements of an object.
-     *
-     * @return int The custom count as an integer.
-     * The return value is cast to an integer.
-     */
-    public function count(): int
-    {
-        return count($this->definitions);
     }
 }

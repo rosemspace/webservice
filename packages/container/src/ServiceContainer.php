@@ -6,8 +6,8 @@ namespace Rosem\Component\Container;
 
 use Psr\Container\{
     ContainerExceptionInterface,
-    ContainerInterface,
-    NotFoundExceptionInterface};
+    NotFoundExceptionInterface
+};
 use Rosem\Component\Container\Exception;
 use Rosem\Contract\Container\ServiceProviderInterface;
 
@@ -18,22 +18,18 @@ use function is_string;
 
 class ServiceContainer extends AbstractContainer
 {
-    protected ContainerInterface $context;
-
     /**
      * Container constructor.
      *
      * @param iterable $serviceProviders
      *
-     * @throws \InvalidArgumentException
-     * @throws Exception\ContainerException
+     * @throws Exception\ServiceProviderException
      */
-    public function __construct(iterable $serviceProviders, ?ContainerInterface $context = null)
+    protected function __construct(iterable $serviceProviders)
     {
         parent::__construct();
 
-        $this->context = $context ?: $this;
-        AbstractFacade::registerContainer($this->context);
+        AbstractFacade::registerContainer($this->parent ?? $this);
 
         /** @var ServiceProviderInterface[] $serviceProviderInstances */
         $serviceProviderInstances = [];
@@ -52,7 +48,7 @@ class ServiceContainer extends AbstractContainer
                     class_implements($serviceProvider, true),
                     true
                 )) {
-//                if (!is_a($serviceProvider, ServiceProviderInterface::class)) {
+                    //                if (!is_a($serviceProvider, ServiceProviderInterface::class)) {
                     throw Exception\ServiceProviderException::dueToInvalidInterface($serviceProvider);
                 }
 
@@ -140,14 +136,14 @@ class ServiceContainer extends AbstractContainer
             $definition = $this->definitions[$id];
 
             if ($definition instanceof Definition) {
-                $value = $definition->create($this->context);
+                $value = $definition->create($this->parent ?? $this);
 
                 if (null !== $value) {
                     return $this->definitions[$id] = $value;
                 }
 
-                if ($this->delegate !== null) {
-                    return $this->delegate->get($id);
+                if ($this->child !== null) {
+                    return $this->child->get($id);
                 }
 
                 throw Exception\ContainerException::forUndefinedEntry($id);
@@ -156,8 +152,8 @@ class ServiceContainer extends AbstractContainer
             return $definition;
         }
 
-        if ($this->delegate !== null) {
-            return $this->delegate->get($id);
+        if ($this->child !== null) {
+            return $this->child->get($id);
         }
 
         throw Exception\NotFoundException::dueToMissingEntry($id);

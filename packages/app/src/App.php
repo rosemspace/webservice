@@ -84,9 +84,7 @@ class App implements AppInterface, InspectableInterface
 
 //        $this->delegate(ConfigurationContainer::fromArray($config));
         $this->container = ConfigurationContainer::fromArray($config);
-        $this->container->delegate(
-            new ServiceContainer($config['providers'] ?? [], $this->container)
-        );
+        $this->container->delegate(ServiceContainer::fromArray($config['providers'] ?? []));
         //$filePath //$path, $file = '.env'
         $this->createEnv($this->rootDir, $config['envFile'] ?? '.env');
         $exceptionThrown = false;
