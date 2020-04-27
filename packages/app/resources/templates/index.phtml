@@ -17,13 +17,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <!--    <meta name="csrf-token" content="--><?php //echo $v($csrfToken); ?><!--">-->
     <title><?php echo $v("$metaTitlePrefix$metaTitle$metaTitleSuffix") ?></title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <style>
     body, .container {
       min-height: 100vh;
     }
 
     body {
-      font-family: sans-serif;
+      font-family: 'Montserrat', sans-serif;
       margin: 0;
       background-color: #fafafa;
       color: #667;
@@ -38,12 +39,26 @@
     }
 
     h1 {
-      font-size: 5rem;
+      font-size: 4.2rem;
       font-weight: normal;
-      letter-spacing: 2rem;
-      text-indent: 1rem;
       text-transform: uppercase;
+      position: relative;
       margin: 0;
+    }
+
+    h1 code {
+      font-family: inherit;
+      font-size: .6rem;
+      position: absolute;
+      left: 100%;
+      top: 18px;
+    }
+
+    p {
+      font-size: .8rem;
+      letter-spacing: .5rem;
+      text-indent: .4rem;
+      margin: 0 20px 10px;
     }
 
     a {
@@ -60,21 +75,38 @@
     }
 
     .links {
-      letter-spacing: 1rem;
-      text-indent: .5rem;
+      font-size: .6rem;
+      display: flex;
     }
 
     .links a {
-      font-size: .8rem;
       text-transform: uppercase;
       padding: 10px;
+    }
+
+    @media (min-width: 576px) {
+      h1 {
+        font-size: 5rem;
+      }
+
+      p {
+        font-size: 1rem;
+        letter-spacing: .6rem;
+        text-indent: .5rem;
+      }
+
+      .links {
+        font-size: .8rem;
+      }
     }
     </style>
 </head>
 <body>
 <main class="container">
-    <h1><?php echo $appName ?> <?php echo $appVersion ?></h1>
+    <h1><?php echo $appName ?> <code><?php echo $appVersion ?></code></h1>
+    <p>Invent the future</p>
     <div class="links">
+        <a href="/admin">Admin</a>
         <a href="https://rosem.space/documentation" target="_blank">Documentation</a>
         <a href="https://github.com/rosemspace/webservice" target="_blank">GitHub</a>
     </div>
