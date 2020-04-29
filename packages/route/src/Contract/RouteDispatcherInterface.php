@@ -3,7 +3,7 @@
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
-namespace Rosem\Contract\Route;
+namespace Rosem\Component\Route\Contract;
 
 /**
  * Route dispatcher returns data of a route.

@@ -12,7 +12,7 @@ use Psr\Http\Server\{
     MiddlewareInterface,
     RequestHandlerInterface
 };
-use Rosem\Contract\Route\RouteDispatcherInterface;
+use Rosem\Component\Route\Contract\RouteDispatcherInterface;
 
 class RouteMiddleware implements MiddlewareInterface
 {
@@ -22,7 +22,7 @@ class RouteMiddleware implements MiddlewareInterface
 
     protected const KEY_VARIABLES = 2;
 
-    protected RouteDispatcherInterface $router;
+    protected RouteDispatcherInterface $routeDispatcher;
 
     protected ResponseFactoryInterface $responseFactory;
 
@@ -35,7 +35,7 @@ class RouteMiddleware implements MiddlewareInterface
         RouteDispatcherInterface $router,
         ResponseFactoryInterface $responseFactory
     ) {
-        $this->router = $router;
+        $this->routeDispatcher = $router;
         $this->responseFactory = $responseFactory;
     }
 
@@ -62,7 +62,7 @@ class RouteMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $nextHandler): ResponseInterface
     {
         //todo add scheme and host support
-        $route = $this->router->dispatch($request->getMethod(), $request->getUri()->getPath());
+        $route = $this->routeDispatcher->dispatch($request->getMethod(), $request->getUri()->getPath());
 
         switch ($route[static::KEY_STATUS]) {
             case StatusCode::STATUS_NOT_FOUND:

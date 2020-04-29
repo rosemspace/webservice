@@ -3,12 +3,12 @@
 namespace Rosem\Component\Route\Map;
 
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
-use Rosem\Component\Route\Contract\RouteParserInterface;
-use Rosem\Component\Route\RouteParser;
-use Rosem\Contract\Route\{
-    RouteCollectorInterface,
-    RouteDispatcherInterface
+use Rosem\Component\Route\Contract\{
+    RouteDispatcherInterface,
+    RouteParserInterface
 };
+use Rosem\Component\Route\RouteParser;
+use Rosem\Contract\Route\RouteCollectorInterface;
 
 abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherInterface
 {
