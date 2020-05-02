@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Rosem\Component\Container;
 
 use ArrayAccess;
+use BadMethodCallException;
 use Countable;
+use IteratorAggregate;
 use Psr\Container\{
     ContainerExceptionInterface,
     ContainerInterface,
@@ -18,14 +20,14 @@ use Rosem\Component\Container\Exception;
  *
  * @package Rosem\Component\Container
  */
-abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Countable
+abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Countable, IteratorAggregate
 {
     use ConfigFileTrait;
 
     /**
      * @var mixed[]|Definition[]
      */
-    protected iterable $definitions;
+    protected array $definitions = [];
 
     /**
      * @var ContainerInterface
@@ -42,7 +44,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
      *
      * @param array $definitions
      */
-    protected function __construct(iterable $definitions = [])
+    protected function __construct(array $definitions = [])
     {
         $this->definitions = $definitions;
     }
@@ -99,6 +101,25 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
     }
 
     /**
+     * Count elements of an object.
+     *
+     * @return int The custom count as an integer.
+     * The return value is cast to an integer.
+     */
+    public function count()
+    {
+        return count($this->definitions);
+    }
+
+    /**
+     * @return \Traversable
+     */
+    public function getIterator()
+    {
+        yield from $this->definitions;
+    }
+
+    /**
      * Whether a offset exists.
      *
      * @param mixed $id An offset to check for
@@ -136,7 +157,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
      */
     public function offsetSet($id, $factory)
     {
-        $this->set($id, $factory);
+        throw new BadMethodCallException(self::class . ' objects are immutable.');
     }
 
     /**
@@ -148,17 +169,6 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
      */
     public function offsetUnset($id)
     {
-        unset($this->definitions[$id]);
-    }
-
-    /**
-     * Count elements of an object.
-     *
-     * @return int The custom count as an integer.
-     * The return value is cast to an integer.
-     */
-    public function count()
-    {
-        return count($this->definitions);
+        throw new BadMethodCallException(self::class . ' objects are immutable.');
     }
 }

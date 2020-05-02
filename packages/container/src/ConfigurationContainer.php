@@ -46,7 +46,7 @@ class ConfigurationContainer extends AbstractContainer
      * @param array  $definitions
      * @param string $separator
      */
-    public function __construct(array $definitions = [], string $separator = '.')
+    protected function __construct(array $definitions = [], string $separator = '.')
     {
         parent::__construct($definitions);
 
@@ -244,7 +244,7 @@ class ConfigurationContainer extends AbstractContainer
     /**
      * @inheritDoc
      */
-    public function set(string $id, $value): void
+    protected function set(string $id, $value): void
     {
         $path = $this->deserializeId($id);
         $this->setByPath($this->definitions, $path, 0, count($path) - 1, $value);
