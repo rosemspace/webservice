@@ -3,42 +3,54 @@
 namespace Rosem\Component\Http\Provider;
 
 use Laminas\Diactoros\{
+    RequestFactory,
     ResponseFactory,
     ServerRequest,
-    ServerRequestFactory
+    ServerRequestFactory,
+    StreamFactory,
+    UploadedFileFactory,
+    UriFactory
 };
 use Psr\Http\Message\{
+    RequestFactoryInterface,
     ResponseFactoryInterface,
     ServerRequestFactoryInterface,
-    ServerRequestInterface
+    ServerRequestInterface,
+    StreamFactoryInterface,
+    UploadedFileFactoryInterface,
+    UriFactoryInterface
 };
 use Rosem\Contract\Container\ServiceProviderInterface;
 
 class MessageServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @return callable[]
+     * @inheritDoc
      */
     public function getFactories(): array
     {
         return [
-            ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
+            RequestFactoryInterface::class => [static::class, 'createRequestFactoryInterface'],
             ResponseFactoryInterface::class => [static::class, 'createResponseFactory'],
+            StreamFactoryInterface::class => [static::class, 'createStreamFactory'],
+            ServerRequestFactoryInterface::class => [static::class, 'createServerRequestFactory'],
             ServerRequestInterface::class => [static::class, 'createServerRequest'],
+            UploadedFileFactoryInterface::class => [static::class, 'createUploadedFileFactory'],
+            UriFactoryInterface::class => [static::class, 'createUriFactory'],
         ];
     }
 
     /**
-     * @return callable[]
+     * @inheritDoc
      */
     public function getExtensions(): array
     {
         return [];
     }
 
-    public function createServerRequestFactory(): ServerRequestFactory
+    public function createRequestFactoryInterface(): RequestFactoryInterface
     {
-        return new ServerRequestFactory();
+        return new RequestFactory();
     }
 
     public function createResponseFactory(): ResponseFactory
@@ -46,8 +58,28 @@ class MessageServiceProvider implements ServiceProviderInterface
         return new ResponseFactory();
     }
 
+    public function createStreamFactory(): StreamFactoryInterface
+    {
+        return new StreamFactory();
+    }
+
+    public function createServerRequestFactory(): ServerRequestFactory
+    {
+        return new ServerRequestFactory();
+    }
+
     public function createServerRequest(): ServerRequest
     {
         return ServerRequestFactory::fromGlobals();
+    }
+
+    public function createUploadedFileFactory(): UploadedFileFactoryInterface
+    {
+        return new UploadedFileFactory();
+    }
+
+    public function createUriFactory(): UriFactoryInterface
+    {
+        return new UriFactory();
     }
 }
