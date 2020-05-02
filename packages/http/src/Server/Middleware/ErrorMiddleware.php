@@ -14,6 +14,8 @@ use Psr\Http\Server\{
 };
 use Rosem\Contract\Template\TemplateRendererInterface;
 
+use function mb_strtoupper;
+
 class ErrorMiddleware implements MiddlewareInterface
 {
     /**
@@ -61,6 +63,8 @@ class ErrorMiddleware implements MiddlewareInterface
 
                 break;
             case StatusCode::STATUS_METHOD_NOT_ALLOWED:
+                $this->config['requestMethod'] = mb_strtoupper($request->getMethod());
+                $this->config['allowedMethods'] = $response->getHeader('Access-Control-Allow-Methods')[0] ?? '';
                 $this->attachHtmlToResponse($response, StatusCode::STATUS_METHOD_NOT_ALLOWED);
 
                 break;

@@ -70,7 +70,8 @@ class RouteMiddleware implements MiddlewareInterface
             case RouteDispatcherInterface::NOT_FOUND:
                 return $this->createNotFoundResponse();
             case RouteDispatcherInterface::SCOPE_NOT_ALLOWED:
-                return $this->createMethodNotAllowedResponse();
+                return $this->createMethodNotAllowedResponse()
+                    ->withHeader('Access-Control-Allow-Methods', implode(', ', $route[1]));
         }
 
         foreach ($route[static::KEY_VARIABLES] as $name => $value) {
