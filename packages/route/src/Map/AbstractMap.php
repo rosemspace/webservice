@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\Map;
 
-use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use Rosem\Component\Route\Contract\{
     RouteDispatcherInterface,
     RouteParserInterface
 };
-use Rosem\Component\Route\RouteParser;
 use Rosem\Contract\Route\RouteCollectorInterface;
+
+use function array_keys;
+use function ltrim;
+use function rtrim;
+use function trim;
 
 abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherInterface
 {
@@ -46,6 +51,13 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
     private string $delimiter = '/';
 
     /**
+     * Determine if a leading delimiter should be kept.
+     *
+     * @var bool
+     */
+    private bool $keepLeadingDelimiter = true;
+
+    /**
      * Determine if a trailing delimiter should be kept.
      *
      * @var bool
@@ -70,7 +82,26 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
     }
 
     /**
-     * Use UTF-8 flag or not.
+     * Add variable route to the collection.
+     *
+     * @param string $scope
+     * @param array  $parsedRoute
+     * @param mixed  $resource
+     */
+    abstract protected function addVariableRoute(string $scope, array $parsedRoute, $resource): void;
+
+    /**
+     * Retrieve data associated with the route.
+     *
+     * @param array  $metaData
+     * @param string $uri
+     *
+     * @return array
+     */
+    abstract protected function dispatchVariableRoute(array $metaData, string $uri): array;
+
+    /**
+     * Use UTF-8 or no.
      *
      * @param bool $use
      */
@@ -82,7 +113,7 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
     /**
      * @inheritDoc
      */
-    public function addRoute($scopes, string $routePattern, $data): void
+    public function addRoute($scopes, string $routePattern, $resource): void
     {
         $scopes = (array)$scopes;
         $routePattern = $this->currentGroupPrefix . $this->normalize($routePattern);
@@ -90,26 +121,47 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
         foreach ($this->parser->parse($routePattern) as $parsedRoute) {
             if ($this->isStaticRoute($parsedRoute)) {
                 foreach ($scopes as $scope) {
-                    $this->addStaticRoute($scope, $routePattern, $data);
+                    $this->addStaticRoute($scope, $routePattern, $resource);
                 }
             } else {
                 foreach ($scopes as $scope) {
-                    $this->addVariableRoute($scope, [$routePattern, ...$parsedRoute], $data);
+                    $this->addVariableRoute($scope, [$routePattern, ...$parsedRoute], $resource);
                 }
             }
         }
     }
 
-    private function normalize(string $route): string
+    /**
+     * Check if the given parsed route is a static route.
+     *
+     * @param array $parsedRoute
+     *
+     * @return bool
+     */
+    private function isStaticRoute(array $parsedRoute): bool
     {
-        return $this->keepTrailingDelimiter ? $route : rtrim($route, $this->delimiter);
+        return $parsedRoute[1] === [];
     }
 
     /**
-     * @param string   $prefix
-     * @param callable $callback
+     * Add static route to the collection.
      *
-     * @return void
+     * @param string $scope
+     * @param string $routePattern
+     * @param mixed  $resource
+     */
+    private function addStaticRoute(string $scope, string $routePattern, $resource): void
+    {
+        if (isset($this->staticRouteMap[$routePattern][$scope])) {
+            // todo required: throw an error for the same scope
+        }
+
+        // todo optimization: add reference if resource is same
+        $this->staticRouteMap[$routePattern][$scope] = $resource;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function addGroup(string $prefix, callable $callback): void
     {
@@ -144,69 +196,59 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
             $routeData = $this->staticRouteMap[$uri];
 
             if (isset($routeData[$scope])) {
-                return [StatusCode::STATUS_OK, $routeData[$scope], []];
+                return [self::FOUND, $routeData[$scope], []];
             }
 
             // If there are no allowed methods the route simply does not exist
-            return [StatusCode::STATUS_METHOD_NOT_ALLOWED, array_keys($routeData)];
+            return [self::SCOPE_NOT_ALLOWED, array_keys($routeData)];
         }
 
-        if (isset($this->variableRouteMapExpressions[$scope])) {
-            $routeData = $this->dispatchVariableRoute($this->variableRouteMapExpressions[$scope], $uri);
-
-            if ($routeData[0] === StatusCode::STATUS_OK) {
-                return $routeData;
-            }
-        }
-
-        // Find allowed methods for this URI by matching against all other HTTP methods as well
+        // Find allowed scopes for this route by matching against all other scopes as well
         $allowedScopes = [];
 
         foreach ($this->variableRouteMapExpressions as $allowedScope => $metaData) {
-            if ($scope === $allowedScope) {
+            $routeData = $this->dispatchVariableRoute($metaData, $uri);
+
+            if ($routeData[0] !== self::FOUND) {
                 continue;
             }
 
-            $routeData = $this->dispatchVariableRoute($metaData, $uri);
-
-            if ($routeData[0] !== StatusCode::STATUS_OK) {
-                continue;
+            if ($scope === $allowedScope) {
+                return $routeData;
             }
 
             $allowedScopes[] = $allowedScope;
         }
 
-        // If there are no allowed methods the route simply does not exist
+        // If there are no allowed scopes the route simply does not exist
         if ($allowedScopes !== []) {
-            return [StatusCode::STATUS_METHOD_NOT_ALLOWED, $allowedScopes];
+            return [self::SCOPE_NOT_ALLOWED, $allowedScopes];
         }
 
-        return [StatusCode::STATUS_NOT_FOUND];
+        return [self::NOT_FOUND];
     }
 
     /**
-     * Check if the given parsed route is a static route.
+     * Remove leading and / or trailing delimiter if configured to do it.
      *
-     * @param array $parsedRoute
+     * @param string $route
      *
-     * @return bool
+     * @return string
      */
-    private function isStaticRoute(array $parsedRoute): bool
+    private function normalize(string $route): string
     {
-        return $parsedRoute[RouteParser::KEY_VARIABLES_NAMES] === [];
-    }
-
-    private function addStaticRoute($scope, string $routePattern, $data): void
-    {
-        if (isset($this->staticRouteMap[$routePattern][$scope])) {
-            // todo required: throw an error for the same scope
+        if (!$this->keepLeadingDelimiter && !$this->keepTrailingDelimiter) {
+            return trim($route, $this->delimiter);
         }
 
-        // todo optimization: add reference if data is same
-        $this->staticRouteMap[$routePattern][$scope] = $data;
+        if (!$this->keepLeadingDelimiter) {
+            return ltrim($route, $this->delimiter);
+        }
+
+        if (!$this->keepTrailingDelimiter) {
+            return rtrim($route, $this->delimiter);
+        }
+
+        return $route;
     }
-
-    abstract protected function addVariableRoute(string $scope, array $parsedRoute, $data): void;
-
-    abstract protected function dispatchVariableRoute(array $metaData, string $uri): array;
 }

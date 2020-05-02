@@ -16,12 +16,12 @@ interface RouteCollectorInterface
      *
      * @param string|string[] $scopes
      * @param string          $routePattern
-     * @param mixed           $data
+     * @param mixed           $resource
      *
      * @return void
      * @throws InvalidRouteExceptionInterface
      */
-    public function addRoute($scopes, string $routePattern, $data): void;
+    public function addRoute($scopes, string $routePattern, $resource): void;
 
     /**
      * Create a route group with a common prefix.

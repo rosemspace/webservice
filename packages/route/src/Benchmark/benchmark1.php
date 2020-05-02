@@ -4,7 +4,7 @@ ini_set('display_errors', true);
 ini_set('display_startup_errors', true);
 error_reporting(E_ALL);
 
-require __DIR__ . '/../../../../../vendor/autoload.php';
+require __DIR__ . '/../../../../vendor/autoload.php';
 
 const FIRST = 'first';
 const MIDDLE = 'middle';
@@ -50,29 +50,29 @@ $router = \FastRoute\simpleDispatcher(function(\FastRoute\RouteCollector $router
     'dispatcher' => \FastRoute\Dispatcher\MarkBased::class,
 ]);
 // first route ---------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
     $res = $router->dispatch('GET', '/a/foo');
 }
-$stats[FAST_ROUTER][FIRST] = microtime(true) - $startTime;
+$stats[FAST_ROUTER][FIRST] = (hrtime(true) - $startTime) / 1e6;
 // middle route --------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
     $res = $router->dispatch('GET', '/es/foo');
 }
-$stats[FAST_ROUTER][MIDDLE] = microtime(true) - $startTime;
+$stats[FAST_ROUTER][MIDDLE] = (hrtime(true) - $startTime) / 1e6;
 // last route ----------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
     $res = $router->dispatch('GET', '/' . $lastStr . '/foo');
 }
-$stats[FAST_ROUTER][LAST] = microtime(true) - $startTime;
+$stats[FAST_ROUTER][LAST] = (hrtime(true) - $startTime) / 1e6;
 // unknown route -------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
     $res = $router->dispatch('GET', '/foobar/bar');
 }
-$stats[FAST_ROUTER][UNKNOWN] = microtime(true) - $startTime;
+$stats[FAST_ROUTER][UNKNOWN] = (hrtime(true) - $startTime) / 1e6;
 // ---------------------------------------------------------------------------------------------------------------------
 
 // SYMFONY ROUTER ======================================================================================================
@@ -86,31 +86,31 @@ $dumper = new \Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper
 //eval('?'.'>'.$dump);
 $router = new \Symfony\Component\Routing\Matcher\CompiledUrlMatcher($dumper->getCompiledRoutes(), new \Symfony\Component\Routing\RequestContext());
 // first route ---------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
     $res = $router->match('/a/foo');
 }
-$stats[SYMFONY_ROUTER][FIRST] = microtime(true) - $startTime;
+$stats[SYMFONY_ROUTER][FIRST] = (hrtime(true) - $startTime) / 1e6;
 // middle route --------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
     $res = $router->match('/es/foo');
 }
-$stats[SYMFONY_ROUTER][MIDDLE] = microtime(true) - $startTime;
+$stats[SYMFONY_ROUTER][MIDDLE] = (hrtime(true) - $startTime) / 1e6;
 // last route ----------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
     $res = $router->match('/' . $lastStr . '/foo');
 }
-$stats[SYMFONY_ROUTER][LAST] = microtime(true) - $startTime;
+$stats[SYMFONY_ROUTER][LAST] = (hrtime(true) - $startTime) / 1e6;
 // unknown route -------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
-    try {
+//    try {
         $router->match('/foobar/bar');
-    } catch (\Exception $exception) {}
+//    } catch (\Exception $exception) {}
 }
-$stats[SYMFONY_ROUTER][UNKNOWN] = microtime(true) - $startTime;
+$stats[SYMFONY_ROUTER][UNKNOWN] = (hrtime(true) - $startTime) / 1e6;
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ROSEM ROUTER ========================================================================================================
@@ -120,41 +120,39 @@ for ($i = 0, $str = 'a'; $i < $nRoutes; $i++, $str++) {
     $lastStr = $str;
 }
 // first route ---------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
     $res = $router->dispatch('GET', '/a/foo');
 }
-$stats[ROSEM_ROUTER][FIRST] = microtime(true) - $startTime;
+$stats[ROSEM_ROUTER][FIRST] = (hrtime(true) - $startTime) / 1e6;
 if ($res[1] !== 'handler0') {
     throw new \Exception('Invalid handler');
 }
 // middle route --------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
     $res = $router->dispatch('GET', '/es/foo');
 }
-$stats[ROSEM_ROUTER][MIDDLE] = microtime(true) - $startTime;
+$stats[ROSEM_ROUTER][MIDDLE] = (hrtime(true) - $startTime) / 1e6;
 if ($res[1] !== 'handler148') {
     throw new \Exception('Invalid handler');
 }
 // last route ----------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
     $res = $router->dispatch('GET', '/' . $lastStr . '/foo');
 }
-$stats[ROSEM_ROUTER][LAST] = microtime(true) - $startTime;
+$stats[ROSEM_ROUTER][LAST] = (hrtime(true) - $startTime) / 1e6;
 if ($res[1] !== 'handler' . ($nRoutes - 1)) {
     throw new \Exception('Invalid handler');
 }
 // unknown route -------------------------------------------------------------------------------------------------------
-$startTime = microtime(true);
+$startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
-    try {
-        $res = $router->dispatch('GET', '/foobar/bar');
-    } catch (\Exception $exception) {}
+    $res = $router->dispatch('GET', '/foobar/bar');
 }
-$stats[ROSEM_ROUTER][UNKNOWN] = microtime(true) - $startTime;
-if ($res[0] !== 404) {
+$stats[ROSEM_ROUTER][UNKNOWN] = (hrtime(true) - $startTime) / 1e6;
+if (count($res) !== 1) {
     throw new \Exception('Invalid response');
 }
 // ---------------------------------------------------------------------------------------------------------------------

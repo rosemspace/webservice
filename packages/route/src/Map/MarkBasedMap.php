@@ -1,27 +1,37 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\Map;
 
-use Fig\Http\Message\StatusCodeInterface as StatusCode;
+use Rosem\Component\Route\RouteParser;
+
+use function preg_match;
 
 class MarkBasedMap extends AbstractRegexBasedMap
 {
-    public const KEY_VARIABLES = 0;
-
-    public const KEY_ROUTE_DATA = 1;
+    /**
+     * @inheritDoc
+     */
+    protected function createVariableRouteChunk(string $scope): void
+    {
+        $this->variableRouteRegexTree->clear();
+        $this->variableRouteMapExpressions[$scope][] = '';
+    }
 
     /**
      * @inheritDoc
      */
-    protected function addSingleVariableRoute(string $scope, array $parsedRoute, $data): void
+    protected function saveVariableRoute(string $scope, array $parsedRoute, $resource): void
     {
         [$routePattern, $regex, $variableNames] = $parsedRoute;
         // (*:n) - shorthand for (*MARK:n)
         $this->addVariableRouteRegex($routePattern, $regex . '(*:' . $this->variableRouteCount . ')');
         $this->variableRouteMapExpressions[$scope][count($this->variableRouteMapExpressions[$scope]) - 1] =
-            '~^' . $this->variableRouteRegex . '$~' . ($this->utf8 ? 'u' : '');
+            RouteParser::REGEXP_DELIMITER . '^' . $this->variableRouteRegex . '$' . RouteParser::REGEXP_DELIMITER .
+            'sD' . ($this->utf8 ? 'u' : '');
         // TODO: data adding strategy / scope functionality?
-        $this->variableRouteMap[] = [$data, $variableNames];
+        $this->variableRouteMap[] = [$resource, $variableNames];
     }
 
     /**
@@ -34,7 +44,7 @@ class MarkBasedMap extends AbstractRegexBasedMap
                 continue;
             }
 
-            [$data, $variableNames] = $this->variableRouteMap[$matches['MARK']];
+            [$resource, $variableNames] = $this->variableRouteMap[$matches['MARK']];
             $variableData = [];
 
             foreach ($variableNames as $index => &$variableName) {
@@ -43,24 +53,11 @@ class MarkBasedMap extends AbstractRegexBasedMap
 
             unset($variableNames, $variableName);
 
-            return [StatusCode::STATUS_OK, $data, $variableData];
+            return [self::FOUND, $resource, $variableData];
         }
 
         unset($regex);
 
-        return [StatusCode::STATUS_NOT_FOUND];
-    }
-
-    /**
-     * Prepare internal data for the new chunk.
-     *
-     * @param string $scope
-     *
-     * @return void
-     */
-    protected function createNewVariableRouteChunk(string $scope): void
-    {
-        $this->variableRouteRegexTree->clear();
-        $this->variableRouteMapExpressions[$scope][] = '';
+        return [self::NOT_FOUND];
     }
 }

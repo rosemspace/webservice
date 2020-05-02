@@ -13,6 +13,7 @@
     }
   ],
   "require": {
+    "fig/http-message-util": "^1.1",
     "php": ">=7.4",
     "psr/container": "^1.0",
     "psr/http-factory": "^1.0",

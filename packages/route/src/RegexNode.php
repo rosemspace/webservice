@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route;
 
 use function mb_strlen;
 use function mb_substr;
+use function min;
 
 class RegexNode
 {
@@ -43,6 +46,9 @@ class RegexNode
         return $this->children;
     }
 
+    /**@TODO don't search for a prefix if we already have a route group prefix
+     * @param string $regex
+     */
     public function addRegex(string $regex): void
     {
         $patternLength = mb_strlen($regex);
@@ -110,13 +116,26 @@ class RegexNode
         $regex = $this->prefix;
 
         if ($this->hasChildren()) {
-            $regex .= '(?';
+            $optional = false;
+            $regex .= '(?|';
 
-            foreach ($this->children as $node) {
-                $regex .= '|' . $node->getRegex();
+            foreach ($this->children as $index => $node) {
+                $regexPart = $node->getRegex();
+
+                if (!$optional && $regexPart === '') {
+                    $optional = true;
+
+                    continue;
+                }
+
+                $regex .= $index === 0 ? $regexPart : "|$regexPart";
             }
 
             $regex .= ')';
+
+            if ($optional) {
+                $regex .= '?';
+            }
         }
 
         return $regex;

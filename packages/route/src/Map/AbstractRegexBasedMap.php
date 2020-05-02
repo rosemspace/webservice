@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\Map;
 
 use InvalidArgumentException;
 use Rosem\Component\Route\{
     Contract\RouteParserInterface,
     Exception\TooLongRouteException,
-    RouteParser,
     RegexNode
 };
 
+use function count;
 use function ini_get;
 use function min;
 use function strlen;
@@ -118,26 +120,52 @@ abstract class AbstractRegexBasedMap extends AbstractMap
     }
 
     /**
+     * Create a new regex tree to avoid data sharing.
+     */
+    public function __clone()
+    {
+        $this->variableRouteRegexTree = new RegexNode();
+    }
+
+    /**
+     * Prepare internal data for the new chunk.
+     *
+     * @param string $scope
+     *
+     * @return void
+     */
+    abstract protected function createVariableRouteChunk(string $scope): void;
+
+    /**
+     * Save variable route based on a regular expression to the collection.
+     *
+     * @param string $scope
+     * @param array  $parsedRoute
+     * @param mixed  $resource
+     */
+    abstract protected function saveVariableRoute(string $scope, array $parsedRoute, $resource): void;
+
+    /**
      * @inheritDoc
      */
-    protected function addVariableRoute(string $scope, array $parsedRoute, $data): void
+    protected function addVariableRoute(string $scope, array $parsedRoute, $resource): void
     {
         $this->variableRouteCount = count($this->variableRouteMap);
 
-        if (!$this->variableRouteCount ||
+        if (!isset($this->variableRouteMapExpressions[$scope]) ||
             $this->variableRouteCount - $this->variableRouteOffset >= $this->variableRouteCountPerChunk
         ) {
-            $this->createNewVariableRouteChunk($scope);
+            $this->createVariableRouteChunk($scope);
             $this->variableRouteOffset = $this->variableRouteCount;
         }
 
         try {
-            $this->addSingleVariableRoute($scope, $parsedRoute, $data);
+            $this->saveVariableRoute($scope, $parsedRoute, $resource);
         } catch (TooLongRouteException $exception) {
             // TODO: add rollback
             //$this->variableRouteMap[$method]->rollback();
-            $this->createNewVariableRouteChunk($scope);
-            $this->addSingleVariableRoute($scope, $parsedRoute, $data);
+            $this->createVariableRouteChunk($scope);
+            $this->saveVariableRoute($scope, $parsedRoute, $resource);
         }
     }
 
@@ -158,13 +186,5 @@ abstract class AbstractRegexBasedMap extends AbstractMap
 
             throw new TooLongRouteException("Your route \"$routePattern\" is too long");
         }
-    }
-
-    /**
-     * Create a new regex tree to avoid data sharing.
-     */
-    public function __clone()
-    {
-        $this->variableRouteRegexTree = new RegexNode();
     }
 }

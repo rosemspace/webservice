@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\Middleware;
 
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
@@ -65,9 +67,9 @@ class RouteMiddleware implements MiddlewareInterface
         $route = $this->routeDispatcher->dispatch($request->getMethod(), $request->getUri()->getPath());
 
         switch ($route[static::KEY_STATUS]) {
-            case StatusCode::STATUS_NOT_FOUND:
+            case RouteDispatcherInterface::NOT_FOUND:
                 return $this->createNotFoundResponse();
-            case StatusCode::STATUS_METHOD_NOT_ALLOWED:
+            case RouteDispatcherInterface::SCOPE_NOT_ALLOWED:
                 return $this->createMethodNotAllowedResponse();
         }
 

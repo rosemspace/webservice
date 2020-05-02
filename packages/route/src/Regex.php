@@ -1,8 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route;
 
 use RuntimeException;
+
+use function preg_last_error;
+use function preg_match;
+use function strlen;
+use function strpos;
+use function substr_replace;
+
+use const PREG_BACKTRACK_LIMIT_ERROR;
+use const PREG_BAD_UTF8_ERROR;
+use const PREG_BAD_UTF8_OFFSET_ERROR;
+use const PREG_INTERNAL_ERROR;
+use const PREG_JIT_STACKLIMIT_ERROR;
+use const PREG_NO_ERROR;
+use const PREG_RECURSION_LIMIT_ERROR;
 
 class Regex
 {
@@ -119,7 +135,7 @@ class Regex
      */
     public static function of(string $regexp): self
     {
-        return new Regex($regexp);
+        return new self($regexp);
     }
 
     /**
@@ -131,7 +147,7 @@ class Regex
      */
     public static function isValid(string $regexp): bool
     {
-        return @preg_match($regexp, null) !== false;
+        return @preg_match($regexp, '') !== false;
     }
 
     /**
@@ -194,7 +210,7 @@ class Regex
         return $this->hasCapturingGroups;
     }
 
-    public function transformCapturingGroupsToNonCapturing(): void
+    public function disableCapturingGroups(): void
     {
         $regexp = $this->regexp;
         $regexpLength = strlen($regexp);

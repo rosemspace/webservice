@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\Provider;
 
 use Psr\Container\ContainerInterface;
@@ -27,7 +29,7 @@ class RouteServiceProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            HttpRouteCollectorInterface::class => [static::class, 'createHttpRouteCollector'],
+            HttpRouteCollectorInterface::class => [static::class, 'createHttpServerRouteCollector'],
             RouteMiddleware::class => [static::class, 'createRouteMiddleware'],
             HandleRequestMiddleware::class => [static::class, 'createHandleRequestMiddleware'],
         ];
@@ -46,8 +48,8 @@ class RouteServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 MiddlewareCollectorInterface $middlewareCollector
             ) {
-                $middlewareCollector->addDeferredMiddleware(RouteMiddleware::class);
-                $middlewareCollector->addDeferredMiddleware(HandleRequestMiddleware::class);
+                $middlewareCollector->addMiddleware($container->get(RouteMiddleware::class));
+                $middlewareCollector->addMiddleware($container->get(HandleRequestMiddleware::class));
             },
         ];
     }
@@ -59,7 +61,7 @@ class RouteServiceProvider implements ServiceProviderInterface
      * @throws \InvalidArgumentException
      * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function createHttpRouteCollector(ContainerInterface $container): HttpRouteCollectorInterface
+    public function createHttpServerRouteCollector(ContainerInterface $container): HttpRouteCollectorInterface
     {
         return new Router(new RouteParser());
     }

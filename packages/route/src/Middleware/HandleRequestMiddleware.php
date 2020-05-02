@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\Middleware;
 
 use Psr\Container\ContainerInterface;
@@ -20,6 +22,8 @@ use RuntimeException;
 
 use function is_callable;
 use function is_string;
+use function key;
+use function reset;
 
 class HandleRequestMiddleware implements MiddlewareInterface
 {
@@ -48,15 +52,16 @@ class HandleRequestMiddleware implements MiddlewareInterface
     }
 
     /**
-     * Set the attribute name to store handler reference.
+     * Use this attribute name to store a handler reference.
      *
      * @param string $handlerAttribute
      *
      * @return self
      */
-    public function setHandlerAttribute(string $handlerAttribute): self
+    public function withHandlerAttribute(string $handlerAttribute): self
     {
-        $this->handlerAttribute = $handlerAttribute;
+        $new = clone $this;
+        $new->handlerAttribute = $handlerAttribute;
 
         return $this;
     }
