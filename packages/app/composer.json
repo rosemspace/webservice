@@ -30,8 +30,7 @@
     "tedivm/stash": "0.15.*",
     "tijsverkoyen/css-to-inline-styles": "^2.2",
     "vlucas/phpdotenv": "^4.1",
-    "webonyx/graphql-php": "^0.13",
-    "laminas/laminas-diactoros": "^2.2"
+    "webonyx/graphql-php": "^0.13"
   },
   "require-dev": {
     "filp/whoops": "^2.7",

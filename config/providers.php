@@ -1,7 +1,7 @@
 <?php
 
 return [
-    Rosem\Component\Http\Provider\KernelServiceProvider::class,
+    Rosem\Component\Http\Server\Provider\KernelServiceProvider::class,
     // Need to write an HTML into a response
     Rosem\Component\Template\TemplateServiceProvider::class,
     // FIXME: session provider

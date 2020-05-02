@@ -7,7 +7,7 @@
         "danielstjules/stringy": "~3.1",
         "doctrine/orm": "^2.7",
         "fig/http-message-util": "^1.1",
-        "laminas/laminas-diactoros": "^2.2",
+        "laminas/laminas-diactoros": "^2.3",
         "league/flysystem": "^1.0",
         "league/plates": "dev-master",
         "monolog/monolog": "^2.0",
@@ -37,7 +37,7 @@
         "symfony/css-selector": "5.0.*",
         "symfony/dom-crawler": "5.0.*",
         "symfony/routing": "~5.0.7",
-        "symplify/monorepo-builder": "^7.2"
+        "symplify/monorepo-builder": "^7.3"
     },
     "autoload": {
         "psr-4": {
@@ -46,7 +46,12 @@
             "Rosem\\Component\\Authentication\\": "packages/authentication/src",
             "Rosem\\Component\\Container\\": "packages/container/src",
             "Rosem\\Component\\Hash\\": "packages/hash/src",
-            "Rosem\\Component\\Http\\": "packages/http/src",
+            "Rosem\\Component\\Http\\Authentication\\": "packages/http-authentication/src",
+            "Rosem\\Component\\Http\\Server\\": [
+                "packages/http-server-emitter/src",
+                "packages/http-server-middleware/src",
+                "packages/http-server/src"
+            ],
             "Rosem\\Component\\Route\\": "packages/route/src",
             "Rosem\\Component\\Template\\": "packages/template/src",
             "Rosem\\Contract\\App\\": "packages/app-contract/src",
@@ -66,7 +71,12 @@
             "Rosem\\Component\\Authentication\\Tests\\": "packages/authentication/tests",
             "Rosem\\Component\\Container\\Tests\\": "packages/container/tests",
             "Rosem\\Component\\Hash\\Tests\\": "packages/hash/tests",
-            "Rosem\\Component\\Http\\Tests\\": "packages/http/tests",
+            "Rosem\\Component\\Http\\Authentication\\Tests\\": "packages/http-authentication/tests",
+            "Rosem\\Component\\Http\\Server\\Tests\\": [
+                "packages/http-server-emitter/tests",
+                "packages/http-server-middleware/tests",
+                "packages/http-server/tests"
+            ],
             "Rosem\\Component\\Route\\Tests\\": "packages/route/tests",
             "Rosem\\Component\\Template\\Tests\\": "packages/template/tests"
         }
@@ -83,7 +93,11 @@
         "rosem/hash": "self.version",
         "rosem/hash-contract": "self.version",
         "rosem/http": "self.version",
+        "rosem/http-authentication": "self.version",
+        "rosem/http-server": "self.version",
+        "rosem/http-server-emitter": "self.version",
         "rosem/http-server-emitter-contract": "self.version",
+        "rosem/http-server-middleware": "self.version",
         "rosem/route": "self.version",
         "rosem/route-contract": "self.version",
         "rosem/template": "self.version",

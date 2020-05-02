@@ -1,0 +1,51 @@
+{
+    "name": "rosem/http-authentication",
+    "description": "HTTP authentication library",
+    "keywords": [
+        "auth",
+        "authentication",
+        "http",
+        "http-auth",
+        "http-authentication"
+    ],
+    "homepage": "https://rosem.space/http-authentication",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "roshecode",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://rosem.space",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "psr/container": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.0",
+        "psr/http-server-handler": "^1.0",
+        "rosem/authentication": "^0.0.1",
+        "rosem/authentication-contract": "^0.0.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "roave/security-advisories": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Component\\Http\\Authentication\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rosem\\Component\\Http\\Authentication\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

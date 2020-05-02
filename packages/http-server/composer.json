@@ -1,7 +1,7 @@
 {
-  "name": "rosem/http",
-  "description": "HTTP library",
-  "homepage": "https://rosem.space/http",
+  "name": "rosem/http-server",
+  "description": "HTTP server library",
+  "homepage": "https://rosem.space/http-server",
   "license": "MIT",
   "keywords": ["http"],
   "authors": [
@@ -13,6 +13,7 @@
     }
   ],
   "require": {
+    "laminas/laminas-diactoros": "^2.3",
     "php": ">=7.4",
     "psr/container": "^1.0",
     "psr/http-factory": "^1.0",
@@ -25,12 +26,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Rosem\\Component\\Http\\": "src"
+      "Rosem\\Component\\Http\\Server\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Rosem\\Component\\Http\\Tests\\": "tests"
+      "Rosem\\Component\\Http\\Server\\Tests\\": "tests"
     }
   },
   "extra": {

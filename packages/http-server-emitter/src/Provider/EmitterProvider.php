@@ -1,6 +1,6 @@
 <?php
 
-namespace Rosem\Component\Http\Provider;
+namespace Rosem\Component\Http\Server\Provider;
 
 use Rosem\Component\Http\Server\{
     EmitterStack,

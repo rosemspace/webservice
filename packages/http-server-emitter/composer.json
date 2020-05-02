@@ -1,0 +1,54 @@
+{
+    "name": "rosem/http-server-emitter",
+    "description": "HTTP response emitter library",
+    "keywords": [
+        "rosem",
+        "http",
+        "server",
+        "emitter",
+        "http-emitter",
+        "http-server",
+        "http-server-emitter",
+        "psr",
+        "psr-7",
+        "psr-15"
+    ],
+    "homepage": "https://rosem.space/http-server-emitter",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "roshecode",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://rosem.space",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "psr/container": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.0",
+        "psr/http-server-handler": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "roave/security-advisories": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Component\\Http\\Server\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rosem\\Component\\Http\\Server\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
