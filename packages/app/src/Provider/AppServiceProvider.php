@@ -4,7 +4,6 @@ namespace Rosem\Component\App\Provider;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Rosem\Component\Admin\Provider\AdminServiceProvider;
 use Rosem\Component\App\Http\Server\{
     HomeRequestHandler
 };
@@ -13,6 +12,9 @@ use Rosem\Contract\{
     Route\HttpRouteCollectorInterface,
     Template\TemplateRendererInterface
 };
+
+use function dirname;
+use function mb_strtolower;
 
 class AppServiceProvider implements ServiceProviderInterface
 {
@@ -63,15 +65,15 @@ class AppServiceProvider implements ServiceProviderInterface
             ): void {
                 $renderer->addPath(
                     dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR .
-                        'templates',
+                    'templates',
                     'app'
                 );
                 $renderer->addGlobalData(
                     [
                         'appName' => $container->get('app.name'),
                         'appVersion' => $container->get('app.version'),
-                        'lang' => strtolower($container->get('app.lang')),
-                        'charset' => strtolower($container->get('app.meta.charset')),
+                        'lang' => mb_strtolower($container->get('app.lang')),
+                        'charset' => mb_strtolower($container->get('app.meta.charset')),
                         'metaTitlePrefix' => $container->get('app.meta.titlePrefix'),
                         'metaTitleSuffix' => $container->get('app.meta.titleSuffix'),
                     ]
@@ -81,10 +83,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 HttpRouteCollectorInterface $routeCollector
             ): void {
-                $regex = $container->has(AdminServiceProvider::class)
-                    ? '^(?!/' . ltrim($container->get(AdminServiceProvider::CONFIG_URI_LOGGED_IN), '/') . ').*'
-                    : '.*';
-                $routeCollector->get("{appPath:$regex}", HomeRequestHandler::class);
+                $routeCollector->get('/', HomeRequestHandler::class);
             },
         ];
     }

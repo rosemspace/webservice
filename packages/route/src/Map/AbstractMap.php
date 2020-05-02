@@ -237,6 +237,10 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
      */
     private function normalize(string $route): string
     {
+        if ($route === $this->delimiter) {
+            return $route;
+        }
+
         if (!$this->keepLeadingDelimiter && !$this->keepTrailingDelimiter) {
             return trim($route, $this->delimiter);
         }

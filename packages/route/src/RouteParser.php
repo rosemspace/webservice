@@ -70,6 +70,10 @@ class RouteParser implements RouteParserInterface
      */
     public function parse(string $routePattern): array
     {
+        if ($routePattern === '') {
+            throw BadRouteException::forEmptyRoute();
+        }
+
         $variableNames = [];
         $index = 0;
         $defaultDispatchRegex = $this->defaultDispatchRegex;

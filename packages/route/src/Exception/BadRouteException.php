@@ -19,6 +19,11 @@ class BadRouteException extends LogicException
         ));
     }
 
+    public static function forEmptyRoute(): self
+    {
+        return new self('A route cannot be empty.');
+    }
+
     public static function dueToInvalidVariableRegExp(string $regExp, string $variableName): self
     {
         return new self(sprintf(
