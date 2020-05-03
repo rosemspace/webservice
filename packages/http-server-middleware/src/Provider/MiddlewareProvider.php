@@ -52,16 +52,6 @@ class MiddlewareProvider implements ServiceProviderInterface
                     $middlewareCollector->addDeferredMiddleware(ErrorMiddleware::class);
                 }
             },
-            TemplateRendererInterface::class => static function (
-                ContainerInterface $container,
-                TemplateRendererInterface $renderer
-            ) {
-                $renderer->addPath(
-                    dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR .
-                        'templates',
-                    'error'
-                );
-            },
         ];
     }
 

@@ -78,7 +78,7 @@ class RouteMiddleware implements MiddlewareInterface
             $request = $request->withAttribute($name, $value);
         }
 
-        $request = $this->setHandler($request, (array)$route[static::KEY_DATA]);
+        $request = $this->setHandler($request, $route[static::KEY_DATA]);
 
         return $nextHandler->handle($request);
     }

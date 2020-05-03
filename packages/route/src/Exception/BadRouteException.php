@@ -32,4 +32,19 @@ class BadRouteException extends LogicException
             $variableName
         ));
     }
+
+    public static function dueToWrongOptionalSegmentPosition(): self
+    {
+        return new self('Optional segments can only occur at the end of a route');
+    }
+
+    public static function dueToWrongOptionalSegmentPair(string $openToken, string $closeToken): self
+    {
+        return new self("Number of opening \"$openToken\" and closing \"$closeToken\" does not match.");
+    }
+
+    public static function dueToEmptyOptionalSegment(): self
+    {
+        return new self("Empty optional segment.");
+    }
 }

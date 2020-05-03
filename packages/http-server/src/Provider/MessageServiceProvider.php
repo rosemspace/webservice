@@ -11,6 +11,7 @@ use Laminas\Diactoros\{
     UploadedFileFactory,
     UriFactory
 };
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\{
     RequestFactoryInterface,
     ResponseFactoryInterface,
@@ -21,6 +22,9 @@ use Psr\Http\Message\{
     UriFactoryInterface
 };
 use Rosem\Contract\Container\ServiceProviderInterface;
+use Rosem\Contract\Template\TemplateRendererInterface;
+
+use function dirname;
 
 class MessageServiceProvider implements ServiceProviderInterface
 {
@@ -45,7 +49,18 @@ class MessageServiceProvider implements ServiceProviderInterface
      */
     public function getExtensions(): array
     {
-        return [];
+        return [
+            TemplateRendererInterface::class => static function (
+                ContainerInterface $container,
+                TemplateRendererInterface $renderer
+            ) {
+                $renderer->addPath(
+                    dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR .
+                    'templates',
+                    'error'
+                );
+            },
+        ];
     }
 
     public function createRequestFactoryInterface(): RequestFactoryInterface

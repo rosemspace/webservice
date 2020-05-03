@@ -79,22 +79,29 @@ class HandleRequestMiddleware implements MiddlewareInterface
     {
         $requestData = $request->getAttribute($this->handlerAttribute);
 
-        if (!empty($requestData[static::KEY_MIDDLEWARE])) {
-            $requestHandler = new MiddlewareCollector(
-                $this->container,
-                $this->container->get($requestData[static::KEY_HANDLER_OR_ALLOWED_METHODS])
-            );
-
-            /** @var array[] $requestData */
-            foreach ($requestData[static::KEY_MIDDLEWARE] as $middlewareExtension) {
-                $requestHandler->addMiddleware(
-                    is_callable($middlewareExtension)
-                        ? $middlewareExtension($this->container)
-                        : $this->container->get($middlewareExtension)
-                );
-            }
+        //@TODO improve if
+        if ($requestData instanceof RequestHandlerInterface) {
+            $requestHandler = $requestData;
         } else {
-            $requestHandler = $this->container->get($requestData[static::KEY_HANDLER_OR_ALLOWED_METHODS]);
+            $requestData = (array)$requestData;
+
+            if (!empty($requestData[static::KEY_MIDDLEWARE])) {
+                $requestHandler = new MiddlewareCollector(
+                    $this->container,
+                    $this->container->get($requestData[static::KEY_HANDLER_OR_ALLOWED_METHODS])
+                );
+
+                /** @var array[] $requestData */
+                foreach ($requestData[static::KEY_MIDDLEWARE] as $middlewareExtension) {
+                    $requestHandler->addMiddleware(
+                        is_callable($middlewareExtension)
+                            ? $middlewareExtension($this->container)
+                            : $this->container->get($middlewareExtension)
+                    );
+                }
+            } else {
+                $requestHandler = $this->container->get($requestData[static::KEY_HANDLER_OR_ALLOWED_METHODS]);
+            }
         }
 
         if ($requestHandler instanceof RequestHandlerInterface) {

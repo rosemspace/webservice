@@ -12,6 +12,7 @@ use Rosem\Contract\Route\RouteCollectorInterface;
 
 use function array_keys;
 use function ltrim;
+use function mb_strtoupper;
 use function rtrim;
 use function trim;
 
@@ -121,11 +122,11 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
         foreach ($this->parser->parse($routePattern) as $parsedRoute) {
             if ($this->isStaticRoute($parsedRoute)) {
                 foreach ($scopes as $scope) {
-                    $this->addStaticRoute($scope, $routePattern, $resource);
+                    $this->addStaticRoute(mb_strtoupper($scope), $parsedRoute[0], $resource);
                 }
             } else {
                 foreach ($scopes as $scope) {
-                    $this->addVariableRoute($scope, [$routePattern, ...$parsedRoute], $resource);
+                    $this->addVariableRoute(mb_strtoupper($scope), [$routePattern, ...$parsedRoute], $resource);
                 }
             }
         }
@@ -150,14 +151,14 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
      * @param string $routePattern
      * @param mixed  $resource
      */
-    private function addStaticRoute(string $scope, string $routePattern, $resource): void
+    private function addStaticRoute(string $scope, string $route, $resource): void
     {
-        if (isset($this->staticRouteMap[$routePattern][$scope])) {
+        if (isset($this->staticRouteMap[$route][$scope])) {
             // todo required: throw an error for the same scope
         }
 
         // todo optimization: add reference if resource is same
-        $this->staticRouteMap[$routePattern][$scope] = $resource;
+        $this->staticRouteMap[$route][$scope] = $resource;
     }
 
     /**
