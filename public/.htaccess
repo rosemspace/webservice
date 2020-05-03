@@ -3,20 +3,34 @@
         Options -MultiViews
     </IfModule>
 
+    # Turn on rewrite engine
     RewriteEngine On
-
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)/$ /$1 [L,R=301]
-
-    # Handle Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Reditect HTTP www to HTTPS apex without trailing slashes
+    RewriteCond %{HTTPS} !on
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*?)/*$ https://%1/$1 [L,R=301]
+
+    # Redirect HTTP to HTTPS without trailing slashes
+    RewriteCond %{HTTPS} !on
+    RewriteRule ^(.*?)/*$ https://%{HTTP_HOST}/$1 [L,R=301]
+
+    # Redirect www to apex without trailing slashes
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*?)/*$ https://%1/$1 [L,R=301]
+
+    # Redirect Trailing Slashes If Not A Folder
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*?)/+$ https://%{HTTP_HOST}/$1 [L,R=301]
+
+    # Send Requests To Front Controller
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
 </IfModule>
 
 ## 1 YEAR
