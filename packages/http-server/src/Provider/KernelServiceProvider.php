@@ -2,13 +2,16 @@
 
 namespace Rosem\Component\Http\Server\Provider;
 
-use Rosem\Component\Container\AbstractAggregatedServiceProvider;
+use Rosem\Component\Container\AggregateServiceProviderTrait;
+use Rosem\Contract\Container\ServiceProviderInterface;
 
-class KernelServiceProvider extends AbstractAggregatedServiceProvider
+class KernelServiceProvider implements ServiceProviderInterface
 {
+    use AggregateServiceProviderTrait;
+
     public function __construct()
     {
-        parent::__construct(
+        $this->addServiceProviders(
             [
                 // Need to create server responses
                 MessageServiceProvider::class,

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33a7303830f955fcdd44bceb97acf116",
+    "content-hash": "7a1aeebd3f1b15e71e88755857a92fc6",
     "packages": [
         {
             "name": "danielstjules/stringy",
@@ -4611,12 +4611,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "81541a731da2f245a08666de73169cb5da7ac573"
+                "reference": "478dd17a48d0eb007ff854f4b885034df5db7c29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/81541a731da2f245a08666de73169cb5da7ac573",
-                "reference": "81541a731da2f245a08666de73169cb5da7ac573",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/478dd17a48d0eb007ff854f4b885034df5db7c29",
+                "reference": "478dd17a48d0eb007ff854f4b885034df5db7c29",
                 "shasum": ""
             },
             "conflict": {
@@ -4706,6 +4706,7 @@
                 "magento/product-community-edition": ">=2,<2.2.10|>=2.3,<2.3.2-p.2",
                 "monolog/monolog": ">=1.8,<1.12",
                 "namshi/jose": "<2.2",
+                "nzo/url-encryptor-bundle": "<5.0.1",
                 "onelogin/php-saml": "<2.10.4",
                 "oneup/uploader-bundle": "<1.9.3|>=2,<2.1.5",
                 "openid/php-openid": "<2.3",
@@ -4869,7 +4870,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2020-04-23T00:01:30+00:00"
+            "time": "2020-05-03T18:57:18+00:00"
         },
         {
             "name": "sebastian/code-unit",
@@ -6702,16 +6703,16 @@
         },
         {
             "name": "symplify/auto-bind-parameter",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/auto-bind-parameter.git",
-                "reference": "c63e79f3edd41c545781ce12e4e0468ff6f1d44f"
+                "reference": "ce09281792f008fc4c5c7e910fa70927d8316d00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/auto-bind-parameter/zipball/c63e79f3edd41c545781ce12e4e0468ff6f1d44f",
-                "reference": "c63e79f3edd41c545781ce12e4e0468ff6f1d44f",
+                "url": "https://api.github.com/repos/symplify/auto-bind-parameter/zipball/ce09281792f008fc4c5c7e910fa70927d8316d00",
+                "reference": "ce09281792f008fc4c5c7e910fa70927d8316d00",
                 "shasum": ""
             },
             "require": {
@@ -6722,7 +6723,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5|^9.0",
-                "symplify/package-builder": "^7.3.4"
+                "symplify/package-builder": "^7.3.5"
             },
             "type": "library",
             "extra": {
@@ -6740,27 +6741,27 @@
                 "MIT"
             ],
             "description": "Auto bind parameters for your Symfony applications",
-            "time": "2020-05-02T21:07:42+00:00"
+            "time": "2020-05-03T13:42:28+00:00"
         },
         {
             "name": "symplify/autowire-array-parameter",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/autowire-array-parameter.git",
-                "reference": "d9179cfdad1adefd31af193254d39c3f7a68beaa"
+                "reference": "7a536bfd052a9798df295a14aecbd983560e9a6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/autowire-array-parameter/zipball/d9179cfdad1adefd31af193254d39c3f7a68beaa",
-                "reference": "d9179cfdad1adefd31af193254d39c3f7a68beaa",
+                "url": "https://api.github.com/repos/symplify/autowire-array-parameter/zipball/7a536bfd052a9798df295a14aecbd983560e9a6c",
+                "reference": "7a536bfd052a9798df295a14aecbd983560e9a6c",
                 "shasum": ""
             },
             "require": {
                 "nette/utils": "^3.0",
                 "php": "^7.2",
                 "symfony/dependency-injection": "^4.4|^5.0",
-                "symplify/package-builder": "^7.3.4"
+                "symplify/package-builder": "^7.3.5"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5|^9.0"
@@ -6781,20 +6782,20 @@
                 "MIT"
             ],
             "description": "Autowire array parameters for your Symfony applications",
-            "time": "2020-05-02T21:07:42+00:00"
+            "time": "2020-05-03T13:42:28+00:00"
         },
         {
             "name": "symplify/composer-json-manipulator",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/composer-json-manipulator.git",
-                "reference": "f831479402396fb0146e18c380c5faa980705cab"
+                "reference": "24d1a14f2bf95fd32a7da2025861dca8c782784b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/composer-json-manipulator/zipball/f831479402396fb0146e18c380c5faa980705cab",
-                "reference": "f831479402396fb0146e18c380c5faa980705cab",
+                "url": "https://api.github.com/repos/symplify/composer-json-manipulator/zipball/24d1a14f2bf95fd32a7da2025861dca8c782784b",
+                "reference": "24d1a14f2bf95fd32a7da2025861dca8c782784b",
                 "shasum": ""
             },
             "require": {
@@ -6805,8 +6806,8 @@
                 "symfony/dependency-injection": "^4.4|^5.0",
                 "symfony/filesystem": "^4.4|^5.0",
                 "symfony/http-kernel": "^4.4|^5.0",
-                "symplify/package-builder": "^7.3.4",
-                "symplify/smart-file-system": "^7.3.4"
+                "symplify/package-builder": "^7.3.5",
+                "symplify/smart-file-system": "^7.3.5"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5|^9.0"
@@ -6827,20 +6828,20 @@
                 "MIT"
             ],
             "description": "Package to load, merge and save composer.json file(s)",
-            "time": "2020-05-02T21:07:42+00:00"
+            "time": "2020-05-03T13:42:28+00:00"
         },
         {
             "name": "symplify/monorepo-builder",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/monorepo-builder.git",
-                "reference": "45c50d4c0138b2949d6140a79c2e9c9989656bcb"
+                "reference": "b787b88fd1d4dfa57fabdf321b03542c736455f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/monorepo-builder/zipball/45c50d4c0138b2949d6140a79c2e9c9989656bcb",
-                "reference": "45c50d4c0138b2949d6140a79c2e9c9989656bcb",
+                "url": "https://api.github.com/repos/symplify/monorepo-builder/zipball/b787b88fd1d4dfa57fabdf321b03542c736455f5",
+                "reference": "b787b88fd1d4dfa57fabdf321b03542c736455f5",
                 "shasum": ""
             },
             "require": {
@@ -6851,12 +6852,12 @@
                 "symfony/console": "^4.4|^5.0",
                 "symfony/dependency-injection": "^4.4|^5.0",
                 "symfony/finder": "^4.4|^5.0",
-                "symplify/auto-bind-parameter": "^7.3.4",
-                "symplify/autowire-array-parameter": "^7.3.4",
-                "symplify/composer-json-manipulator": "^7.3.4",
-                "symplify/package-builder": "^7.3.4",
-                "symplify/set-config-resolver": "^7.3.4",
-                "symplify/smart-file-system": "^7.3.4"
+                "symplify/auto-bind-parameter": "^7.3.5",
+                "symplify/autowire-array-parameter": "^7.3.5",
+                "symplify/composer-json-manipulator": "^7.3.5",
+                "symplify/package-builder": "^7.3.5",
+                "symplify/set-config-resolver": "^7.3.5",
+                "symplify/smart-file-system": "^7.3.5"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5|^9.0"
@@ -6885,20 +6886,20 @@
                 "MIT"
             ],
             "description": "Not only Composer tools to build a Monorepo.",
-            "time": "2020-05-02T21:07:42+00:00"
+            "time": "2020-05-03T13:42:28+00:00"
         },
         {
             "name": "symplify/package-builder",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/package-builder.git",
-                "reference": "f2586790e3ce653afc550bb00e34067c8a082e78"
+                "reference": "3a98b6e7a1bfb2e07d8782258d6e0fd11912d0c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/package-builder/zipball/f2586790e3ce653afc550bb00e34067c8a082e78",
-                "reference": "f2586790e3ce653afc550bb00e34067c8a082e78",
+                "url": "https://api.github.com/repos/symplify/package-builder/zipball/3a98b6e7a1bfb2e07d8782258d6e0fd11912d0c6",
+                "reference": "3a98b6e7a1bfb2e07d8782258d6e0fd11912d0c6",
                 "shasum": ""
             },
             "require": {
@@ -6935,16 +6936,16 @@
         },
         {
             "name": "symplify/set-config-resolver",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/set-config-resolver.git",
-                "reference": "e011d60d280d803e43e52e50e104666d94939915"
+                "reference": "f7a80d9dfbba2ba7de6c5660024e546d56aade31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/set-config-resolver/zipball/e011d60d280d803e43e52e50e104666d94939915",
-                "reference": "e011d60d280d803e43e52e50e104666d94939915",
+                "url": "https://api.github.com/repos/symplify/set-config-resolver/zipball/f7a80d9dfbba2ba7de6c5660024e546d56aade31",
+                "reference": "f7a80d9dfbba2ba7de6c5660024e546d56aade31",
                 "shasum": ""
             },
             "require": {
@@ -6953,7 +6954,7 @@
                 "symfony/console": "^4.4|^5.0",
                 "symfony/filesystem": "^4.4|^5.0",
                 "symfony/finder": "^4.4|^5.0",
-                "symplify/smart-file-system": "^7.3.4"
+                "symplify/smart-file-system": "^7.3.5"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5|^9.0"
@@ -6974,20 +6975,20 @@
                 "MIT"
             ],
             "description": "Resolve config and sets from configs and cli opptions for CLI applications",
-            "time": "2020-05-02T21:07:42+00:00"
+            "time": "2020-05-03T13:42:28+00:00"
         },
         {
             "name": "symplify/smart-file-system",
-            "version": "v7.3.4",
+            "version": "v7.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/smart-file-system.git",
-                "reference": "120e28e455c18d7b2109c7ebd0064d153648c1f1"
+                "reference": "01d01be98dbd8c65bd4a6a81e981f3b52c59ca0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/smart-file-system/zipball/120e28e455c18d7b2109c7ebd0064d153648c1f1",
-                "reference": "120e28e455c18d7b2109c7ebd0064d153648c1f1",
+                "url": "https://api.github.com/repos/symplify/smart-file-system/zipball/01d01be98dbd8c65bd4a6a81e981f3b52c59ca0f",
+                "reference": "01d01be98dbd8c65bd4a6a81e981f3b52c59ca0f",
                 "shasum": ""
             },
             "require": {

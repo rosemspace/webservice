@@ -44,7 +44,10 @@
             "Rosem\\Component\\Admin\\": "packages/admin/src",
             "Rosem\\Component\\App\\": "packages/app/src",
             "Rosem\\Component\\Authentication\\": "packages/authentication/src",
-            "Rosem\\Component\\Container\\": "packages/container/src",
+            "Rosem\\Component\\Container\\": [
+                "packages/container-service-provider-util/src",
+                "packages/container/src"
+            ],
             "Rosem\\Component\\Hash\\": "packages/hash/src",
             "Rosem\\Component\\Http\\Authentication\\": "packages/http-authentication/src",
             "Rosem\\Component\\Http\\Server\\": [
@@ -69,7 +72,10 @@
             "Rosem\\Component\\Admin\\Tests\\": "packages/admin/tests",
             "Rosem\\Component\\App\\Tests\\": "packages/app/tests",
             "Rosem\\Component\\Authentication\\Tests\\": "packages/authentication/tests",
-            "Rosem\\Component\\Container\\Tests\\": "packages/container/tests",
+            "Rosem\\Component\\Container\\Tests\\": [
+                "packages/container-service-provider-util/tests",
+                "packages/container/tests"
+            ],
             "Rosem\\Component\\Hash\\Tests\\": "packages/hash/tests",
             "Rosem\\Component\\Http\\Authentication\\Tests\\": "packages/http-authentication/tests",
             "Rosem\\Component\\Http\\Server\\Tests\\": [
@@ -89,6 +95,7 @@
         "rosem/authentication-contract": "self.version",
         "rosem/container": "self.version",
         "rosem/container-service-provider-contract": "self.version",
+        "rosem/container-service-provider-util": "self.version",
         "rosem/debug-contract": "self.version",
         "rosem/hash": "self.version",
         "rosem/hash-contract": "self.version",

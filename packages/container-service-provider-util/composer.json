@@ -1,0 +1,43 @@
+{
+    "name": "rosem/container-service-provider-util",
+    "description": "Service provider utilities",
+    "keywords": [
+        "rosem",
+        "container",
+        "service",
+        "provider",
+        "util",
+        "service-provider",
+        "service-provider-util"
+    ],
+    "homepage": "https://rosem.space/container-service-provider-util",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "roshecode",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://rosem.space",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Component\\Container\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rosem\\Component\\Container\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
