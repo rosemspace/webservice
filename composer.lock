@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a1aeebd3f1b15e71e88755857a92fc6",
+    "content-hash": "73fa571b7dbf935238c53cf0a55c3a2a",
     "packages": [
         {
             "name": "danielstjules/stringy",

@@ -62,10 +62,10 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 MiddlewareCollectorInterface $middlewareCollector
             ): void {
-                $middlewareCollector->addDeferredMiddleware(
+                $middlewareCollector->addMiddleware(
                     $container->get(static::CONFIG_TYPE) === 'basic'
-                        ? BasicAuthenticationMiddleware::class
-                        : DigestAuthenticationMiddleware::class
+                        ? $container->get(BasicAuthenticationMiddleware::class)
+                        : $container->get(DigestAuthenticationMiddleware::class)
                 );
             },
         ];

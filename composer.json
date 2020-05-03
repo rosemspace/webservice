@@ -62,7 +62,10 @@
             "Rosem\\Contract\\Container\\": "packages/container-service-provider-contract/src",
             "Rosem\\Contract\\Debug\\": "packages/debug-contract/src",
             "Rosem\\Contract\\Hash\\": "packages/hash-contract/src",
-            "Rosem\\Contract\\Http\\Server\\": "packages/http-server-emitter-contract/src",
+            "Rosem\\Contract\\Http\\Server\\": [
+                "packages/http-server-emitter-contract/src",
+                "packages/http-server-middleware-contract/src"
+            ],
             "Rosem\\Contract\\Route\\": "packages/route-contract/src",
             "Rosem\\Contract\\Template\\": "packages/template-contract/src"
         }
@@ -105,6 +108,7 @@
         "rosem/http-server-emitter": "self.version",
         "rosem/http-server-emitter-contract": "self.version",
         "rosem/http-server-middleware": "self.version",
+        "rosem/http-server-middleware-contract": "self.version",
         "rosem/route": "self.version",
         "rosem/route-contract": "self.version",
         "rosem/template": "self.version",

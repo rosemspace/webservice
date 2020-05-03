@@ -2,6 +2,7 @@
 
 namespace Rosem\Component\Admin\Provider;
 
+use Fig\Http\Message\RequestMethodInterface as RequestMethod;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Component\Admin\Http\Server\{
@@ -9,9 +10,12 @@ use Rosem\Component\Admin\Http\Server\{
     LoginRequestHandler
 };
 use Rosem\Component\Authentication\Middleware\AuthenticationMiddleware;
+use Rosem\Component\Http\Server\MiddlewareCollector;
 use Rosem\Contract\Container\ServiceProviderInterface;
 use Rosem\Contract\Route\HttpRouteCollectorInterface;
 use Rosem\Contract\Template\TemplateRendererInterface;
+
+use function dirname;
 
 class AdminServiceProvider implements ServiceProviderInterface
 {
@@ -80,24 +84,21 @@ class AdminServiceProvider implements ServiceProviderInterface
             ): void {
                 $loggedInUri = '/' . trim($container->get(static::CONFIG_URI_LOGGED_IN), '/');
                 $loginUri = '/' . trim($container->get(static::CONFIG_URI_LOGIN), '/');
-                $middleware = null;
-                $adminAuthenticationMiddleware = static fn(
-                    ContainerInterface $container
-                ) => $container->get(AuthenticationMiddleware::class)
+                // @TODO make deferred
+                $authenticationMiddleware = $container->get(AuthenticationMiddleware::class)
                     ->withPasswordResolver($container->get(static::CONFIG_USER_RESOLVER_PASSWORD))
                     ->withLoggedInUri($loggedInUri)
                     ->withLoginUri($loginUri);
-                $routeCollector->get(
+                $routeCollector->addRoute(
+                    [RequestMethod::METHOD_GET, RequestMethod::METHOD_POST],
                     $loginUri,
-                    [LoginRequestHandler::class, [$adminAuthenticationMiddleware]]
-                );
-                $routeCollector->post(
-                    $loginUri,
-                    [LoginRequestHandler::class, [$adminAuthenticationMiddleware]]
+                    (new MiddlewareCollector($container->get(LoginRequestHandler::class)))
+                        ->addMiddleware($authenticationMiddleware)
                 );
                 $routeCollector->get(
                     $loggedInUri . '{adminPath:.*}',
-                    [AdminRequestHandler::class, [$adminAuthenticationMiddleware]]
+                    (new MiddlewareCollector($container->get(AdminRequestHandler::class)))
+                        ->addMiddleware($authenticationMiddleware)
                 );
             },
             TemplateRendererInterface::class => static function (
@@ -106,7 +107,7 @@ class AdminServiceProvider implements ServiceProviderInterface
             ): void {
                 $renderer->addPath(
                     dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR .
-                        'templates',
+                    'templates',
                     'admin'
                 );
                 $adminData = [

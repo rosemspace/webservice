@@ -67,7 +67,7 @@ class AuthenticationProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 MiddlewareCollectorInterface $middlewareCollector
             ) {
-                $middlewareCollector->addDeferredMiddleware(SessionMiddleware::class);
+                $middlewareCollector->addMiddleware($container->get(SessionMiddleware::class));
             },
         ];
     }
@@ -89,6 +89,7 @@ class AuthenticationProvider implements ServiceProviderInterface
             \Dflydev\FigCookies\SetCookie::create('session')
                 ->withSecure(PHP_SAPI !== 'cli-server')
                 ->withHttpOnly(true)
+                ->withSameSite(\Dflydev\FigCookies\Modifier\SameSite::lax())
                 ->withPath('/admin'), // todo: use config
             new \Lcobucci\JWT\Parser(),
             20 * 60, // 20 minutes,

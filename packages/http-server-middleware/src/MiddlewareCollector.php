@@ -19,11 +19,6 @@ use Rosem\Contract\Http\Server\MiddlewareCollectorInterface;
 class MiddlewareCollector implements MiddlewareCollectorInterface
 {
     /**
-     * @var ContainerInterface
-     */
-    protected ContainerInterface $container;
-
-    /**
      * @var RequestHandlerInterface
      */
     protected RequestHandlerInterface $finalHandler;
@@ -38,9 +33,8 @@ class MiddlewareCollector implements MiddlewareCollectorInterface
      */
     protected $lastHandler;
 
-    public function __construct(ContainerInterface $container, RequestHandlerInterface $finalHandler)
+    public function __construct(RequestHandlerInterface $finalHandler)
     {
-        $this->container = $container;
         $this->handlerQueue = $this->finalHandler = $finalHandler;
     }
 
@@ -126,7 +120,7 @@ class MiddlewareCollector implements MiddlewareCollectorInterface
                     );
                 }
 
-//                $this->container->set(\Psr\Http\Message\ServerRequestInterface::class, $request);
+                //                $this->container->set(\Psr\Http\Message\ServerRequestInterface::class, $request);
 
                 return $middlewareInstance->process($request, $this->nextHandler);
             }
@@ -145,30 +139,17 @@ class MiddlewareCollector implements MiddlewareCollectorInterface
     /**
      * @inheritDoc
      */
-    public function addMiddleware(MiddlewareInterface $middleware): void
+    public function addMiddleware(MiddlewareInterface $middleware): self
     {
         $this->initializeQueue();
         $this->lastHandler = $this->createRequestHandlerFromMiddleware($middleware);
         $this->lastHandler->nextHandler = $this->finalHandler;
+
+        return $this;
     }
 
     /**
-     * @param string           $middleware
-     * @param int|float|string $priority
-     *
-     * @todo: priority functionality
-     */
-    public function addDeferredMiddleware(string $middleware, $priority = 0): void
-    {
-        $this->initializeQueue();
-        $this->lastHandler = $this->createDeferredRequestHandlerFromMiddleware($middleware);
-        $this->lastHandler->nextHandler = $this->finalHandler;
-    }
-
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface
+     * @inheritDoc
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

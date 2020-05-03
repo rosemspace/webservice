@@ -49,7 +49,8 @@ class MiddlewareProvider implements ServiceProviderInterface
                 MiddlewareCollectorInterface $middlewareCollector
             ) {
                 if ($container->has(TemplateRendererInterface::class)) {
-                    $middlewareCollector->addDeferredMiddleware(ErrorMiddleware::class);
+                    // @TODO make it deferred if an application API based only
+                    $middlewareCollector->addMiddleware($container->get(ErrorMiddleware::class));
                 }
             },
         ];
@@ -57,10 +58,7 @@ class MiddlewareProvider implements ServiceProviderInterface
 
     public function createMiddlewareCollector(ContainerInterface $container): MiddlewareCollector
     {
-        return new MiddlewareCollector(
-            $container,
-            $container->get(InternalServerErrorRequestHandler::class)
-        );
+        return new MiddlewareCollector($container->get(InternalServerErrorRequestHandler::class));
     }
 
     public function createInternalServerErrorRequestHandler(

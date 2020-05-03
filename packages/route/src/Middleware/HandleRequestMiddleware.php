@@ -87,7 +87,6 @@ class HandleRequestMiddleware implements MiddlewareInterface
 
             if (!empty($requestData[static::KEY_MIDDLEWARE])) {
                 $requestHandler = new MiddlewareCollector(
-                    $this->container,
                     $this->container->get($requestData[static::KEY_HANDLER_OR_ALLOWED_METHODS])
                 );
 
