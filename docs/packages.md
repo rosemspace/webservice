@@ -1,2 +1,0 @@
-- `maciejczyzewski/bottomline` - a full-on PHP manipulation utility belt; a lodash or underscore equivalent for PHP
-- `markrogoyski/math-php` - Powerful modern math library for PHP
