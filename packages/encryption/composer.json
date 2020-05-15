@@ -1,0 +1,45 @@
+{
+    "name": "rosem/encryption",
+    "description": "Encryption library",
+    "keywords": [
+        "rosem",
+        "encrypt",
+        "encryptor",
+        "encryption"
+    ],
+    "homepage": "https://rosem.space/encryption",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "roshecode",
+            "email": "iroman.via@gmail.com",
+            "homepage": "https://rosem.space",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "symfony/console": "^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "roave/security-advisories": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rosem\\Component\\Encryption\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rosem\\Component\\Encryption\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

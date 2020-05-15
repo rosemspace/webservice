@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73fa571b7dbf935238c53cf0a55c3a2a",
+    "content-hash": "b0a85b72474b2f03e197c46be0069b59",
     "packages": [
         {
             "name": "danielstjules/stringy",
@@ -2084,24 +2084,24 @@
         },
         {
             "name": "psr7-sessions/storageless",
-            "version": "5.1.0",
+            "version": "7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psr7-sessions/storageless.git",
-                "reference": "9ca6ba69d0091f4f9e842bb699e348e7070fcebd"
+                "reference": "c22a5d2437d2e5a768a0e097842d9b1e447d2297"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psr7-sessions/storageless/zipball/9ca6ba69d0091f4f9e842bb699e348e7070fcebd",
-                "reference": "9ca6ba69d0091f4f9e842bb699e348e7070fcebd",
+                "url": "https://api.github.com/repos/psr7-sessions/storageless/zipball/c22a5d2437d2e5a768a0e097842d9b1e447d2297",
+                "reference": "c22a5d2437d2e5a768a0e097842d9b1e447d2297",
                 "shasum": ""
             },
             "require": {
-                "dflydev/fig-cookies": "^2.0.0",
+                "dflydev/fig-cookies": "^2.0.1",
                 "ext-json": "*",
-                "lcobucci/clock": "^1.2.0",
+                "lcobucci/clock": "^1.3.0",
                 "lcobucci/jwt": "^3.3.1",
-                "php": "^7.2",
+                "php": "^7.4",
                 "psr/http-message": "^1.0.1",
                 "psr/http-server-handler": "^1.0.1",
                 "psr/http-server-middleware": "^1.0.1"
@@ -2110,15 +2110,15 @@
                 "ocramius/psr7-session": "self.version"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^6.0.0",
-                "infection/infection": "^0.13.4",
-                "phpstan/phpstan": "^0.11.12",
+                "doctrine/coding-standard": "^7.0.2",
+                "infection/infection": "^0.16.1",
+                "laminas/laminas-diactoros": "^2.2.3",
+                "laminas/laminas-httphandlerrunner": "^1.1.0",
+                "phpstan/phpstan": "^0.11.19",
                 "phpstan/phpstan-phpunit": "^0.11.2",
                 "phpstan/phpstan-strict-rules": "^0.11.1",
-                "phpunit/phpunit": "^8.3.3",
-                "squizlabs/php_codesniffer": "^3.4.2",
-                "zendframework/zend-diactoros": "^2.1.3",
-                "zendframework/zend-httphandlerrunner": "^1.1.0"
+                "phpunit/phpunit": "^9.0.2",
+                "squizlabs/php_codesniffer": "^3.5.4"
             },
             "type": "library",
             "autoload": {
@@ -2149,7 +2149,7 @@
                 }
             ],
             "description": "Storageless PSR-7 Session support",
-            "time": "2019-08-11T00:16:00+00:00"
+            "time": "2020-04-10T10:22:54+00:00"
         },
         {
             "name": "symfony/console",
@@ -3257,16 +3257,16 @@
         },
         {
             "name": "filp/whoops",
-            "version": "2.7.1",
+            "version": "2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "fff6f1e4f36be0e0d0b84d66b413d9dcb0c49130"
+                "reference": "17d0d3f266c8f925ebd035cd36f83cf802b47d4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/fff6f1e4f36be0e0d0b84d66b413d9dcb0c49130",
-                "reference": "fff6f1e4f36be0e0d0b84d66b413d9dcb0c49130",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/17d0d3f266c8f925ebd035cd36f83cf802b47d4a",
+                "reference": "17d0d3f266c8f925ebd035cd36f83cf802b47d4a",
                 "shasum": ""
             },
             "require": {
@@ -3314,7 +3314,7 @@
                 "throwable",
                 "whoops"
             ],
-            "time": "2020-01-15T10:00:00+00:00"
+            "time": "2020-05-05T12:28:07+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -3368,20 +3368,20 @@
         },
         {
             "name": "hamcrest/hamcrest-php",
-            "version": "v1.2.2",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hamcrest/hamcrest-php.git",
-                "reference": "b37020aa976fa52d3de9aa904aa2522dc518f79c"
+                "reference": "776503d3a8e85d4f9a1148614f95b7a608b046ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hamcrest/hamcrest-php/zipball/b37020aa976fa52d3de9aa904aa2522dc518f79c",
-                "reference": "b37020aa976fa52d3de9aa904aa2522dc518f79c",
+                "url": "https://api.github.com/repos/hamcrest/hamcrest-php/zipball/776503d3a8e85d4f9a1148614f95b7a608b046ad",
+                "reference": "776503d3a8e85d4f9a1148614f95b7a608b046ad",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": "^5.3|^7.0"
             },
             "replace": {
                 "cordoval/hamcrest-php": "*",
@@ -3390,15 +3390,18 @@
             },
             "require-dev": {
                 "phpunit/php-file-iterator": "1.3.3",
-                "satooshi/php-coveralls": "dev-master"
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "^1.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "hamcrest"
-                ],
-                "files": [
-                    "hamcrest/Hamcrest.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3409,7 +3412,7 @@
             "keywords": [
                 "test"
             ],
-            "time": "2015-05-11T14:41:42+00:00"
+            "time": "2016-01-20T08:20:44+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -3549,30 +3552,30 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "0.9.11",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "be9bf28d8e57d67883cba9fcadfcff8caab667f8"
+                "reference": "f69bbde7d7a75d6b2862d9ca8fab1cd28014b4be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/be9bf28d8e57d67883cba9fcadfcff8caab667f8",
-                "reference": "be9bf28d8e57d67883cba9fcadfcff8caab667f8",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/f69bbde7d7a75d6b2862d9ca8fab1cd28014b4be",
+                "reference": "f69bbde7d7a75d6b2862d9ca8fab1cd28014b4be",
                 "shasum": ""
             },
             "require": {
-                "hamcrest/hamcrest-php": "~1.1",
+                "hamcrest/hamcrest-php": "~2.0",
                 "lib-pcre": ">=7.0",
-                "php": ">=5.3.2"
+                "php": ">=5.6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "~5.7.10|~6.5|~7.0|~8.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.9.x-dev"
+                    "dev-master": "1.3.x-dev"
                 }
             },
             "autoload": {
@@ -3596,8 +3599,8 @@
                     "homepage": "http://davedevelopment.co.uk"
                 }
             ],
-            "description": "Mockery is a simple yet flexible PHP mock object framework for use in unit testing with PHPUnit, PHPSpec or any other testing framework. Its core goal is to offer a test double framework with a succinct API capable of clearly defining all possible object operations and interactions using a human readable Domain Specific Language (DSL). Designed as a drop in alternative to PHPUnit's phpunit-mock-objects library, Mockery is easy to integrate with PHPUnit and can operate alongside phpunit-mock-objects without the World ending.",
-            "homepage": "http://github.com/padraic/mockery",
+            "description": "Mockery is a simple yet flexible PHP mock object framework",
+            "homepage": "https://github.com/mockery/mockery",
             "keywords": [
                 "BDD",
                 "TDD",
@@ -3610,7 +3613,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2019-02-12T16:07:13+00:00"
+            "time": "2019-12-26T09:49:15+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -4611,12 +4614,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "478dd17a48d0eb007ff854f4b885034df5db7c29"
+                "reference": "f46390d28af4fdb07c09d9aabf4c4e35149a7a08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/478dd17a48d0eb007ff854f4b885034df5db7c29",
-                "reference": "478dd17a48d0eb007ff854f4b885034df5db7c29",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/f46390d28af4fdb07c09d9aabf4c4e35149a7a08",
+                "reference": "f46390d28af4fdb07c09d9aabf4c4e35149a7a08",
                 "shasum": ""
             },
             "conflict": {
@@ -4706,7 +4709,7 @@
                 "magento/product-community-edition": ">=2,<2.2.10|>=2.3,<2.3.2-p.2",
                 "monolog/monolog": ">=1.8,<1.12",
                 "namshi/jose": "<2.2",
-                "nzo/url-encryptor-bundle": "<5.0.1",
+                "nzo/url-encryptor-bundle": ">=4,<4.3.2|>=5,<5.0.1",
                 "onelogin/php-saml": "<2.10.4",
                 "oneup/uploader-bundle": "<1.9.3|>=2,<2.1.5",
                 "openid/php-openid": "<2.3",
@@ -4870,7 +4873,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2020-05-03T18:57:18+00:00"
+            "time": "2020-05-04T14:37:25+00:00"
         },
         {
             "name": "sebastian/code-unit",
@@ -6703,16 +6706,16 @@
         },
         {
             "name": "symplify/auto-bind-parameter",
-            "version": "v7.3.5",
+            "version": "v7.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/auto-bind-parameter.git",
-                "reference": "ce09281792f008fc4c5c7e910fa70927d8316d00"
+                "reference": "cb48d93687a02a1b3f1a80994d963f5bde14dbaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/auto-bind-parameter/zipball/ce09281792f008fc4c5c7e910fa70927d8316d00",
-                "reference": "ce09281792f008fc4c5c7e910fa70927d8316d00",
+                "url": "https://api.github.com/repos/symplify/auto-bind-parameter/zipball/cb48d93687a02a1b3f1a80994d963f5bde14dbaf",
+                "reference": "cb48d93687a02a1b3f1a80994d963f5bde14dbaf",
                 "shasum": ""
             },
             "require": {
@@ -6723,7 +6726,7 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5|^9.0",
-                "symplify/package-builder": "^7.3.5"
+                "symplify/package-builder": "^7.3.9"
             },
             "type": "library",
             "extra": {
@@ -6741,27 +6744,27 @@
                 "MIT"
             ],
             "description": "Auto bind parameters for your Symfony applications",
-            "time": "2020-05-03T13:42:28+00:00"
+            "time": "2020-05-05T14:12:32+00:00"
         },
         {
             "name": "symplify/autowire-array-parameter",
-            "version": "v7.3.5",
+            "version": "v7.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/autowire-array-parameter.git",
-                "reference": "7a536bfd052a9798df295a14aecbd983560e9a6c"
+                "reference": "fabc0fb3797257b0399c1496bd1e74de4ded0398"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/autowire-array-parameter/zipball/7a536bfd052a9798df295a14aecbd983560e9a6c",
-                "reference": "7a536bfd052a9798df295a14aecbd983560e9a6c",
+                "url": "https://api.github.com/repos/symplify/autowire-array-parameter/zipball/fabc0fb3797257b0399c1496bd1e74de4ded0398",
+                "reference": "fabc0fb3797257b0399c1496bd1e74de4ded0398",
                 "shasum": ""
             },
             "require": {
                 "nette/utils": "^3.0",
                 "php": "^7.2",
                 "symfony/dependency-injection": "^4.4|^5.0",
-                "symplify/package-builder": "^7.3.5"
+                "symplify/package-builder": "^7.3.9"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5|^9.0"
@@ -6782,20 +6785,20 @@
                 "MIT"
             ],
             "description": "Autowire array parameters for your Symfony applications",
-            "time": "2020-05-03T13:42:28+00:00"
+            "time": "2020-05-05T14:12:32+00:00"
         },
         {
             "name": "symplify/composer-json-manipulator",
-            "version": "v7.3.5",
+            "version": "v7.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/composer-json-manipulator.git",
-                "reference": "24d1a14f2bf95fd32a7da2025861dca8c782784b"
+                "reference": "2cacc4b5e55905f63b3fd76d1df800a6d920aa88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/composer-json-manipulator/zipball/24d1a14f2bf95fd32a7da2025861dca8c782784b",
-                "reference": "24d1a14f2bf95fd32a7da2025861dca8c782784b",
+                "url": "https://api.github.com/repos/symplify/composer-json-manipulator/zipball/2cacc4b5e55905f63b3fd76d1df800a6d920aa88",
+                "reference": "2cacc4b5e55905f63b3fd76d1df800a6d920aa88",
                 "shasum": ""
             },
             "require": {
@@ -6806,8 +6809,8 @@
                 "symfony/dependency-injection": "^4.4|^5.0",
                 "symfony/filesystem": "^4.4|^5.0",
                 "symfony/http-kernel": "^4.4|^5.0",
-                "symplify/package-builder": "^7.3.5",
-                "symplify/smart-file-system": "^7.3.5"
+                "symplify/package-builder": "^7.3.9",
+                "symplify/smart-file-system": "^7.3.9"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5|^9.0"
@@ -6828,20 +6831,20 @@
                 "MIT"
             ],
             "description": "Package to load, merge and save composer.json file(s)",
-            "time": "2020-05-03T13:42:28+00:00"
+            "time": "2020-05-05T14:12:32+00:00"
         },
         {
             "name": "symplify/monorepo-builder",
-            "version": "v7.3.5",
+            "version": "v7.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/monorepo-builder.git",
-                "reference": "b787b88fd1d4dfa57fabdf321b03542c736455f5"
+                "reference": "758468ea51a7e4be020a849a9883a9bb6595b775"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/monorepo-builder/zipball/b787b88fd1d4dfa57fabdf321b03542c736455f5",
-                "reference": "b787b88fd1d4dfa57fabdf321b03542c736455f5",
+                "url": "https://api.github.com/repos/symplify/monorepo-builder/zipball/758468ea51a7e4be020a849a9883a9bb6595b775",
+                "reference": "758468ea51a7e4be020a849a9883a9bb6595b775",
                 "shasum": ""
             },
             "require": {
@@ -6852,12 +6855,12 @@
                 "symfony/console": "^4.4|^5.0",
                 "symfony/dependency-injection": "^4.4|^5.0",
                 "symfony/finder": "^4.4|^5.0",
-                "symplify/auto-bind-parameter": "^7.3.5",
-                "symplify/autowire-array-parameter": "^7.3.5",
-                "symplify/composer-json-manipulator": "^7.3.5",
-                "symplify/package-builder": "^7.3.5",
-                "symplify/set-config-resolver": "^7.3.5",
-                "symplify/smart-file-system": "^7.3.5"
+                "symplify/auto-bind-parameter": "^7.3.9",
+                "symplify/autowire-array-parameter": "^7.3.9",
+                "symplify/composer-json-manipulator": "^7.3.9",
+                "symplify/package-builder": "^7.3.9",
+                "symplify/set-config-resolver": "^7.3.9",
+                "symplify/smart-file-system": "^7.3.9"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5|^9.0"
@@ -6886,20 +6889,20 @@
                 "MIT"
             ],
             "description": "Not only Composer tools to build a Monorepo.",
-            "time": "2020-05-03T13:42:28+00:00"
+            "time": "2020-05-05T14:12:32+00:00"
         },
         {
             "name": "symplify/package-builder",
-            "version": "v7.3.5",
+            "version": "v7.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/package-builder.git",
-                "reference": "3a98b6e7a1bfb2e07d8782258d6e0fd11912d0c6"
+                "reference": "5d06e6b923161ce4d1fb556fbea88e6a942ce89a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/package-builder/zipball/3a98b6e7a1bfb2e07d8782258d6e0fd11912d0c6",
-                "reference": "3a98b6e7a1bfb2e07d8782258d6e0fd11912d0c6",
+                "url": "https://api.github.com/repos/symplify/package-builder/zipball/5d06e6b923161ce4d1fb556fbea88e6a942ce89a",
+                "reference": "5d06e6b923161ce4d1fb556fbea88e6a942ce89a",
                 "shasum": ""
             },
             "require": {
@@ -6932,20 +6935,20 @@
                 "MIT"
             ],
             "description": "Dependency Injection, Console and Kernel toolkit for Symplify packages.",
-            "time": "2020-05-02T15:03:34+00:00"
+            "time": "2020-05-04T10:14:30+00:00"
         },
         {
             "name": "symplify/set-config-resolver",
-            "version": "v7.3.5",
+            "version": "v7.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/set-config-resolver.git",
-                "reference": "f7a80d9dfbba2ba7de6c5660024e546d56aade31"
+                "reference": "7213c227fe016ff8c8d163af974fb63713d0c05b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/set-config-resolver/zipball/f7a80d9dfbba2ba7de6c5660024e546d56aade31",
-                "reference": "f7a80d9dfbba2ba7de6c5660024e546d56aade31",
+                "url": "https://api.github.com/repos/symplify/set-config-resolver/zipball/7213c227fe016ff8c8d163af974fb63713d0c05b",
+                "reference": "7213c227fe016ff8c8d163af974fb63713d0c05b",
                 "shasum": ""
             },
             "require": {
@@ -6954,7 +6957,7 @@
                 "symfony/console": "^4.4|^5.0",
                 "symfony/filesystem": "^4.4|^5.0",
                 "symfony/finder": "^4.4|^5.0",
-                "symplify/smart-file-system": "^7.3.5"
+                "symplify/smart-file-system": "^7.3.9"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5|^9.0"
@@ -6975,20 +6978,20 @@
                 "MIT"
             ],
             "description": "Resolve config and sets from configs and cli opptions for CLI applications",
-            "time": "2020-05-03T13:42:28+00:00"
+            "time": "2020-05-05T14:12:32+00:00"
         },
         {
             "name": "symplify/smart-file-system",
-            "version": "v7.3.5",
+            "version": "v7.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/smart-file-system.git",
-                "reference": "01d01be98dbd8c65bd4a6a81e981f3b52c59ca0f"
+                "reference": "d1edb4801a271eb54ee2de6996a24fc40d3c2158"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/smart-file-system/zipball/01d01be98dbd8c65bd4a6a81e981f3b52c59ca0f",
-                "reference": "01d01be98dbd8c65bd4a6a81e981f3b52c59ca0f",
+                "url": "https://api.github.com/repos/symplify/smart-file-system/zipball/d1edb4801a271eb54ee2de6996a24fc40d3c2158",
+                "reference": "d1edb4801a271eb54ee2de6996a24fc40d3c2158",
                 "shasum": ""
             },
             "require": {
@@ -7018,7 +7021,7 @@
                 "MIT"
             ],
             "description": "Sanitized FileInfo with safe getRealPath() and other handy methods",
-            "time": "2020-05-01T22:34:00+00:00"
+            "time": "2020-05-02T01:47:18+00:00"
         },
         {
             "name": "theseer/tokenizer",

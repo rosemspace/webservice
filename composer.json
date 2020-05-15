@@ -11,12 +11,13 @@
         "league/flysystem": "^1.0",
         "league/plates": "dev-master",
         "monolog/monolog": "^2.0",
-        "nesbot/carbon": "^2.29",
+        "nesbot/carbon": "^2.33",
         "psr/container": "^1.0",
         "psr/http-factory": "^1.0",
         "psr/http-message": "^1.0",
         "psr/http-server-handler": "^1.0",
-        "psr7-sessions/storageless": "^5.1",
+        "psr7-sessions/storageless": "^7.0",
+        "symfony/console": "^5.0",
         "symfony/finder": "^5.0",
         "symfony/polyfill-mbstring": "1.15.*",
         "tedivm/stash": "0.15.*",
@@ -29,7 +30,7 @@
         "filp/whoops": "^2.7",
         "fzaninotto/faker": "~1.9",
         "kint-php/kint": "^3.2",
-        "mockery/mockery": "0.9.*",
+        "mockery/mockery": "1.3.*",
         "nikic/fast-route": "1.3.*",
         "phpunit/phpunit": "^9.0",
         "roave/security-advisories": "dev-master",
@@ -48,6 +49,8 @@
                 "packages/container-service-provider-util/src",
                 "packages/container/src"
             ],
+            "Rosem\\Component\\Encryption\\": "packages/encryption/src",
+            "Rosem\\Component\\Filesystem\\": "packages/filesystem/src",
             "Rosem\\Component\\Hash\\": "packages/hash/src",
             "Rosem\\Component\\Http\\Authentication\\": "packages/http-authentication/src",
             "Rosem\\Component\\Http\\Server\\": [
@@ -67,7 +70,8 @@
                 "packages/http-server-middleware-contract/src"
             ],
             "Rosem\\Contract\\Route\\": "packages/route-contract/src",
-            "Rosem\\Contract\\Template\\": "packages/template-contract/src"
+            "Rosem\\Contract\\Template\\": "packages/template-contract/src",
+            "Rosem\\Utility\\Filesystem\\": "packages/filesystem-util/src"
         }
     },
     "autoload-dev": {
@@ -79,6 +83,8 @@
                 "packages/container-service-provider-util/tests",
                 "packages/container/tests"
             ],
+            "Rosem\\Component\\Encryption\\Tests\\": "packages/encryption/tests",
+            "Rosem\\Component\\Filesystem\\Tests\\": "packages/filesystem/tests",
             "Rosem\\Component\\Hash\\Tests\\": "packages/hash/tests",
             "Rosem\\Component\\Http\\Authentication\\Tests\\": "packages/http-authentication/tests",
             "Rosem\\Component\\Http\\Server\\Tests\\": [
@@ -87,7 +93,8 @@
                 "packages/http-server/tests"
             ],
             "Rosem\\Component\\Route\\Tests\\": "packages/route/tests",
-            "Rosem\\Component\\Template\\Tests\\": "packages/template/tests"
+            "Rosem\\Component\\Template\\Tests\\": "packages/template/tests",
+            "Rosem\\Utility\\Filesystem\\Tests\\": "packages/filesystem-util/tests"
         }
     },
     "replace": {
@@ -100,6 +107,9 @@
         "rosem/container-service-provider-contract": "self.version",
         "rosem/container-service-provider-util": "self.version",
         "rosem/debug-contract": "self.version",
+        "rosem/encryption": "self.version",
+        "rosem/filesystem": "self.version",
+        "rosem/filesystem-util": "self.version",
         "rosem/hash": "self.version",
         "rosem/hash-contract": "self.version",
         "rosem/http": "self.version",
