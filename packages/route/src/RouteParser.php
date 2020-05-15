@@ -39,7 +39,7 @@ class RouteParser implements RouteParserInterface
 
     public function __construct(array $config = [])
     {
-        //@TODO RouteParserConfig class
+        //@TODO RouteParserBuilder class
         $this->utf8 ??= $config['utf8'];
         $this->delimiter ??= $config['delimiter'];
         $this->variableTokens ??= (array)$config['variableTokens'];
@@ -47,13 +47,13 @@ class RouteParser implements RouteParserInterface
         $this->optionalSegmentTokens ??= $config['optionalSegmentTokens'];
         $this->defaultDispatchRegExp = $config['dispatchRegExp'] ?? "[^$this->delimiter]++";
         $nameRegExp = $this->utf8 ? '[[:alpha:]_][[:alnum:]_-]*' : '[a-zA-Z_][a-zA-Z0-9_-]*';
-        // (?<!\\\\){\s*(?P<name>[a-zA-Z_][a-zA-Z0-9_-]*)\s*:?(?P<regExp>[^\/]*?[^{]*)(?<!\\\\)}
+        // ~(?<!\\\\){\s*(?P<name>[a-zA-Z_][a-zA-Z0-9_-]*)\s*:?(?P<regExp>.*?(?:[^{]|\\\\{)*)(?<!\\\\)}~sx
         $this->variableSegmentRegExp = self::REGEXP_DELIMITER .
             self::escape(
                 <<<REGEXP
                 (?<!\\\\){$this->variableTokens[0]}\s*
                 (?P<name>$nameRegExp)?\s*$this->variableRegExpToken?
-                (?P<regExp>[^/]*?[^{$this->variableTokens[0]}]*)
+                (?P<regExp>.*?(?:[^{$this->variableTokens[0]}]|\\\\{$this->variableTokens[0]})*)
                 REGEXP,
                 self::REGEXP_DELIMITER
             );
@@ -70,7 +70,7 @@ class RouteParser implements RouteParserInterface
             preg_quote($this->optionalSegmentTokens[0], self::REGEXP_DELIMITER);
         $this->optionalSegmentCloseRegExp = $regExpPart .
             preg_quote($this->optionalSegmentTokens[1], self::REGEXP_DELIMITER);
-        $regExpPart = self::REGEXP_DELIMITER . 'x';
+        $regExpPart = self::REGEXP_DELIMITER . 'sx';
         $this->variableSegmentRegExp .= $regExpPart;
         $this->optionalSegmentOpenRegExp .= $regExpPart;
         $this->optionalSegmentCloseRegExp .= $regExpPart;
@@ -151,10 +151,10 @@ class RouteParser implements RouteParserInterface
                 if (empty($matches['regExp'])) {
                     $variableRegExp = $this->defaultDispatchRegExp;
                 } else {
-                    $variableRegExp = self::escape($matches[2], self::REGEXP_DELIMITER);
+                    $variableRegExp = self::escape($matches['regExp'], self::REGEXP_DELIMITER);
 
                     if (!Regex::isValid(self::REGEXP_DELIMITER . $variableRegExp . self::REGEXP_DELIMITER)) {
-                        throw BadRouteException::dueToInvalidVariableRegExp($matches[2], $variableName);
+                        throw BadRouteException::dueToInvalidVariableRegExp($matches['regExp'], $variableName);
                     }
                 }
 

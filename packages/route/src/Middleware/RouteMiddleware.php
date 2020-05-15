@@ -16,6 +16,8 @@ use Psr\Http\Server\{
 };
 use Rosem\Component\Route\Contract\RouteDispatcherInterface;
 
+use function rawurldecode;
+
 class RouteMiddleware implements MiddlewareInterface
 {
     protected const KEY_STATUS = 0;
@@ -64,7 +66,10 @@ class RouteMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $nextHandler): ResponseInterface
     {
         //todo add scheme and host support
-        $route = $this->routeDispatcher->dispatch($request->getMethod(), $request->getUri()->getPath());
+        $route = $this->routeDispatcher->dispatch(
+            $request->getMethod(),
+            rawurldecode($request->getUri()->getPath())
+        );
 
         switch ($route[static::KEY_STATUS]) {
             case RouteDispatcherInterface::NOT_FOUND:
