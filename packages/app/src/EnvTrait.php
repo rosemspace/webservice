@@ -4,6 +4,9 @@ namespace Rosem\Component\App;
 
 use Dotenv\Dotenv;
 
+use function getenv;
+use function is_array;
+
 trait EnvTrait
 {
     /**
@@ -16,9 +19,9 @@ trait EnvTrait
      */
     protected bool $envLoaded = false;
 
-    protected function createEnv($path, $file = '.env'): void
+    protected function createEnv($path, $files = '.env'): void
     {
-        $this->env = Dotenv::createImmutable($path, $file);
+        $this->env = Dotenv::createImmutable($path, $files);
     }
 
     public function loadEnv(): void
@@ -36,11 +39,15 @@ trait EnvTrait
     /**
      * @param string|null $id
      *
-     * @return string[]|string|boolean|null
+     * @return string[]|string|bool|null
      */
     public function getEnv(?string $id)
     {
         $env = getenv($id);
+
+        if (is_array($env)) {
+            return $_ENV;
+        }
 
         switch ($env) {
             case 'true':

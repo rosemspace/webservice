@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+use function Rosem\Component\App\findUp;
+
 const APP_NAME = 'Rosem application console';
 const PHP_VERSION_SUPPORTED = '7.4.0';
 
@@ -19,7 +21,7 @@ if (version_compare(PHP_VERSION_SUPPORTED, PHP_VERSION, '>')) {
     die(1);
 }
 
-// Check if this file run as CLI application
+// Check if this file run as a CLI application
 if (PHP_SAPI !== 'cli') {
     fwrite(
         STDERR,
@@ -34,9 +36,9 @@ if (!ini_get('date.timezone')) {
 }
 
 // Require an autoload file
-require_once __DIR__ . '/findAutoloadFile.php';
+require_once __DIR__ . '/findUp.php';
 
-$autoloadFile = findAutoloadFile(__DIR__, 6);
+$autoloadFile = findUp(__DIR__, 'vendor/autoload.php', 6);
 
 if ($autoloadFile === null) {
     fwrite(

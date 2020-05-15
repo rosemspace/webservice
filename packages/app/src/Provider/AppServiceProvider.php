@@ -83,7 +83,7 @@ class AppServiceProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 HttpRouteCollectorInterface $routeCollector
             ): void {
-                $routeCollector->get('/[home]', HomeRequestHandler::class);
+                $routeCollector->get('/[home[page]]', HomeRequestHandler::class);
             },
         ];
     }

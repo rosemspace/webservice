@@ -100,6 +100,7 @@ class App implements AppInterface, InspectableInterface
 
         $this->environment = $this->getEnv(AppEnvKey::ENV) ?? '';
         $debug = $this->getEnv(AppEnvKey::DEBUG);
+//        var_dump(getenv());
         $this->debug = $debug === 'auto'
             ? $this->environment === AppEnv::DEVELOPMENT
             : $debug;
@@ -108,9 +109,11 @@ class App implements AppInterface, InspectableInterface
             $this->version = $this->getEnv(AppEnvKey::VERSION) ?? '';
         }
 
-        if ($this->debug) {
+        if ($this->environment && $this->environment !== AppEnv::PRODUCTION && $this->debug) {
             ini_set('display_errors', 'true');
             ini_set('display_startup_errors', 'true');
+            ini_set('scream.enabled', true);
+            ini_set('xdebug.scream', true);
             error_reporting(E_ALL);
 
             if ($exceptionThrown) {
