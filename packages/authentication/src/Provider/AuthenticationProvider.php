@@ -81,18 +81,27 @@ class AuthenticationProvider implements ServiceProviderInterface
 
         // TODO: add validation for symmetric key
         $symmetricKey = $container->get(static::CONFIG_SYMMETRIC_KEY);
+        $sessionCookieName = 'session';
+//        $sessionCookieExpirationTime = $container->get('ADMIN_SESSION_LIFETIME');
+        $sessionCookieExpirationTime = 20 * 60; // 20 minutes
+        $secureCookie = false;
+
+        if (PHP_SAPI !== 'cli-server') {
+            $sessionCookieName = "__Secure-$sessionCookieName";
+            $secureCookie = true;
+        }
 
         return new SessionMiddleware(
             new \Lcobucci\JWT\Signer\Hmac\Sha256(),
             $symmetricKey,
             $symmetricKey,
-            \Dflydev\FigCookies\SetCookie::create('session')
-                ->withSecure(PHP_SAPI !== 'cli-server')
+            \Dflydev\FigCookies\SetCookie::create($sessionCookieName)
+                ->withSecure($secureCookie)
                 ->withHttpOnly(true)
                 ->withSameSite(\Dflydev\FigCookies\Modifier\SameSite::lax())
                 ->withPath('/admin'), // todo: use config
             new \Lcobucci\JWT\Parser(),
-            20 * 60, // 20 minutes,
+            $sessionCookieExpirationTime,
             new \Lcobucci\Clock\SystemClock()
         );
     }

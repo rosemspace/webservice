@@ -28,7 +28,11 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            static::CONFIG_REALM => static fn(ContainerInterface $container) => null, //$app->getEnv('AUTH_HTTP_REALM');,
+            //@TODO constants
+            static::CONFIG_REALM => static fn(ContainerInterface $container) =>
+                $container->has('AUTH_HTTP_REALM')
+                    ? $container->get('AUTH_HTTP_REALM')
+                    : $container->get('APP_NAME'),
             static::CONFIG_TYPE => static fn(): string => 'digest',
             static::CONFIG_USER_PASSWORD_RESOLVER => static function (ContainerInterface $container): callable {
                 return static function (string $username) use (&$container): ?string {

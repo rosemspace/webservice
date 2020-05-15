@@ -12,7 +12,7 @@ use Psr\Http\Server\{
     RequestHandlerInterface
 };
 
-class AggregatedMiddleware implements MiddlewareInterface
+class AggregateMiddleware implements MiddlewareInterface
 {
     /**
      * Container instance.
