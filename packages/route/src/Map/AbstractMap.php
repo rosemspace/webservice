@@ -8,6 +8,7 @@ use Rosem\Component\Route\Contract\{
     RouteDispatcherInterface,
     RouteParserInterface
 };
+use Rosem\Component\Route\Exception\BadRouteException;
 use Rosem\Contract\Route\RouteCollectorInterface;
 
 use function array_keys;
@@ -154,8 +155,10 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
     private function addStaticRoute(string $scope, string $route, $resource): void
     {
         if (isset($this->staticRouteMap[$route][$scope])) {
-            // todo required: throw an error for the same scope
+            throw BadRouteException::forDuplicatedRoute($route, $scope);
         }
+
+        // todo dynamic route shadow checking
 
         // todo optimization: add reference if resource is same
         $this->staticRouteMap[$route][$scope] = $resource;

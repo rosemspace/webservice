@@ -7,8 +7,11 @@ namespace Rosem\Component\Route\Map;
 use InvalidArgumentException;
 use Rosem\Component\Route\{
     Contract\RouteParserInterface,
+    Exception\BadRouteException,
     Exception\TooLongRouteException,
-    RegexNode
+    Regex,
+    RegexNode,
+    RouteParser
 };
 
 use function count;
@@ -164,6 +167,7 @@ abstract class AbstractRegexBasedMap extends AbstractMap
         } catch (TooLongRouteException $exception) {
             // TODO: add rollback
             //$this->variableRouteMap[$method]->rollback();
+            //$this->regexTree->rollback();
             $this->createVariableRouteChunk($scope);
             $this->saveVariableRoute($scope, $parsedRoute, $resource);
         }
@@ -172,18 +176,20 @@ abstract class AbstractRegexBasedMap extends AbstractMap
     /**
      * Add regex to the collection.
      *
-     * @param string $routePattern
-     * @param string $routeRegex
+     * @param array $parsedRoute
      */
-    protected function addVariableRouteRegex(string $routePattern, string $routeRegex): void
+    protected function addVariableRouteRegex(array $parsedRoute): void
     {
+        [$routePattern, $routeRegex] = $parsedRoute;
         $this->variableRouteRegexTree->addRegex($routeRegex);
-        $this->variableRouteRegex = $this->variableRouteRegexTree->getRegex();
+        $this->variableRouteRegex = RouteParser::REGEXP_DELIMITER . '^' . $this->variableRouteRegexTree->getRegex() .
+            '$' . RouteParser::REGEXP_DELIMITER . 'sD' . ($this->utf8 ? 'u' : '');
+
+        if (!Regex::isValid($this->variableRouteRegex)) {
+            throw BadRouteException::dueToIncompatibilityWithPreviousPattern($routePattern, $routeRegex);
+        }
 
         if (strlen($this->variableRouteRegex) > $this->variableRouteRegexMaxLength) {
-            // TODO: rollback
-            //$this->regexTree->rollback();
-
             throw new TooLongRouteException("Your route \"$routePattern\" is too long");
         }
     }

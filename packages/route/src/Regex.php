@@ -87,15 +87,16 @@ class Regex
     /**
      * @see https://www.php.net/manual/ru/function.preg-last-error.php
      * @see https://www.php.net/manual/ru/pcre.constants.php
+     * @see https://github.com/php/php-src/blob/master/ext/pcre/php_pcre.c
      */
     public const PREG_ERROR_MESSAGES = [
-        PREG_NO_ERROR => 'No errors',
-        PREG_INTERNAL_ERROR => 'There was an internal PCRE error',
-        PREG_BACKTRACK_LIMIT_ERROR => 'Backtrack limit was exhausted',
-        PREG_RECURSION_LIMIT_ERROR => 'Recursion limit was exhausted',
-        PREG_BAD_UTF8_ERROR => 'The offset did not correspond to the begin of a valid UTF-8 code point',
-        PREG_BAD_UTF8_OFFSET_ERROR => 'Malformed UTF-8 data',
-        PREG_JIT_STACKLIMIT_ERROR => 'Limited JIT stack space',
+        PREG_NO_ERROR => 'No error',
+        PREG_INTERNAL_ERROR => 'Internal error',
+        PREG_BACKTRACK_LIMIT_ERROR => 'Backtrack limit exhausted',
+        PREG_RECURSION_LIMIT_ERROR => 'Recursion limit exhausted',
+        PREG_BAD_UTF8_ERROR => 'Malformed UTF-8 characters, possibly incorrectly encoded',
+        PREG_BAD_UTF8_OFFSET_ERROR => 'The offset did not correspond to the beginning of a valid UTF-8 code point',
+        PREG_JIT_STACKLIMIT_ERROR => 'JIT stack limit exhausted',
     ];
 
     /**
@@ -172,9 +173,9 @@ class Regex
     /**
      * Retrieve a code of the last error occurred.
      *
-     * @return string
+     * @return int
      */
-    public static function getLastErrorCode(): string
+    public static function getLastErrorCode(): int
     {
         return preg_last_error();
     }
@@ -186,7 +187,7 @@ class Regex
      */
     public static function getLastErrorMessage(): string
     {
-        return self::PREG_ERROR_MESSAGES[self::getLastErrorCode()];
+        return self::PREG_ERROR_MESSAGES[self::getLastErrorCode()] ?? 'Unknown error';
     }
 
     /**

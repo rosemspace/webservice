@@ -47,7 +47,7 @@ class RouteParser implements RouteParserInterface
         $this->optionalSegmentTokens ??= $config['optionalSegmentTokens'];
         $this->defaultDispatchRegExp = $config['dispatchRegExp'] ?? "[^$this->delimiter]++";
         $nameRegExp = $this->utf8 ? '[[:alpha:]_][[:alnum:]_-]*' : '[a-zA-Z_][a-zA-Z0-9_-]*';
-        // ~(?<!\\\\){\s*(?P<name>[a-zA-Z_][a-zA-Z0-9_-]*)\s*:?(?P<regExp>.*?(?:[^{]|\\\\{)*)(?<!\\\\)}~sx
+        // ~(?<!\\\\){\s*(?P<name>[a-zA-Z_][a-zA-Z0-9_-]*)?\s*:?(?P<regExp>.*?(?:[^{]|\\\\{)*)(?<!\\\\)}~sx
         $this->variableSegmentRegExp = self::REGEXP_DELIMITER .
             self::escape(
                 <<<REGEXP
@@ -139,31 +139,45 @@ class RouteParser implements RouteParserInterface
         $index = 0;
         // TODO: parse protocol
         // TODO: parse host
-        // TODO: parse optional end part
         $regExp = preg_replace_callback(
             $this->variableSegmentRegExp,
             function ($matches) use (&$variableNames, &$index) {
-                $variableName = $matches['name'] ?: $index;
+                $variableName = $matches['name'] ?: (string)$index;
                 $variableNames[] = $variableName;
                 ++$index;
 
                 // @TODO: parse user groups in $matches[2] regex
-                if (empty($matches['regExp'])) {
+                if ($matches['regExp'] === '') {
                     $variableRegExp = $this->defaultDispatchRegExp;
                 } else {
-                    $variableRegExp = self::escape($matches['regExp'], self::REGEXP_DELIMITER);
+                    $variableRegExp = self::REGEXP_DELIMITER . self::escape(
+                            $matches['regExp'],
+                            self::REGEXP_DELIMITER
+                        ) . self::REGEXP_DELIMITER;
 
-                    if (!Regex::isValid(self::REGEXP_DELIMITER . $variableRegExp . self::REGEXP_DELIMITER)) {
-                        throw BadRouteException::dueToInvalidVariableRegExp($matches['regExp'], $variableName);
+                    if (!Regex::isValid($variableRegExp)) {
+                        throw BadRouteException::dueToInvalidVariableRegExp(
+                            $variableRegExp,
+                            $variableName,
+                            Regex::getLastErrorMessage()
+                        );
+                    }
+
+                    if (Regex::of($variableRegExp)->hasCapturingGroups()) {
+                        throw BadRouteException::forCapturingGroup($variableRegExp, $variableName);
                     }
                 }
 
-                return "($variableRegExp)";
+                return '(' . trim($variableRegExp, self::REGEXP_DELIMITER) . ')';
             },
             $routePattern
         );
 
-        return [self::escape($regExp, self::REGEXP_DELIMITER), $variableNames];
+        return [
+            // Don't escape a delimiter in a static route
+            $variableNames === [] ? $regExp : self::escape($regExp, self::REGEXP_DELIMITER),
+            $variableNames,
+        ];
     }
 
     private static function escape(string $regExp, string $delimiter): string

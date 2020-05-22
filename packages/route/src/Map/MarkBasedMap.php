@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Route\Map;
 
-use Rosem\Component\Route\RouteParser;
-
 use function preg_match;
 
 class MarkBasedMap extends AbstractRegexBasedMap
@@ -24,14 +22,13 @@ class MarkBasedMap extends AbstractRegexBasedMap
      */
     protected function saveVariableRoute(string $scope, array $parsedRoute, $resource): void
     {
-        [$routePattern, $regex, $variableNames] = $parsedRoute;
         // (*:n) - shorthand for (*MARK:n)
-        $this->addVariableRouteRegex($routePattern, $regex . '(*:' . $this->variableRouteCount . ')');
+        $parsedRoute[1] .= "(*:$this->variableRouteCount)";
+        $this->addVariableRouteRegex($parsedRoute);
         $this->variableRouteMapExpressions[$scope][count($this->variableRouteMapExpressions[$scope]) - 1] =
-            RouteParser::REGEXP_DELIMITER . '^' . $this->variableRouteRegex . '$' . RouteParser::REGEXP_DELIMITER .
-            'sD' . ($this->utf8 ? 'u' : '');
+            $this->variableRouteRegex;
         // TODO: data adding strategy / scope functionality?
-        $this->variableRouteMap[] = [$resource, $variableNames];
+        $this->variableRouteMap[] = [$resource, $parsedRoute[2]];
     }
 
     /**
@@ -39,8 +36,8 @@ class MarkBasedMap extends AbstractRegexBasedMap
      */
     protected function dispatchVariableRoute(array $variableRouteMapExpressions, string $uri): array
     {
-        foreach ($variableRouteMapExpressions as &$regex) {
-            if (!preg_match($regex, $uri, $matches)) {
+        foreach ($variableRouteMapExpressions as $regExp) {
+            if (!preg_match($regExp, $uri, $matches)) {
                 continue;
             }
 
@@ -55,8 +52,6 @@ class MarkBasedMap extends AbstractRegexBasedMap
 
             return [self::FOUND, $resource, $variableData];
         }
-
-        unset($regex);
 
         return [self::NOT_FOUND];
     }

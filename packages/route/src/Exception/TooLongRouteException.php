@@ -2,8 +2,8 @@
 
 namespace Rosem\Component\Route\Exception;
 
-use InvalidArgumentException;
+use LengthException;
 
-class TooLongRouteException extends InvalidArgumentException
+class TooLongRouteException extends LengthException
 {
 }
