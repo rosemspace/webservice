@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Route;
 
+use InvalidArgumentException;
 use RuntimeException;
 
 use function preg_last_error;
 use function preg_match;
+use function preg_replace;
+use function str_pad;
 use function strlen;
 use function strpos;
 use function substr_replace;
@@ -104,7 +107,7 @@ class Regex
      *
      * @var string
      */
-    protected string $regexp;
+    protected string $regex;
 
     /**
      * A flag to check if the regular expression has capturing groups.
@@ -116,52 +119,52 @@ class Regex
     /**
      * Regex constructor.
      *
-     * @param string $regexp
+     * @param string $regex
      *
      * @throws RuntimeException
      */
-    public function __construct(string $regexp)
+    public function __construct(string $regex)
     {
-        self::assertValid($regexp);
+        self::assertValid($regex);
 
-        $this->regexp = $regexp;
+        $this->regex = $regex;
     }
 
     /**
      * Static constructor.
      *
-     * @param string $regexp
+     * @param string $regex
      *
      * @return static
      */
-    public static function of(string $regexp): self
+    public static function of(string $regex): self
     {
-        return new self($regexp);
+        return new self($regex);
     }
 
     /**
      * Check if the regular expression is valid.
      *
-     * @param string $regexp
+     * @param string $regex
      *
      * @return bool
      */
-    public static function isValid(string $regexp): bool
+    public static function isValid(string $regex): bool
     {
-        return @preg_match($regexp, '') !== false;
+        return @preg_match($regex, '') !== false;
     }
 
     /**
      * Throw an exception if the regular expression is not valid.
      *
-     * @param string $regexp
+     * @param string $regex
      *
      * @return void
      * @trows RuntimeException
      */
-    public static function assertValid(string $regexp): void
+    public static function assertValid(string $regex): void
     {
-        if (self::isValid($regexp)) {
+        if (self::isValid($regex)) {
             return;
         }
 
@@ -190,6 +193,50 @@ class Regex
         return self::PREG_ERROR_MESSAGES[self::getLastErrorCode()] ?? 'Unknown error';
     }
 
+    public static function escapeDelimiters(string $regex, string $delimiters): string
+    {
+        if ($delimiters === '\\') {
+            throw new InvalidArgumentException(
+                "Provided delimiter \"$delimiters\" is not allowed"
+            );
+        }
+
+        $delimitersLength = strlen($delimiters);
+
+        if ($delimitersLength > 1) {
+            throw new InvalidArgumentException(
+                "Provided delimiters \"$delimiters\" is too long. Please use 2 characters maximum delimiter"
+            );
+        }
+
+        if ($delimitersLength === 2) {
+            // @TODO escape asymmetric {} [] ()
+        }
+
+        $escapedDelimiter = preg_quote($delimiters, '/');
+
+        return preg_replace("/(?<!\\\\)$escapedDelimiter/", "\\$delimiters", $regex);
+    }
+
+    public static function wrapWithDelimiters(string $regex, string $delimiters): string
+    {
+        $delimiters2 = str_pad($delimiters, 2, $delimiters[0]);
+
+        return $delimiters2[0] . self::escapeDelimiters($regex, $delimiters) . $delimiters2[1];
+    }
+
+    /**
+     * Tests whether this regex matches the given string.
+     *
+     * @param string $string
+     *
+     * @return bool
+     */
+    public function matches(string $string): bool
+    {
+        return (bool) preg_match($this->regex, $string);
+    }
+
     /**
      * Check if the regular expression has capturing groups.
      *
@@ -201,11 +248,11 @@ class Regex
             return $this->hasCapturingGroups;
         }
 
-        if (strpos($this->regexp, '(') === false) {
+        if (strpos($this->regex, '(') === false) {
             // Needs to have at least a ( to contain a capturing group
             $this->hasCapturingGroups = false;
         } else {
-            $this->hasCapturingGroups = (bool)preg_match(self::REGEX_GROUP, $this->regexp);
+            $this->hasCapturingGroups = (bool)preg_match(self::REGEX_GROUP, $this->regex);
         }
 
         return $this->hasCapturingGroups;
@@ -213,28 +260,28 @@ class Regex
 
     public function disableCapturingGroups(): void
     {
-        $regexp = $this->regexp;
-        $regexpLength = strlen($regexp);
+        $regex = $this->regex;
+        $regexLength = strlen($regex);
 
-        for ($i = 0; $i < $regexpLength; ++$i) {
-            if ($regexp[$i] === '\\') {
+        for ($i = 0; $i < $regexLength; ++$i) {
+            if ($regex[$i] === '\\') {
                 ++$i;
                 continue;
             }
 
-            if ('(' !== $regexp[$i] || !isset($regexp[$i + 2])) {
+            if ('(' !== $regex[$i] || !isset($regex[$i + 2])) {
                 continue;
             }
 
-            if ('*' === $regexp[++$i] || '?' === $regexp[$i]) {
+            if ('*' === $regex[++$i] || '?' === $regex[$i]) {
                 ++$i;
                 continue;
             }
 
-            $regexp = substr_replace($regexp, '?:', $i, 0);
+            $regex = substr_replace($regex, '?:', $i, 0);
             ++$i;
         }
 
-        $this->regexp = $regexp;
+        $this->regex = $regex;
     }
 }

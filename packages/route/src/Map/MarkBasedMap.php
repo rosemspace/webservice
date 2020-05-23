@@ -20,28 +20,28 @@ class MarkBasedMap extends AbstractRegexBasedMap
     /**
      * @inheritDoc
      */
-    protected function saveVariableRoute(string $scope, array $parsedRoute, $resource): void
+    protected function saveVariableRoute(string $scope, string $routePattern, $resource, array $meta): void
     {
         // (*:n) - shorthand for (*MARK:n)
-        $parsedRoute[1] .= "(*:$this->variableRouteCount)";
-        $this->addVariableRouteRegex($parsedRoute);
+        $meta[0] .= "(*:$this->variableRouteCount)";
+        $this->addVariableRouteRegex($routePattern, $meta);
         $this->variableRouteMapExpressions[$scope][count($this->variableRouteMapExpressions[$scope]) - 1] =
             $this->variableRouteRegex;
         // TODO: data adding strategy / scope functionality?
-        $this->variableRouteMap[] = [$resource, $parsedRoute[2]];
+        $this->variableRouteMapData[] = [$resource, $meta[1]];
     }
 
     /**
      * @inheritDoc
      */
-    protected function dispatchVariableRoute(array $variableRouteMapExpressions, string $uri): array
+    protected function dispatchVariableRoute(array $scopedVariableRouteMapExpressions, string $uri): array
     {
-        foreach ($variableRouteMapExpressions as $regExp) {
-            if (!preg_match($regExp, $uri, $matches)) {
+        foreach ($scopedVariableRouteMapExpressions as $regex) {
+            if (!preg_match($regex, $uri, $matches)) {
                 continue;
             }
 
-            [$resource, $variableNames] = $this->variableRouteMap[$matches['MARK']];
+            [$resource, $variableNames] = $this->variableRouteMapData[$matches['MARK']];
             $variableData = [];
 
             foreach ($variableNames as $index => &$variableName) {

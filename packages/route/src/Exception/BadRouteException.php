@@ -29,7 +29,7 @@ class BadRouteException extends LogicException
 
     public static function dueToIncompatibilityWithPreviousPattern(
         string $routePattern,
-        string $regExp = '',
+        string $regex = '',
         string $message = ''
     ): self {
         return new self(
@@ -37,9 +37,9 @@ class BadRouteException extends LogicException
                 sprintf(
                     'The route pattern "%s" is incompatible with already added route patterns%s %s',
                     $routePattern,
-                    $regExp === ''
+                    $regex === ''
                         ? '.'
-                        : sprintf(' because of the following regular expression "%s".', $regExp),
+                        : sprintf(' because of the following regular expression "%s".', $regex),
                     $message
                 ),
                 ' .'
@@ -47,8 +47,8 @@ class BadRouteException extends LogicException
         );
     }
 
-    public static function dueToInvalidVariableRegExp(
-        string $regExp,
+    public static function dueToInvalidVariableRegex(
+        string $regex,
         string $variableName = '',
         string $message = ''
     ): self {
@@ -56,7 +56,7 @@ class BadRouteException extends LogicException
             rtrim(
                 sprintf(
                     'Regular expression "%s" is not valid%s %s',
-                    $regExp,
+                    $regex,
                     ($variableName === '' ? '.' : sprintf(' for "%s" variable.', $variableName)),
                     $message
                 ),
@@ -65,12 +65,12 @@ class BadRouteException extends LogicException
         );
     }
 
-    public static function forCapturingGroup(string $regExp, string $variableName): self
+    public static function forCapturingGroup(string $regex, string $variableName): self
     {
         return new self(
             sprintf(
                 'Regex "%s" for parameter "%s" contains a capturing group',
-                $regExp,
+                $regex,
                 $variableName
             )
         );

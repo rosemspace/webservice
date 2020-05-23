@@ -87,20 +87,26 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
      * Add variable route to the collection.
      *
      * @param string $scope
-     * @param array  $parsedRoute
+     * @param string $routePattern
      * @param mixed  $resource
+     * @param array  $meta
      */
-    abstract protected function addVariableRoute(string $scope, array $parsedRoute, $resource): void;
+    abstract protected function addVariableRoute(
+        string $scope,
+        string $routePattern,
+        $resource,
+        array $meta
+    ): void;
 
     /**
      * Retrieve data associated with the route.
      *
-     * @param array  $metaData
+     * @param array  $scopedVariableRouteMapExpressions
      * @param string $uri
      *
      * @return array
      */
-    abstract protected function dispatchVariableRoute(array $metaData, string $uri): array;
+    abstract protected function dispatchVariableRoute(array $scopedVariableRouteMapExpressions, string $uri): array;
 
     /**
      * Use UTF-8 or no.
@@ -120,14 +126,14 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
         $scopes = (array)$scopes;
         $routePattern = $this->currentGroupPrefix . $this->normalize($routePattern);
 
-        foreach ($this->parser->parse($routePattern) as $parsedRoute) {
-            if ($this->isStaticRoute($parsedRoute)) {
+        foreach ($this->parser->parse($routePattern) as $meta) {
+            if ($this->isStaticRoute($meta)) {
                 foreach ($scopes as $scope) {
-                    $this->addStaticRoute(mb_strtoupper($scope), $parsedRoute[0], $resource);
+                    $this->addStaticRoute(mb_strtoupper($scope), $meta[0], $resource);
                 }
             } else {
                 foreach ($scopes as $scope) {
-                    $this->addVariableRoute(mb_strtoupper($scope), [$routePattern, ...$parsedRoute], $resource);
+                    $this->addVariableRoute(mb_strtoupper($scope), $routePattern, $resource, $meta);
                 }
             }
         }
@@ -136,20 +142,21 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
     /**
      * Check if the given parsed route is a static route.
      *
-     * @param array $parsedRoute
+     * @param array $meta
      *
      * @return bool
      */
-    private function isStaticRoute(array $parsedRoute): bool
+    private function isStaticRoute(array $meta): bool
     {
-        return $parsedRoute[1] === [];
+        // There is no any variables, so the route is static
+        return $meta[1] === [];
     }
 
     /**
      * Add static route to the collection.
      *
      * @param string $scope
-     * @param string $routePattern
+     * @param string $route
      * @param mixed  $resource
      */
     private function addStaticRoute(string $scope, string $route, $resource): void
@@ -210,8 +217,8 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
         // Find allowed scopes for this route by matching against all other scopes as well
         $allowedScopes = [];
 
-        foreach ($this->variableRouteMapExpressions as $allowedScope => $metaData) {
-            $routeData = $this->dispatchVariableRoute($metaData, $uri);
+        foreach ($this->variableRouteMapExpressions as $allowedScope => $scopedVariableRouteMapExpressions) {
+            $routeData = $this->dispatchVariableRoute($scopedVariableRouteMapExpressions, $uri);
 
             if ($routeData[0] !== self::FOUND) {
                 continue;

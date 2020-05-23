@@ -2,18 +2,12 @@
 
 namespace Rosem\Component\Route;
 
-use Rosem\Component\Route\DataGenerator\MarkBasedDataGenerator;
-use Rosem\Component\Route\Dispatcher\MarkBasedDispatcher;
+use Rosem\Component\Route\Contract\RouteDispatcherInterface;
 
 class DispatcherTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var Router
-     */
-    protected $collector;
-
-    /**
-     * @var RouteDispatcher
+     * @var RouteDispatcherInterface
      */
     protected $dispatcher;
 
@@ -21,12 +15,7 @@ class DispatcherTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        $this->collector = new Router(new RouteParser());
-        $this->dispatcher = new RouteDispatcher(
-            $this->collector->getStaticRouteMap(),
-            $this->collector->getVariableRouteMap(),
-            new MarkBasedDispatcher()
-        );
+        $this->dispatcher = new Router(new RouteParser());
     }
 
     /**
@@ -36,5 +25,18 @@ class DispatcherTest extends \PHPUnit\Framework\TestCase
     {
         $result = $this->dispatcher->dispatch('GET', '/');
         $this->assertEquals(['GET', '/'], $result);
+    }
+
+    public function testRegExpDelimiter(): void
+    {
+        // Static route
+        //$routeCollector->get('/[home~[page]]'
+        // Dynamic route
+        //$routeCollector->get('/[home~[page{\d?}]]'
+
+        // {a:b\}/{c:d}
+        // /{/a}/{b:c}
+        // \{a:b}/{c:d}
+        // {\a}/{b:c}
     }
 }

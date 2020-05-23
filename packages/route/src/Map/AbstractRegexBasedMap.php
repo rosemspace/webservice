@@ -143,17 +143,18 @@ abstract class AbstractRegexBasedMap extends AbstractMap
      * Save variable route based on a regular expression to the collection.
      *
      * @param string $scope
-     * @param array  $parsedRoute
+     * @param string $routePattern
      * @param mixed  $resource
+     * @param array  $meta
      */
-    abstract protected function saveVariableRoute(string $scope, array $parsedRoute, $resource): void;
+    abstract protected function saveVariableRoute(string $scope, string $routePattern, $resource, array $meta): void;
 
     /**
      * @inheritDoc
      */
-    protected function addVariableRoute(string $scope, array $parsedRoute, $resource): void
+    protected function addVariableRoute(string $scope, string $routePattern, $resource, array $meta): void
     {
-        $this->variableRouteCount = count($this->variableRouteMap);
+        $this->variableRouteCount = count($this->variableRouteMapData);
 
         if (!isset($this->variableRouteMapExpressions[$scope]) ||
             $this->variableRouteCount - $this->variableRouteOffset >= $this->variableRouteCountPerChunk
@@ -163,27 +164,34 @@ abstract class AbstractRegexBasedMap extends AbstractMap
         }
 
         try {
-            $this->saveVariableRoute($scope, $parsedRoute, $resource);
+            $this->saveVariableRoute($scope, $routePattern, $resource, $meta);
         } catch (TooLongRouteException $exception) {
             // TODO: add rollback
             //$this->variableRouteMap[$method]->rollback();
             //$this->regexTree->rollback();
             $this->createVariableRouteChunk($scope);
-            $this->saveVariableRoute($scope, $parsedRoute, $resource);
+            $this->saveVariableRoute($scope, $routePattern, $resource, $meta);
         }
     }
 
     /**
      * Add regex to the collection.
      *
-     * @param array $parsedRoute
+     * @param string $routePattern
+     * @param array  $meta
      */
-    protected function addVariableRouteRegex(array $parsedRoute): void
+    protected function addVariableRouteRegex(string $routePattern, array $meta): void
     {
-        [$routePattern, $routeRegex] = $parsedRoute;
+        [$routeRegex] = $meta;
         $this->variableRouteRegexTree->addRegex($routeRegex);
-        $this->variableRouteRegex = RouteParser::REGEXP_DELIMITER . '^' . $this->variableRouteRegexTree->getRegex() .
-            '$' . RouteParser::REGEXP_DELIMITER . 'sD' . ($this->utf8 ? 'u' : '');
+        $this->variableRouteRegex = Regex::wrapWithDelimiters(
+                '^' . $this->variableRouteRegexTree->getRegex() . '$',
+                RouteParser::REGEX_DELIMITER
+            ) . 'sD';
+
+        if ($this->utf8) {
+            $this->variableRouteRegex .= 'u';
+        }
 
         if (!Regex::isValid($this->variableRouteRegex)) {
             throw BadRouteException::dueToIncompatibilityWithPreviousPattern($routePattern, $routeRegex);

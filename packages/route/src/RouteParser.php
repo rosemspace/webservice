@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Route;
 
-use InvalidArgumentException;
 use Rosem\Component\Route\Contract\RouteParserInterface;
 use Rosem\Component\Route\Exception\BadRouteException;
 
 use function preg_match;
 use function preg_quote;
-use function preg_replace;
 use function preg_replace_callback;
 use function preg_split;
 use function strlen;
 
 class RouteParser implements RouteParserInterface
 {
-    public const REGEXP_DELIMITER = '~';
+    public const REGEX_DELIMITER = '~';
 
     protected bool $utf8 = false;
 
@@ -25,17 +23,17 @@ class RouteParser implements RouteParserInterface
 
     protected array $variableTokens = ['{', '}'];
 
-    protected string $variableRegExpToken = ':';
+    protected string $variableRegexToken = ':';
 
     protected array $optionalSegmentTokens = ['[', ']'];
 
-    protected string $defaultDispatchRegExp;
+    protected string $defaultDispatchRegex;
 
-    protected string $variableSegmentRegExp;
+    protected string $variableSegmentRegex;
 
-    protected string $optionalSegmentOpenRegExp;
+    protected string $optionalSegmentOpenRegex;
 
-    protected string $optionalSegmentCloseRegExp;
+    protected string $optionalSegmentCloseRegex;
 
     public function __construct(array $config = [])
     {
@@ -43,43 +41,44 @@ class RouteParser implements RouteParserInterface
         $this->utf8 ??= $config['utf8'];
         $this->delimiter ??= $config['delimiter'];
         $this->variableTokens ??= (array)$config['variableTokens'];
-        $this->variableRegExpToken ??= $config['variableRegExpToken'];
+        $this->variableRegexToken ??= $config['variableRegexToken'];
         $this->optionalSegmentTokens ??= $config['optionalSegmentTokens'];
-        $this->defaultDispatchRegExp = $config['dispatchRegExp'] ?? "[^$this->delimiter]++";
-        $nameRegExp = $this->utf8 ? '[[:alpha:]_][[:alnum:]_-]*' : '[a-zA-Z_][a-zA-Z0-9_-]*';
-        // ~(?<!\\\\){\s*(?P<name>[a-zA-Z_][a-zA-Z0-9_-]*)?\s*:?(?P<regExp>.*?(?:[^{]|\\\\{)*)(?<!\\\\)}~sx
-        $this->variableSegmentRegExp = self::REGEXP_DELIMITER .
-            self::escape(
+        $this->defaultDispatchRegex = $config['dispatchRegex'] ?? "[^$this->delimiter]++";
+        $nameRegex = $this->utf8 ? '[[:alpha:]_][[:alnum:]_-]*' : '[a-zA-Z_][a-zA-Z0-9_-]*';
+        // ~(?<!\\){\s*(?P<name>[a-zA-Z_][a-zA-Z0-9_-]*)?\s*:?(?P<regex>.*?(?:[^{]|\\{)*)(?<!\\)}~sx
+        $this->variableSegmentRegex = self::REGEX_DELIMITER .
+            Regex::escapeDelimiters(
                 <<<REGEXP
                 (?<!\\\\){$this->variableTokens[0]}\s*
-                (?P<name>$nameRegExp)?\s*$this->variableRegExpToken?
-                (?P<regExp>.*?(?:[^{$this->variableTokens[0]}]|\\\\{$this->variableTokens[0]})*)
+                (?P<name>$nameRegex)?\s*$this->variableRegexToken?
+                (?P<regex>.*?(?:[^{$this->variableTokens[0]}]|\\\\{$this->variableTokens[0]})*)
                 REGEXP,
-                self::REGEXP_DELIMITER
+                self::REGEX_DELIMITER
             );
 
         if (isset($this->variableTokens[1])) {
-            $this->variableSegmentRegExp .= self::escape(
-                '(?<!\\\\)' . $this->variableTokens[1],
-                self::REGEXP_DELIMITER
+            $this->variableSegmentRegex .= Regex::escapeDelimiters(
+                "(?<!\\\\){$this->variableTokens[1]}",
+                self::REGEX_DELIMITER
             );
         }
 
-        $regExpPart = $this->variableSegmentRegExp . self::escape('(*SKIP)(*F)|', self::REGEXP_DELIMITER);
-        $this->optionalSegmentOpenRegExp = $regExpPart .
-            preg_quote($this->optionalSegmentTokens[0], self::REGEXP_DELIMITER);
-        $this->optionalSegmentCloseRegExp = $regExpPart .
-            preg_quote($this->optionalSegmentTokens[1], self::REGEXP_DELIMITER);
-        $regExpPart = self::REGEXP_DELIMITER . 'sx';
-        $this->variableSegmentRegExp .= $regExpPart;
-        $this->optionalSegmentOpenRegExp .= $regExpPart;
-        $this->optionalSegmentCloseRegExp .= $regExpPart;
+        $regexPart = $this->variableSegmentRegex .
+            Regex::escapeDelimiters('(*SKIP)(*F)|', self::REGEX_DELIMITER);
+        $this->optionalSegmentOpenRegex = $regexPart .
+            preg_quote($this->optionalSegmentTokens[0], self::REGEX_DELIMITER);
+        $this->optionalSegmentCloseRegex = $regexPart .
+            preg_quote($this->optionalSegmentTokens[1], self::REGEX_DELIMITER);
+        $regexPart = self::REGEX_DELIMITER . 'sx';
+        $this->variableSegmentRegex .= $regexPart;
+        $this->optionalSegmentOpenRegex .= $regexPart;
+        $this->optionalSegmentCloseRegex .= $regexPart;
 
         if ($this->utf8) {
-            $regExpPart = 'u';
-            $this->variableSegmentRegExp .= $regExpPart;
-            $this->optionalSegmentOpenRegExp .= $regExpPart;
-            $this->optionalSegmentCloseRegExp .= $regExpPart;
+            $regexPart = 'u';
+            $this->variableSegmentRegex .= $regexPart;
+            $this->optionalSegmentOpenRegex .= $regexPart;
+            $this->optionalSegmentCloseRegex .= $regexPart;
         }
     }
 
@@ -116,11 +115,11 @@ class RouteParser implements RouteParserInterface
         $routePatternWithoutClosingOptionals = rtrim($routePattern, $this->optionalSegmentTokens[1]);
         $optionalSegmentCount = strlen($routePattern) - strlen($routePatternWithoutClosingOptionals);
         // Split on "[" while skipping variable segments
-        $segments = preg_split($this->optionalSegmentOpenRegExp, $routePatternWithoutClosingOptionals);
+        $segments = preg_split($this->optionalSegmentOpenRegex, $routePatternWithoutClosingOptionals);
 
         if ($optionalSegmentCount !== count($segments) - 1) {
             // If there are any "]" in the middle of the route, throw a more specific error message
-            if (preg_match($this->optionalSegmentCloseRegExp, $routePatternWithoutClosingOptionals)) {
+            if (preg_match($this->optionalSegmentCloseRegex, $routePatternWithoutClosingOptionals)) {
                 throw BadRouteException::dueToWrongOptionalSegmentPosition();
             }
 
@@ -139,57 +138,45 @@ class RouteParser implements RouteParserInterface
         $index = 0;
         // TODO: parse protocol
         // TODO: parse host
-        $regExp = preg_replace_callback(
-            $this->variableSegmentRegExp,
+        $regex = preg_replace_callback(
+            $this->variableSegmentRegex,
             function ($matches) use (&$variableNames, &$index) {
                 $variableName = $matches['name'] ?: (string)$index;
                 $variableNames[] = $variableName;
                 ++$index;
 
                 // @TODO: parse user groups in $matches[2] regex
-                if ($matches['regExp'] === '') {
-                    $variableRegExp = $this->defaultDispatchRegExp;
+                if ($matches['regex'] === '') {
+                    $variableRegex = $this->defaultDispatchRegex;
                 } else {
-                    $variableRegExp = self::REGEXP_DELIMITER . self::escape(
-                            $matches['regExp'],
-                            self::REGEXP_DELIMITER
-                        ) . self::REGEXP_DELIMITER;
+                    $variableRegex = $matches['regex'];
+                    $variableRegexWithDelimiters = Regex::wrapWithDelimiters(
+                            $matches['regex'],
+                            self::REGEX_DELIMITER
+                        ) . 'sx';
 
-                    if (!Regex::isValid($variableRegExp)) {
-                        throw BadRouteException::dueToInvalidVariableRegExp(
-                            $variableRegExp,
+                    if (!Regex::isValid($variableRegexWithDelimiters)) {
+                        throw BadRouteException::dueToInvalidVariableRegex(
+                            $variableRegexWithDelimiters,
                             $variableName,
                             Regex::getLastErrorMessage()
                         );
                     }
 
-                    if (Regex::of($variableRegExp)->hasCapturingGroups()) {
-                        throw BadRouteException::forCapturingGroup($variableRegExp, $variableName);
+                    if (Regex::of($variableRegexWithDelimiters)->hasCapturingGroups()) {
+                        throw BadRouteException::forCapturingGroup($variableRegexWithDelimiters, $variableName);
                     }
                 }
 
-                return '(' . trim($variableRegExp, self::REGEXP_DELIMITER) . ')';
+                return "($variableRegex)";
             },
             $routePattern
         );
 
         return [
             // Don't escape a delimiter in a static route
-            $variableNames === [] ? $regExp : self::escape($regExp, self::REGEXP_DELIMITER),
+            $variableNames === [] ? $regex : Regex::escapeDelimiters($regex, self::REGEX_DELIMITER),
             $variableNames,
         ];
-    }
-
-    private static function escape(string $regExp, string $delimiter): string
-    {
-        if (strlen($delimiter) > 1) {
-            throw new InvalidArgumentException(
-                "Provided \"$delimiter\" is too long. Please use only 1 character delimiter."
-            );
-        }
-
-        $escapedDelimiter = preg_quote($delimiter, '/');
-
-        return preg_replace("/(?<!\\\\)$escapedDelimiter/", "\\$delimiter", $regExp);
     }
 }
