@@ -19,7 +19,7 @@ interface RouteCollectorInterface
      * @param mixed           $resource
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function addRoute($scopes, string $routePattern, $resource): void;
 
@@ -31,7 +31,7 @@ interface RouteCollectorInterface
      * @param callable $callback
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function addGroup(string $prefix, callable $callback): void;
 }

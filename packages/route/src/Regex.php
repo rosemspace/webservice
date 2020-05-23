@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Route;
 
+use ErrorException;
 use InvalidArgumentException;
-use RuntimeException;
 
 use function preg_last_error;
 use function preg_match;
 use function preg_replace;
+use function restore_error_handler;
+use function set_error_handler;
 use function str_pad;
 use function strlen;
 use function strpos;
@@ -110,6 +112,13 @@ class Regex
     protected string $regex;
 
     /**
+     * The last error occurred.
+     *
+     * @var ErrorException
+     */
+    private static ErrorException $lastException;
+
+    /**
      * A flag to check if the regular expression has capturing groups.
      *
      * @var bool|null
@@ -121,7 +130,7 @@ class Regex
      *
      * @param string $regex
      *
-     * @throws RuntimeException
+     * @throws ErrorException
      */
     public function __construct(string $regex)
     {
@@ -136,6 +145,7 @@ class Regex
      * @param string $regex
      *
      * @return static
+     * @throws ErrorException
      */
     public static function of(string $regex): self
     {
@@ -151,7 +161,28 @@ class Regex
      */
     public static function isValid(string $regex): bool
     {
-        return @preg_match($regex, '') !== false;
+        set_error_handler(
+            static function ($severity, $message, $file, $line) {
+                if (!(error_reporting() & $severity)) {
+                    // This error code is not included in error_reporting
+                    return;
+                }
+
+                throw new ErrorException($message, 0, $severity, $file, $line);
+            }
+        );
+
+        try {
+            preg_match($regex, '');
+
+            return true;
+        } catch (ErrorException $exception) {
+            self::$lastException = $exception;
+
+            return false;
+        } finally {
+            restore_error_handler();
+        }
     }
 
     /**
@@ -160,7 +191,7 @@ class Regex
      * @param string $regex
      *
      * @return void
-     * @trows RuntimeException
+     * @throws ErrorException
      */
     public static function assertValid(string $regex): void
     {
@@ -168,13 +199,11 @@ class Regex
             return;
         }
 
-        $errorCode = self::getLastErrorCode();
-
-        throw new RuntimeException(self::PREG_ERROR_MESSAGES[$errorCode], $errorCode);
+        throw self::$lastException;
     }
 
     /**
-     * Retrieve a code of the last error occurred.
+     * Get the code of the last error occurred.
      *
      * @return int
      */
@@ -184,13 +213,27 @@ class Regex
     }
 
     /**
-     * Retrieve a message of the last error occurred.
+     * Get the message of the last error occurred.
      *
      * @return string
      */
     public static function getLastErrorMessage(): string
     {
+        if (isset(self::$lastException)) {
+            return self::$lastException->getMessage();
+        }
+
         return self::PREG_ERROR_MESSAGES[self::getLastErrorCode()] ?? 'Unknown error';
+    }
+
+    /**
+     * Get the last exception occurred.
+     *
+     * @return ErrorException
+     */
+    public static function getLastException(): ErrorException
+    {
+        return self::$lastException;
     }
 
     public static function escapeDelimiters(string $regex, string $delimiters): string
@@ -234,7 +277,7 @@ class Regex
      */
     public function matches(string $string): bool
     {
-        return (bool) preg_match($this->regex, $string);
+        return (bool)preg_match($this->regex, $string);
     }
 
     /**

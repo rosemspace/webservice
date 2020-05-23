@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Route\Map;
 
+use Rosem\Component\Route\Contract\RouteInterface;
+
 use function preg_match;
 
 class MarkBasedMap extends AbstractRegexBasedMap
@@ -20,15 +22,13 @@ class MarkBasedMap extends AbstractRegexBasedMap
     /**
      * @inheritDoc
      */
-    protected function saveVariableRoute(string $scope, string $routePattern, $resource, array $meta): void
+    protected function saveVariableRoute(RouteInterface $route): void
     {
+        [$regex, $variableNames] = $route->getMeta();
         // (*:n) - shorthand for (*MARK:n)
-        $meta[0] .= "(*:$this->variableRouteCount)";
-        $this->addVariableRouteRegex($routePattern, $meta);
-        $this->variableRouteMapExpressions[$scope][count($this->variableRouteMapExpressions[$scope]) - 1] =
-            $this->variableRouteRegex;
+        $this->variableRouteRegexTree->addRegex("$regex(*:$this->variableRouteCount)");
         // TODO: data adding strategy / scope functionality?
-        $this->variableRouteMapData[] = [$resource, $meta[1]];
+        $this->variableRouteMapData[] = [$route->getResource(), $variableNames];
     }
 
     /**

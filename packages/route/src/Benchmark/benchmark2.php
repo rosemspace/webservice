@@ -121,6 +121,7 @@ for ($i = 0, $str = 'a'; $i < $nRoutes; $i++, $str++) {
     $router->addRoute('GET', '/' . $str . '/' . $args, 'handler' . $i);
     $lastStr = $str;
 }
+$router->compile();
 // first route ---------------------------------------------------------------------------------------------------------
 $startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {

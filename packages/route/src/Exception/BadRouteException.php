@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Rosem\Component\Route\Exception;
 
 use LogicException;
+use Rosem\Contract\Route\BadRouteExceptionInterface;
 
 use function rtrim;
 use function sprintf;
 
-class BadRouteException extends LogicException
+class BadRouteException extends LogicException implements BadRouteExceptionInterface
 {
     public static function forDuplicatedRoute(string $route, string $scope): self
     {
@@ -17,6 +18,21 @@ class BadRouteException extends LogicException
             sprintf(
                 'Cannot register two routes matching "%s" for scope "%s"',
                 $route,
+                $scope
+            )
+        );
+    }
+
+    public static function forShadowedStaticRoute(
+        string $staticRoute,
+        string $variableRoutePattern,
+        string $scope
+    ): self {
+        return new self(
+            sprintf(
+                'Static route "%s" is shadowed by previously defined variable route "%s" for scope "%s"',
+                $staticRoute,
+                $variableRoutePattern,
                 $scope
             )
         );

@@ -19,6 +19,14 @@ interface RouteDispatcherInterface
     public const SCOPE_NOT_ALLOWED = 2;
 
     /**
+     * Generate regular expressions for the all added routes.
+     *
+     * @throws \Rosem\Contract\Route\BadRouteExceptionInterface
+     * @throws \Rosem\Contract\Route\TooLongRouteExceptionInterface
+     */
+    public function compile(): void;
+
+    /**
      * Dispatches against the provided scope and route.
      *
      * @param string $scope

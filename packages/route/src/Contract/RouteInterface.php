@@ -3,7 +3,7 @@
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
 
-namespace Rosem\Contract\Route;
+namespace Rosem\Component\Route\Contract;
 
 /**
  * Provides meta information of a route.
@@ -32,29 +32,28 @@ interface RouteInterface
     public function getSchemePattern(): string;
 
     /**
-     * Retrieves the HTTP methods of the route.
+     * Retrieves the scope of the route.
      *
-     * @return string[] Returns the route methods.
+     * @return string Returns the route scope.
      */
-    public function getMethods(): array;
+    public function getScope(): string;
 
     /**
      * Retrieves the server request handler.
      *
-     * @return string
+     * @return mixed
      * @see \Psr\Http\Server\RequestHandlerInterface
      */
-    public function getHandler(): string;
+    public function getResource();
 
-    public function getVariableNames(): array;
+    public function getMeta(): array;
 
     /**
-     * Sets the middleware logic to be executed before the route will be resolved.
+     * Tests whether this route matches the given URI.
      *
-     * @param callable $middlewareExtension
+     * @param string $uri
      *
-     * @return RouteInterface
-     * @see \Psr\Http\Server\MiddlewareInterface
+     * @return bool
      */
-    public function addMiddleware(callable $middlewareExtension): RouteInterface;
+    public function matches(string $uri): bool;
 }

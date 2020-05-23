@@ -8,6 +8,6 @@ namespace Rosem\Contract\Route;
 /**
  * Base interface representing a generic exception in a route.
  */
-interface InvalidRouteExceptionInterface
+interface BadRouteExceptionInterface
 {
 }

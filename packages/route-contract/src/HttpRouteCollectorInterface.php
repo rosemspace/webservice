@@ -21,7 +21,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed           $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function addRoute($httpMethods, string $routePattern, $handler): void;
 
@@ -33,7 +33,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param callable $callback
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function addGroup(string $prefix, callable $callback): void;
 
@@ -48,7 +48,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed  $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function head(string $routePattern, $handler): void;
 
@@ -63,7 +63,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed  $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function get(string $routePattern, $handler): void;
 
@@ -78,7 +78,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed  $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function post(string $routePattern, $handler): void;
 
@@ -93,7 +93,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed  $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function put(string $routePattern, $handler): void;
 
@@ -108,7 +108,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed  $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function patch(string $routePattern, $handler): void;
 
@@ -123,7 +123,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed  $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function delete(string $routePattern, $handler): void;
 
@@ -138,7 +138,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed  $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function purge(string $routePattern, $handler): void;
 
@@ -153,7 +153,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed  $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function options(string $routePattern, $handler): void;
 
@@ -168,7 +168,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed  $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function trace(string $routePattern, $handler): void;
 
@@ -180,7 +180,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed  $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function connect(string $routePattern, $handler): void;
 
@@ -197,7 +197,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @param mixed  $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     public function any(string $routePattern, $handler): void;
 }

@@ -6,6 +6,7 @@ namespace Rosem\Component\Route\Map;
 
 use Rosem\Component\Route\Contract\{
     RouteDispatcherInterface,
+    RouteInterface,
     RouteParserInterface
 };
 use Rosem\Component\Route\Exception\BadRouteException;
@@ -36,7 +37,7 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
     /**
      * Data of each variable route in the collection.
      *
-     * @var array
+     * @var RouteInterface[][]
      */
     protected array $variableRouteMap = [];
 
@@ -165,7 +166,13 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
             throw BadRouteException::forDuplicatedRoute($route, $scope);
         }
 
-        // todo dynamic route shadow checking
+        if (isset($this->variableRouteMap[$scope])) {
+            foreach ($this->variableRouteMap[$scope] as $variableRoute) {
+                if ($variableRoute->matches($route)) {
+                    throw BadRouteException::forShadowedStaticRoute($route, $variableRoute->getPathPattern(), $scope);
+                }
+            }
+        }
 
         // todo optimization: add reference if resource is same
         $this->staticRouteMap[$route][$scope] = $resource;

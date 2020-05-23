@@ -65,6 +65,7 @@ class RouteMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $nextHandler): ResponseInterface
     {
+        $this->routeDispatcher->compile();
         //todo add scheme and host support
         $route = $this->routeDispatcher->dispatch(
             $request->getMethod(),

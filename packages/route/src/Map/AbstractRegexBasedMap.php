@@ -6,11 +6,13 @@ namespace Rosem\Component\Route\Map;
 
 use InvalidArgumentException;
 use Rosem\Component\Route\{
+    Contract\RouteInterface,
     Contract\RouteParserInterface,
     Exception\BadRouteException,
     Exception\TooLongRouteException,
     Regex,
     RegexNode,
+    Route,
     RouteParser
 };
 
@@ -42,6 +44,13 @@ abstract class AbstractRegexBasedMap extends AbstractMap
     protected int $variableRouteCountPerChunk;
 
     /**
+     * Max length of the final regex.
+     *
+     * @var int
+     */
+    protected int $variableRouteRegexMaxLength;
+
+    /**
      * A number of inserted routes excluding routes in the current chunk.
      *
      * @var int
@@ -63,6 +72,13 @@ abstract class AbstractRegexBasedMap extends AbstractMap
     protected array $variableRouteMapExpressions = [];
 
     /**
+     * Collection of route resources.
+     *
+     * @var array
+     */
+    protected array $variableRouteMapData = [];
+
+    /**
      * The final regex.
      *
      * @var string
@@ -70,18 +86,18 @@ abstract class AbstractRegexBasedMap extends AbstractMap
     protected string $variableRouteRegex = '';
 
     /**
-     * Max length of the final regex.
-     *
-     * @var int
-     */
-    protected int $variableRouteRegexMaxLength;
-
-    /**
      * Regex tree optimizer.
      *
      * @var RegexNode
      */
     protected RegexNode $variableRouteRegexTree;
+
+    /**
+     * Determine variable routes validation.
+     *
+     * @var bool
+     */
+    protected bool $validateFlag = false;
 
     /**
      * AbstractRegexBasedMap constructor.
@@ -142,63 +158,117 @@ abstract class AbstractRegexBasedMap extends AbstractMap
     /**
      * Save variable route based on a regular expression to the collection.
      *
-     * @param string $scope
-     * @param string $routePattern
-     * @param mixed  $resource
-     * @param array  $meta
+     * @param RouteInterface $route
      */
-    abstract protected function saveVariableRoute(string $scope, string $routePattern, $resource, array $meta): void;
+    abstract protected function saveVariableRoute(RouteInterface $route): void;
 
     /**
      * @inheritDoc
      */
     protected function addVariableRoute(string $scope, string $routePattern, $resource, array $meta): void
     {
-        $this->variableRouteCount = count($this->variableRouteMapData);
+        [$routeRegex] = $meta;
 
-        if (!isset($this->variableRouteMapExpressions[$scope]) ||
-            $this->variableRouteCount - $this->variableRouteOffset >= $this->variableRouteCountPerChunk
-        ) {
-            $this->createVariableRouteChunk($scope);
-            $this->variableRouteOffset = $this->variableRouteCount;
+        if (isset($this->variableRouteMap[$scope][$routeRegex])) {
+            throw BadRouteException::forDuplicatedRoute($routeRegex, $scope);
         }
 
-        try {
-            $this->saveVariableRoute($scope, $routePattern, $resource, $meta);
-        } catch (TooLongRouteException $exception) {
-            // TODO: add rollback
-            //$this->variableRouteMap[$method]->rollback();
-            //$this->regexTree->rollback();
-            $this->createVariableRouteChunk($scope);
-            $this->saveVariableRoute($scope, $routePattern, $resource, $meta);
-        }
+        $this->variableRouteMap[$scope][$routeRegex] = new Route($scope, $routePattern, $resource, $meta);
     }
 
     /**
-     * Add regex to the collection.
-     *
-     * @param string $routePattern
-     * @param array  $meta
+     * @inheritDoc
      */
-    protected function addVariableRouteRegex(string $routePattern, array $meta): void
+    public function compile(): void
     {
-        [$routeRegex] = $meta;
-        $this->variableRouteRegexTree->addRegex($routeRegex);
+        if ($this->variableRouteCount > 0) {
+            return;
+        }
+
+        foreach ($this->variableRouteMap as $scope => $routes) {
+            foreach ($routes as $route) {
+                $this->variableRouteCount = count($this->variableRouteMapData);
+
+                if (!isset($this->variableRouteMapExpressions[$scope]) ||
+                    $this->variableRouteCount - $this->variableRouteOffset >= $this->variableRouteCountPerChunk
+                ) {
+                    $this->generateVariableRouteRegex($scope);
+                    $this->createVariableRouteChunk($scope);
+                    $this->variableRouteOffset = $this->variableRouteCount;
+                }
+
+                try {
+                    $this->saveVariableRoute($route);
+
+                    if ($this->validateFlag) {
+                        $this->assertVariableRouteValid($route);
+                    }
+                } catch (TooLongRouteException $exception) {
+                    // Try to save the route in a new chunk.
+                    // Maybe it's too long to include in the current chunk but long enough to include in the new chunk
+                    // TODO: add rollback
+                    //$this->variableRouteMap[$method]->rollback();
+                    //$this->regexTree->rollback();
+                    $this->generateVariableRouteRegex($scope);
+                    $this->createVariableRouteChunk($scope);
+                    $this->saveVariableRoute($route);
+
+                    if ($this->validateFlag) {
+                        $this->assertVariableRouteValid($route);
+                    }
+                }
+            }
+
+            $this->generateVariableRouteRegex($scope);
+        }
+
+        if (!Regex::isValid($this->variableRouteRegex)) {
+            $this->validateFlag = true;
+            $this->variableRouteRegexTree->clear();
+            $this->variableRouteMapExpressions = [];
+            $this->variableRouteMapData = [];
+            $this->variableRouteOffset = $this->variableRouteCount = 0;
+            $this->compile();
+            $lastException = Regex::getLastException();
+
+            throw new BadRouteException($lastException->getMessage(), $lastException->getCode());
+        }
+    }
+
+    private function generateVariableRouteRegex(string $scope): void
+    {
+        if (!isset($this->variableRouteMapExpressions[$scope])) {
+            return;
+        }
+
         $this->variableRouteRegex = Regex::wrapWithDelimiters(
                 '^' . $this->variableRouteRegexTree->getRegex() . '$',
                 RouteParser::REGEX_DELIMITER
-            ) . 'sD';
+            ) . 'sD';// @TODO . ($isHost ? 'i' : '');
 
         if ($this->utf8) {
             $this->variableRouteRegex .= 'u';
         }
 
-        if (!Regex::isValid($this->variableRouteRegex)) {
-            throw BadRouteException::dueToIncompatibilityWithPreviousPattern($routePattern, $routeRegex);
-        }
+        $this->variableRouteMapExpressions[$scope][count($this->variableRouteMapExpressions[$scope]) - 1] =
+            $this->variableRouteRegex;
+    }
+
+    private function assertVariableRouteValid(RouteInterface $route)
+    {
+        $this->generateVariableRouteRegex($route->getScope());
+        $routePattern = $route->getPathPattern();
+        [$routeRegex] = $route->getMeta();
 
         if (strlen($this->variableRouteRegex) > $this->variableRouteRegexMaxLength) {
-            throw new TooLongRouteException("Your route \"$routePattern\" is too long");
+            $this->variableRouteRegexTree->clear();
+            $this->variableRouteMapExpressions = [];
+
+            throw TooLongRouteException::dueToLongRoute($routePattern);
+        }
+
+        if (!Regex::isValid($this->variableRouteRegex)) {
+            throw BadRouteException::dueToIncompatibilityWithPreviousPattern($routePattern, $routeRegex);
         }
     }
 }

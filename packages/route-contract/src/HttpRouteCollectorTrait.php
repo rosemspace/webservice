@@ -21,7 +21,7 @@ trait HttpRouteCollectorTrait
      * @param mixed           $handler
      *
      * @return void
-     * @throws InvalidRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
      */
     abstract public function addRoute($httpMethods, string $routePattern, $handler): void;
 

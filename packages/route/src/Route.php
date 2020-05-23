@@ -2,13 +2,18 @@
 
 namespace Rosem\Component\Route;
 
-use Rosem\Contract\Route\RouteInterface;
+use Rosem\Component\Route\Contract\RouteInterface;
 
-class Route implements RouteInterface
+class Route extends Regex implements RouteInterface
 {
-    protected array $methods;
+    protected string $scope;
 
-    protected string $handler;
+    /**
+     * The resource.
+     *
+     * @var mixed
+     */
+    protected $resource;
 
     protected string $pathPattern;
 
@@ -16,54 +21,42 @@ class Route implements RouteInterface
 
     protected string $schemePattern;
 
-    protected array $middlewareExtensions = [];
+    protected array $meta;
 
-    protected string $regex;
-
-    protected array $variableNames;
-
-    public function __construct(array $methods, string $handler, ...$data)
+    public function __construct(string $scope, string $routePattern, $resource, array $meta = [])
     {
-        $this->methods = $methods;
-        $this->handler = $handler;
-        [$this->pathPattern, $this->regex, $this->variableNames] = $data;
+        $this->scope = $scope;
+        $this->resource = $resource;
+        $this->pathPattern = $routePattern;
+        $this->meta = $meta;
+        [$regex] = $meta;
+
+        parent::__construct("~^$regex$~sx");
     }
 
-    public function getRegex(): string
+    public function getMeta(): array
     {
-        return $this->regex;
-    }
-
-    public function getVariableNames(): array
-    {
-        return $this->variableNames;
+        return $this->meta;
     }
 
     /**
-     * Retrieves the HTTP methods of the route.
-     *
-     * @return string[] Returns the route methods.
+     * @inheritDoc
      */
-    public function getMethods(): array
+    public function getScope(): string
     {
-        return $this->methods;
+        return $this->scope;
     }
 
     /**
-     * Retrieves the server request handler.
-     *
-     * @return string
-     * @see \Psr\Http\Server\RequestHandlerInterface
+     * @inheritDoc
      */
-    public function getHandler(): string
+    public function getResource()
     {
-        return $this->handler;
+        return $this->resource;
     }
 
     /**
-     * Retrieves the path pattern of the route.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getPathPattern(): string
     {
@@ -71,9 +64,7 @@ class Route implements RouteInterface
     }
 
     /**
-     * Retrieves the host pattern of the route.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getHostPattern(): string
     {
@@ -81,37 +72,10 @@ class Route implements RouteInterface
     }
 
     /**
-     * Retrieves the scheme pattern of the route.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getSchemePattern(): string
     {
         return $this->schemePattern;
-    }
-
-    /**
-     * Sets the middleware logic to be executed before route will be resolved.
-     *
-     * @param callable $middlewareExtension
-     *
-     * @return RouteInterface
-     * @see \Psr\Http\Server\MiddlewareInterface
-     */
-    public function addMiddleware(callable $middlewareExtension): RouteInterface
-    {
-        $this->middlewareExtensions[] = $middlewareExtension;
-
-        return $this;
-    }
-
-    /**
-     * Retrieves middleware list reference.
-     *
-     * @return array
-     */
-    public function &getMiddlewareExtensions(): array
-    {
-        return $this->middlewareExtensions;
     }
 }

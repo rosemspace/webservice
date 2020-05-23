@@ -2,6 +2,8 @@
 
 ini_set('display_errors', true);
 ini_set('display_startup_errors', true);
+ini_set('scream.enabled', false);
+ini_set('xdebug.scream', false);
 error_reporting(E_ALL);
 
 require __DIR__ . '/../../../../vendor/autoload.php';
@@ -119,6 +121,7 @@ for ($i = 0, $str = 'a'; $i < $nRoutes; $i++, $str++) {
     $router->addRoute('GET', '/' . $str . '/{arg}', 'handler' . $i);
     $lastStr = $str;
 }
+$router->compile();
 // first route ---------------------------------------------------------------------------------------------------------
 $startTime = hrtime(true);
 for ($i = 0; $i < $nMatches; $i++) {
@@ -156,5 +159,5 @@ if (count($res) !== 1) {
     throw new \Exception('Invalid response');
 }
 // ---------------------------------------------------------------------------------------------------------------------
-
+//echo $router->variableRouteMapExpressions['GET'][0];
 !d($stats);
