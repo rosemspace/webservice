@@ -13,25 +13,9 @@ use Fig\Http\Message\RequestMethodInterface as RequestMethod;
 trait HttpRouteCollectorTrait
 {
     /**
-     * Adds a route to the collection.
-     * The syntax used in the $route string depends on the used route parser.
-     *
-     * @param string|string[] $httpMethods
-     * @param string          $routePattern
-     * @param mixed           $handler
-     *
-     * @return void
-     * @throws BadRouteExceptionInterface
-     */
-    abstract public function addRoute($httpMethods, string $routePattern, $handler): void;
-
-    /**
      * @inheritDoc
      */
-    public function head(string $routePattern, $handler): void
-    {
-        $this->addRoute(RequestMethod::METHOD_HEAD, $routePattern, $handler);
-    }
+    abstract public function addRoute($httpMethods, string $routePattern, $handler): void;
 
     /**
      * @inheritDoc
@@ -76,9 +60,9 @@ trait HttpRouteCollectorTrait
     /**
      * @inheritDoc
      */
-    public function purge(string $routePattern, $handler): void
+    public function head(string $routePattern, $handler): void
     {
-        $this->addRoute(RequestMethod::METHOD_PURGE, $routePattern, $handler);
+        $this->addRoute(RequestMethod::METHOD_HEAD, $routePattern, $handler);
     }
 
     /**
@@ -87,6 +71,14 @@ trait HttpRouteCollectorTrait
     public function options(string $routePattern, $handler): void
     {
         $this->addRoute(RequestMethod::METHOD_OPTIONS, $routePattern, $handler);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function purge(string $routePattern, $handler): void
+    {
+        $this->addRoute(RequestMethod::METHOD_PURGE, $routePattern, $handler);
     }
 
     /**

@@ -179,7 +179,7 @@ abstract class AbstractRegexBasedMap extends AbstractMap
     /**
      * @inheritDoc
      */
-    public function compile(): void
+    public function generate(): void
     {
         if ($this->variableRouteCount > 0) {
             return;

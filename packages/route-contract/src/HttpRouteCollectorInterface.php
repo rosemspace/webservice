@@ -38,21 +38,6 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
     public function addGroup(string $prefix, callable $callback): void;
 
     /**
-     * Adds a HEAD route to the collection
-     * This is simply an alias of
-     * <code>
-     * $this->addRoute('HEAD', $routePattern, $handler)
-     * </code>
-     *
-     * @param string $routePattern
-     * @param mixed  $handler
-     *
-     * @return void
-     * @throws BadRouteExceptionInterface
-     */
-    public function head(string $routePattern, $handler): void;
-
-    /**
      * Adds a GET route to the collection
      * This is simply an alias of
      * <code>
@@ -128,10 +113,10 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
     public function delete(string $routePattern, $handler): void;
 
     /**
-     * Adds a PURGE route to the collection
+     * Adds a HEAD route to the collection
      * This is simply an alias of
      * <code>
-     * $this->addRoute('PURGE', $routePattern, $handler)
+     * $this->addRoute('HEAD', $routePattern, $handler)
      * </code>
      *
      * @param string $routePattern
@@ -140,7 +125,7 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @return void
      * @throws BadRouteExceptionInterface
      */
-    public function purge(string $routePattern, $handler): void;
+    public function head(string $routePattern, $handler): void;
 
     /**
      * Adds a OPTIONS route to the collection
@@ -156,6 +141,21 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * @throws BadRouteExceptionInterface
      */
     public function options(string $routePattern, $handler): void;
+
+    /**
+     * Adds a PURGE route to the collection
+     * This is simply an alias of
+     * <code>
+     * $this->addRoute('PURGE', $routePattern, $handler)
+     * </code>
+     *
+     * @param string $routePattern
+     * @param mixed  $handler
+     *
+     * @return void
+     * @throws BadRouteExceptionInterface
+     */
+    public function purge(string $routePattern, $handler): void;
 
     /**
      * Adds a TRACE route to the collection

@@ -24,7 +24,7 @@ interface RouteDispatcherInterface
      * @throws \Rosem\Contract\Route\BadRouteExceptionInterface
      * @throws \Rosem\Contract\Route\TooLongRouteExceptionInterface
      */
-    public function compile(): void;
+    public function generate(): void;
 
     /**
      * Dispatches against the provided scope and route.

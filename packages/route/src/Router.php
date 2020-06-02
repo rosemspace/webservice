@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Route;
 
+use Fig\Http\Message\RequestMethodInterface as RequestMethod;
+use Rosem\Component\Route\Exception\HttpMethodNotAllowedException;
 use Rosem\Component\Route\Map\MarkBasedMap;
 use Rosem\Contract\Route\{
     HttpRouteCollectorInterface,
@@ -13,17 +15,47 @@ use Rosem\Contract\Route\{
 /**
  * Class RouteCollector.
  */
-class Router extends MarkBasedMap implements HttpRouteCollectorInterface
+final class Router extends MarkBasedMap implements HttpRouteCollectorInterface
 {
     use HttpRouteCollectorTrait;
-//    use HttpAllowedMethodTrait;
 
-    /** TODO: disable / enable some methods */
-    public function setAllowedMethods(array $methods)
+    /**
+     * Allowed methods.
+     *
+     * @var array
+     */
+    protected array $allowedScopes = [
+        RequestMethod::METHOD_HEAD,
+        RequestMethod::METHOD_GET,
+        RequestMethod::METHOD_POST,
+        RequestMethod::METHOD_PUT,
+        RequestMethod::METHOD_PATCH,
+        RequestMethod::METHOD_DELETE,
+        RequestMethod::METHOD_OPTIONS,
+    ];
+
+    /**
+     * Check if HTTP methods are allowed.
+     *
+     * @param array $httpMethods
+     *
+     * @throws HttpMethodNotAllowedException
+     */
+    protected function assertAllowedScopes(array $httpMethods): void
     {
+        $notAllowedScopes = array_diff($httpMethods, $this->allowedScopes);
+
+        if (count($notAllowedScopes) > 0) {
+            throw HttpMethodNotAllowedException::forNotAllowedHttpMethods($notAllowedScopes, $this->allowedScopes);
+        }
     }
 
-    public function isMethodAllowed(string $method)
+    /**
+     * {@inheritDoc}
+     * @throws \Rosem\Component\Route\Exception\HttpMethodNotAllowedException
+     */
+    public function any(string $routePattern, $handler): void
     {
+        $this->addRoute($this->allowedScopes, $routePattern, $handler);
     }
 }

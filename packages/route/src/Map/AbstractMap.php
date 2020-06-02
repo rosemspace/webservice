@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Route\Map;
 
+use Rosem\Component\Route\AllowedScopeTrait;
 use Rosem\Component\Route\Contract\{
     RouteDispatcherInterface,
     RouteInterface,
@@ -20,6 +21,8 @@ use function trim;
 
 abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherInterface
 {
+    use AllowedScopeTrait;
+
     /**
      * Route pattern parser.
      *
@@ -120,21 +123,23 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     * @throws \Rosem\Component\Route\Exception\ScopeNotAllowedException
      */
     public function addRoute($scopes, string $routePattern, $resource): void
     {
-        $scopes = (array)$scopes;
+        $scopes = array_map('mb_strtoupper', (array)$scopes);
+        $this->assertAllowedScopes($scopes);
         $routePattern = $this->currentGroupPrefix . $this->normalize($routePattern);
 
         foreach ($this->parser->parse($routePattern) as $meta) {
             if ($this->isStaticRoute($meta)) {
                 foreach ($scopes as $scope) {
-                    $this->addStaticRoute(mb_strtoupper($scope), $meta[0], $resource);
+                    $this->addStaticRoute($scope, $meta[0], $resource);
                 }
             } else {
                 foreach ($scopes as $scope) {
-                    $this->addVariableRoute(mb_strtoupper($scope), $routePattern, $resource, $meta);
+                    $this->addVariableRoute($scope, $routePattern, $resource, $meta);
                 }
             }
         }

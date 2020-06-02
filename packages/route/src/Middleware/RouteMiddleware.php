@@ -62,10 +62,13 @@ class RouteMiddleware implements MiddlewareInterface
      * @param RequestHandlerInterface $nextHandler
      *
      * @return ResponseInterface
+     * @throws \Rosem\Component\Route\Exception\BadRouteException
+     * @throws \Rosem\Component\Route\Exception\TooLongRouteException
+     * @throws \Rosem\Component\Route\Exception\HttpMethodNotAllowedException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $nextHandler): ResponseInterface
     {
-        $this->routeDispatcher->compile();
+        $this->routeDispatcher->generate();
         //todo add scheme and host support
         $route = $this->routeDispatcher->dispatch(
             $request->getMethod(),

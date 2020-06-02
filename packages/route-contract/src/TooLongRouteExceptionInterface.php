@@ -5,9 +5,11 @@
 
 namespace Rosem\Contract\Route;
 
+use Throwable;
+
 /**
  * Base interface representing a generic exception in a route.
  */
-interface TooLongRouteExceptionInterface
+interface TooLongRouteExceptionInterface extends Throwable
 {
 }

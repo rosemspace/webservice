@@ -7,7 +7,7 @@ use RuntimeException;
 
 use function sprintf;
 
-class TooLongRouteException extends RuntimeException implements TooLongRouteExceptionInterface
+final class TooLongRouteException extends RuntimeException implements TooLongRouteExceptionInterface
 {
     public static function dueToLongRoute(string $routePattern): self
     {
