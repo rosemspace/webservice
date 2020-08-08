@@ -5,8 +5,8 @@ namespace Rosem\Component\Authentication\Provider;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Component\Authentication\Middleware\{
-    BasicAuthenticationMiddleware,
-    DigestAuthenticationMiddleware
+    AbstractAuthenticationMiddleware,
+    HttpAuthenticationMiddleware
 };
 use Rosem\Contract\Authentication\UserFactoryInterface;
 use Rosem\Contract\Container\ServiceProviderInterface;
@@ -22,6 +22,8 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
 
     public const CONFIG_REALM = 'auth.http.realm';
 
+    public const CONFIG_NONCE = 'auth.http.nonce';
+
     /**
      * @inheritdoc
      */
@@ -29,30 +31,24 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
     {
         return [
             //@TODO constants
-            static::CONFIG_REALM => static fn(ContainerInterface $container) =>
-                $container->has('AUTH_HTTP_REALM')
-                    ? $container->get('AUTH_HTTP_REALM')
-                    : $container->get('APP_NAME'),
+            static::CONFIG_REALM => static fn(ContainerInterface $container) => $container->has('AUTH_HTTP_REALM')
+                ? $container->get('AUTH_HTTP_REALM')
+                : $container->get('APP_NAME'),
+            static::CONFIG_NONCE => static fn(): string => '',
             static::CONFIG_TYPE => static fn(): string => 'digest',
-            static::CONFIG_USER_PASSWORD_RESOLVER => static function (ContainerInterface $container): callable {
-                return static function (string $username) use (&$container): ?string {
-                    return $container->get(static::CONFIG_USER_LIST)[$username] ?? null;
-                };
-            },
-            BasicAuthenticationMiddleware::class => static fn(ContainerInterface $container
-            ): BasicAuthenticationMiddleware => new BasicAuthenticationMiddleware(
+            static::CONFIG_USER_PASSWORD_RESOLVER => static fn(ContainerInterface $container
+            ): callable => static fn(string $username): ?string => $container->get(
+                    static::CONFIG_USER_LIST
+                )[$username] ?? null,
+            HttpAuthenticationMiddleware::class => static fn(ContainerInterface $container
+            ): AbstractAuthenticationMiddleware => (new HttpAuthenticationMiddleware(
                 $container->get(ResponseFactoryInterface::class),
                 $container->get(UserFactoryInterface::class),
                 $container->get(static::CONFIG_USER_PASSWORD_RESOLVER),
-                $container->get(static::CONFIG_REALM)
-            ),
-            DigestAuthenticationMiddleware::class => static fn(ContainerInterface $container
-            ): DigestAuthenticationMiddleware => new DigestAuthenticationMiddleware(
-                $container->get(ResponseFactoryInterface::class),
-                $container->get(UserFactoryInterface::class),
-                $container->get(static::CONFIG_USER_PASSWORD_RESOLVER),
-                $container->get(static::CONFIG_REALM)
-            ),
+                $container->get(static::CONFIG_REALM),
+                $container->get(static::CONFIG_NONCE),
+                $container->get(static::CONFIG_TYPE)
+            ))->delegateMiddleware,
         ];
     }
 
@@ -66,11 +62,7 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
                 ContainerInterface $container,
                 MiddlewareCollectorInterface $middlewareCollector
             ): void {
-                $middlewareCollector->addMiddleware(
-                    $container->get(static::CONFIG_TYPE) === 'basic'
-                        ? $container->get(BasicAuthenticationMiddleware::class)
-                        : $container->get(DigestAuthenticationMiddleware::class)
-                );
+                $middlewareCollector->addMiddleware($container->get(HttpAuthenticationMiddleware::class));
             },
         ];
     }
