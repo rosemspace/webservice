@@ -16,4 +16,10 @@ namespace PHPSTORM_META {
         0,
         \PSR7Sessions\Storageless\Http\SessionMiddleware::SESSION_ATTRIBUTE
     );
+    expectedArguments(
+        \Rosem\Component\Authentication\Middleware\HttpAuthenticationMiddleware::__construct(),
+        5,
+        \Rosem\Component\Authentication\Middleware\HttpAuthenticationMiddleware::TYPE_BASIC,
+        \Rosem\Component\Authentication\Middleware\HttpAuthenticationMiddleware::TYPE_DIGEST
+    );
 }

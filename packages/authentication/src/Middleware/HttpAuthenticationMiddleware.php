@@ -18,10 +18,36 @@ use Rosem\Contract\Authentication\{
     UserInterface
 };
 
+/**
+ * Class HttpAuthenticationMiddleware.
+ */
 final class HttpAuthenticationMiddleware implements AuthenticationInterface, MiddlewareInterface
 {
+    /**
+     * HTTP basic authentication type.
+     */
+    public const TYPE_BASIC = 'basic';
+
+    /**
+     * HTTP digest authentication type.
+     */
+    public const TYPE_DIGEST = 'digest';
+
+    /**
+     * Middleware delegate execution to.
+     */
     public AbstractAuthenticationMiddleware $delegateMiddleware;
 
+    /**
+     * HttpAuthenticationMiddleware constructor.
+     *
+     * @param ResponseFactoryInterface $responseFactory
+     * @param UserFactoryInterface     $userFactory
+     * @param callable                 $userPasswordResolver
+     * @param string                   $realm
+     * @param string                   $nonce
+     * @param string                   $type
+     */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
         UserFactoryInterface $userFactory,
