@@ -1,8 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-use function Rosem\Component\App\findUp;
-
 const APP_NAME = 'Rosem application console';
 const PHP_VERSION_SUPPORTED = '7.4.0';
 
@@ -36,9 +34,11 @@ if (!ini_get('date.timezone')) {
 }
 
 // Require an autoload file
-require_once __DIR__ . '/findUp.php';
+require_once __DIR__ . '/functions/findUp.php';
 
-$autoloadFile = findUp(__DIR__, 'vendor/autoload.php', 6);
+use function Rosem\Component\App\findUp;
+
+$autoloadFile = findUp(__DIR__, 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php', 6);
 
 if ($autoloadFile === null) {
     fwrite(
@@ -52,6 +52,21 @@ if ($autoloadFile === null) {
 }
 
 require_once $autoloadFile;
-require_once dirname($autoloadFile, 2) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 unset($autoloadFile);
+
+use Rosem\Component\Hash\Console\HashGenerateCommand;
+use Rosem\Component\Encryption\Console\KeyGenerateCommand;
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+
+if (class_exists(HashGenerateCommand::class)) {
+    $application->add(new HashGenerateCommand());
+}
+
+if (class_exists(KeyGenerateCommand::class)) {
+    $application->add(new KeyGenerateCommand());
+}
+
+$application->run();

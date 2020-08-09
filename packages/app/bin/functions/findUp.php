@@ -12,13 +12,13 @@ if (!function_exists('findUp')) {
     function findUp(string $startDirname, string $searchPath, int $searchMaxLevelUp): ?string
     {
         $filename = null;
-        $searchPath = DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+        $searchPath = DIRECTORY_SEPARATOR . trim($searchPath, DIRECTORY_SEPARATOR);
 
         while ($searchMaxLevelUp-- >= 0 && $startDirname !== '' && $startDirname !== '.') {
             if ($startDirname === '/') {
                 $startDirname = '';
             } elseif ($startDirname === '.') {
-                $startDirname = 'TODO_root';
+                $startDirname = 'TODO_root'; // TODO ?
             }
 
             $possibleFilename = "$startDirname$searchPath";

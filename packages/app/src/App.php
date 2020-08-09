@@ -18,6 +18,9 @@ use Rosem\Contract\App\{
 use Rosem\Contract\Debug\InspectableInterface;
 use Rosem\Contract\Http\Server\EmitterInterface;
 
+use function dirname;
+use function preg_replace;
+
 class App implements AppInterface, InspectableInterface
 {
     use EnvTrait;
@@ -170,7 +173,7 @@ class App implements AppInterface, InspectableInterface
                     preg_replace(
                         '/\\' . DIRECTORY_SEPARATOR . '\.?$/',
                         '',
-                        $_SERVER['PWD'] ?: getcwd()
+                        $_SERVER['PWD'] ?? getcwd()
                     ) . DIRECTORY_SEPARATOR .
                     preg_replace(
                         '/^\.?\\' . DIRECTORY_SEPARATOR . '|\\' . DIRECTORY_SEPARATOR . '\.?$/',
