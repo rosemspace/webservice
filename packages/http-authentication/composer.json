@@ -28,7 +28,7 @@
         "rosem/authentication-contract": "^0.0.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^9.3",
         "roave/security-advisories": "dev-master"
     },
     "autoload": {
