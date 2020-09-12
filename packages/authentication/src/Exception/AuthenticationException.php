@@ -2,10 +2,10 @@
 
 namespace Rosem\Component\Authentication\Exception;
 
-use Exception;
 use Rosem\Contract\Authentication\AuthenticationExceptionInterface;
+use RuntimeException;
 
-class AuthenticationException extends Exception implements AuthenticationExceptionInterface
+class AuthenticationException extends RuntimeException implements AuthenticationExceptionInterface
 {
     /**
      * Throws when authentication is used over HTTP instead of HTTPS.

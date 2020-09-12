@@ -98,7 +98,7 @@ class BcryptHasher extends AbstractHasher
     }
 
     /**
-     * Throw an exception is the given value is too long.
+     * Throw an exception if the given value is too long.
      *
      * @param string $value
      */

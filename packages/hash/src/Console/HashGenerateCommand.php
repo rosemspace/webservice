@@ -3,10 +3,12 @@
 namespace Rosem\Component\Hash\Console;
 
 use Rosem\Component\Hash\ArgonHasher;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\{
+    Command\Command,
+    Input\InputArgument,
+    Input\InputInterface,
+    Output\OutputInterface
+};
 
 class HashGenerateCommand extends Command
 {
@@ -17,10 +19,10 @@ class HashGenerateCommand extends Command
     {
         $this
             ->setName('hash:generate')
-            ->setDescription('Generate a hash')
+            ->setDescription('Generate a hash of the value')
             ->addArgument(
                 'string',
-                InputOption::VALUE_REQUIRED,
+                InputArgument::REQUIRED,
                 'How many bytes of entropy do you want in your key? (defaults to 32 bytes or 256 bits)',
             )
 //            ->addOption(

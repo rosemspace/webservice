@@ -91,7 +91,7 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
         return $this->responseFactory->createResponse(StatusCode::STATUS_UNAUTHORIZED)
             ->withHeader(
                 'WWW-Authenticate',
-                self::AUTHORIZATION_HEADER_PREFIX . ' realm="' . $this->realm . '"'
+                self::AUTHORIZATION_HEADER_PREFIX . " realm=\"$this->realm\""
             );
     }
 }

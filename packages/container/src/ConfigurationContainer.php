@@ -22,7 +22,7 @@ class ConfigurationContainer extends AbstractContainer
     /**
      * Last resolved id.
      *
-     * @var string
+     * @var string|null
      */
     protected ?string $lastId = null;
 

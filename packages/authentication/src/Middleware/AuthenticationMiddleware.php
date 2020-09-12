@@ -48,8 +48,8 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
      * @param callable                 $userPasswordResolver
      * @param string                   $identityParameter
      * @param string                   $passwordParameter
-     * @param string                   $loginUri
-     * @param null|string              $loggedInUri
+     * @param string|null              $loginUri
+     * @param string|null              $loggedInUri
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,

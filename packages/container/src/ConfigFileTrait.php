@@ -36,7 +36,7 @@ trait ConfigFileTrait
         }
 
         throw new Exception\ContainerException(
-            "$filePath configuration file does not exists"
+            "$filePath configuration file does not exist"
         );
     }
 }
