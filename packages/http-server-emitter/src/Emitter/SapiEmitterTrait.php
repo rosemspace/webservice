@@ -41,8 +41,6 @@ trait SapiEmitterTrait
      * `emitHeaders()` in order to prevent PHP from changing the status code of
      * the emitted response.
      *
-     * @param ResponseInterface $response
-     *
      * @see \Rosem\Component\Http\Server\SapiEmitterTrait::emitHeaders()
      */
     private function emitStatusLine(ResponseInterface $response): void
@@ -50,7 +48,7 @@ trait SapiEmitterTrait
         $statusCode = $response->getStatusCode();
         $protocolVersion = $response->getProtocolVersion();
         $reasonPhrase = rtrim(' ' . $response->getReasonPhrase());
-        header("HTTP/$protocolVersion $statusCode$reasonPhrase", true, $statusCode);
+        header("HTTP/${protocolVersion} ${statusCode}${reasonPhrase}", true, $statusCode);
     }
 
     /**
@@ -59,8 +57,6 @@ trait SapiEmitterTrait
      * is an array with multiple values, ensures that each is sent
      * in such a way as to create aggregate headers (instead of replace
      * the previous).
-     *
-     * @param ResponseInterface $response
      */
     private function emitHeaders(ResponseInterface $response): void
     {
@@ -71,7 +67,7 @@ trait SapiEmitterTrait
             $first = $name !== 'Set-Cookie';
 
             foreach ($values as $value) {
-                header("$name: $value", $first, $statusCode);
+                header("${name}: ${value}", $first, $statusCode);
                 $first = false;
             }
         }
@@ -79,10 +75,6 @@ trait SapiEmitterTrait
 
     /**
      * Filter a header name to wordcase.
-     *
-     * @param string $header
-     *
-     * @return string
      */
     private function filterHeader(string $header): string
     {

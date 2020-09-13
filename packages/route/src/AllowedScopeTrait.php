@@ -1,30 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route;
 
 use Rosem\Component\Route\Exception\ScopeNotAllowedException;
 
 use function array_diff;
 use function array_map;
-use function mb_strtoupper;
 
 trait AllowedScopeTrait
 {
     /**
      * Allowed scopes.
-     *
-     * @var array
      */
     protected array $allowedScopes = [];
 
     public static function normalizeScopes(array $scopes): array
     {
         return array_map('mb_strtoupper', $scopes);
-    }
-
-    protected function setAllowedScopes(array $allowedScopes): void
-    {
-        $this->allowedScopes = self::normalizeScopes($allowedScopes);
     }
 
     /**
@@ -37,10 +31,14 @@ trait AllowedScopeTrait
         return $this->allowedScopes;
     }
 
+    protected function setAllowedScopes(array $allowedScopes): void
+    {
+        $this->allowedScopes = self::normalizeScopes($allowedScopes);
+    }
+
     /**
      * Check if scopes are allowed.
      *
-     * @param array $scopes
      * @throws ScopeNotAllowedException
      */
     protected function assertAllowedScopes(array $scopes): void

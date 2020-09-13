@@ -32,6 +32,7 @@ class DirectoryList
     //public_path
     //resource_path
     //storage_path
+
     /**
      * System base temporary directory.
      */
@@ -39,40 +40,22 @@ class DirectoryList
 
     /**
      * The application root directory.
-     *
-     * @var string
      */
     private string $root;
 
     /**
      * The system temporary directory.
-     *
-     * @var string
      */
     private string $temp;
-
-    /**
-     * Directories configurations.
-     *
-     * @var array
-     */
-    private array $directories;
-
-    public function __construct()
-    {
-    }
 
     public function getRoot(): string
     {
         // Try to guess root
-        if (!isset($this->root)) {
+        if (! isset($this->root)) {
             if (PHP_SAPI === 'cli') {
                 // Go above "bin/cli" file
                 $this->root = dirname(
-                    rtrim(
-                        $_SERVER['PWD'] ?: getcwd(),
-                        DIRECTORY_SEPARATOR
-                    ) . DIRECTORY_SEPARATOR .
+                    rtrim($_SERVER['PWD'] ?: getcwd(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR .
                     preg_replace(
                         '~^\.?' . DIRECTORY_SEPARATOR . '+|' . DIRECTORY_SEPARATOR . '+$~',
                         '',
@@ -91,12 +74,9 @@ class DirectoryList
         return $this->root;
     }
 
-    /**
-     * @return string
-     */
     public function getSystemTempDirname(): string
     {
-        if (!isset($this->temp)) {
+        if (! isset($this->temp)) {
             $this->temp = realpath(rtrim(sys_get_temp_dir(), '\\/'));
         }
 
@@ -114,33 +94,18 @@ class DirectoryList
             throw new InvalidArgumentException('Prefix is too long; use 3 ASCII characters maximum.');
         }
 
-        $tempFilename = tempnam($directory ?? $this->temp, $prefix);
-
-        return $tempFilename;
-
-        $handle = fopen($tempFilename, 'w+b');
-        fwrite($handle, "записываем в во временный файл");
-        fclose($handle);
-
-        // todo
-
-        unlink($tempFilename);
+        return tempnam($directory ?? $this->temp, $prefix);
     }
 
     public function newTempFile()
     {
-        $file = tmpfile();
-        $path = stream_get_meta_data($file)['uri'];
+        // TODO $path = stream_get_meta_data($file)['uri'];
 
-        return $file;
+        return tmpfile();
     }
 
     /**
      * Converts slashes in path to the current style.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function normalizePath(string $path): string
     {
@@ -149,13 +114,20 @@ class DirectoryList
 
     /**
      * Converts slashes in path to a conventional unix-style.
-     *
-     * @param string $path
-     *
-     * @return string
      */
     public function unifyPath(string $path): string
     {
         return DIRECTORY_SEPARATOR === '\\' ? str_replace('\\', '/', $path) : $path;
+    }
+
+    public function newTempFilename_($tempFilename): void
+    {
+        $handle = fopen($tempFilename, 'w+b');
+        fwrite($handle, 'Write into the temporary file');
+        fclose($handle);
+
+        // todo
+
+        unlink($tempFilename);
     }
 }

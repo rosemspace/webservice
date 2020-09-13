@@ -10,9 +10,6 @@ use function min;
 
 class RegexNode
 {
-    /**
-     * @var string
-     */
     protected string $prefix;
 
     /**
@@ -54,7 +51,7 @@ class RegexNode
         $patternLength = mb_strlen($regex);
         $matchLength = 0;
 
-        foreach ($this->children as $index => &$node) {
+        foreach ($this->children as &$node) {
             $nodePrefix = $node->getPrefix();
             $nodePrefixLength = mb_strlen($nodePrefix);
             $end = min($patternLength, $nodePrefixLength);
@@ -66,18 +63,16 @@ class RegexNode
                     break;
                 }
 
-                if ('(' === $regex[$matchLength] || '(' === $nodePrefix[$matchLength]) {
+                if ($regex[$matchLength] === '(' || $nodePrefix[$matchLength] === '(') {
                     ++$groups;
-                } elseif (')' === $regex[$matchLength] || ')' === $nodePrefix[$matchLength]) {
+                } elseif ($regex[$matchLength] === ')' || $nodePrefix[$matchLength] === ')') {
                     --$groups;
                 }
 
                 if ($groups > 0) {
                     ++$ignoreMatchLength;
-                } elseif ((isset($regex[$matchLength + 1]) && '?' === $regex[$matchLength + 1])
-                    || (isset($nodePrefix[$matchLength + 1]) && '?' === $nodePrefix[$matchLength + 1])
-//                    || '/' === $nodePrefix[$matchLength]
-//                    || '/' === $regex[$matchLength]
+                } elseif ((isset($regex[$matchLength + 1]) && $regex[$matchLength + 1] === '?')
+                    || (isset($nodePrefix[$matchLength + 1]) && $nodePrefix[$matchLength + 1] === '?')
                 ) {
                     ++$ignoreMatchLength;
                 } else {
@@ -92,7 +87,7 @@ class RegexNode
                     $newPrefix = mb_substr($nodePrefix, 0, $matchLength);
                     $newChild = mb_substr($nodePrefix, $matchLength);
                     $node = new self($newPrefix, [new self($newChild, $node->getChildren())]);
-                } elseif (!$node->hasChildren()) {
+                } elseif (! $node->hasChildren()) {
                     $node->addRegex('');
                 }
 
@@ -106,7 +101,7 @@ class RegexNode
 
         unset($node);
 
-        if (!$matchLength) {
+        if (! $matchLength) {
             $this->children[] = new self($regex);
         }
     }
@@ -122,13 +117,13 @@ class RegexNode
             foreach ($this->children as $index => $node) {
                 $regexPart = $node->getRegex();
 
-                if (!$optional && $regexPart === '') {
+                if (! $optional && $regexPart === '') {
                     $optional = true;
 
                     continue;
                 }
 
-                $regex .= $index === 0 ? $regexPart : "|$regexPart";
+                $regex .= $index === 0 ? $regexPart : "|${regexPart}";
             }
 
             $regex .= ')';

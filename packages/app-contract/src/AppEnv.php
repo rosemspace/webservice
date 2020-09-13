@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Contract\App;
 
 class AppEnv
@@ -20,10 +22,10 @@ class AppEnv
     public const TEST = 'test';
 
     // log errors, use caches
-    public const ACCEPTANCE  = 'acceptance';
+    public const ACCEPTANCE = 'acceptance';
 
     // real data from PRODUCTION and new functionality from ACCEPTANCE
-    public const STAGING  = 'staging';
+    public const STAGING = 'staging';
 
     // log errors, use caches
     public const PRODUCTION = 'production';

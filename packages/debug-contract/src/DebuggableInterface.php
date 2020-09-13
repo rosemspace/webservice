@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Contract\Debug;
 
 interface DebuggableInterface
 {
     /**
      * Determine if the application is allowed to debug.
-     *
-     * @return bool
      */
     public function isAllowedToDebug(): bool;
 }

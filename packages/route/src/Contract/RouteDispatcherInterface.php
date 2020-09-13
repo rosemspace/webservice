@@ -7,6 +7,9 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Route\Contract;
 
+use Rosem\Contract\Route\BadRouteExceptionInterface;
+use Rosem\Contract\Route\TooLongRouteExceptionInterface;
+
 /**
  * Route dispatcher returns data of a route.
  */
@@ -21,16 +24,13 @@ interface RouteDispatcherInterface
     /**
      * Generate regular expressions for the all added routes.
      *
-     * @throws \Rosem\Contract\Route\BadRouteExceptionInterface
-     * @throws \Rosem\Contract\Route\TooLongRouteExceptionInterface
+     * @throws BadRouteExceptionInterface
+     * @throws TooLongRouteExceptionInterface
      */
     public function generate(): void;
 
     /**
      * Dispatches against the provided scope and route.
-     *
-     * @param string $scope
-     * @param string $route
      *
      * @return array<int, mixed> The status code, data and variables
      */

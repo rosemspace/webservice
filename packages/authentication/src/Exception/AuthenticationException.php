@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Authentication\Exception;
 
 use Rosem\Contract\Authentication\AuthenticationExceptionInterface;
@@ -9,13 +11,9 @@ class AuthenticationException extends RuntimeException implements Authentication
 {
     /**
      * Throws when authentication is used over HTTP instead of HTTPS.
-     *
-     * @return self
      */
     public static function dueToWebServerInsecureHttpConnection(): self
     {
-        return new self(
-            'Authentication supports only HTTPS if not served via PHP web server.'
-        );
+        return new self('Authentication supports only HTTPS if not served via PHP web server.');
     }
 }

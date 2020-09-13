@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Http\Server\Middleware;
 
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
@@ -22,27 +24,14 @@ use function mb_strtoupper;
  */
 class HandleErrorMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
     protected ResponseFactoryInterface $responseFactory;
 
-    /**
-     * @var TemplateRendererInterface|null
-     */
     protected ?TemplateRendererInterface $view;
 
-    /**
-     * @var array
-     */
     protected array $config;
 
     /**
      * ClientErrorMiddleware constructor.
-     *
-     * @param ResponseFactoryInterface       $responseFactory
-     * @param TemplateRendererInterface|null $view
-     * @param array                          $config
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
@@ -64,9 +53,6 @@ class HandleErrorMiddleware implements MiddlewareInterface
         );
     }
 
-    /**
-     * @inheritDoc
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
@@ -100,11 +86,11 @@ class HandleErrorMiddleware implements MiddlewareInterface
 
         $body = $response->getBody();
 
-        if (!$body->isWritable()) {
+        if (! $body->isWritable()) {
             return;
         }
 
-        $viewString = $this->view->render("error::$statusCode", $this->config);
+        $viewString = $this->view->render("error::${statusCode}", $this->config);
 
         if (empty($viewString)) {
             return;

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
@@ -13,10 +16,7 @@ interface RouteGroupInterface
     /**
      * Sets the middleware logic to be executed before the route will be resolved.
      *
-     * @param callable $middlewareExtension
-     *
-     * @return RouteGroupInterface
      * @see \Psr\Http\Server\MiddlewareInterface
      */
-    public function addMiddleware(callable $middlewareExtension): RouteGroupInterface;
+    public function addMiddleware(callable $middlewareExtension): self;
 }

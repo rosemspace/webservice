@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Contract\Http\Server;
 
 use Psr\Http\Server\MiddlewareInterface;
@@ -13,10 +15,6 @@ interface GroupMiddlewareInterface extends MiddlewareInterface
 {
     /**
      * Add middleware to the collection.
-     *
-     * @param MiddlewareInterface $middleware
-     *
-     * @return self
      */
     public function addMiddleware(MiddlewareInterface $middleware): self;
 }

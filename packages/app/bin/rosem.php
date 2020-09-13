@@ -6,7 +6,7 @@ const PHP_VERSION_SUPPORTED = '7.4.0';
 
 require_once __DIR__ . '/functions/throwError.php';
 
-use function Rosem\Component\App\throwError;
+use Rosem\Component\Encryption\Console\KeyGenerateCommand;
 
 // Check is PHP version is supported
 if (version_compare(PHP_VERSION_SUPPORTED, PHP_VERSION, '>')) {
@@ -25,14 +25,14 @@ if (PHP_SAPI !== 'cli') {
     throwError(APP_NAME . ' must be run as a CLI application.');
 }
 
-if (!ini_get('date.timezone')) {
+if (! ini_get('date.timezone')) {
     ini_set('date.timezone', 'UTC');
 }
 
 // Require an autoload file
 require_once __DIR__ . '/functions/findUp.php';
 
-use function Rosem\Component\App\findUp;
+use Rosem\Component\Hash\Console\HashGenerateCommand;
 
 $autoloadFile = findUp(__DIR__, 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php', 6);
 
@@ -48,9 +48,9 @@ require_once $autoloadFile;
 
 unset($autoloadFile);
 
-use Rosem\Component\Hash\Console\HashGenerateCommand;
-use Rosem\Component\Encryption\Console\KeyGenerateCommand;
 use Symfony\Component\Console\Application;
+use function Rosem\Component\App\findUp;
+use function Rosem\Component\App\throwError;
 
 $application = new Application();
 

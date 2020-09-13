@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Hash;
 
+use Exception;
 use Rosem\Utility\String\Str;
 
 class Sha256Hasher extends AbstractHasher
@@ -18,27 +21,9 @@ class Sha256Hasher extends AbstractHasher
 
     /**
      * The salt string which will be prepended to a value which should be hashed.
-     *
-     * @var string
      */
     protected string $salt = '';
 
-    /**
-     * Merge given options with default options.
-     *
-     * @param array $options
-     *
-     * @return array
-     * @throws \Exception
-     */
-    protected function mergeOptions(array $options = []): array
-    {
-        return ['salt' => $options['salt'] ?? self::SALT_DEFAULT_LENGTH];
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function hash(string $value, array $options = []): string
     {
         $hash = hash('sha256', $this->salt . $value, $this->mergeOptions($options)['rawOutput']);
@@ -51,19 +36,16 @@ class Sha256Hasher extends AbstractHasher
 //        explode(self::SALT_DEFAULT_DELIMITER, $hashedValue, 2)[0],
     }
 
-    /**
-     * @inheritDoc
-     */
     public function verify(string $value, string $hashedValue): bool
     {
-        if ('' === $hashedValue) {
+        if ($hashedValue === '') {
             return false;
         }
 
         [$hash, $salt] = explode(self::SALT_DEFAULT_DELIMITER, $hashedValue, 2);
 
         //todo
-        return password_verify("$salt$value", $hash);
+        return password_verify("${salt}${value}", $hash);
     }
 
     /**
@@ -71,8 +53,7 @@ class Sha256Hasher extends AbstractHasher
      *
      * @param string|int $salt
      *
-     * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function setSalt($salt): void
     {
@@ -81,11 +62,21 @@ class Sha256Hasher extends AbstractHasher
         }
 
         if (is_numeric($salt)) {
-            $salt = Str::random((int)$salt);
-        } elseif (!is_string($salt)) {
+            $salt = Str::random((int) $salt);
+        } elseif (! is_string($salt)) {
             $salt = Str::random(self::SALT_DEFAULT_LENGTH);
         }
 
         $this->salt = $salt;
+    }
+
+    /**
+     * Merge given options with default options.
+     *
+     * @throws Exception
+     */
+    protected function mergeOptions(array $options = []): array
+    {
+        return ['salt' => $options['salt'] ?? self::SALT_DEFAULT_LENGTH];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\Dispatcher;
 
 use Rosem\Component\Route\Contract\RegexBasedDispatcherInterface;
@@ -10,13 +12,10 @@ use function preg_match;
 
 class GroupCountBasedDispatcher implements RegexBasedDispatcherInterface
 {
-    /**
-     * @inheritDoc
-     */
     public function dispatch(array $metaList, array $dataList, string $uri): array
     {
         foreach ($metaList as &$meta) {
-            if (!preg_match($meta[GroupCountBasedDataGenerator::KEY_REGEX], $uri, $matches)) {
+            if (! preg_match($meta[GroupCountBasedDataGenerator::KEY_REGEX], $uri, $matches)) {
                 continue;
             }
 

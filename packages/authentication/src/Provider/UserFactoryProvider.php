@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Authentication\Provider;
 
 use Psr\Container\ContainerInterface;
@@ -13,9 +15,6 @@ class UserFactoryProvider implements ServiceProviderInterface
 
     public const CONFIG_RESOLVER_DETAILS = 'auth.user.resolver.details';
 
-    /**
-     * @inheritdoc
-     */
     public function getFactories(): array
     {
         return [
@@ -29,16 +28,13 @@ class UserFactoryProvider implements ServiceProviderInterface
                     return ['username' => $username];
                 };
             },
-            UserFactoryInterface::class => static fn(ContainerInterface $container): UserFactory => new UserFactory(
+            UserFactoryInterface::class => static fn (ContainerInterface $container): UserFactory => new UserFactory(
                 $container->get(static::CONFIG_RESOLVER_ROLES),
                 $container->get(static::CONFIG_RESOLVER_DETAILS)
             ),
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getExtensions(): array
     {
         return [];

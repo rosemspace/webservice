@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route;
 
 use Rosem\Component\Route\Contract\{
@@ -9,9 +11,6 @@ use Rosem\Component\Route\Contract\{
 
 class RouteCompiler implements RouteCompilerInterface
 {
-    /**
-     * @var RouteParserInterface
-     */
     protected RouteParserInterface $parser;
 
     public function __construct(RouteParserInterface $parser)
@@ -19,9 +18,6 @@ class RouteCompiler implements RouteCompilerInterface
         $this->parser = $parser;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function compile(array $methods, string $routePattern, string $handler): array
     {
         $routes = [];

@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\App\Provider;
 
+use InvalidArgumentException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Rosem\Component\App\Http\Server\{
-    HomeRequestHandler
-};
-use Rosem\Contract\{
-    Container\ServiceProviderInterface,
-    Route\HttpRouteCollectorInterface,
-    Template\TemplateRendererInterface
-};
+use Rosem\Component\App\Http\Server\HomeRequestHandler;
+use Rosem\Contract\Container\ServiceProviderInterface;
+use Rosem\Contract\Route\HttpRouteCollectorInterface;
+use Rosem\Contract\Template\TemplateRendererInterface;
 
 use function dirname;
 use function mb_strtolower;
@@ -24,18 +24,18 @@ class AppServiceProvider implements ServiceProviderInterface
      * Returns a list of all container entries registered by this service provider.
      *
      * @return callable[]
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function getFactories(): array
     {
         return [
-            static::CONFIG_DIRECTORY_ROOT => static fn() => null,
-            'app.name' => static fn(): string => 'Rosem',
-            'app.lang' => static fn(): string => 'en',
-            'app.meta.charset' => static fn(): string => 'utf-8',
-            'app.meta.titlePrefix' => static fn(): string => 'Rosem | ',
-            'app.meta.title' => static fn(): string => 'Welcome',
-            'app.meta.titleSuffix' => static fn(): string => '',
+            static::CONFIG_DIRECTORY_ROOT => static fn () => null,
+            'app.name' => static fn (): string => 'Rosem',
+            'app.lang' => static fn (): string => 'en',
+            'app.meta.charset' => static fn (): string => 'utf-8',
+            'app.meta.titlePrefix' => static fn (): string => 'Rosem | ',
+            'app.meta.title' => static fn (): string => 'Welcome',
+            'app.meta.titleSuffix' => static fn (): string => '',
             HomeRequestHandler::class => static function (ContainerInterface $container): HomeRequestHandler {
                 return new HomeRequestHandler(
                     $container->get(ResponseFactoryInterface::class),
@@ -54,7 +54,7 @@ class AppServiceProvider implements ServiceProviderInterface
      * Returns a list of all container entries extended by this service provider.
      *
      * @return callable[]
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws ContainerExceptionInterface
      */
     public function getExtensions(): array
     {

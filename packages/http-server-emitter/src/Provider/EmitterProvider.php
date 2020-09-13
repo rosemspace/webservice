@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Http\Server\Provider;
 
-use Rosem\Component\Http\Server\{
-    EmitterStack,
-    Emitter\SapiEmitter,
-    Emitter\SapiStreamEmitter
+use Rosem\Component\Http\Server\Emitter\{
+    SapiEmitter,
+    SapiStreamEmitter
 };
+use Rosem\Component\Http\Server\EmitterStack;
 use Rosem\Contract\Container\ServiceProviderInterface;
 use Rosem\Contract\Http\Server\EmitterInterface;
 

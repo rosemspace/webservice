@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Encryption\Console;
 
+use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -9,10 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class KeyGenerateCommand extends Command
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('key:generate')
@@ -31,12 +31,8 @@ class KeyGenerateCommand extends Command
                 'What format would do you want your key provided? (hex or base64, defaults to base64)',
                 'base64'
             );
-        ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $entropy = $input->getOption('entropy');
@@ -47,8 +43,8 @@ class KeyGenerateCommand extends Command
             'hex' => 'bin2hex',
         ];
 
-        if (!isset($formatters[$format])) {
-            throw new \InvalidArgumentException('Unrecognized format: ' . $format);
+        if (! isset($formatters[$format])) {
+            throw new InvalidArgumentException('Unrecognized format: ' . $format);
         }
 
         $data = random_bytes($entropy);

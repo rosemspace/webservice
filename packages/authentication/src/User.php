@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Authentication;
 
 use Rosem\Contract\Authentication\UserInterface;
@@ -12,9 +14,6 @@ use Rosem\Contract\Authentication\UserInterface;
  */
 class User implements UserInterface
 {
-    /**
-     * @var string
-     */
     private string $identity;
 
     /**
@@ -22,9 +21,6 @@ class User implements UserInterface
      */
     private array $roles;
 
-    /**
-     * @var array
-     */
     private array $details;
 
     public function __construct(string $identity, array $roles = [], array $details = [])
@@ -50,8 +46,8 @@ class User implements UserInterface
     }
 
     /**
-     * @param mixed  $default Default value to return if no detail matching $name is discovered.
-     * @param string $name    The name of a detail.
+     * @param mixed $default Default value to return if no detail matching $name is discovered.
+     * @param string $name The name of a detail.
      *
      * @return mixed
      */

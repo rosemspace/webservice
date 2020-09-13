@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Http\Server;
 
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
@@ -12,15 +14,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class InternalServerErrorRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
     protected ResponseFactoryInterface $responseFactory;
 
     /**
      * MainController constructor.
-     *
-     * @param ResponseFactoryInterface $responseFactory
      */
     public function __construct(ResponseFactoryInterface $responseFactory)
     {

@@ -23,10 +23,6 @@ class AggregateProvider implements ServiceProviderInterface
 
     /**
      * Add the service provider to the collection.
-     *
-     * @param ServiceProviderInterface $serviceProvider
-     *
-     * @return void
      */
     public function addProvider(ServiceProviderInterface $serviceProvider): void
     {
@@ -34,15 +30,12 @@ class AggregateProvider implements ServiceProviderInterface
         $this->providers[] = $serviceProvider;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getFactories(): array
     {
         $factories = [];
 
         foreach ($this->providers as $provider) {
-            $factories = [get_class($provider) => fn() => $provider] +
+            $factories = [get_class($provider) => fn () => $provider] +
                 $provider->getFactories() +
                 $factories;
         }
@@ -50,9 +43,6 @@ class AggregateProvider implements ServiceProviderInterface
         return $factories;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getExtensions(): array
     {
         $extensions = [];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Authentication\Provider;
 
 use Psr\Container\ContainerInterface;
@@ -24,23 +26,22 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
 
     public const CONFIG_NONCE = 'auth.http.nonce';
 
-    /**
-     * @inheritdoc
-     */
     public function getFactories(): array
     {
         return [
             //@TODO constants
-            static::CONFIG_REALM => static fn(ContainerInterface $container) => $container->has('AUTH_HTTP_REALM')
+            static::CONFIG_REALM => static fn (ContainerInterface $container) => $container->has('AUTH_HTTP_REALM')
                 ? $container->get('AUTH_HTTP_REALM')
                 : $container->get('APP_NAME'),
-            static::CONFIG_NONCE => static fn(): string => '',
-            static::CONFIG_TYPE => static fn(): string => 'digest',
-            static::CONFIG_USER_PASSWORD_RESOLVER => static fn(ContainerInterface $container
-            ): callable => static fn(string $username): ?string => $container->get(
-                    static::CONFIG_USER_LIST
-                )[$username] ?? null,
-            HttpAuthenticationMiddleware::class => static fn(ContainerInterface $container
+            static::CONFIG_NONCE => static fn (): string => '',
+            static::CONFIG_TYPE => static fn (): string => 'digest',
+            static::CONFIG_USER_PASSWORD_RESOLVER => static fn (
+                ContainerInterface $container
+            ): callable => static fn (string $username): ?string => $container->get(
+                static::CONFIG_USER_LIST
+            )[$username] ?? null,
+            HttpAuthenticationMiddleware::class => static fn (
+                ContainerInterface $container
             ): AbstractAuthenticationMiddleware => (new HttpAuthenticationMiddleware(
                 $container->get(ResponseFactoryInterface::class),
                 $container->get(UserFactoryInterface::class),
@@ -52,9 +53,6 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function getExtensions(): array
     {
         return [

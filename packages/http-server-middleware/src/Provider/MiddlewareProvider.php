@@ -1,21 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Http\Server\Provider;
 
 use Psr\Container\ContainerInterface;
-use Psr\Http\{
-    Message\ResponseFactoryInterface,
-    Server\MiddlewareInterface,
-    Server\RequestHandlerInterface};
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Server\{
+    MiddlewareInterface,
+    RequestHandlerInterface
+};
+use Rosem\Component\Http\Server\Middleware\HandleErrorMiddleware;
 use Rosem\Component\Http\Server\{
     GroupMiddleware,
     InternalServerErrorRequestHandler,
-    Middleware\HandleErrorMiddleware,
-    RequestHandler};
-use Rosem\Contract\Container\ServiceProviderInterface;
-use Rosem\Contract\Http\Server\{
-    GroupMiddlewareInterface
+    RequestHandler
 };
+use Rosem\Contract\Container\ServiceProviderInterface;
+use Rosem\Contract\Http\Server\GroupMiddlewareInterface;
 use Rosem\Contract\Template\TemplateRendererInterface;
 
 class MiddlewareProvider implements ServiceProviderInterface
@@ -29,10 +31,7 @@ class MiddlewareProvider implements ServiceProviderInterface
             GroupMiddlewareInterface::class => [static::class, 'createGroupMiddleware'],
             HandleErrorMiddleware::class => [static::class, 'createErrorMiddleware'],
             RequestHandlerInterface::class => [static::class, 'createRequestHandler'],
-            InternalServerErrorRequestHandler::class => [
-                static::class,
-                'createInternalServerErrorRequestHandler',
-            ],
+            InternalServerErrorRequestHandler::class => [static::class, 'createInternalServerErrorRequestHandler'],
         ];
     }
 
@@ -45,7 +44,7 @@ class MiddlewareProvider implements ServiceProviderInterface
             GroupMiddlewareInterface::class => static function (
                 ContainerInterface $container,
                 GroupMiddlewareInterface $middlewareCollector
-            ) {
+            ): void {
                 if ($container->has(TemplateRendererInterface::class)) {
                     // @TODO make it deferred if an application API based only
                     $middlewareCollector->addMiddleware($container->get(HandleErrorMiddleware::class));

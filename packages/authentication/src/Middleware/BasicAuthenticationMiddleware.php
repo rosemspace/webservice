@@ -1,18 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Authentication\Middleware;
 
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
+use InvalidArgumentException;
 use Psr\Http\Message\{
     ResponseFactoryInterface,
     ResponseInterface,
     ServerRequestInterface
 };
+
 use Rosem\Contract\Authentication\{
     UserFactoryInterface,
     UserInterface
 };
-
 use function call_user_func;
 
 class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
@@ -22,18 +25,10 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
      */
     private const AUTHORIZATION_HEADER_PREFIX = 'Basic';
 
-    /**
-     * @var string
-     */
     protected string $realm;
 
     /**
      * Define de users.
-     *
-     * @param ResponseFactoryInterface $responseFactory
-     * @param UserFactoryInterface     $userFactory
-     * @param callable                 $userPasswordResolver
-     * @param string                   $realm
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
@@ -48,10 +43,6 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
 
     /**
      * Check the user credentials and return the username or false.
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return UserInterface|null
      */
     public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
@@ -61,7 +52,7 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
             return null;
         }
 
-        if (!preg_match(
+        if (! preg_match(
             '~' . self::AUTHORIZATION_HEADER_PREFIX . ' (?<credentials>[a-zA-Z0-9+/=]+)~',
             reset($authHeader),
             $match
@@ -70,10 +61,10 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
             return null;
         }
 
-        [$identity, $enteredPassword] = explode(':', base64_decode($match['credentials']), 2);
+        [$identity, $enteredPassword] = explode(':', base64_decode($match['credentials'], true), 2);
         $password = call_user_func($this->userPasswordResolver, $identity, $request);
 
-        if (!$password || $password !== $enteredPassword) {
+        if (! $password || $password !== $enteredPassword) {
             return null;
         }
 
@@ -83,15 +74,11 @@ class BasicAuthenticationMiddleware extends AbstractAuthenticationMiddleware
     /**
      * Create unauthorized response.
      *
-     * @return ResponseInterface
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function createUnauthorizedResponse(): ResponseInterface
     {
         return $this->responseFactory->createResponse(StatusCode::STATUS_UNAUTHORIZED)
-            ->withHeader(
-                'WWW-Authenticate',
-                self::AUTHORIZATION_HEADER_PREFIX . " realm=\"$this->realm\""
-            );
+            ->withHeader('WWW-Authenticate', self::AUTHORIZATION_HEADER_PREFIX . " realm=\"{$this->realm}\"");
     }
 }

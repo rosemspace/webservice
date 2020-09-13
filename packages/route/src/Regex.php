@@ -106,29 +106,21 @@ class Regex
 
     /**
      * The regular expression.
-     *
-     * @var string
      */
     protected string $regex;
 
     /**
      * The last error occurred.
-     *
-     * @var ErrorException
      */
     private static ErrorException $lastException;
 
     /**
      * A flag to check if the regular expression has capturing groups.
-     *
-     * @var bool|null
      */
     private ?bool $hasCapturingGroups = null;
 
     /**
      * Regex constructor.
-     *
-     * @param string $regex
      *
      * @throws ErrorException
      */
@@ -142,8 +134,6 @@ class Regex
     /**
      * Static constructor.
      *
-     * @param string $regex
-     *
      * @return static
      * @throws ErrorException
      */
@@ -154,16 +144,12 @@ class Regex
 
     /**
      * Check if the regular expression is valid.
-     *
-     * @param string $regex
-     *
-     * @return bool
      */
     public static function isValid(string $regex): bool
     {
         set_error_handler(
-            static function ($severity, $message, $file, $line) {
-                if (!(error_reporting() & $severity)) {
+            static function ($severity, $message, $file, $line): void {
+                if (! (error_reporting() & $severity)) {
                     // This error code is not included in error_reporting
                     return;
                 }
@@ -188,9 +174,6 @@ class Regex
     /**
      * Throw an exception if the regular expression is not valid.
      *
-     * @param string $regex
-     *
-     * @return void
      * @throws ErrorException
      */
     public static function assertValid(string $regex): void
@@ -204,8 +187,6 @@ class Regex
 
     /**
      * Get the code of the last error occurred.
-     *
-     * @return int
      */
     public static function getLastErrorCode(): int
     {
@@ -214,8 +195,6 @@ class Regex
 
     /**
      * Get the message of the last error occurred.
-     *
-     * @return string
      */
     public static function getLastErrorMessage(): string
     {
@@ -228,8 +207,6 @@ class Regex
 
     /**
      * Get the last exception occurred.
-     *
-     * @return ErrorException
      */
     public static function getLastException(): ErrorException
     {
@@ -239,16 +216,14 @@ class Regex
     public static function escapeDelimiters(string $regex, string $delimiters): string
     {
         if ($delimiters === '\\') {
-            throw new InvalidArgumentException(
-                "Provided delimiter \"$delimiters\" is not allowed"
-            );
+            throw new InvalidArgumentException("Provided delimiter \"${delimiters}\" is not allowed");
         }
 
         $delimitersLength = strlen($delimiters);
 
         if ($delimitersLength > 1) {
             throw new InvalidArgumentException(
-                "Provided delimiters \"$delimiters\" is too long. Please use 2 characters maximum delimiter"
+                "Provided delimiters \"${delimiters}\" is too long. Please use 2 characters maximum delimiter"
             );
         }
 
@@ -258,7 +233,7 @@ class Regex
 
         $escapedDelimiter = preg_quote($delimiters, '/');
 
-        return preg_replace("/(?<!\\\\)$escapedDelimiter/", "\\$delimiters", $regex);
+        return preg_replace("/(?<!\\\\)${escapedDelimiter}/", "\\${delimiters}", $regex);
     }
 
     public static function wrapWithDelimiters(string $regex, string $delimiters): string
@@ -270,20 +245,14 @@ class Regex
 
     /**
      * Tests whether this regex matches the given string.
-     *
-     * @param string $string
-     *
-     * @return bool
      */
     public function matches(string $string): bool
     {
-        return (bool)preg_match($this->regex, $string);
+        return (bool) preg_match($this->regex, $string);
     }
 
     /**
      * Check if the regular expression has capturing groups.
-     *
-     * @return bool
      */
     public function hasCapturingGroups(): bool
     {
@@ -295,7 +264,7 @@ class Regex
             // Needs to have at least a ( to contain a capturing group
             $this->hasCapturingGroups = false;
         } else {
-            $this->hasCapturingGroups = (bool)preg_match(self::REGEX_GROUP, $this->regex);
+            $this->hasCapturingGroups = (bool) preg_match(self::REGEX_GROUP, $this->regex);
         }
 
         return $this->hasCapturingGroups;
@@ -312,11 +281,11 @@ class Regex
                 continue;
             }
 
-            if ('(' !== $regex[$i] || !isset($regex[$i + 2])) {
+            if ($regex[$i] !== '(' || ! isset($regex[$i + 2])) {
                 continue;
             }
 
-            if ('*' === $regex[++$i] || '?' === $regex[$i]) {
+            if ($regex[++$i] === '*' || $regex[$i] === '?') {
                 ++$i;
                 continue;
             }

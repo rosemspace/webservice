@@ -6,7 +6,7 @@ namespace Rosem\Component\Http\Server;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
-use Rosem\Component\Http\Server\Exception;
+use Rosem\Component\Http\Server\Exception\InvalidEmitterException;
 use Rosem\Contract\Http\Server\EmitterInterface;
 use SplStack;
 
@@ -25,15 +25,11 @@ class EmitterStack extends SplStack implements EmitterInterface
      * in the stack.
      * As such, return a boolean false value from an emitter to indicate it
      * cannot emit the response, allowing the next emitter to try.
-     *
-     * @param ResponseInterface $response
-     *
-     * @return bool
      */
     public function emit(ResponseInterface $response): bool
     {
         foreach ($this as $emitter) {
-            if (false !== $emitter->emit($response)) {
+            if ($emitter->emit($response) !== false) {
                 return true;
             }
         }
@@ -44,15 +40,15 @@ class EmitterStack extends SplStack implements EmitterInterface
     /**
      * Set an emitter on the stack by index.
      *
-     * @param mixed            $index
+     * @param mixed $index
      * @param EmitterInterface $emitter
      *
-     * @return void
      * @throws InvalidArgumentException if not an EmitterInterface instance
      */
     public function offsetSet($index, $emitter): void
     {
         self::assertValidEmitter($emitter);
+
         parent::offsetSet($index, $emitter);
     }
 
@@ -61,12 +57,12 @@ class EmitterStack extends SplStack implements EmitterInterface
      *
      * @param EmitterInterface $emitter
      *
-     * @return void
      * @throws InvalidArgumentException if not an EmitterInterface instance
      */
     public function push($emitter): void
     {
         self::assertValidEmitter($emitter);
+
         parent::push($emitter);
     }
 
@@ -75,12 +71,12 @@ class EmitterStack extends SplStack implements EmitterInterface
      *
      * @param EmitterInterface $emitter
      *
-     * @return void
      * @throws InvalidArgumentException if not an EmitterInterface instance
      */
     public function unshift($emitter): void
     {
         self::assertValidEmitter($emitter);
+
         parent::unshift($emitter);
     }
 
@@ -89,12 +85,12 @@ class EmitterStack extends SplStack implements EmitterInterface
      *
      * @param mixed $emitter
      *
-     * @throws Exception\InvalidEmitterException for non-emitter instances
+     * @throws InvalidEmitterException for non-emitter instances
      */
     public static function assertValidEmitter($emitter): void
     {
-        if (!$emitter instanceof EmitterInterface) {
-            throw Exception\InvalidEmitterException::forEmitter($emitter);
+        if (! $emitter instanceof EmitterInterface) {
+            throw InvalidEmitterException::forEmitter($emitter);
         }
     }
 }

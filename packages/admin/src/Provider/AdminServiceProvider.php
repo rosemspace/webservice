@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Admin\Provider;
 
 use Fig\Http\Message\RequestMethodInterface as RequestMethod;
@@ -40,31 +42,34 @@ class AdminServiceProvider implements ServiceProviderInterface
             static::CONFIG_USER_RESOLVER_PASSWORD => static function (ContainerInterface $container): callable {
                 return static function (string $userIdentity) use (&$container): ?string {
                     return [
-                               $container->get(static::CONFIG_USER_IDENTITY) =>
-                                   $container->get(static::CONFIG_USER_PASSWORD),
-                           ][$userIdentity] ?? null;
+                        $container->get(static::CONFIG_USER_IDENTITY) =>
+                            $container->get(static::CONFIG_USER_PASSWORD),
+                    ][$userIdentity] ?? null;
                 };
             },
             'admin.meta.titlePrefix' =>
-                static fn(ContainerInterface $container): string => ($container->has('app.name')
+                static fn (ContainerInterface $container): string => (
+                    $container->has('app.name')
                         ? $container->get('app.name') . ' '
                         : ''
-                    ) . 'Admin | ',
-            'admin.meta.title' => static fn(): string => 'Welcome',
-            'admin.meta.titleSuffix' => static fn(): string => '',
-            static::CONFIG_URI_LOGGED_IN => static fn(): string => '/admin',
-            static::CONFIG_URI_LOGIN => static fn(ContainerInterface $container): string => '/' . trim(
-                    $container->get(static::CONFIG_URI_LOGGED_IN),
-                    '/'
-                ) . '/login',
-            AdminRequestHandler::class => static fn(ContainerInterface $container
+                ) . 'Admin | ',
+            'admin.meta.title' => static fn (): string => 'Welcome',
+            'admin.meta.titleSuffix' => static fn (): string => '',
+            static::CONFIG_URI_LOGGED_IN => static fn (): string => '/admin',
+            static::CONFIG_URI_LOGIN => static fn (ContainerInterface $container): string => '/' . trim(
+                $container->get(static::CONFIG_URI_LOGGED_IN),
+                '/'
+            ) . '/login',
+            AdminRequestHandler::class => static fn (
+                ContainerInterface $container
             ): AdminRequestHandler => new AdminRequestHandler(
                 $container->get(ResponseFactoryInterface::class),
                 $container->has(TemplateRendererInterface::class)
                     ? $container->get(TemplateRendererInterface::class)
                     : null
             ),
-            LoginRequestHandler::class => static fn(ContainerInterface $container
+            LoginRequestHandler::class => static fn (
+                ContainerInterface $container
             ): LoginRequestHandler => new LoginRequestHandler(
                 $container->get(ResponseFactoryInterface::class),
                 $container->has(TemplateRendererInterface::class)

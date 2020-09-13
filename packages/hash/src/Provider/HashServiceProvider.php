@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Hash\Provider;
 
 use Rosem\Component\Hash\ArgonHasher;
@@ -8,19 +10,13 @@ use Rosem\Contract\Hash\HasherInterface;
 
 class HashServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @inheritDoc
-     */
     public function getFactories(): array
     {
         return [
-            HasherInterface::class => [static::class, 'createHasher']
+            HasherInterface::class => [static::class, 'createHasher'],
         ];
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getExtensions(): array
     {
         return [];

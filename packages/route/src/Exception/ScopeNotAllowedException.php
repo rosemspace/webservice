@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\Exception;
 
 use Rosem\Component\Route\AllowedScopeTrait;
@@ -15,9 +17,9 @@ class ScopeNotAllowedException extends RuntimeException
 
     public function __construct(
         array $allowedScopes,
-        string $message = null,
+        ?string $message = null,
         int $code = 0,
-        Throwable $previous = null
+        ?Throwable $previous = null
     ) {
         $this->setAllowedScopes($allowedScopes);
 

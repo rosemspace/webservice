@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Authentication\Middleware;
 
 use InvalidArgumentException;
@@ -12,6 +14,7 @@ use Psr\Http\Server\{
     MiddlewareInterface,
     RequestHandlerInterface
 };
+use Rosem\Contract\Authentication\AuthenticationExceptionInterface;
 use Rosem\Contract\Authentication\{
     AuthenticationInterface,
     UserFactoryInterface,
@@ -40,13 +43,6 @@ final class HttpAuthenticationMiddleware implements AuthenticationInterface, Mid
 
     /**
      * HttpAuthenticationMiddleware constructor.
-     *
-     * @param ResponseFactoryInterface $responseFactory
-     * @param UserFactoryInterface     $userFactory
-     * @param callable                 $userPasswordResolver
-     * @param string                   $realm
-     * @param string                   $nonce
-     * @param string                   $type
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
@@ -81,18 +77,14 @@ final class HttpAuthenticationMiddleware implements AuthenticationInterface, Mid
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
         return $this->delegateMiddleware->authenticate($request);
     }
 
     /**
-     * {@inheritDoc}
      * @throws InvalidArgumentException
-     * @throws \Rosem\Contract\Authentication\AuthenticationExceptionInterface
+     * @throws AuthenticationExceptionInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

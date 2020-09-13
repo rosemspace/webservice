@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace Rosem\Component\Route\Middleware;
 
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\{
     ResponseInterface,
     ServerRequestInterface
 };
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Server\{
     MiddlewareInterface,
     RequestHandlerInterface
 };
 use Rosem\Component\Route\Contract\RouteDispatcherInterface;
 
+use Rosem\Component\Route\Exception\BadRouteException;
+use Rosem\Component\Route\Exception\HttpMethodNotAllowedException;
+use Rosem\Component\Route\Exception\TooLongRouteException;
 use function rawurldecode;
 
 class RouteMiddleware implements MiddlewareInterface
@@ -35,18 +38,14 @@ class RouteMiddleware implements MiddlewareInterface
      */
     protected string $attribute = RequestHandlerInterface::class;
 
-    public function __construct(
-        RouteDispatcherInterface $router,
-        ResponseFactoryInterface $responseFactory
-    ) {
+    public function __construct(RouteDispatcherInterface $router, ResponseFactoryInterface $responseFactory)
+    {
         $this->routeDispatcher = $router;
         $this->responseFactory = $responseFactory;
     }
 
     /**
      * Set the attribute name to store handler reference.
-     *
-     * @param string $attribute
      *
      * @return RouteMiddleware
      */
@@ -58,13 +57,9 @@ class RouteMiddleware implements MiddlewareInterface
     }
 
     /**
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $nextHandler
-     *
-     * @return ResponseInterface
-     * @throws \Rosem\Component\Route\Exception\BadRouteException
-     * @throws \Rosem\Component\Route\Exception\TooLongRouteException
-     * @throws \Rosem\Component\Route\Exception\HttpMethodNotAllowedException
+     * @throws BadRouteException
+     * @throws TooLongRouteException
+     * @throws HttpMethodNotAllowedException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $nextHandler): ResponseInterface
     {
@@ -92,19 +87,6 @@ class RouteMiddleware implements MiddlewareInterface
         return $nextHandler->handle($request);
     }
 
-    /**
-     * Set the handler reference on the request.
-     *
-     * @param ServerRequestInterface $request
-     * @param mixed                  $handler
-     *
-     * @return ServerRequestInterface
-     */
-    protected function setHandler(ServerRequestInterface $request, $handler): ServerRequestInterface
-    {
-        return $request->withAttribute($this->attribute, $handler);
-    }
-
     public function createNotFoundResponse(): ResponseInterface
     {
         return $this->responseFactory->createResponse(StatusCode::STATUS_NOT_FOUND);
@@ -113,5 +95,15 @@ class RouteMiddleware implements MiddlewareInterface
     public function createMethodNotAllowedResponse(): ResponseInterface
     {
         return $this->responseFactory->createResponse(StatusCode::STATUS_METHOD_NOT_ALLOWED);
+    }
+
+    /**
+     * Set the handler reference on the request.
+     *
+     * @param mixed $handler
+     */
+    protected function setHandler(ServerRequestInterface $request, $handler): ServerRequestInterface
+    {
+        return $request->withAttribute($this->attribute, $handler);
     }
 }

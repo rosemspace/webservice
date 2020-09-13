@@ -21,8 +21,6 @@ final class Router extends MarkBasedMap implements HttpRouteCollectorInterface
 
     /**
      * Allowed methods.
-     *
-     * @var array
      */
     protected array $allowedScopes = [
         RequestMethod::METHOD_HEAD,
@@ -35,9 +33,15 @@ final class Router extends MarkBasedMap implements HttpRouteCollectorInterface
     ];
 
     /**
+     * @throws HttpMethodNotAllowedException
+     */
+    public function any(string $routePattern, $handler): void
+    {
+        $this->addRoute($this->allowedScopes, $routePattern, $handler);
+    }
+
+    /**
      * Check if HTTP methods are allowed.
-     *
-     * @param array $httpMethods
      *
      * @throws HttpMethodNotAllowedException
      */
@@ -48,14 +52,5 @@ final class Router extends MarkBasedMap implements HttpRouteCollectorInterface
         if (count($notAllowedScopes) > 0) {
             throw HttpMethodNotAllowedException::forNotAllowedHttpMethods($notAllowedScopes, $this->allowedScopes);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws \Rosem\Component\Route\Exception\HttpMethodNotAllowedException
-     */
-    public function any(string $routePattern, $handler): void
-    {
-        $this->addRoute($this->allowedScopes, $routePattern, $handler);
     }
 }

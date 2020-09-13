@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\DataGenerator;
 
 use Rosem\Component\Route\Contract\RegexRouteInterface;
 
+use Rosem\Component\Route\Exception\TooLongRouteException;
 use function count;
 
 class MarkBasedDataGenerator extends AbstractRegexBasedDataGenerator
@@ -18,16 +21,13 @@ class MarkBasedDataGenerator extends AbstractRegexBasedDataGenerator
     }
 
     /**
-     * @param RegexRouteInterface $route
-     *
-     * @return void
-     * @throws \Rosem\Component\Route\Exception\TooLongRouteException
+     * @throws TooLongRouteException
      */
     public function addRoute(RegexRouteInterface $route): void
     {
         $this->lastInsertId = count($this->routeData);
 
-        if (!$this->lastInsertId || $this->lastInsertId - $this->lastChunkOffset >= $this->routeCountPerRegex) {
+        if (! $this->lastInsertId || $this->lastInsertId - $this->lastChunkOffset >= $this->routeCountPerRegex) {
             $this->newChunk();
         }
 

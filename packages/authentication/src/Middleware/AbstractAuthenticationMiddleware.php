@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Authentication\Middleware;
 
+use InvalidArgumentException;
 use Psr\Http\Message\{
     ResponseFactoryInterface,
     ResponseInterface,
@@ -11,6 +14,7 @@ use Psr\Http\Server\{
     MiddlewareInterface,
     RequestHandlerInterface
 };
+use Rosem\Contract\Authentication\AuthenticationExceptionInterface;
 use Rosem\Contract\Authentication\{
     AuthenticationInterface,
     UserFactoryInterface,
@@ -19,14 +23,8 @@ use Rosem\Contract\Authentication\{
 
 abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, AuthenticationInterface
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
     protected ResponseFactoryInterface $responseFactory;
 
-    /**
-     * @var UserFactoryInterface
-     */
     protected UserFactoryInterface $userFactory;
 
     /**
@@ -38,10 +36,6 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
 
     /**
      * Define de users.
-     *
-     * @param ResponseFactoryInterface $responseFactory
-     * @param UserFactoryInterface     $userFactory
-     * @param callable|null            $userPasswordResolver
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
@@ -56,14 +50,7 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
         }
     }
 
-    private function setPasswordResolver(callable $resolver): void
-    {
-        $this->userPasswordResolver = $resolver;
-    }
-
     /**
-     * @param callable $resolver
-     *
      * @return static
      */
     public function withPasswordResolver(callable $resolver): self
@@ -75,14 +62,8 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $requestHandler
-     *
-     * @return ResponseInterface
-     * @throws \InvalidArgumentException
-     * @throws \Rosem\Contract\Authentication\AuthenticationExceptionInterface
+     * @throws InvalidArgumentException
+     * @throws AuthenticationExceptionInterface
      */
     public function process(
         ServerRequestInterface $request,
@@ -99,8 +80,11 @@ abstract class AbstractAuthenticationMiddleware implements MiddlewareInterface, 
 
     /**
      * Create unauthorized response.
-     *
-     * @return ResponseInterface
      */
     abstract public function createUnauthorizedResponse(): ResponseInterface;
+
+    private function setPasswordResolver(callable $resolver): void
+    {
+        $this->userPasswordResolver = $resolver;
+    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Http\Server\Provider;
 
 use Laminas\Diactoros\{
@@ -28,9 +30,6 @@ use function dirname;
 
 class MessageServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @inheritDoc
-     */
     public function getFactories(): array
     {
         return [
@@ -44,16 +43,13 @@ class MessageServiceProvider implements ServiceProviderInterface
         ];
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getExtensions(): array
     {
         return [
             TemplateRendererInterface::class => static function (
                 ContainerInterface $container,
                 TemplateRendererInterface $renderer
-            ) {
+            ): void {
                 $renderer->addPath(
                     dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR .
                     'templates',

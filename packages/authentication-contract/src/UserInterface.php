@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Contract\Authentication;
 
 interface UserInterface
 {
     /**
      * Get the unique user identity (id, username, email address or ...)
-     *
-     * @return string
      */
     public function getIdentity(): string;
 
@@ -21,8 +21,7 @@ interface UserInterface
     /**
      * Get a detail $name if present, $default otherwise
      *
-     * @param string $name
-     * @param null   $default
+     * @param null $default
      *
      * @return mixed
      */
@@ -30,8 +29,6 @@ interface UserInterface
 
     /**
      * Get all the details, if any
-     *
-     * @return array
      */
     public function getDetails(): array;
 }

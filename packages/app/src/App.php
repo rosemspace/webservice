@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\App;
 
-use Exception;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Rosem\Component\Container\Exception\ContainerException;
 use Rosem\Component\Container\{
     AbstractContainer,
     ConfigurationContainer,
@@ -17,6 +19,7 @@ use Rosem\Contract\App\{
 };
 use Rosem\Contract\Debug\InspectableInterface;
 use Rosem\Contract\Http\Server\EmitterInterface;
+use Throwable;
 
 use function dirname;
 use function preg_replace;
@@ -26,87 +29,65 @@ class App implements AppInterface, InspectableInterface
     use EnvTrait;
 
     /**
+     * The application container.
+     */
+    protected AbstractContainer $container;
+
+    /**
      * The application version.
-     *
-     * @var string
      */
     private string $version;
 
     /**
      * The application environment.
-     *
-     * @var string
      */
     private string $environment;
 
-    /**
-     * @var string
-     */
     private string $locale = 'en-us';
 
     /**
      * The application root directory.
-     *
-     * @var string
      */
     private string $rootDir;
 
     /**
      * Check if the application is allowed to debug.
-     *
-     * @var bool
      */
     private bool $debug;
 
     /**
-     * The application container.
-     *
-     * @var AbstractContainer
-     */
-    protected AbstractContainer $container;
-
-    /**
      * App constructor.
      *
-     * @param array $config
-     *
-     * @throws \Rosem\Component\Container\Exception\ContainerException
-     * @throws \Dotenv\Exception\InvalidPathException
-     * @throws \Dotenv\Exception\InvalidFileException
-     * @throws \Dotenv\Exception\ValidationException
+     * @throws ContainerException
+     * @throws Throwable
      */
     public function __construct(array $config)
     {
-//        parent::__construct($config['providers'] ?? []);
-
         if (isset($config['root'])) {
             $this->rootDir = $config['root'];
         } else {
             $config['root'] = $this->getRootDir();
         }
 
-//        $this->delegate(ConfigurationContainer::fromArray($config));
         $this->container = ConfigurationContainer::fromArray($config);
         $this->container->delegate(ServiceContainer::fromArray($config['providers'] ?? []));
         //$filePath //$path, $file = '.env'
         $this->createEnv($this->rootDir, $config['envFile'] ?? '.env');
         $exceptionThrown = false;
         //todo env variables may be set before application initialization
-        //$this->environment = $this->getEnv(self::ENV_KEY) ?? '';
-        //$this->debug = $this->isEnvironment(EnvEnum::DEVELOPMENT);
 
         try {
             $this->loadEnv();
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             $exceptionThrown = true;
         }
 
         $this->environment = $this->getEnv(AppEnvKey::ENV) ?? '';
         $debug = $this->getEnv(AppEnvKey::DEBUG);
-//        var_dump(getenv());
+        //var_dump(getenv());
         $this->debug = $debug === 'auto'
             ? $this->environment === AppEnv::DEVELOPMENT
-            : $debug;
+            : (bool) $debug;
 
         if ($this->envLoaded) {
             $this->version = $this->getEnv(AppEnvKey::VERSION) ?? '';
@@ -129,14 +110,8 @@ class App implements AppInterface, InspectableInterface
         }
     }
 
-    /**
-     * @inheritDoc
-     */
     public function run(): bool
     {
-//        $app = $this;
-//        $this->container->set(AppInterface::class, static fn() => $app);
-
         return $this->container->get(EmitterInterface::class)->emit(
             $this->container->get(RequestHandlerInterface::class)->handle(
                 $this->container->get(ServerRequestInterface::class)
@@ -144,28 +119,10 @@ class App implements AppInterface, InspectableInterface
         );
     }
 
-    protected function validateEnv(): void
-    {
-        $this->env->required(AppEnvKey::VERSION)->notEmpty();
-        $this->env->required(AppEnvKey::ENV)->allowedValues(
-            [
-                AppEnv::LOCAL,
-                AppEnv::DEMO,
-                AppEnv::DEVELOPMENT,
-                AppEnv::TEST,
-                AppEnv::ACCEPTANCE,
-                AppEnv::PRODUCTION,
-            ]
-        );
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getRootDir(): string
     {
         //todo html escape
-        if (!isset($this->rootDir)) {
+        if (! isset($this->rootDir)) {
             if (PHP_SAPI === 'cli') {
                 /** @noinspection RegExpRedundantEscape */
                 // Go above "bin/rosem" file
@@ -191,40 +148,27 @@ class App implements AppInterface, InspectableInterface
         return $this->rootDir;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getVersion(): string
     {
         return $this->version;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getEnvironment(): string
     {
         return $this->environment;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getLocale(): string
     {
         return $this->locale;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function isAllowedToDebug(): bool
     {
         return $this->debug;
     }
 
     /**
-     * @inheritDoc
      * @todo
      */
     public function isDownForMaintenance(): bool
@@ -232,28 +176,34 @@ class App implements AppInterface, InspectableInterface
         return false;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function isDemoVersion(): bool
     {
         return $this->getEnv(AppEnvKey::ENV) === AppEnv::DEMO;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function isRunningInConsole(): bool
     {
         return PHP_SAPI === 'cli';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function inspect(): array
     {
         // TODO: Implement inspect() method.
         return [];
+    }
+
+    protected function validateEnv(): void
+    {
+        $this->env->required(AppEnvKey::VERSION)->notEmpty();
+        $this->env->required(AppEnvKey::ENV)->allowedValues(
+            [
+                AppEnv::LOCAL,
+                AppEnv::DEMO,
+                AppEnv::DEVELOPMENT,
+                AppEnv::TEST,
+                AppEnv::ACCEPTANCE,
+                AppEnv::PRODUCTION,
+            ]
+        );
     }
 }

@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Container;
 
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use RuntimeException;
+use function is_object;
 
 /**
  * Class AbstractFacade
@@ -11,7 +17,7 @@ abstract class AbstractFacade
 {
     /**
      * The container
-     * @var ContainerInterface $container
+     * @var ContainerInterface
      */
     protected static $container;
 
@@ -30,11 +36,26 @@ abstract class AbstractFacade
     }
 
     /**
+     * Handle dynamic, static calls to the object.
+     *
+     * @return mixed
+     * @throws RuntimeException
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     */
+    final public static function __callStatic(string $method, array $args)
+    {
+        $instance = static::getFacadeRoot();
+
+        if (! $instance) {
+            throw new RuntimeException('A facade root has not been set.');
+        }
+
+        return $instance->{$method}(...$args);
+    }
+
+    /**
      * Set the container instance.
-     *
-     * @param  ContainerInterface $container
-     *
-     * @return void
      */
     final public static function registerContainer(ContainerInterface $container): void
     {
@@ -42,18 +63,11 @@ abstract class AbstractFacade
     }
 
     /**
-     * Get the registered name of the component.
-     * @return string|object
-     * @throws \RuntimeException
-     */
-    abstract protected static function getFacadeAccessor();
-
-    /**
      * Get the root object behind the facade.
      * @return mixed
-     * @throws \RuntimeException
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws RuntimeException
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
      */
     public static function getFacadeRoot()
     {
@@ -61,26 +75,7 @@ abstract class AbstractFacade
     }
 
     /**
-     * Resolve the facade root instance from the container.
-     *
-     * @param  string|object $name
-     *
-     * @return mixed
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     */
-    protected static function resolveFacadeInstance($name)
-    {
-        return \is_object($name)
-            ? $name
-            : static::$resolvedInstances[$name]
-            ?? (static::$resolvedInstances[$name] = static::$container->get($name));
-    }
-
-    /**
      * Clear a resolved facade instance.
-     *
-     * @param  string $name
      */
     public static function clearResolvedFacadeInstance(string $name): void
     {
@@ -89,7 +84,6 @@ abstract class AbstractFacade
 
     /**
      * Clear all of the resolved facade instances.
-     * @return void
      */
     public static function clearResolvedFacadeInstances(): void
     {
@@ -97,24 +91,26 @@ abstract class AbstractFacade
     }
 
     /**
-     * Handle dynamic, static calls to the object.
+     * Get the registered name of the component.
+     * @return string|object
+     * @throws RuntimeException
+     */
+    abstract protected static function getFacadeAccessor();
+
+    /**
+     * Resolve the facade root instance from the container.
      *
-     * @param  string $method
-     * @param  array  $args
+     * @param string|object $name
      *
      * @return mixed
-     * @throws \RuntimeException
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
      */
-    final public static function __callStatic(string $method, array $args)
+    protected static function resolveFacadeInstance($name)
     {
-        $instance = static::getFacadeRoot();
-
-        if (!$instance) {
-            throw new \RuntimeException('A facade root has not been set.');
-        }
-
-        return $instance->$method(...$args);
+        return is_object($name)
+            ? $name
+            : static::$resolvedInstances[$name]
+            ?? (static::$resolvedInstances[$name] = static::$container->get($name));
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Template;
 
 use League\Plates\Engine;
@@ -22,11 +24,6 @@ class TemplateRenderer implements TemplateRendererInterface
     /**
      * Create a new template and render it.
      *
-     * @param string $templateName
-     * @param array  $data
-     * @param array  $attributes
-     *
-     * @return string
      * @throws RenderingExceptionInterface
      * @throws TemplateExceptionInterface
      */
@@ -37,11 +34,6 @@ class TemplateRenderer implements TemplateRendererInterface
 
     /**
      * Add a path and optionally its alias.
-     *
-     * @param string $path
-     * @param null|string $alias
-     *
-     * @return void
      */
     public function addPath(string $path, ?string $alias = null): void
     {
@@ -51,10 +43,6 @@ class TemplateRenderer implements TemplateRendererInterface
 
     /**
      * Add data which will be available in each template.
-     *
-     * @param array $data
-     *
-     * @return void
      */
     public function addGlobalData(array $data): void
     {
@@ -64,11 +52,6 @@ class TemplateRenderer implements TemplateRendererInterface
 
     /**
      * Add data which will be available in the template.
-     *
-     * @param string $templateName
-     * @param array  $data
-     *
-     * @return void
      */
     public function addTemplateData(string $templateName, array $data): void
     {

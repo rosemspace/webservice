@@ -11,11 +11,11 @@ use Rosem\Component\Route\Contract\{
     RouteParserInterface
 };
 use Rosem\Component\Route\Exception\BadRouteException;
-use Rosem\Contract\Route\RouteCollectorInterface;
+use Rosem\Component\Route\Exception\ScopeNotAllowedException;
 
+use Rosem\Contract\Route\RouteCollectorInterface;
 use function array_keys;
 use function ltrim;
-use function mb_strtoupper;
 use function rtrim;
 use function trim;
 
@@ -25,8 +25,6 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
 
     /**
      * Route pattern parser.
-     *
-     * @var RouteParserInterface
      */
     protected RouteParserInterface $parser;
 
@@ -44,43 +42,30 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
      */
     protected array $variableRouteMap = [];
 
-    /**
-     * @var string
-     */
     protected string $currentGroupPrefix = '';
 
     /**
+     * UTF-8 flag.
+     */
+    protected bool $utf8 = false;
+
+    /**
      * A delimiter which is used for separation of route parts.
-     *
-     * @var string
      */
     private string $delimiter = '/';
 
     /**
      * Determine if a leading delimiter should be kept.
-     *
-     * @var bool
      */
     private bool $keepLeadingDelimiter = true;
 
     /**
      * Determine if a trailing delimiter should be kept.
-     *
-     * @var bool
      */
     private bool $keepTrailingDelimiter = false;
 
     /**
-     * UTF-8 flag.
-     *
-     * @var bool
-     */
-    protected bool $utf8 = false;
-
-    /**
      * AbstractRouteMap constructor.
-     *
-     * @param RouteParserInterface $parser
      */
     public function __construct(RouteParserInterface $parser)
     {
@@ -88,34 +73,7 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
     }
 
     /**
-     * Add variable route to the collection.
-     *
-     * @param string $scope
-     * @param string $routePattern
-     * @param mixed  $resource
-     * @param array  $meta
-     */
-    abstract protected function addVariableRoute(
-        string $scope,
-        string $routePattern,
-        $resource,
-        array $meta
-    ): void;
-
-    /**
-     * Retrieve data associated with the route.
-     *
-     * @param array  $scopedVariableRouteMapExpressions
-     * @param string $uri
-     *
-     * @return array
-     */
-    abstract protected function dispatchVariableRoute(array $scopedVariableRouteMapExpressions, string $uri): array;
-
-    /**
      * Use UTF-8 or no.
-     *
-     * @param bool $use
      */
     public function useUtf8(bool $use = true): void
     {
@@ -123,12 +81,11 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
     }
 
     /**
-     * {@inheritDoc}
-     * @throws \Rosem\Component\Route\Exception\ScopeNotAllowedException
+     * @throws ScopeNotAllowedException
      */
     public function addRoute($scopes, string $routePattern, $resource): void
     {
-        $scopes = array_map('mb_strtoupper', (array)$scopes);
+        $scopes = array_map('mb_strtoupper', (array) $scopes);
         $this->assertAllowedScopes($scopes);
         $routePattern = $this->currentGroupPrefix . $this->normalize($routePattern);
 
@@ -145,47 +102,6 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
         }
     }
 
-    /**
-     * Check if the given parsed route is a static route.
-     *
-     * @param array $meta
-     *
-     * @return bool
-     */
-    private function isStaticRoute(array $meta): bool
-    {
-        // There is no any variables, so the route is static
-        return $meta[1] === [];
-    }
-
-    /**
-     * Add static route to the collection.
-     *
-     * @param string $scope
-     * @param string $route
-     * @param mixed  $resource
-     */
-    private function addStaticRoute(string $scope, string $route, $resource): void
-    {
-        if (isset($this->staticRouteMap[$route][$scope])) {
-            throw BadRouteException::forDuplicatedRoute($route, $scope);
-        }
-
-        if (isset($this->variableRouteMap[$scope])) {
-            foreach ($this->variableRouteMap[$scope] as $variableRoute) {
-                if ($variableRoute->matches($route)) {
-                    throw BadRouteException::forShadowedStaticRoute($route, $variableRoute->getPathPattern(), $scope);
-                }
-            }
-        }
-
-        // todo optimization: add reference if resource is same
-        $this->staticRouteMap[$route][$scope] = $resource;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function addGroup(string $prefix, callable $callback): void
     {
         $previousGroupPrefix = $this->currentGroupPrefix;
@@ -252,11 +168,51 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
     }
 
     /**
+     * Add variable route to the collection.
+     *
+     * @param mixed $resource
+     */
+    abstract protected function addVariableRoute(string $scope, string $routePattern, $resource, array $meta): void;
+
+    /**
+     * Retrieve data associated with the route.
+     */
+    abstract protected function dispatchVariableRoute(array $scopedVariableRouteMapExpressions, string $uri): array;
+
+    /**
+     * Check if the given parsed route is a static route.
+     */
+    private function isStaticRoute(array $meta): bool
+    {
+        // There is no any variables, so the route is static
+        return $meta[1] === [];
+    }
+
+    /**
+     * Add static route to the collection.
+     *
+     * @param mixed $resource
+     */
+    private function addStaticRoute(string $scope, string $route, $resource): void
+    {
+        if (isset($this->staticRouteMap[$route][$scope])) {
+            throw BadRouteException::forDuplicatedRoute($route, $scope);
+        }
+
+        if (isset($this->variableRouteMap[$scope])) {
+            foreach ($this->variableRouteMap[$scope] as $variableRoute) {
+                if ($variableRoute->matches($route)) {
+                    throw BadRouteException::forShadowedStaticRoute($route, $variableRoute->getPathPattern(), $scope);
+                }
+            }
+        }
+
+        // todo optimization: add reference if resource is same
+        $this->staticRouteMap[$route][$scope] = $resource;
+    }
+
+    /**
      * Remove leading and / or trailing delimiter if configured to do it.
-     *
-     * @param string $route
-     *
-     * @return string
      */
     private function normalize(string $route): string
     {
@@ -264,15 +220,15 @@ abstract class AbstractMap implements RouteCollectorInterface, RouteDispatcherIn
             return $route;
         }
 
-        if (!$this->keepLeadingDelimiter && !$this->keepTrailingDelimiter) {
+        if (! $this->keepLeadingDelimiter && ! $this->keepTrailingDelimiter) {
             return trim($route, $this->delimiter);
         }
 
-        if (!$this->keepLeadingDelimiter) {
+        if (! $this->keepLeadingDelimiter) {
             return ltrim($route, $this->delimiter);
         }
 
-        if (!$this->keepTrailingDelimiter) {
+        if (! $this->keepTrailingDelimiter) {
             return rtrim($route, $this->delimiter);
         }
 

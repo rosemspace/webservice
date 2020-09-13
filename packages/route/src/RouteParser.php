@@ -40,17 +40,17 @@ class RouteParser implements RouteParserInterface
         //@TODO RouteParserBuilder class
         $this->utf8 ??= $config['utf8'];
         $this->delimiter ??= $config['delimiter'];
-        $this->variableTokens ??= (array)$config['variableTokens'];
+        $this->variableTokens ??= (array) $config['variableTokens'];
         $this->variableRegexToken ??= $config['variableRegexToken'];
         $this->optionalSegmentTokens ??= $config['optionalSegmentTokens'];
-        $this->defaultDispatchRegex = $config['dispatchRegex'] ?? "[^$this->delimiter]++";
+        $this->defaultDispatchRegex = $config['dispatchRegex'] ?? "[^{$this->delimiter}]++";
         $nameRegex = $this->utf8 ? '[[:alpha:]_][[:alnum:]_-]*' : '[a-zA-Z_][a-zA-Z0-9_-]*';
         // ~(?<!\\){\s*(?P<name>[a-zA-Z_][a-zA-Z0-9_-]*)?\s*:?(?P<regex>.*?(?:[^{]|\\{)*)(?<!\\)}~sx
         $this->variableSegmentRegex = self::REGEX_DELIMITER .
             Regex::escapeDelimiters(
                 <<<REGEXP
                 (?<!\\\\){$this->variableTokens[0]}\s*
-                (?P<name>$nameRegex)?\s*$this->variableRegexToken?
+                (?P<name>${nameRegex})?\s*{$this->variableRegexToken}?
                 (?P<regex>.*?(?:[^{$this->variableTokens[0]}]|\\\\{$this->variableTokens[0]})*)
                 REGEXP,
                 self::REGEX_DELIMITER
@@ -80,21 +80,13 @@ class RouteParser implements RouteParserInterface
             $this->optionalSegmentOpenRegex .= $regexPart;
             $this->optionalSegmentCloseRegex .= $regexPart;
         }
-        //        var_dump($this->variableSegmentRegex);
     }
 
     /**
-     * @param string $routePattern
-     *
      * @return array[]
      */
     public function parse(string $routePattern): array
     {
-        //if (strpos($routePattern, '/') === 0) {
-        //    //{_scheme:[^:]}://
-        ////      $routePattern = '{_host:[^/]*}$routePattern";
-        //}
-
         if ($routePattern === '') {
             throw BadRouteException::forEmptyRoute();
         }
@@ -108,8 +100,8 @@ class RouteParser implements RouteParserInterface
                 throw BadRouteException::dueToEmptyOptionalSegment();
             }
 
-            //@TODO config for delimiter
-            $currentRoute .= $segment;// ?: $this->delimiter;
+            //@TODO config for delimiter (?: delimiter)
+            $currentRoute .= $segment;
             $routeDataList[] = $this->parseVariableSegments($currentRoute);
         }
 
@@ -147,7 +139,7 @@ class RouteParser implements RouteParserInterface
         $regex = preg_replace_callback(
             $this->variableSegmentRegex,
             function ($matches) use (&$variableNames, &$index) {
-                $variableName = $matches['name'] ?: (string)$index;
+                $variableName = $matches['name'] ?: (string) $index;
                 $variableNames[] = $variableName;
                 ++$index;
 
@@ -157,11 +149,11 @@ class RouteParser implements RouteParserInterface
                 } else {
                     $variableRegex = $matches['regex'];
                     $variableRegexWithDelimiters = Regex::wrapWithDelimiters(
-                            $matches['regex'],
-                            self::REGEX_DELIMITER
-                        ) . 'sx';
+                        $matches['regex'],
+                        self::REGEX_DELIMITER
+                    ) . 'sx';
 
-                    if (!Regex::isValid($variableRegexWithDelimiters)) {
+                    if (! Regex::isValid($variableRegexWithDelimiters)) {
                         throw BadRouteException::dueToInvalidVariableRegex(
                             $variableRegexWithDelimiters,
                             $variableName,
@@ -174,7 +166,7 @@ class RouteParser implements RouteParserInterface
                     }
                 }
 
-                return "($variableRegex)";
+                return "(${variableRegex})";
             },
             $routePattern
         );

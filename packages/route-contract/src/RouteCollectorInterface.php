@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
@@ -15,10 +18,8 @@ interface RouteCollectorInterface
      * The syntax used in the $route string depends on the used route parser.
      *
      * @param string|string[] $scopes
-     * @param string          $routePattern
-     * @param mixed           $resource
+     * @param mixed $resource
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function addRoute($scopes, string $routePattern, $resource): void;
@@ -27,10 +28,6 @@ interface RouteCollectorInterface
      * Create a route group with a common prefix.
      * All routes created in the passed callback will have the given group prefix prepended.
      *
-     * @param string   $prefix
-     * @param callable $callback
-     *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function addGroup(string $prefix, callable $callback): void;

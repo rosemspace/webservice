@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Route\Middleware;
 
+use Exception;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\{
     ResponseInterface,
     ServerRequestInterface
 };
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Server\{
     MiddlewareInterface,
     RequestHandlerInterface
@@ -18,8 +19,9 @@ use Rosem\Component\Http\Server\{
     CallableBasedMiddleware,
     GroupMiddleware
 };
-use RuntimeException;
 
+use RuntimeException;
+use function gettype;
 use function is_callable;
 use function is_string;
 use function key;
@@ -43,8 +45,6 @@ class HandleRequestMiddleware implements MiddlewareInterface
 
     /**
      * RequestHandlerMiddleware constructor.
-     *
-     * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
@@ -53,10 +53,6 @@ class HandleRequestMiddleware implements MiddlewareInterface
 
     /**
      * Use this attribute name to store a handler reference.
-     *
-     * @param string $handlerAttribute
-     *
-     * @return self
      */
     public function withHandlerAttribute(string $handlerAttribute): self
     {
@@ -69,11 +65,7 @@ class HandleRequestMiddleware implements MiddlewareInterface
     /**
      * Process a server request and return a response.
      *
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $handler
-     *
-     * @return ResponseInterface
-     * @throws \Exception
+     * @throws Exception
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -83,9 +75,9 @@ class HandleRequestMiddleware implements MiddlewareInterface
         if ($requestData instanceof RequestHandlerInterface) {
             $requestHandler = $requestData;
         } else {
-            $requestData = (array)$requestData;
+            $requestData = (array) $requestData;
 
-            if (!empty($requestData[static::KEY_MIDDLEWARE])) {
+            if (! empty($requestData[static::KEY_MIDDLEWARE])) {
                 $requestHandler = new GroupMiddleware(
                     $this->container->get($requestData[static::KEY_HANDLER_OR_ALLOWED_METHODS])
                 );
@@ -108,8 +100,6 @@ class HandleRequestMiddleware implements MiddlewareInterface
         }
 
         if (is_callable($requestHandler)) {
-
-
             if (is_string(reset($requestHandler))) {
                 $requestHandler[key($requestHandler)] = $this->container->get(reset($requestHandler));
             }
@@ -121,6 +111,6 @@ class HandleRequestMiddleware implements MiddlewareInterface
             )->process($request, $handler);
         }
 
-        throw new RuntimeException(sprintf('Invalid request handler: %s', \gettype($requestHandler)));
+        throw new RuntimeException(sprintf('Invalid request handler: %s', gettype($requestHandler)));
     }
 }

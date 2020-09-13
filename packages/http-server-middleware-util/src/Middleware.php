@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Http\Server;
 
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Http\Message\{
     ResponseInterface,
     ServerRequestInterface
@@ -22,7 +24,7 @@ final class Middleware
 
     public static function defer(ContainerInterface $container, string $middleware): MiddlewareInterface
     {
-        return new class ($container, $middleware) implements RequestHandlerInterface {
+        return new class($container, $middleware) implements RequestHandlerInterface {
             private ContainerInterface $container;
 
             private string $middleware;
@@ -36,21 +38,17 @@ final class Middleware
             }
 
             /**
-             * {@inheritDoc}
-             * @param ServerRequestInterface $request
-             *
-             * @return ResponseInterface
-             * @throws \Psr\Container\NotFoundExceptionInterface
-             * @throws \Psr\Container\ContainerExceptionInterface
+             * @throws NotFoundExceptionInterface
+             * @throws ContainerExceptionInterface
              * @throws InvalidArgumentException
              */
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
                 $middlewareInstance = $this->container->get($this->middleware);
 
-                if (!$middlewareInstance instanceof MiddlewareInterface) {
+                if (! $middlewareInstance instanceof MiddlewareInterface) {
                     throw new InvalidArgumentException(
-                        "The middleware \"$this->middleware\" should implement \"" .
+                        "The middleware \"{$this->middleware}\" should implement \"" .
                         MiddlewareInterface::class . '" interface.'
                     );
                 }
@@ -64,7 +62,7 @@ final class Middleware
         MiddlewareInterface $firstMiddleware,
         MiddlewareInterface $lastMiddleware
     ): MiddlewareInterface {
-        return new class ($firstMiddleware, $lastMiddleware) implements MiddlewareInterface {
+        return new class($firstMiddleware, $lastMiddleware) implements MiddlewareInterface {
             private MiddlewareInterface $middleware;
 
             private RequestHandlerInterface $requestHandler;
@@ -72,7 +70,7 @@ final class Middleware
             public function __construct(MiddlewareInterface $firstMiddleware, MiddlewareInterface $lastMiddleware)
             {
                 $this->middleware = $firstMiddleware;
-                $this->requestHandler = new class ($lastMiddleware) implements RequestHandlerInterface {
+                $this->requestHandler = new class($lastMiddleware) implements RequestHandlerInterface {
                     private MiddlewareInterface $middleware;
 
                     public RequestHandlerInterface $nextHandler;
@@ -102,7 +100,7 @@ final class Middleware
 
     public static function fromCallable(callable $middleware): MiddlewareInterface
     {
-        return new class ($middleware) implements MiddlewareInterface {
+        return new class($middleware) implements MiddlewareInterface {
             private $middleware;
 
             public function __construct(callable $middleware)
@@ -110,9 +108,6 @@ final class Middleware
                 $this->middleware = $middleware;
             }
 
-            /**
-             * @inheritdoc
-             */
             public function process(
                 ServerRequestInterface $request,
                 RequestHandlerInterface $handler

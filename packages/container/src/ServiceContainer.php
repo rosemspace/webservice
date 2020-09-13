@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Container;
 
+use Exception;
 use Psr\Container\{
     ContainerExceptionInterface,
     NotFoundExceptionInterface
 };
-use Rosem\Component\Container\Exception;
+use Rosem\Component\Container\Exception\{
+    ContainerException,
+    NotFoundException,
+    ServiceProviderException
+};
 use Rosem\Contract\Container\ServiceProviderInterface;
 
 use function class_exists;
@@ -23,9 +28,7 @@ class ServiceContainer extends AbstractContainer
     /**
      * Container constructor.
      *
-     * @param iterable $serviceProviders
-     *
-     * @throws Exception\ServiceProviderException
+     * @throws ServiceProviderException
      */
     protected function __construct(iterable $serviceProviders)
     {
@@ -41,22 +44,18 @@ class ServiceContainer extends AbstractContainer
             $serviceProviderInstance = $serviceProvider;
 
             if (is_string($serviceProvider)) {
-                if (!class_exists($serviceProvider)) {
-                    throw Exception\ServiceProviderException::dueToMissingClass($serviceProvider);
+                if (! class_exists($serviceProvider)) {
+                    throw ServiceProviderException::dueToMissingClass($serviceProvider);
                 }
 
-                if (!in_array(
-                    ServiceProviderInterface::class,
-                    class_implements($serviceProvider, true),
-                    true
-                )) {
+                if (! in_array(ServiceProviderInterface::class, class_implements($serviceProvider, true), true)) {
                     //                if (!is_a($serviceProvider, ServiceProviderInterface::class)) {
-                    throw Exception\ServiceProviderException::dueToInvalidInterface($serviceProvider);
+                    throw ServiceProviderException::dueToInvalidInterface($serviceProvider);
                 }
 
                 $serviceProviderInstance = new $serviceProvider();
-            } elseif (!is_object($serviceProvider)) {
-                throw Exception\ServiceProviderException::dueToInvalidType($serviceProvider);
+            } elseif (! is_object($serviceProvider)) {
+                throw ServiceProviderException::dueToInvalidType($serviceProvider);
             }
 
             if ($serviceProviderInstance instanceof ServiceProviderInterface) {
@@ -72,7 +71,7 @@ class ServiceContainer extends AbstractContainer
                     $this->set($key, $factory);
                 }
             } else {
-                throw Exception\ServiceProviderException::dueToInvalidInterface(get_class($serviceProviderInstance));
+                throw ServiceProviderException::dueToInvalidInterface(get_class($serviceProviderInstance));
             }
         }
 
@@ -89,10 +88,7 @@ class ServiceContainer extends AbstractContainer
     /**
      * Create container instance from array configuration.
      *
-     * @param array $definitions
-     *
-     * @return self
-     * @throws Exception\ContainerException
+     * @throws ContainerException
      */
     public static function fromArray(array $definitions): self
     {
@@ -102,15 +98,50 @@ class ServiceContainer extends AbstractContainer
     /**
      * Create container instance from file configuration.
      *
-     * @param string $filename
-     *
-     * @return self
-     * @throws Exception\ContainerException
-     * @throws \Exception
+     * @throws ContainerException
+     * @throws Exception
      */
     public static function fromFile(string $filename): self
     {
         return self::fromArray(self::getConfigurationFromFile($filename));
+    }
+
+    /**
+     * Finds an entry of the container by its identifier and returns it.
+     *
+     * @param string $id Identifier of the entry to look for.
+     *
+     * @return mixed Entry.
+     * @throws ContainerExceptionInterface Error while retrieving the entry.
+     * @throws NotFoundExceptionInterface No entry was found for **this** identifier.
+     */
+    public function get($id)
+    {
+        if ($this->has($id)) {
+            $definition = $this->definitions[$id];
+
+            if ($definition instanceof Definition) {
+                $value = $definition->create($this->parent ?? $this);
+
+                if ($value !== null) {
+                    return $this->definitions[$id] = $value;
+                }
+
+                if ($this->child !== null) {
+                    return $this->child->get($id);
+                }
+
+                throw ContainerException::forUndefinedEntry($id);
+            }
+
+            return $definition;
+        }
+
+        if ($this->child !== null) {
+            return $this->child->get($id);
+        }
+
+        throw NotFoundException::dueToMissingEntry($id);
     }
 
     protected function set(string $id, $factory): void
@@ -121,43 +152,5 @@ class ServiceContainer extends AbstractContainer
     protected function extend(string $id, $factory): void
     {
         $this->definitions[$id]->extend($factory);
-    }
-
-    /**
-     * Finds an entry of the container by its identifier and returns it.
-     *
-     * @param string $id Identifier of the entry to look for.
-     *
-     * @return mixed Entry.
-     * @throws ContainerExceptionInterface Error while retrieving the entry.
-     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
-     */
-    public function get($id)
-    {
-        if ($this->has($id)) {
-            $definition = $this->definitions[$id];
-
-            if ($definition instanceof Definition) {
-                $value = $definition->create($this->parent ?? $this);
-
-                if (null !== $value) {
-                    return $this->definitions[$id] = $value;
-                }
-
-                if ($this->child !== null) {
-                    return $this->child->get($id);
-                }
-
-                throw Exception\ContainerException::forUndefinedEntry($id);
-            }
-
-            return $definition;
-        }
-
-        if ($this->child !== null) {
-            return $this->child->get($id);
-        }
-
-        throw Exception\NotFoundException::dueToMissingEntry($id);
     }
 }

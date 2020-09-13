@@ -15,19 +15,10 @@ use Psr\Http\Server\{
 
 class MiddlewareRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var RequestHandlerInterface
-     */
     protected RequestHandlerInterface $finalHandler;
 
-    /**
-     * @var RequestHandlerInterface
-     */
     protected RequestHandlerInterface $startHandler;
 
-    /**
-     * @var RequestHandlerInterface
-     */
     protected RequestHandlerInterface $lastHandler;
 
     public function __construct(RequestHandlerInterface $finalHandler)
@@ -35,9 +26,6 @@ class MiddlewareRequestHandler implements RequestHandlerInterface
         $this->startHandler = $this->lastHandler = $this->finalHandler = $finalHandler;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function addMiddleware(MiddlewareInterface $middleware): self
     {
         $this->lastHandler = RequestHandler::withMiddleware($middleware, $this->lastHandler);
@@ -51,9 +39,6 @@ class MiddlewareRequestHandler implements RequestHandlerInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return $this->startHandler->handle($request);

@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Rosem\Component\Route\Provider;
 
+use InvalidArgumentException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
-use Rosem\Component\Route\{
-    RouteParser,
-    Router
-};
 use Rosem\Component\Route\Middleware\{
     HandleRequestMiddleware,
     RouteMiddleware
+};
+use Rosem\Component\Route\{
+    RouteParser,
+    Router
 };
 use Rosem\Contract\Container\ServiceProviderInterface;
 use Rosem\Contract\Http\Server\GroupMiddlewareInterface;
@@ -24,7 +26,7 @@ class RouteServiceProvider implements ServiceProviderInterface
      * Returns a list of all container entries registered by this service provider.
      *
      * @return callable[]
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function getFactories(): array
     {
@@ -39,7 +41,7 @@ class RouteServiceProvider implements ServiceProviderInterface
      * Returns a list of all container entries extended by this service provider.
      *
      * @return callable[]
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws ContainerExceptionInterface
      */
     public function getExtensions(): array
     {
@@ -47,7 +49,7 @@ class RouteServiceProvider implements ServiceProviderInterface
             GroupMiddlewareInterface::class => static function (
                 ContainerInterface $container,
                 GroupMiddlewareInterface $middlewareCollector
-            ) {
+            ): void {
                 $middlewareCollector->addMiddleware($container->get(RouteMiddleware::class));
                 $middlewareCollector->addMiddleware($container->get(HandleRequestMiddleware::class));
             },
@@ -55,11 +57,8 @@ class RouteServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @param ContainerInterface $container
-     *
-     * @return HttpRouteCollectorInterface
-     * @throws \InvalidArgumentException
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
      */
     public function createHttpServerRouteCollector(ContainerInterface $container): HttpRouteCollectorInterface
     {

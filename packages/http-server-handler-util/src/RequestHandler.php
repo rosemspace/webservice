@@ -30,7 +30,7 @@ final class RequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        if (!isset($this->middleware)) {
+        if (! isset($this->middleware)) {
             $this->middleware = Middleware::group(...$this->middlewareGroup);
         }
 
@@ -41,7 +41,7 @@ final class RequestHandler implements RequestHandlerInterface
         MiddlewareInterface $middleware,
         RequestHandlerInterface $requestHandler
     ): RequestHandlerInterface {
-        return new class ($middleware, $requestHandler) implements RequestHandlerInterface {
+        return new class($middleware, $requestHandler) implements RequestHandlerInterface {
             private MiddlewareInterface $middleware;
 
             private RequestHandlerInterface $nextHandler;
@@ -61,7 +61,7 @@ final class RequestHandler implements RequestHandlerInterface
 
     public static function defer(ContainerInterface $container, string $requestHandlerClass): RequestHandlerInterface
     {
-        return new class ($container, $requestHandlerClass) implements RequestHandlerInterface {
+        return new class($container, $requestHandlerClass) implements RequestHandlerInterface {
             private ContainerInterface $container;
 
             private string $requestHandlerClass;

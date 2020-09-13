@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Rosem - Web PHP Framework.
  *
@@ -9,14 +12,12 @@ if (PHP_SAPI !== 'cli-server') {
     throw new RuntimeException('This file should not be run as a production server.');
 }
 
-$uri = urldecode(
-    parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
-);
+$uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
 // This file allows us to emulate Apache's "mod_rewrite" functionality from the
 // built-in PHP web server. This provides a convenient way to test a Rosem
 // application without having installed a "real" web server software here.
-if ($uri !== '/' && file_exists(__DIR__ . "/public$uri")) {
+if ($uri !== '/' && file_exists(__DIR__ . "/public${uri}")) {
     return false;
 }
 

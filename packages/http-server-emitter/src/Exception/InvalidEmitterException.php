@@ -20,7 +20,7 @@ class InvalidEmitterException extends InvalidArgumentException implements Invali
 {
     /**
      * @return InvalidEmitterException
-     * @var mixed $emitter Invalid emitter type
+     * @var mixed Invalid emitter type
      */
     public static function forEmitter($emitter): self
     {

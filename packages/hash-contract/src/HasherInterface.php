@@ -1,6 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Contract\Hash;
+
+use Exception;
+use RuntimeException;
 
 /**
  * Representation of hasher.
@@ -10,43 +15,25 @@ interface HasherInterface
     /**
      * Hash the given value.
      *
-     * @param  string $value
-     * @param  array  $options
-     *
-     * @return string
-     * @throws \RuntimeException
-     * @throws \Exception
+     * @throws RuntimeException
+     * @throws Exception
      */
-    public function hash(string $value, array $options = []) : string;
+    public function hash(string $value, array $options = []): string;
 
     /**
      * Check the given plain value against a hash.
-     *
-     * @param  string $value
-     * @param  string $hashedValue
-     *
-     * @return bool
      */
-    public function verify(string $value, string $hashedValue) : bool;
+    public function verify(string $value, string $hashedValue): bool;
 
     /**
      * Check if the given hash has been hashed using the given options.
      *
-     * @param  string $hashedValue
-     * @param  array  $options
-     *
-     * @return bool
-     *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function needsRehash(string $hashedValue, array $options = []) : bool;
+    public function needsRehash(string $hashedValue, array $options = []): bool;
 
     /**
      * Get information about the given hashed value.
-     *
-     * @param  string $hashedValue
-     *
-     * @return array
      */
-    public function getInfo(string $hashedValue) : array;
+    public function getInfo(string $hashedValue): array;
 }

@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\DataGenerator;
 
-use Rosem\Component\Route\Contract\RegexRouteInterface;
+use InvalidArgumentException;
 
+use Rosem\Component\Route\Contract\RegexRouteInterface;
 use function count;
 use function str_repeat;
 
@@ -20,15 +23,10 @@ class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
     /**
      * GroupCountBasedChunk constructor.
      *
-     * @param int      $routeCountPerRegex
-     * @param int|null $regexMaxLength
-     *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function __construct(
-        int $routeCountPerRegex = 10,
-        ?int $regexMaxLength = null
-    ) {
+    public function __construct(int $routeCountPerRegex = 10, ?int $regexMaxLength = null)
+    {
         parent::__construct($routeCountPerRegex, $regexMaxLength);
     }
 
@@ -37,7 +35,8 @@ class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
         $this->regexTree->clear();
         $this->groupCount = 0;
         ++$this->chunkCount;
-        $this->lastInsertId += $this->routeCountPerRegex; // TODO: check if no error
+        // TODO: check if no error
+        $this->lastInsertId += $this->routeCountPerRegex;
         $this->routeExpressions[] = [
             self::KEY_REGEX => '',
             self::KEY_OFFSET => $this->lastInsertId,
@@ -45,16 +44,13 @@ class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
     }
 
     /**
-     * @param RegexRouteInterface $route
-     *
-     * @return void
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addRoute(RegexRouteInterface $route): void
     {
         $this->lastInsertId = $this->routeCountPerRegex * $this->chunkCount;
 
-        if (!$this->chunkCount || count($this->routeData) - $this->lastInsertId >= $this->routeCountPerRegex) {
+        if (! $this->chunkCount || count($this->routeData) - $this->lastInsertId >= $this->routeCountPerRegex) {
             $this->newChunk();
         }
 
@@ -64,7 +60,8 @@ class GroupCountBasedDataGenerator extends AbstractRegexBasedDataGenerator
         $this->addRegex($route->getRegex() . str_repeat('()', $this->groupCount - $variableCount));
         $this->routeExpressions[count($this->routeExpressions) - 1][self::KEY_REGEX] =
             '~^' . $this->regex . '$~sD' . ($this->utf8 ? 'u' : '');
-        ++$this->groupCount; // +1 for first regex matching / next route index
+        // +1 for first regex matching / next route index
+        ++$this->groupCount;
         $middleware = &$route->getMiddlewareExtensions();
         $this->routeData[$this->lastInsertId + $this->groupCount] =
             [$route->getMethods(), $route->getHandler(), &$middleware, $route->getVariableNames()];

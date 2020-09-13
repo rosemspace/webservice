@@ -143,11 +143,8 @@
             "@fix-cs",
             "@phpstan"
         ],
-        "check-cs": "vendor/bin/ecs check packages --set symplify --ansi",
-        "fix-cs": [
-            "vendor/bin/ecs check packages --set symplify --fix --ansi",
-            "bin/clear_readmes.sh"
-        ],
+        "check-cs": "vendor/bin/ecs check --ansi",
+        "fix-cs": "vendor/bin/ecs check --fix --ansi",
         "phpstan": "vendor/bin/phpstan analyse packages --error-format symplify --ansi",
         "changelog": [
             "packages/changelog-linker/bin/changelog-linker dump-merges --in-categories --in-packages --ansi",

@@ -1,21 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route;
 
+use PHPUnit\Framework\TestCase;
 use Rosem\Component\Route\Contract\RouteDispatcherInterface;
 
-class DispatcherTest extends \PHPUnit\Framework\TestCase
+class DispatcherTest extends TestCase
 {
     /**
      * @var RouteDispatcherInterface
      */
     protected $dispatcher;
 
-    public function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->dispatcher = new Router(new RouteParser());
+        $this->dispatcher = new Router();
     }
 
     /**
@@ -24,19 +27,11 @@ class DispatcherTest extends \PHPUnit\Framework\TestCase
     public function testDispatch(): void
     {
         $result = $this->dispatcher->dispatch('GET', '/');
-        $this->assertEquals(['GET', '/'], $result);
+
+        self::assertSame(['GET', '/'], $result);
     }
 
     public function testRegExpDelimiter(): void
     {
-        // Static route
-        //$routeCollector->get('/[home~[page]]'
-        // Dynamic route
-        //$routeCollector->get('/[home~[page{\d?}]]'
-
-        // {a:b\}/{c:d}
-        // /{/a}/{b:c}
-        // \{a:b}/{c:d}
-        // {\a}/{b:c}
     }
 }

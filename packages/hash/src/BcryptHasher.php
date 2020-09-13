@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Hash;
 
 use LengthException;
@@ -21,15 +23,11 @@ class BcryptHasher extends AbstractHasher
 
     /**
      * The default cost factor.
-     *
-     * @var int
      */
     protected int $cost = PASSWORD_BCRYPT_DEFAULT_COST;
 
     /**
      * BcryptHasher constructor.
-     *
-     * @param array $options
      */
     public function __construct(array $options = [])
     {
@@ -37,23 +35,6 @@ class BcryptHasher extends AbstractHasher
         $this->setCost($options['cost']);
     }
 
-    /**
-     * Merge given options with default options.
-     *
-     * @param array $options
-     *
-     * @return array
-     */
-    protected function mergeOptions(array $options = []): array
-    {
-        return [
-            'cost' => $options['cost'] ?? $this->cost,
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function hash(string $value, array $options = []): string
     {
         $this->assertValid($value);
@@ -66,9 +47,6 @@ class BcryptHasher extends AbstractHasher
         return $hash;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function verify(string $value, string $hashedValue): bool
     {
         $this->assertValid($value);
@@ -76,9 +54,6 @@ class BcryptHasher extends AbstractHasher
         return parent::verify($value, $hashedValue);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function needsRehash(string $hashedValue, array $options = []): bool
     {
         return password_needs_rehash($hashedValue, PASSWORD_BCRYPT, $this->mergeOptions($options));
@@ -87,9 +62,6 @@ class BcryptHasher extends AbstractHasher
     /**
      * Check if the given value is not too long.
      *
-     * @param string $value
-     *
-     * @return bool
      * @see https://www.php.net/manual/ru/function.password-hash.php
      */
     public function validate(string $value): bool
@@ -98,26 +70,30 @@ class BcryptHasher extends AbstractHasher
     }
 
     /**
-     * Throw an exception if the given value is too long.
-     *
-     * @param string $value
-     */
-    private function assertValid(string $value): void
-    {
-        if (!$this->validate($value)) {
-            throw new LengthException("Value \"$value\" is too long for bcrypt hashing.");
-        }
-    }
-
-    /**
      * Set the default password work factor.
-     *
-     * @param int $cost
-     *
-     * @return void
      */
     public function setCost(int $cost): void
     {
         $this->cost = $cost;
+    }
+
+    /**
+     * Merge given options with default options.
+     */
+    protected function mergeOptions(array $options = []): array
+    {
+        return [
+            'cost' => $options['cost'] ?? $this->cost,
+        ];
+    }
+
+    /**
+     * Throw an exception if the given value is too long.
+     */
+    private function assertValid(string $value): void
+    {
+        if (! $this->validate($value)) {
+            throw new LengthException("Value \"${value}\" is too long for bcrypt hashing.");
+        }
     }
 }

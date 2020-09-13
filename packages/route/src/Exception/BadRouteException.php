@@ -14,13 +14,7 @@ class BadRouteException extends LogicException implements BadRouteExceptionInter
 {
     public static function forDuplicatedRoute(string $route, string $scope): self
     {
-        return new self(
-            sprintf(
-                'Cannot register two routes matching "%s" for scope "%s"',
-                $route,
-                $scope
-            )
-        );
+        return new self(sprintf('Cannot register two routes matching "%s" for scope "%s"', $route, $scope));
     }
 
     public static function forShadowedStaticRoute(
@@ -83,13 +77,7 @@ class BadRouteException extends LogicException implements BadRouteExceptionInter
 
     public static function forCapturingGroup(string $regex, string $variableName): self
     {
-        return new self(
-            sprintf(
-                'Regex "%s" for parameter "%s" contains a capturing group',
-                $regex,
-                $variableName
-            )
-        );
+        return new self(sprintf('Regex "%s" for parameter "%s" contains a capturing group', $regex, $variableName));
     }
 
     public static function dueToWrongOptionalSegmentPosition(): self
@@ -99,11 +87,11 @@ class BadRouteException extends LogicException implements BadRouteExceptionInter
 
     public static function dueToWrongOptionalSegmentPair(string $openToken, string $closeToken): self
     {
-        return new self("Number of opening \"$openToken\" and closing \"$closeToken\" does not match.");
+        return new self("Number of opening \"${openToken}\" and closing \"${closeToken}\" does not match.");
     }
 
     public static function dueToEmptyOptionalSegment(): self
     {
-        return new self("Empty optional segment.");
+        return new self('Empty optional segment.');
     }
 }

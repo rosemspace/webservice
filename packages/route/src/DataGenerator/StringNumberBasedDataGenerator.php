@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\DataGenerator;
 
-use Rosem\Component\Route\Contract\RegexRouteInterface;
+use InvalidArgumentException;
 
+use Rosem\Component\Route\Contract\RegexRouteInterface;
 use function ceil;
 use function count;
 use function rtrim;
@@ -25,23 +28,18 @@ class StringNumberBasedDataGenerator extends AbstractRegexBasedDataGenerator
     /**
      * NumberBasedChunk constructor.
      *
-     * @param int      $routeCountPerRegex
-     * @param int|null $regexMaxLength
-     *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function __construct(
-        int $routeCountPerRegex = 900,
-        ?int $regexMaxLength = null
-    ) {
+    public function __construct(int $routeCountPerRegex = 900, ?int $regexMaxLength = null)
+    {
         parent::__construct($routeCountPerRegex, $regexMaxLength);
 
-        $routeMaxCountLength = strlen((string)($routeCountPerRegex - 1));
+        $routeMaxCountLength = strlen((string) ($routeCountPerRegex - 1));
         $this->routeExpressions[] = [
             self::KEY_REGEX => '',
             self::KEY_SUFFIX =>
                 '/' . str_pad('', 10 * $routeMaxCountLength, '0123456789') . '/',
-            self::KEY_SEGMENT_COUNT => (int)ceil($routeMaxCountLength / 2),
+            self::KEY_SEGMENT_COUNT => (int) ceil($routeMaxCountLength / 2),
             self::KEY_LAST_CHUNK_OFFSET => $this->lastChunkOffset,
         ];
     }
@@ -51,21 +49,18 @@ class StringNumberBasedDataGenerator extends AbstractRegexBasedDataGenerator
         $this->regexTree->clear();
         $this->lastChunkOffset = $this->lastInsertId;
         //        $this->routeCountPerRegex = 900; // TODO: auto-generate
-        $routeMaxCountLength = strlen((string)($this->routeCountPerRegex - 1));
+        $routeMaxCountLength = strlen((string) ($this->routeCountPerRegex - 1));
         $this->routeExpressions[] = [
             self::KEY_REGEX => '',
             self::KEY_SUFFIX =>
                 '/' . str_pad('', 10 * $routeMaxCountLength, '0123456789') . '/',
-            self::KEY_SEGMENT_COUNT => (int)ceil($routeMaxCountLength / 2),
+            self::KEY_SEGMENT_COUNT => (int) ceil($routeMaxCountLength / 2),
             self::KEY_LAST_CHUNK_OFFSET => $this->lastChunkOffset,
         ];
     }
 
     /**
-     * @param RegexRouteInterface $route
-     *
-     * @return void
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addRoute(RegexRouteInterface $route): void
     {
@@ -84,9 +79,9 @@ class StringNumberBasedDataGenerator extends AbstractRegexBasedDataGenerator
 
     protected function convertNumberToRegex(int $number): string
     {
-        $numberString = (string)$number;
+        $numberString = (string) $number;
         $numberLength = strlen($numberString);
-        $numberParts = (int)ceil($numberLength / 2);
+        $numberParts = (int) ceil($numberLength / 2);
         $index = 0;
         $previousLeftNumber = -1;
         $previousRightNumber = 0;
@@ -94,16 +89,18 @@ class StringNumberBasedDataGenerator extends AbstractRegexBasedDataGenerator
         $rightPart = '';
 
         do {
-            $leftNumber = (int)$numberString[$index];
-            $leftPart .= (($leftNumber !== ($previousLeftNumber + 1) % 10) ? '.*(' : '(') . $leftNumber;
+            $leftNumber = (int) $numberString[$index];
+            $leftPart .= ($leftNumber !== ($previousLeftNumber + 1) % 10 ? '.*(' : '(') . $leftNumber;
             $previousLeftNumber = $leftNumber;
-            $rightNumber = (int)$numberString[-$index - 1];
+            $rightNumber = (int) $numberString[-$index - 1];
             $rightPart = (($rightNumber + 1) % 10 !== $previousRightNumber ? ').*' : ')') . $rightPart;
             $previousRightNumber = $rightNumber;
             ++$index;
 
-            if ($numberParts === 1) { // last iteration
-                if (!($numberLength % 2)) { // even length number
+            // last iteration
+            if ($numberParts === 1) {
+                // even length number
+                if (! $numberLength % 2) {
                     $leftPart .= (($leftNumber + 1) % 10 !== $rightNumber ? '.*' : '') . $rightNumber;
                 }
 

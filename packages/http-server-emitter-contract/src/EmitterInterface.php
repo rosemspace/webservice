@@ -20,10 +20,6 @@ interface EmitterInterface
      * Implementations MUST return a boolean. A boolean `true` indicates that
      * the emitter was able to emit the response, while `false` indicates
      * it was not.
-     *
-     * @param ResponseInterface $response
-     *
-     * @return bool
      */
     public function emit(ResponseInterface $response): bool;
 }

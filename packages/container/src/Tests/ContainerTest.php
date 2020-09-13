@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Container\Test;
 
-class ContainerTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+use Rosem\Component\Container\ServiceContainer;
+
+class ContainerTest extends TestCase
 {
     private $calculator;
 
     protected function setUp(): void
     {
-        $this->calculator = new \Rosem\Component\Container\ServiceContainer();
+        $this->calculator = new ServiceContainer();
     }
 
     protected function tearDown(): void
@@ -16,10 +21,9 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
         $this->calculator = null;
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $result = $this->calculator->add(1, 2);
-        $this->assertEquals(3, $result);
+        $this->assertSame(3, $result);
     }
-
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\Dispatcher;
 
 use Rosem\Component\Route\Contract\RegexBasedDispatcherInterface;
@@ -8,13 +10,10 @@ use function preg_match;
 
 class MarkBasedDispatcher implements RegexBasedDispatcherInterface
 {
-    /**
-     * @inheritDoc
-     */
     public function dispatch(array $metaList, array $dataList, string $uri): array
     {
         foreach ($metaList as &$regex) {
-            if (!preg_match($regex, $uri, $matches)) {
+            if (! preg_match($regex, $uri, $matches)) {
                 continue;
             }
 

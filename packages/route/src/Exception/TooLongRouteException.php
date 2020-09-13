@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\Exception;
 
 use Rosem\Contract\Route\TooLongRouteExceptionInterface;

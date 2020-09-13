@@ -20,24 +20,12 @@ use Rosem\Contract\Http\Server\GroupMiddlewareInterface;
  */
 class GroupMiddleware implements GroupMiddlewareInterface
 {
-    /**
-     * @var MiddlewareInterface
-     */
     protected MiddlewareInterface $firstMiddleware;
 
-    /**
-     * @var MiddlewareInterface
-     */
     protected MiddlewareInterface $lastMiddleware;
 
-    /**
-     * @var MiddlewareInterface
-     */
     protected MiddlewareInterface $finalMiddleware;
 
-    /**
-     * @inheritDoc
-     */
     public function addMiddleware(MiddlewareInterface $middleware): self
     {
         $this->firstMiddleware = isset($this->firstMiddleware)
@@ -47,9 +35,6 @@ class GroupMiddleware implements GroupMiddlewareInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $requestHandler): ResponseInterface
     {
         return $this->firstMiddleware->process($request, $requestHandler);

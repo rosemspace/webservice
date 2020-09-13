@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Authentication\Middleware;
 
 use Fig\Http\Message\{
     RequestMethodInterface as RequestMethod,
     StatusCodeInterface as StatusCode
 };
+use InvalidArgumentException;
 use Psr\Http\Message\{
     ResponseFactoryInterface,
     ResponseInterface,
@@ -18,8 +21,8 @@ use Rosem\Contract\Authentication\{
     UserFactoryInterface,
     UserInterface
 };
-use Rosem\Contract\Hash\HasherInterface;
 
+use Rosem\Contract\Hash\HasherInterface;
 use function call_user_func;
 
 class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
@@ -27,7 +30,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
     /**
      * Authorization header prefix.
      */
-    private const AUTHORIZATION_HEADER_PREFIX = 'Bearer';
+    public const AUTHORIZATION_HEADER_PREFIX = 'Bearer';
 
     protected HasherInterface $hasher;
 
@@ -41,15 +44,6 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
 
     /**
      * AuthenticationMiddleware constructor.
-     *
-     * @param ResponseFactoryInterface $responseFactory
-     * @param UserFactoryInterface     $userFactory
-     * @param HasherInterface          $hasher
-     * @param callable                 $userPasswordResolver
-     * @param string                   $identityParameter
-     * @param string                   $passwordParameter
-     * @param string|null              $loginUri
-     * @param string|null              $loggedInUri
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
@@ -70,14 +64,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
         $this->loggedInUri = $loggedInUri;
     }
 
-    private function setLoginUri(string $uri): void
-    {
-        $this->loginUri = $uri;
-    }
-
     /**
-     * @param string $uri
-     *
      * @return AuthenticationMiddleware
      */
     public function withLoginUri(string $uri): self
@@ -88,14 +75,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
         return $new;
     }
 
-    private function setLoggedInUri(string $uri): void
-    {
-        $this->loggedInUri = $uri;
-    }
-
     /**
-     * @param string $uri
-     *
      * @return AuthenticationMiddleware
      */
     public function withLoggedInUri(string $uri): self
@@ -106,22 +86,12 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
         return $new;
     }
 
-    private function setIdentityParameter(string $identityParameter): void
-    {
-        $this->identityParameter = $identityParameter;
-    }
-
     public function withIdentityParameter(string $identityParameter): self
     {
         $new = clone $this;
         $new->setIdentityParameter($identityParameter);
 
         return $new;
-    }
-
-    private function setPasswordParameter(string $passwordParameter): void
-    {
-        $this->passwordParameter = $passwordParameter;
     }
 
     public function withPasswordParameter(string $passwordParameter): self
@@ -132,9 +102,6 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
         return $new;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function process(
         ServerRequestInterface $request,
         RequestHandlerInterface $requestHandler
@@ -161,9 +128,6 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
         return $this->createUnauthorizedResponse();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
         if (PHP_SAPI !== 'cli-server' && $request->getUri()->getScheme() !== 'https') {
@@ -173,7 +137,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
         $session = $request->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
         $identity = $session->get('identity');
 
-        if (!$identity) {
+        if (! $identity) {
             if ($request->getMethod() !== RequestMethod::METHOD_POST) {
                 return null;
             }
@@ -187,7 +151,7 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
             $identity = $body[$this->identityParameter];
             $password = call_user_func($this->userPasswordResolver, $identity);
 
-            if (!$password || !$this->hasher->verify($body[$this->passwordParameter], $password)) {
+            if (! $password || ! $this->hasher->verify($body[$this->passwordParameter], $password)) {
                 return null;
             }
 
@@ -200,17 +164,36 @@ class AuthenticationMiddleware extends AbstractAuthenticationMiddleware
     /**
      * Create unauthorized response.
      *
-     * @return ResponseInterface
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function createUnauthorizedResponse(): ResponseInterface
     {
         $response = $this->responseFactory->createResponse(StatusCode::STATUS_FOUND);
 
-        if (null !== $this->loginUri) {
+        if ($this->loginUri !== null) {
             return $response->withHeader('Location', $this->loginUri);
         }
 
         return $response;
+    }
+
+    private function setLoginUri(string $uri): void
+    {
+        $this->loginUri = $uri;
+    }
+
+    private function setLoggedInUri(string $uri): void
+    {
+        $this->loggedInUri = $uri;
+    }
+
+    private function setIdentityParameter(string $identityParameter): void
+    {
+        $this->identityParameter = $identityParameter;
+    }
+
+    private function setPasswordParameter(string $passwordParameter): void
+    {
+        $this->passwordParameter = $passwordParameter;
     }
 }

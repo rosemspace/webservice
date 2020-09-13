@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Authentication\Middleware;
 
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use InvalidArgumentException;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\{
     ResponseInterface,
     ServerRequestInterface
 };
-use Psr\Http\Message\ResponseFactoryInterface;
 use Rosem\Contract\Authentication\{
     UserFactoryInterface,
     UserInterface
@@ -47,12 +49,6 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
 
     /**
      * DigestAuthenticationMiddleware constructor.
-     *
-     * @param ResponseFactoryInterface $responseFactory
-     * @param UserFactoryInterface     $userFactory
-     * @param callable                 $userPasswordResolver
-     * @param string                   $realm
-     * @param string                   $nonce
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
@@ -68,10 +64,6 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
 
     /**
      * Check the user credentials and return the username or false.
-     *
-     * @param ServerRequestInterface $request
-     *
-     * @return UserInterface|null
      */
     public function authenticate(ServerRequestInterface $request): ?UserInterface
     {
@@ -79,7 +71,7 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
 
         if (empty($authHeader)
             || strpos(reset($authHeader), self::AUTHORIZATION_HEADER_PREFIX . ' ') !== 0
-            || !preg_match_all(
+            || ! preg_match_all(
                 '/('
                 . implode('|', self::AUTHORIZATION_HEADER_NEEDED_PARTS)
                 . ')=(?|\'([^\']+?)\'|"([^"]+?)"|([^\s,]+))/',
@@ -102,11 +94,11 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
         $identity = $authorization['username'];
         $password = call_user_func($this->userPasswordResolver, $identity, $request);
 
-        if (!$password
+        if (! $password
             || $authorization['response'] !== md5(
                 sprintf(
                     '%s:%s:%s:%s:%s:%s',
-                    md5("{$authorization['username']}:$this->realm:$password"),
+                    md5("{$authorization['username']}:{$this->realm}:${password}"),
                     $authorization['nonce'],
                     $authorization['nc'],
                     $authorization['cnonce'],
@@ -124,7 +116,6 @@ class DigestAuthenticationMiddleware extends BasicAuthenticationMiddleware
     /**
      * Create unauthorized response.
      *
-     * @return ResponseInterface
      * @throws InvalidArgumentException
      */
     public function createUnauthorizedResponse(): ResponseInterface

@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route\Contract;
+
+use Rosem\Contract\Route\RouteInterface;
 
 /**
  * Interface CompilerInterface.
@@ -10,11 +14,7 @@ interface RouteCompilerInterface
     /**
      * Compile the pattern to real routes.
      *
-     * @param array  $methods
-     * @param string $routePattern
-     * @param string $handler
-     *
-     * @return \Rosem\Contract\Route\RouteInterface[]
+     * @return RouteInterface[]
      */
     public function compile(array $methods, string $routePattern, string $handler): array;
 }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
@@ -12,22 +15,16 @@ interface RouteInterface
 {
     /**
      * Retrieves the path pattern of the route.
-     *
-     * @return string
      */
     public function getPathPattern(): string;
 
     /**
      * Retrieves the host pattern of the route.
-     *
-     * @return string
      */
     public function getHostPattern(): string;
 
     /**
      * Retrieves the scheme pattern of the route.
-     *
-     * @return string
      */
     public function getSchemePattern(): string;
 
@@ -50,10 +47,6 @@ interface RouteInterface
 
     /**
      * Tests whether this route matches the given URI.
-     *
-     * @param string $uri
-     *
-     * @return bool
      */
     public function matches(string $uri): bool;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Route;
 
 use Rosem\Component\Route\Contract\RouteInterface;
@@ -31,7 +33,7 @@ class Route extends Regex implements RouteInterface
         $this->meta = $meta;
         [$regex] = $meta;
 
-        parent::__construct("~^$regex$~sx");
+        parent::__construct("~^${regex}$~sx");
     }
 
     public function getMeta(): array
@@ -39,41 +41,26 @@ class Route extends Regex implements RouteInterface
         return $this->meta;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getScope(): string
     {
         return $this->scope;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getResource()
     {
         return $this->resource;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getPathPattern(): string
     {
         return $this->pathPattern;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getHostPattern(): string
     {
         return $this->hostPattern;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getSchemePattern(): string
     {
         return $this->schemePattern;

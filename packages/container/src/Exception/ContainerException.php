@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Container\Exception;
 
 use Exception;
@@ -9,11 +11,9 @@ class ContainerException extends Exception implements ContainerExceptionInterfac
 {
     /**
      * @param $id
-     *
-     * @return self
      */
     public static function forUndefinedEntry($id): self
     {
-        return new self("The entry \"$id\" is not defined in the container.");
+        return new self("The entry \"${id}\" is not defined in the container.");
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Authentication;
 
 use Rosem\Contract\Authentication\{
@@ -31,24 +33,15 @@ final class UserFactory implements UserFactoryInterface
 
     /**
      * UserFactory constructor.
-     *
-     * @param callable|null $userRolesResolver
-     * @param callable|null $userDetailsResolver
      */
-    public function __construct(
-        ?callable $userRolesResolver = null,
-        ?callable $userDetailsResolver = null
-    ) {
-        $this->userRolesResolver = $userRolesResolver ?? fn() => [];
-        $this->userDetailsResolver = $userDetailsResolver ?? fn() => [];
+    public function __construct(?callable $userRolesResolver = null, ?callable $userDetailsResolver = null)
+    {
+        $this->userRolesResolver = $userRolesResolver ?? fn () => [];
+        $this->userDetailsResolver = $userDetailsResolver ?? fn () => [];
     }
 
     /**
      * Create user instance with roles and details.
-     *
-     * @param string $identity
-     *
-     * @return UserInterface
      */
     public function createUser(string $identity): UserInterface
     {

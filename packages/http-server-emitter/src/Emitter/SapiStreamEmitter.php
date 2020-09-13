@@ -29,15 +29,11 @@ class SapiStreamEmitter implements EmitterInterface
      * Emits a response for a PHP SAPI environment.
      * Emits the status line and headers via the header() function, and the
      * body content via the output buffer.
-     *
-     * @param ResponseInterface $response
-     *
-     * @return bool
      */
     public function emit(ResponseInterface $response): bool
     {
-        if (!$response->hasHeader('Content-Disposition') &&
-            !$response->hasHeader('Content-Range')
+        if (! $response->hasHeader('Content-Disposition') &&
+            ! $response->hasHeader('Content-Range')
         ) {
             return false;
         }
@@ -47,7 +43,7 @@ class SapiStreamEmitter implements EmitterInterface
         $this->emitStatusLine($response);
         $range = $this->parseContentRange($response->getHeaderLine('Content-Range'));
 
-        if (null === $range || 'bytes' !== $range[0]) {
+        if ($range === null || $range[0] !== 'bytes') {
             $this->emitBody($response);
 
             return true;
@@ -60,8 +56,6 @@ class SapiStreamEmitter implements EmitterInterface
 
     /**
      * Emit the message body.
-     *
-     * @param ResponseInterface $response
      */
     private function emitBody(ResponseInterface $response): void
     {
@@ -71,26 +65,23 @@ class SapiStreamEmitter implements EmitterInterface
             $body->rewind();
         }
 
-        if (!$body->isReadable()) {
+        if (! $body->isReadable()) {
             echo $body;
 
             return;
         }
 
-        while (!$body->eof()) {
+        while (! $body->eof()) {
             echo $body->read($this->maxBufferLength);
         }
     }
 
     /**
      * Emit a range of the message body.
-     *
-     * @param array             $range
-     * @param ResponseInterface $response
      */
     private function emitBodyRange(array $range, ResponseInterface $response): void
     {
-        [$unit, $first, $last, $length] = $range;
+        [/*$unit*/, $first, $last, /*$length*/] = $range;
         $body = $response->getBody();
         $length = $last - $first + 1;
 
@@ -99,7 +90,7 @@ class SapiStreamEmitter implements EmitterInterface
             $first = 0;
         }
 
-        if (!$body->isReadable()) {
+        if (! $body->isReadable()) {
             echo substr($body->getContents(), $first, $length);
 
             return;
@@ -107,13 +98,13 @@ class SapiStreamEmitter implements EmitterInterface
 
         $remaining = $length;
 
-        while ($remaining >= $this->maxBufferLength && !$body->eof()) {
+        while ($remaining >= $this->maxBufferLength && ! $body->eof()) {
             $contents = $body->read($this->maxBufferLength);
             $remaining -= strlen($contents);
             echo $contents;
         }
 
-        if ($remaining > 0 && !$body->eof()) {
+        if ($remaining > 0 && ! $body->eof()) {
             echo $body->read($remaining);
         }
     }
@@ -122,14 +113,12 @@ class SapiStreamEmitter implements EmitterInterface
      * Parse content-range header
      * http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.16
      *
-     * @param string $header
-     *
-     * @return null|array [unit, first, last, length]; returns null if no
-     *     content range or an invalid content range is provided
+     * @return array|null [unit, first, last, length]; returns null if no
+     * content range or an invalid content range is provided
      */
     private function parseContentRange(string $header): ?array
     {
-        if (!preg_match(
+        if (! preg_match(
             '/(?P<unit>[\w]+)\s+(?P<first>\d+)-(?P<last>\d+)\/(?P<length>\d+|\*)/',
             $header,
             $matches
@@ -139,9 +128,9 @@ class SapiStreamEmitter implements EmitterInterface
 
         return [
             $matches['unit'],
-            (int)$matches['first'],
-            (int)$matches['last'],
-            $matches['length'] === '*' ? '*' : (int)$matches['length'],
+            (int) $matches['first'],
+            (int) $matches['last'],
+            $matches['length'] === '*' ? '*' : (int) $matches['length'],
         ];
     }
 }

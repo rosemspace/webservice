@@ -15,10 +15,6 @@ class SapiEmitter implements EmitterInterface
      * Emits a response for a PHP SAPI environment.
      * Emits the status line and headers via the header() function, and the
      * body content via the output buffer.
-     *
-     * @param ResponseInterface $response
-     *
-     * @return bool
      */
     public function emit(ResponseInterface $response): bool
     {
@@ -32,8 +28,6 @@ class SapiEmitter implements EmitterInterface
 
     /**
      * Emit the message body.
-     *
-     * @param ResponseInterface $response
      */
     private function emitBody(ResponseInterface $response): void
     {

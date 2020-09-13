@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * @license http://www.opensource.org/licenses/mit-license.php MIT (see the LICENSE file)
  */
@@ -17,10 +20,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * The syntax used in the $route string depends on the used route parser.
      *
      * @param string|string[] $httpMethods
-     * @param string          $routePattern
-     * @param mixed           $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function addRoute($httpMethods, string $routePattern, $handler): void;
@@ -29,10 +30,6 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * Create a route group with a common prefix.
      * All routes created in the passed callback will have the given group prefix prepended.
      *
-     * @param string   $prefix
-     * @param callable $callback
-     *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function addGroup(string $prefix, callable $callback): void;
@@ -44,10 +41,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * $this->addRoute('GET', $routePattern, $handler)
      * </code>
      *
-     * @param string $routePattern
-     * @param mixed  $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function get(string $routePattern, $handler): void;
@@ -59,10 +54,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * $this->addRoute('POST', $routePattern, $handler)
      * </code>
      *
-     * @param string $routePattern
-     * @param mixed  $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function post(string $routePattern, $handler): void;
@@ -74,10 +67,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * $this->addRoute('PUT', $routePattern, $handler)
      * </code>
      *
-     * @param string $routePattern
-     * @param mixed  $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function put(string $routePattern, $handler): void;
@@ -89,10 +80,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * $this->addRoute('PATCH', $routePattern, $handler)
      * </code>
      *
-     * @param string $routePattern
-     * @param mixed  $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function patch(string $routePattern, $handler): void;
@@ -104,10 +93,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * $this->addRoute('DELETE', $routePattern, $handler)
      * </code>
      *
-     * @param string $routePattern
-     * @param mixed  $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function delete(string $routePattern, $handler): void;
@@ -119,10 +106,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * $this->addRoute('HEAD', $routePattern, $handler)
      * </code>
      *
-     * @param string $routePattern
-     * @param mixed  $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function head(string $routePattern, $handler): void;
@@ -134,10 +119,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * $this->addRoute('OPTIONS', $routePattern, $handler)
      * </code>
      *
-     * @param string $routePattern
-     * @param mixed  $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function options(string $routePattern, $handler): void;
@@ -149,10 +132,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * $this->addRoute('PURGE', $routePattern, $handler)
      * </code>
      *
-     * @param string $routePattern
-     * @param mixed  $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function purge(string $routePattern, $handler): void;
@@ -164,10 +145,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * $this->addRoute('TRACE', $routePattern, $handler)
      * </code>
      *
-     * @param string $routePattern
-     * @param mixed  $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function trace(string $routePattern, $handler): void;
@@ -176,10 +155,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * Adds a CONNECT route to the collection
      * This is simply an alias of $this->addRoute('CONNECT', $routePattern, $handler)
      *
-     * @param string $routePattern
-     * @param mixed  $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function connect(string $routePattern, $handler): void;
@@ -193,10 +170,8 @@ interface HttpRouteCollectorInterface extends RouteCollectorInterface
      * ], $routePattern, $handler)
      * </code>
      *
-     * @param string $routePattern
-     * @param mixed  $handler
+     * @param mixed $handler
      *
-     * @return void
      * @throws BadRouteExceptionInterface
      */
     public function any(string $routePattern, $handler): void;

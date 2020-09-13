@@ -13,7 +13,8 @@ use Psr\Container\{
     ContainerInterface,
     NotFoundExceptionInterface
 };
-use Rosem\Component\Container\Exception;
+use Rosem\Component\Container\Exception\NotFoundException;
+use Traversable;
 
 /**
  * Class AbstractContainer.
@@ -29,33 +30,17 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
      */
     protected array $definitions = [];
 
-    /**
-     * @var ContainerInterface
-     */
     protected ContainerInterface $child;
 
-    /**
-     * @var ContainerInterface
-     */
     protected ContainerInterface $parent;
 
     /**
      * AbstractContainer constructor.
-     *
-     * @param array $definitions
      */
     protected function __construct(array $definitions = [])
     {
         $this->definitions = $definitions;
     }
-
-    /**
-     * Set value factory by id.
-     *
-     * @param string $id
-     * @param mixed  $factory
-     */
-    abstract protected function set(string $id, $factory): void;
 
     /**
      * Finds an entry of the container by its identifier and returns it.
@@ -64,7 +49,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
      *
      * @return mixed Entry.
      * @throws ContainerExceptionInterface Error while retrieving the entry.
-     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
+     * @throws NotFoundExceptionInterface No entry was found for **this** identifier.
      */
     public function get($id)
     {
@@ -76,7 +61,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
             return $this->child->get($id);
         }
 
-        throw Exception\NotFoundException::dueToMissingEntry($id);
+        throw NotFoundException::dueToMissingEntry($id);
     }
 
     /**
@@ -86,8 +71,6 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
      * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
      *
      * @param string $id Identifier of the entry to look for.
-     *
-     * @return bool
      */
     public function has($id): bool
     {
@@ -112,7 +95,7 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
     }
 
     /**
-     * @return \Traversable
+     * @return Traversable
      */
     public function getIterator()
     {
@@ -138,8 +121,8 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
      * @param mixed $id The offset to retrieve
      *
      * @return mixed Can return all value types
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
      */
     public function offsetGet($id)
     {
@@ -149,13 +132,12 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
     /**
      * Offset to set.
      *
-     * @param mixed $id      The offset to assign the value to
+     * @param mixed $id The offset to assign the value to
      * @param mixed $factory The value to set
      *
-     * @return void
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws ContainerExceptionInterface
      */
-    public function offsetSet($id, $factory)
+    public function offsetSet($id, $factory): void
     {
         throw new BadMethodCallException(self::class . ' objects are immutable.');
     }
@@ -164,11 +146,16 @@ abstract class AbstractContainer implements ContainerInterface, ArrayAccess, Cou
      * Offset to unset.
      *
      * @param mixed $id The offset to unset
-     *
-     * @return void
      */
-    public function offsetUnset($id)
+    public function offsetUnset($id): void
     {
         throw new BadMethodCallException(self::class . ' objects are immutable.');
     }
+
+    /**
+     * Set value factory by id.
+     *
+     * @param mixed $factory
+     */
+    abstract protected function set(string $id, $factory): void;
 }

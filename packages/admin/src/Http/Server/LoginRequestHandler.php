@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Admin\Http\Server;
 
 use Psr\Http\Message\{
@@ -15,21 +17,12 @@ use Rosem\Contract\Template\TemplateRendererInterface;
  */
 class LoginRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
     protected ResponseFactoryInterface $responseFactory;
 
-    /**
-     * @var TemplateRendererInterface
-     */
     protected TemplateRendererInterface $templateRenderer;
 
     /**
      * MainController constructor.
-     *
-     * @param ResponseFactoryInterface       $responseFactory
-     * @param TemplateRendererInterface|null $templateRenderer
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
@@ -46,7 +39,7 @@ class LoginRequestHandler implements RequestHandlerInterface
     {
         $response = $this->responseFactory->createResponse();
 
-        if (!isset($this->templateRenderer)) {
+        if (! isset($this->templateRenderer)) {
             return $response;
         }
 

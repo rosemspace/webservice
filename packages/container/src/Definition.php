@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\Container;
 
 use Psr\Container\ContainerInterface;
@@ -24,13 +26,13 @@ class Definition
      */
     public function __construct($factory)
     {
-        if (!is_callable($factory)) {
+        if (! is_callable($factory)) {
             throw new TypeError('A factory in a service provider should be a callable.');
         }
 
         if (is_array($factory) && is_string(reset($factory))) {
             [$interface, $method] = $factory;
-            $this->initializingFactory = static fn(ContainerInterface $container) =>
+            $this->initializingFactory = static fn (ContainerInterface $container) =>
             ([$container->get($interface), $method])($container);
         } else {
             $this->initializingFactory = $factory;

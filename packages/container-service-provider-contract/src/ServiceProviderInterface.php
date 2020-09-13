@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Contract\Container;
 
 /**
@@ -18,7 +20,7 @@ interface ServiceProviderInterface
      *
      * @return callable[]
      */
-    public function getFactories() : array;
+    public function getFactories(): array;
 
     /**
      * Returns a list of all container entries extended by this service provider.
@@ -37,5 +39,5 @@ interface ServiceProviderInterface
      *
      * @return callable[]
      */
-    public function getExtensions() : array;
+    public function getExtensions(): array;
 }

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\App\Facade;
 
-use Rosem\Contract\App\AppInterface;
 use Rosem\Component\Container\AbstractFacade;
+use Rosem\Contract\App\AppInterface;
 
 class App extends AbstractFacade
 {

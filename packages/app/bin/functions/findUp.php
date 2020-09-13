@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rosem\Component\App;
 
 use function dirname;
 use function file_exists;
 use function function_exists;
 
-if (!function_exists('findUp')) {
+if (! function_exists('findUp')) {
     //@TODO down search
     //@TODO search from top
     function findUp(string $startDirname, string $searchPath, int $searchMaxLevelUp): ?string
@@ -18,10 +20,11 @@ if (!function_exists('findUp')) {
             if ($startDirname === '/') {
                 $startDirname = '';
             } elseif ($startDirname === '.') {
-                $startDirname = 'TODO_root'; // TODO ?
+                // TODO ?
+                $startDirname = 'TODO_root';
             }
 
-            $possibleFilename = "$startDirname$searchPath";
+            $possibleFilename = "${startDirname}${searchPath}";
 
             if (file_exists($possibleFilename)) {
                 $filename = $possibleFilename;
