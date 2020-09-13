@@ -142,6 +142,14 @@ class App implements AppInterface, InspectableInterface
                 $this->container->get(ServerRequestInterface::class)
             )
         );
+//        return $this->container->get(EmitterInterface::class)
+//            ->emit(
+//                $this->container->get(AggregateMiddlewareInterface::class)
+//                    ->process(
+//                        $this->container->get(ServerRequestInterface::class),
+//                        $this->container->get(InternalServerErrorRequestHandler::class)
+//                    )
+//            );
     }
 
     protected function validateEnv(): void

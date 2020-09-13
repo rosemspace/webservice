@@ -5,7 +5,8 @@ namespace Rosem\Component\Admin\Http\Server;
 use Psr\Http\Message\{
     ResponseFactoryInterface,
     ResponseInterface,
-    ServerRequestInterface};
+    ServerRequestInterface
+};
 use Psr\Http\Server\RequestHandlerInterface;
 use Rosem\Contract\Template\TemplateRendererInterface;
 
@@ -27,20 +28,28 @@ class LoginRequestHandler implements RequestHandlerInterface
     /**
      * MainController constructor.
      *
-     * @param ResponseFactoryInterface  $responseFactory
-     * @param TemplateRendererInterface $templateRenderer
+     * @param ResponseFactoryInterface       $responseFactory
+     * @param TemplateRendererInterface|null $templateRenderer
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        TemplateRendererInterface $templateRenderer
+        ?TemplateRendererInterface $templateRenderer
     ) {
         $this->responseFactory = $responseFactory;
-        $this->templateRenderer = $templateRenderer;
+
+        if ($templateRenderer !== null) {
+            $this->templateRenderer = $templateRenderer;
+        }
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = $this->responseFactory->createResponse();
+
+        if (!isset($this->templateRenderer)) {
+            return $response;
+        }
+
         $body = $response->getBody();
 
         if ($body->isWritable()) {

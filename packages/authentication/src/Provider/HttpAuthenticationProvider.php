@@ -10,7 +10,7 @@ use Rosem\Component\Authentication\Middleware\{
 };
 use Rosem\Contract\Authentication\UserFactoryInterface;
 use Rosem\Contract\Container\ServiceProviderInterface;
-use Rosem\Contract\Http\Server\MiddlewareCollectorInterface;
+use Rosem\Contract\Http\Server\GroupMiddlewareInterface;
 
 class HttpAuthenticationProvider implements ServiceProviderInterface
 {
@@ -58,9 +58,9 @@ class HttpAuthenticationProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareCollectorInterface::class => static function (
+            GroupMiddlewareInterface::class => static function (
                 ContainerInterface $container,
-                MiddlewareCollectorInterface $middlewareCollector
+                GroupMiddlewareInterface $middlewareCollector
             ): void {
                 $middlewareCollector->addMiddleware($container->get(HttpAuthenticationMiddleware::class));
             },

@@ -19,7 +19,7 @@
         "psr7-sessions/storageless": "^7.0",
         "symfony/console": "^5.1",
         "symfony/finder": "^5.0",
-        "symfony/polyfill-mbstring": "1.15.*",
+        "symfony/polyfill-mbstring": "~1.15",
         "tedivm/stash": "0.15.*",
         "tijsverkoyen/css-to-inline-styles": "^2.2",
         "vlucas/phpdotenv": "^4.1",
@@ -58,6 +58,7 @@
             "Rosem\\Component\\Http\\Server\\": [
                 "packages/http-server-emitter/src",
                 "packages/http-server-handler-util/src",
+                "packages/http-server-middleware-util/src",
                 "packages/http-server-middleware/src",
                 "packages/http-server/src"
             ],
@@ -91,7 +92,11 @@
             "Rosem\\Component\\Filesystem\\Tests\\": "packages/filesystem/tests",
             "Rosem\\Component\\Hash\\Tests\\": "packages/hash/tests",
             "Rosem\\Component\\Http\\Authentication\\Tests\\": "packages/http-authentication/tests",
-            "Rosem\\Component\\Http\\Server\\Test\\": "packages/http-server-handler-util/tests",
+            "Rosem\\Component\\Http\\Server\\Test\\": [
+                "packages/http-server-handler-util/tests",
+                "packages/http-server-middleware-util/tests",
+                "packages/http-server-middleware/tests"
+            ],
             "Rosem\\Component\\Http\\Server\\Tests\\": [
                 "packages/http-server-emitter/tests",
                 "packages/http-server-middleware/tests",
@@ -126,6 +131,7 @@
         "rosem/http-server-handler-util": "self.version",
         "rosem/http-server-middleware": "self.version",
         "rosem/http-server-middleware-contract": "self.version",
+        "rosem/http-server-middleware-util": "self.version",
         "rosem/route": "self.version",
         "rosem/route-contract": "self.version",
         "rosem/template": "self.version",

@@ -3,6 +3,7 @@
 namespace Rosem\Component\Http\Server\Middleware;
 
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\{
     ResponseFactoryInterface,
     ResponseInterface,
@@ -16,7 +17,10 @@ use Rosem\Contract\Template\TemplateRendererInterface;
 
 use function mb_strtoupper;
 
-class ErrorMiddleware implements MiddlewareInterface
+/**
+ * Class HandleErrorMiddleware.
+ */
+class HandleErrorMiddleware implements MiddlewareInterface
 {
     /**
      * @var ResponseFactoryInterface
@@ -24,9 +28,9 @@ class ErrorMiddleware implements MiddlewareInterface
     protected ResponseFactoryInterface $responseFactory;
 
     /**
-     * @var TemplateRendererInterface
+     * @var TemplateRendererInterface|null
      */
-    protected TemplateRendererInterface $view;
+    protected ?TemplateRendererInterface $view;
 
     /**
      * @var array
@@ -36,18 +40,28 @@ class ErrorMiddleware implements MiddlewareInterface
     /**
      * ClientErrorMiddleware constructor.
      *
-     * @param ResponseFactoryInterface  $responseFactory
-     * @param TemplateRendererInterface $view
-     * @param array                     $config
+     * @param ResponseFactoryInterface       $responseFactory
+     * @param TemplateRendererInterface|null $view
+     * @param array                          $config
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        TemplateRendererInterface $view,
+        ?TemplateRendererInterface $view = null,
         array $config = []
     ) {
         $this->responseFactory = $responseFactory;
         $this->view = $view;
         $this->config = $config;
+    }
+
+    public static function fromContainer(ContainerInterface $container): MiddlewareInterface
+    {
+        return new self(
+            $container->get(ResponseFactoryInterface::class),
+            $container->has(TemplateRendererInterface::class)
+                ? $container->get(TemplateRendererInterface::class)
+                : null
+        );
     }
 
     /**
@@ -79,6 +93,11 @@ class ErrorMiddleware implements MiddlewareInterface
 
     public function attachHtmlToResponse(ResponseInterface $response, int $statusCode): void
     {
+        // TODO add isApi check to attach JSON instead of HTML
+        if ($this->view === null) {
+            return;
+        }
+
         $body = $response->getBody();
 
         if (!$body->isWritable()) {

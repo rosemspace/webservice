@@ -9,7 +9,7 @@ use Rosem\Component\Authentication\Middleware\AuthenticationMiddleware;
 use Rosem\Contract\Authentication\UserFactoryInterface;
 use Rosem\Contract\Container\ServiceProviderInterface;
 use Rosem\Contract\Hash\HasherInterface;
-use Rosem\Contract\Http\Server\MiddlewareCollectorInterface;
+use Rosem\Contract\Http\Server\GroupMiddlewareInterface;
 use Rosem\Contract\Template\TemplateRendererInterface;
 
 class AuthenticationProvider implements ServiceProviderInterface
@@ -63,9 +63,9 @@ class AuthenticationProvider implements ServiceProviderInterface
                     ]
                 );
             },
-            MiddlewareCollectorInterface::class => static function (
+            GroupMiddlewareInterface::class => static function (
                 ContainerInterface $container,
-                MiddlewareCollectorInterface $middlewareCollector
+                GroupMiddlewareInterface $middlewareCollector
             ) {
                 $middlewareCollector->addMiddleware($container->get(SessionMiddleware::class));
             },

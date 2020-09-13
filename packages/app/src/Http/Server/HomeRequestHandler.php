@@ -20,7 +20,7 @@ class HomeRequestHandler implements RequestHandlerInterface
     /**
      * @var TemplateRendererInterface
      */
-    protected TemplateRendererInterface $view;
+    protected TemplateRendererInterface $templateRenderer;
 
     /**
      * @var array
@@ -30,27 +30,35 @@ class HomeRequestHandler implements RequestHandlerInterface
     /**
      * MainController constructor.
      *
-     * @param ResponseFactoryInterface  $responseFactory
-     * @param TemplateRendererInterface $view
-     * @param array                     $config
+     * @param ResponseFactoryInterface       $responseFactory
+     * @param TemplateRendererInterface|null $templateRenderer
+     * @param array                          $config
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        TemplateRendererInterface $view,
-        array $config
+        ?TemplateRendererInterface $templateRenderer,
+        array $config = []
     ) {
         $this->responseFactory = $responseFactory;
-        $this->view = $view;
         $this->config = $config;
+
+        if ($templateRenderer !== null) {
+            $this->templateRenderer = $templateRenderer;
+        }
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = $this->responseFactory->createResponse();
+
+        if (!isset($this->templateRenderer)) {
+            return $response;
+        }
+
         $body = $response->getBody();
 
         if ($body->isWritable()) {
-            $viewString = $this->view->render('app::index', $this->config);
+            $viewString = $this->templateRenderer->render('app::index', $this->config);
 
             if ($viewString) {
                 $body->write($viewString);

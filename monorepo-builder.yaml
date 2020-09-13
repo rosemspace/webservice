@@ -2,8 +2,10 @@ parameters:
     # add these to merge of packages' composer.json
     data_to_append:
         require-dev:
+            phpstan/phpstan: '^0.12'
             phpunit/phpunit: '^9.3'
             roave/security-advisories: 'dev-master'
+            symplify/easy-coding-standard: '^8.2'
             symplify/monorepo-builder: '^8.2'
 
     # remove these to merge of packages' composer.json

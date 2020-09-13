@@ -5,7 +5,8 @@ namespace Rosem\Component\Admin\Http\Server;
 use Psr\Http\Message\{
     ResponseFactoryInterface,
     ResponseInterface,
-    ServerRequestInterface};
+    ServerRequestInterface
+};
 use Psr\Http\Server\RequestHandlerInterface;
 use Rosem\Contract\Authentication\UserInterface;
 use Rosem\Contract\Template\TemplateRendererInterface;
@@ -23,20 +24,23 @@ class AdminRequestHandler implements RequestHandlerInterface
     /**
      * @var TemplateRendererInterface
      */
-    protected TemplateRendererInterface $view;
+    protected TemplateRendererInterface $templateRenderer;
 
     /**
      * MainController constructor.
      *
-     * @param ResponseFactoryInterface  $responseFactory
-     * @param TemplateRendererInterface $view
+     * @param ResponseFactoryInterface       $responseFactory
+     * @param TemplateRendererInterface|null $templateRenderer
      */
     public function __construct(
         ResponseFactoryInterface $responseFactory,
-        TemplateRendererInterface $view
+        ?TemplateRendererInterface $templateRenderer = null
     ) {
         $this->responseFactory = $responseFactory;
-        $this->view = $view;
+
+        if ($templateRenderer !== null) {
+            $this->templateRenderer = $templateRenderer;
+        }
     }
 
     /**
@@ -45,10 +49,15 @@ class AdminRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $response = $this->responseFactory->createResponse();
+
+        if (!isset($this->templateRenderer)) {
+            return $response;
+        }
+
         $body = $response->getBody();
 
         if ($body->isWritable()) {
-            $viewString = $this->view->render(
+            $viewString = $this->templateRenderer->render(
                 'admin::index',
                 [
                     'user' => $request->getAttribute(UserInterface::class),

@@ -5,16 +5,16 @@ namespace Rosem\Component\Http\Server\Provider;
 use Psr\Container\ContainerInterface;
 use Psr\Http\{
     Message\ResponseFactoryInterface,
-    Server\RequestHandlerInterface
-};
+    Server\MiddlewareInterface,
+    Server\RequestHandlerInterface};
 use Rosem\Component\Http\Server\{
+    GroupMiddleware,
     InternalServerErrorRequestHandler,
-    Middleware\ErrorMiddleware,
-    MiddlewareCollector
-};
+    Middleware\HandleErrorMiddleware,
+    RequestHandler};
 use Rosem\Contract\Container\ServiceProviderInterface;
 use Rosem\Contract\Http\Server\{
-    MiddlewareCollectorInterface
+    GroupMiddlewareInterface
 };
 use Rosem\Contract\Template\TemplateRendererInterface;
 
@@ -26,15 +26,13 @@ class MiddlewareProvider implements ServiceProviderInterface
     public function getFactories(): array
     {
         return [
-            MiddlewareCollectorInterface::class => [static::class, 'createMiddlewareCollector'],
-            RequestHandlerInterface::class => fn(ContainerInterface $container) => $container->get(
-                MiddlewareCollectorInterface::class
-            ),
+            GroupMiddlewareInterface::class => [static::class, 'createGroupMiddleware'],
+            HandleErrorMiddleware::class => [static::class, 'createErrorMiddleware'],
+            RequestHandlerInterface::class => [static::class, 'createRequestHandler'],
             InternalServerErrorRequestHandler::class => [
                 static::class,
                 'createInternalServerErrorRequestHandler',
             ],
-            ErrorMiddleware::class => [static::class, 'createErrorMiddleware'],
         ];
     }
 
@@ -44,34 +42,39 @@ class MiddlewareProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareCollectorInterface::class => static function (
+            GroupMiddlewareInterface::class => static function (
                 ContainerInterface $container,
-                MiddlewareCollectorInterface $middlewareCollector
+                GroupMiddlewareInterface $middlewareCollector
             ) {
                 if ($container->has(TemplateRendererInterface::class)) {
                     // @TODO make it deferred if an application API based only
-                    $middlewareCollector->addMiddleware($container->get(ErrorMiddleware::class));
+                    $middlewareCollector->addMiddleware($container->get(HandleErrorMiddleware::class));
                 }
             },
         ];
     }
 
-    public function createMiddlewareCollector(ContainerInterface $container): MiddlewareCollector
+    public function createGroupMiddleware(): GroupMiddleware
     {
-        return new MiddlewareCollector($container->get(InternalServerErrorRequestHandler::class));
+        return new GroupMiddleware();
+    }
+
+    public function createErrorMiddleware(ContainerInterface $container): MiddlewareInterface
+    {
+        return HandleErrorMiddleware::fromContainer($container);
+    }
+
+    public function createRequestHandler(ContainerInterface $container): RequestHandlerInterface
+    {
+        return RequestHandler::withMiddleware(
+            $container->get(GroupMiddlewareInterface::class),
+            $container->get(InternalServerErrorRequestHandler::class)
+        );
     }
 
     public function createInternalServerErrorRequestHandler(
         ContainerInterface $container
     ): RequestHandlerInterface {
         return new InternalServerErrorRequestHandler($container->get(ResponseFactoryInterface::class));
-    }
-
-    public function createErrorMiddleware(ContainerInterface $container): ErrorMiddleware
-    {
-        return new ErrorMiddleware(
-            $container->get(ResponseFactoryInterface::class),
-            $container->get(TemplateRendererInterface::class)
-        );
     }
 }

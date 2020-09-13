@@ -16,7 +16,7 @@ use Psr\Http\Server\{
 };
 use Rosem\Component\Http\Server\{
     CallableBasedMiddleware,
-    MiddlewareCollector
+    GroupMiddleware
 };
 use RuntimeException;
 
@@ -86,7 +86,7 @@ class HandleRequestMiddleware implements MiddlewareInterface
             $requestData = (array)$requestData;
 
             if (!empty($requestData[static::KEY_MIDDLEWARE])) {
-                $requestHandler = new MiddlewareCollector(
+                $requestHandler = new GroupMiddleware(
                     $this->container->get($requestData[static::KEY_HANDLER_OR_ALLOWED_METHODS])
                 );
 
@@ -108,6 +108,8 @@ class HandleRequestMiddleware implements MiddlewareInterface
         }
 
         if (is_callable($requestHandler)) {
+
+
             if (is_string(reset($requestHandler))) {
                 $requestHandler[key($requestHandler)] = $this->container->get(reset($requestHandler));
             }

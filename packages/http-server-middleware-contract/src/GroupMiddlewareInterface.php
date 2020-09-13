@@ -2,17 +2,14 @@
 
 namespace Rosem\Contract\Http\Server;
 
-use Psr\Http\Server\{
-    MiddlewareInterface,
-    RequestHandlerInterface
-};
+use Psr\Http\Server\MiddlewareInterface;
 
 /**
- * Interface MiddlewareCollectorInterface.
+ * Interface GroupMiddlewareInterface.
  *
  * @package Rosem\Contract\Http\Server
  */
-interface MiddlewareCollectorInterface extends RequestHandlerInterface
+interface GroupMiddlewareInterface extends MiddlewareInterface
 {
     /**
      * Add middleware to the collection.

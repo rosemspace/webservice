@@ -15,7 +15,7 @@ use Rosem\Component\Route\Middleware\{
     RouteMiddleware
 };
 use Rosem\Contract\Container\ServiceProviderInterface;
-use Rosem\Contract\Http\Server\MiddlewareCollectorInterface;
+use Rosem\Contract\Http\Server\GroupMiddlewareInterface;
 use Rosem\Contract\Route\HttpRouteCollectorInterface;
 
 class RouteServiceProvider implements ServiceProviderInterface
@@ -44,9 +44,9 @@ class RouteServiceProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            MiddlewareCollectorInterface::class => static function (
+            GroupMiddlewareInterface::class => static function (
                 ContainerInterface $container,
-                MiddlewareCollectorInterface $middlewareCollector
+                GroupMiddlewareInterface $middlewareCollector
             ) {
                 $middlewareCollector->addMiddleware($container->get(RouteMiddleware::class));
                 $middlewareCollector->addMiddleware($container->get(HandleRequestMiddleware::class));

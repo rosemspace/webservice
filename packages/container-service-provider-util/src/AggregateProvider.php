@@ -10,6 +10,7 @@ use function get_class;
 
 /**
  * Trait AbstractAggregateServiceProvider.
+ * @TODO rename to AggregateServiceProvider
  */
 class AggregateProvider implements ServiceProviderInterface
 {

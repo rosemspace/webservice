@@ -1,15 +1,17 @@
 <?php
 
+namespace Rosem\Component\Container\Test;
+
 class ContainerTest extends \PHPUnit\Framework\TestCase
 {
     private $calculator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->calculator = new \Rosem\Component\Container\ServiceContainer();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->calculator = null;
     }

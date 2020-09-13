@@ -1,19 +1,23 @@
 {
-    "name": "rosem/http-server-middleware",
-    "description": "HTTP server middleware library",
+    "name": "rosem/http-server-handler-util",
+    "description": "HTTP server request handler utilities",
     "keywords": [
         "rosem",
         "http",
         "server",
-        "middleware",
-        "http-middleware",
+        "handler",
+        "util",
         "http-server",
-        "http-server-middleware",
-        "psr",
-        "psr-7",
-        "psr-15"
+        "http-server-util",
+        "http-handler",
+        "http-handler-util",
+        "http-server-handler",
+        "http-server-handler-util",
+        "server-handler",
+        "server-handler-util",
+        "handler-util"
     ],
-    "homepage": "https://rosem.space/http-server-middleware",
+    "homepage": "https://rosem.space/http-server-handler-util",
     "license": "MIT",
     "authors": [
         {
@@ -24,16 +28,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
-        "psr/container": "^1.0",
-        "psr/http-factory": "^1.0",
-        "psr/http-message": "^1.0",
-        "psr/http-server-handler": "^1.0",
-        "rosem/http-server-handler-util": "^0.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^9.3",
-        "roave/security-advisories": "dev-master"
+        "php": ">=7.4"
     },
     "autoload": {
         "psr-4": {
