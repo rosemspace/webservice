@@ -1,0 +1,6 @@
+includes:
+    - vendor/symplify/coding-standard/config/symplify-rules.neon
+
+parameters:
+    paths:
+        - packages

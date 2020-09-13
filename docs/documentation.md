@@ -11,6 +11,7 @@ If you want to use several implementations of a single interface, for example lo
 To add to a route a request handler with middlewares:
 
 ```php
+<?php
 namespace CustomModule;
 
 use Psr\Container\ContainerInterface;
@@ -18,7 +19,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Fig\Http\Message\RequestMethodInterface as RequestMethod;
 use Rosem\Contract\Route\HttpRouteCollectorInterface;
 use Rosem\Component\Http\Server\DefferedRequestHandler;
-use Rosem\Component\Http\Server\MiddlewareCollector;
+use Rosem\Component\Http\Server\GroupMiddleware;
 
 class CustomServiceProvider implements \Rosem\Contract\Container\ServiceProviderInterface
 {
@@ -32,16 +33,28 @@ class CustomServiceProvider implements \Rosem\Contract\Container\ServiceProvider
                 $routeCollector->addRoute(
                     [RequestMethod::METHOD_GET, RequestMethod::METHOD_POST],
                     'custom/uri',
-                    new DefferedRequestHandler(
-                        $container,
-                        static fn(ContainerInterface $container): RequestHandlerInterface =>
-                            (new MiddlewareCollector($container->get(CustomRequestHandler::class)))
-                                ->addMiddleware($container->get(CustomeMiddleware1::class))
-                                ->addMiddleware($container->get(CustomeMiddleware2::class))
-                    )
+                    static fn(): RequestHandlerInterface =>
+                        (new GroupMiddleware($container->get(CustomRequestHandler::class)))
+                            ->addMiddleware($container->get(CustomeMiddleware1::class))
+                            ->addMiddleware($container->get(CustomeMiddleware2::class))
                 );
             }
         ];
     }
 }
+```
+
+```php
+$httpRouteCollection->addRoute(
+    RequestMethod::GET | RequestMethod::POST,
+    '/admin',
+    RequestHandler::withMiddleware(
+        Middleware::group(
+            Middleware::defer($container, ClientSessionMiddleware::class)
+                ->then(fn($session) => $session->withCookie('backend')),
+            new AuthenticationMiddleware(),
+        ),
+        RequestHandler::defer($container, LoginRequestHandler::class)
+    )
+);
 ```

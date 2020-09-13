@@ -80,6 +80,7 @@ class RouteParser implements RouteParserInterface
             $this->optionalSegmentOpenRegex .= $regexPart;
             $this->optionalSegmentCloseRegex .= $regexPart;
         }
+        //        var_dump($this->variableSegmentRegex);
     }
 
     /**
@@ -89,6 +90,11 @@ class RouteParser implements RouteParserInterface
      */
     public function parse(string $routePattern): array
     {
+        //if (strpos($routePattern, '/') === 0) {
+        //    //{_scheme:[^:]}://
+        ////      $routePattern = '{_host:[^/]*}$routePattern";
+        //}
+
         if ($routePattern === '') {
             throw BadRouteException::forEmptyRoute();
         }
