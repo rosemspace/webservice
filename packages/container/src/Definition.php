@@ -7,6 +7,11 @@ namespace Rosem\Component\Container;
 use Psr\Container\ContainerInterface;
 use TypeError;
 
+use function is_array;
+use function is_callable;
+use function is_string;
+use function reset;
+
 class Definition
 {
     /**
@@ -24,19 +29,40 @@ class Definition
      *
      * @param callable|string[] $factory
      */
-    public function __construct($factory)
+    public function __construct(callable|array $factory)
     {
-        if (! is_callable($factory)) {
-            throw new TypeError('A factory in a service provider should be a callable.');
+        $isLazyCallable = is_array($factory) && is_string(reset($factory));
+
+        if (!$isLazyCallable && !is_callable($factory)) {
+            throw self::notCallableTypeError($factory);
         }
 
-        if (is_array($factory) && is_string(reset($factory))) {
+        if ($isLazyCallable) {
             [$interface, $method] = $factory;
-            $this->initializingFactory = static fn (ContainerInterface $container) =>
-            ([$container->get($interface), $method])($container);
+            $this->initializingFactory = static function (ContainerInterface $container) use ($interface, $method) {
+                $callable = [
+                    $container->get($interface),
+                    $method,
+                ];
+
+                // TODO is it better to use method_exists?
+                if (!is_callable($callable)) {
+                    throw self::notCallableTypeError($callable);
+                }
+
+                return $callable($container);
+            };
         } else {
             $this->initializingFactory = $factory;
         }
+    }
+
+    final public static function notCallableTypeError(mixed $target): TypeError
+    {
+        return new TypeError(
+            'A factory in a service provider should be callable, "' .
+            get_debug_type($target) . '" given.'
+        );
     }
 
     public function create(ContainerInterface $container)
