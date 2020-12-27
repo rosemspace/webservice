@@ -14,10 +14,12 @@ interface AppInterface
     /**
      * Get the root directory of the application.
      *
+     * @param int $levelsUp levels to go up from the public directory (document root)
+     *
      * @return string
      * TODO: move to Filesystem\DirectoryList class (+ getRoot getPublicPath getPath)
      */
-    public function getRootDir(): string;
+    public function getRootDir(int $levelsUp = 1): string;
 
     /**
      * Get the version number of the application.

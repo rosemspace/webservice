@@ -87,7 +87,7 @@ class App implements AppInterface, InspectableInterface
         //var_dump(getenv());
         $this->debug = $debug === 'auto'
             ? $this->environment === AppEnv::DEVELOPMENT
-            : (bool) $debug;
+            : (bool)$debug;
 
         if ($this->envLoaded) {
             $this->version = $this->getEnv(AppEnvKey::VERSION) ?? '';
@@ -96,8 +96,8 @@ class App implements AppInterface, InspectableInterface
         if ($this->environment && $this->environment !== AppEnv::PRODUCTION && $this->debug) {
             ini_set('display_errors', 'true');
             ini_set('display_startup_errors', 'true');
-            ini_set('scream.enabled', true);
-            ini_set('xdebug.scream', true);
+            ini_set('scream.enabled', 'true');
+            ini_set('xdebug.scream', 'true');
             error_reporting(E_ALL);
 
             if ($exceptionThrown) {
@@ -106,6 +106,7 @@ class App implements AppInterface, InspectableInterface
         } elseif ($exceptionThrown) {
             //todo log the exception
             //todo show maintenance
+            echo 'Failed load .env';
             exit(1);
         }
     }
@@ -119,29 +120,35 @@ class App implements AppInterface, InspectableInterface
         );
     }
 
-    public function getRootDir(): string
+    public function getRootDir(int $levelsUp = 1): string
     {
         //todo html escape
-        if (! isset($this->rootDir)) {
+        if (!isset($this->rootDir)) {
             if (PHP_SAPI === 'cli') {
+                $pwd = $_SERVER['PWD'] ?? getcwd();
+                $scriptName = $_SERVER['SCRIPT_NAME'];
                 /** @noinspection RegExpRedundantEscape */
-                // Go above "bin/rosem" file
+                // Go above "public/index.php" or "bin/rosem" file
                 $this->rootDir = dirname(
-                    preg_replace(
-                        '/\\' . DIRECTORY_SEPARATOR . '\.?$/',
-                        '',
-                        $_SERVER['PWD'] ?? getcwd()
-                    ) . DIRECTORY_SEPARATOR .
-                    preg_replace(
-                        '/^\.?\\' . DIRECTORY_SEPARATOR . '|\\' . DIRECTORY_SEPARATOR . '\.?$/',
-                        '',
-                        $_SERVER['SCRIPT_NAME']
-                    ),
-                    2
+                    str_starts_with($scriptName, $pwd)
+                        // Absolute path: "/var/www/public/index.php" run as CLI
+                        ? $scriptName
+                        // Relative path: "bin/rosem" run as CLI
+                        : preg_replace(
+                            '/\\' . DIRECTORY_SEPARATOR . '\.?$/',
+                            '',
+                            $pwd
+                        ) . DIRECTORY_SEPARATOR .
+                        preg_replace(
+                            '/^\.?\\' . DIRECTORY_SEPARATOR . '|\\' . DIRECTORY_SEPARATOR . '\.?$/',
+                            '',
+                            $_SERVER['SCRIPT_NAME']
+                        ),
+                    $levelsUp + 1
                 );
             } else {
-                // Go above "public" directory
-                $this->rootDir = dirname($_SERVER['DOCUMENT_ROOT'] ?: getcwd());
+                // Go above "public" directory ("/var/www/public")
+                $this->rootDir = dirname($_SERVER['DOCUMENT_ROOT'] ?? getcwd(), $levelsUp);
             }
         }
 

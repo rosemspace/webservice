@@ -24,6 +24,14 @@ docker-compose up server
 docker-compose run --rm -p 127.0.0.127:80:80 server
 ```
 
+Run commands inside the container:
+
+```shell
+docker-compose exec server bin/rosem
+# or
+docker-compose exec server bash
+```
+
 To start PHP's internal webserver run the following command:
 ```bash
 docker-compose exec server php -S 0.0.0.0:8000 -t public server.php
