@@ -1,25 +1,21 @@
 version: "3.8"
 services:
   server:
-    build: ./
+    build:
+      context: ./
+      args:
+        user: $USER
     image: rosem:${APP_VERSION:-latest}
     container_name: rosem-server
     working_dir: /var/www
     volumes:
       - ./:/var/www
-      - ./docker/apache/000-default.conf:/etc/apache/sites-available/000-default.conf:ro
+      - $HOME/.composer:/home/$USER/.composer
+      - ./docker/apache2/000-default.conf:/etc/apache2/sites-available/000-default.conf:ro
     ports:
       - ${CONTAINER_IP:-127.0.0.1}:80:80
       - ${CONTAINER_IP:-127.0.0.1}:443:443
       - ${CONTAINER_IP:-127.0.0.1}:8000:8000
-    networks:
-      - rosem
-  composer:
-    image: composer:2
-    container_name: rosem-composer
-    volumes:
-      - ./:/app
-      - $HOME/.composer:/tmp
     networks:
       - rosem
 networks:

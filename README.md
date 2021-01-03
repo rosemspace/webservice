@@ -14,25 +14,31 @@ Key features:
 
 ## Getting started
 
-To build the Docker container, install project dependencies and start the webserver run:
+Build the Docker container and start the webserver:
 
 ```shell
-docker-compose build
-docker-compose run --rm -u $(id -u):$(id -g) composer install --no-interaction --no-scripts
+docker-compose build --build-arg uid=$(id -u $USER) --build-arg gid=$(id -g $USER)
 docker-compose up server
 # or on a different IP and/or port
 docker-compose run --rm -p 127.0.0.127:80:80 server
 ```
 
-Run commands inside the container:
+Install project dependencies:
 
 ```shell
+docker-compose exec server composer install --ignore-platform-reqs --no-interaction --no-scripts
+```
+
+To run commands inside the container:
+
+```shell
+# Rosem CLI commands
 docker-compose exec server bin/rosem
-# or
+# OS commands
 docker-compose exec server bash
 ```
 
-To start PHP's internal webserver run the following command:
+To start PHP's internal webserver on port 8000:
 ```bash
 docker-compose exec server php -S 0.0.0.0:8000 -t public server.php
 ```
