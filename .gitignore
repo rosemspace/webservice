@@ -1,4 +1,5 @@
 /.env
+/.idea
 /.vagrant
 /bkp
 /public/js

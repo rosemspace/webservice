@@ -1,7 +1,9 @@
-.dockerignore
-.gitignore
-*.md
+.DS_Store/
 .git/
 .idea/
-.DS_Store/
+.dockerignore
+.env.example
+.gitignore
+*.md
+docker-compose.yml
 /vendor

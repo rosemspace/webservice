@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Rosem\Component\App\App;
 
 // Uncomment for debugging

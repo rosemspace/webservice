@@ -4,14 +4,20 @@ MAINTAINER Roman Shevchenko <iroman.via@gmail.com>
 
 # Arguments defined in docker-compose.yml
 ARG user
-ARG uid
-ARG gid
+ARG uid=1000
+ARG gid=1000
+ARG APP_ENV
+
+COPY docker/build /home/root/docker
+RUN /home/root/docker/install.sh
 
 # Set working directory
 WORKDIR /var/www
 
-# Install Xdebug
-RUN pecl install xdebug && docker-php-ext-enable xdebug
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin
+
+RUN install-php-extensions xdebug \
+    && docker-php-ext-enable opcache
 
 # Copy Composer to be able to run it later
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
